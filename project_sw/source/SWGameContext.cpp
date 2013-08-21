@@ -6,6 +6,7 @@
 #include "SWGameScene.h"
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
+#include "SWMatrix4x4.h"
 
 void callbackDisplay()
 {
@@ -50,7 +51,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->screenHeight = height;
 
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
 	glutCreateWindow("TSP");
 
 	// 윈도우 크기 및 생성.
@@ -108,7 +109,11 @@ void SWGameContext::onFrameMove()
 	if ( SWGameScene* scene = pimpl->currentScene() )
 	{
 		scene->update( ( (float)elapsedTime ) / 1000.0f );
+
+		glClearColor( 0, 0, 1, 1 );
+		glClear( GL_COLOR_BUFFER_BIT );
 		scene->draw();
+		glutSwapBuffers();
 	}
 }
 
@@ -128,43 +133,19 @@ void  SWGameContext::free( void* memory )
 	free( memory );
 }
 
-int  SWGameContext::getColor()
+void SWGameContext::setModelViewMatrix( const SWMatrix4x4& matrix )
 {
-	float colorF[4];
-	glGetFloatv( GL_CURRENT_COLOR, colorF );
-	int rgba;
-	char* colorB = (char*)&rgba;
-	colorB[0] = (char)(colorF[0]*255);
-	colorB[1] = (char)(colorF[1]*255);
-	colorB[2] = (char)(colorF[2]*255);
-	colorB[3] = (char)(colorF[3]*255);
-	return rgba;
+	glMatrixMode( GL_MODELVIEW );
+	glLoadMatrixf( &matrix.m[0][0] );
 }
 
-void SWGameContext::setColor( int rgba )
+void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
 {
-	char* colorB = (char*)&rgba;
-	setColor( colorB[0], colorB[1], colorB[2], colorB[3] );
+	glMatrixMode( GL_PROJECTION );
+	glLoadMatrixf( &matrix.m[0][0] );
 }
 
-void SWGameContext::setColor( unsigned char r, unsigned char g, unsigned char b, unsigned char a )
-{
-	glColor4f( r/255.0f, g/255.0f, b/255.0f, a/255.0f );
-}
-
-void SWGameContext::setTranslate( float x, float y )
-{
-	glTranslatef( x, y, 0 );
-}
-void SWGameContext::setRotate( float radian )
-{
-	glRotatef( radian*(180.0f/3.14f), 0, 0, -1 );
-}
-void SWGameContext::setScale( float x, float y )
-{
-	glScalef( x, y, 1 );
-}
-
+/*
 void SWGameContext::drawImageRegion( const int& img, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight )
 {
 	static SWVector2f s_verties[] = { SWVector2f( -0.5f, -0.5f )
@@ -175,7 +156,24 @@ void SWGameContext::drawImageRegion( const int& img, float dstX, float dstY, flo
 	static short s_indices[] = { 0, 1, 2, 2, 3, 0 };
 
 }
-
+*/
 void SWGameContext::drawFillRect( float x, float y, float width, float height )
 {
+	static SWVector2f s_verties[] = { SWVector2f( -0.5f, -0.5f )
+		, SWVector2f(  0.5f, -0.5f )
+		, SWVector2f(  0.5f,  0.5f )
+		, SWVector2f( -0.5f,  0.5f ) };
+	static SWVector2f s_coords[]  = { SWVector2f( 0.0f, 1.0f )
+		, SWVector2f( 1.0f, 1.0f )
+		, SWVector2f( 1.0f, 0.0f )
+		, SWVector2f( 0.0f, 0.0f ) };
+
+	static short s_indices[] = { 0, 1, 2, 2, 3, 0 };
+
+	glColor3f( 1, 1, 1 );
+
+	glVertexPointer( 2, GL_FLOAT, 0, &s_verties[0] );
+
+	glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, &s_indices[0] );
+
 }

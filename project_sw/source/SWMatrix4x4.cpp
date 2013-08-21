@@ -87,7 +87,7 @@ float matDet( unsigned square, float* m )
 	return ret;
 }
 
-void SWMatrix4x4::identify()
+void SWMatrix4x4::identity()
 {
 	m11=(1); m12=(0); m13=(0); m14=(0);
 	m21=(0); m22=(1); m23=(0); m24=(0);

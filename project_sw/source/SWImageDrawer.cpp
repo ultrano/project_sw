@@ -63,6 +63,7 @@ void SWImageDrawer::onDraw()
         height = m_region.height;
     }
     
+	/*
     SW_GC.setColor( 1, 1, 1, m_alpha );
     SW_GC.setScale( trans->scale.x, trans->scale.y );
     SW_GC.setRotate( trans->rot );
@@ -73,5 +74,6 @@ void SWImageDrawer::onDraw()
                           , width, height
                           , m_region.x, m_region.y
                           , m_region.width, m_region.height );
+						  */
 
 }

@@ -5,6 +5,8 @@
 const SWVector3f SWVector3f::axisX(1,0,0);
 const SWVector3f SWVector3f::axisY(0,1,0);
 const SWVector3f SWVector3f::axisZ(0,0,1);
+const SWVector3f SWVector3f::zero(0,0,0);
+const SWVector3f SWVector3f::one(1,1,1);
 
 float SWVector3f::length() const
 {

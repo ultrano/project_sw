@@ -7,6 +7,7 @@ class SWGameScene;
 
 #define SW_GC ( SWGameContext::getInstance() )
 
+class SWMatrix4x4;
 class SWGameContext
 {
 	class Pimpl;
@@ -26,15 +27,10 @@ public:
 	void* alloc( size_t size );
 	void  free( void* memory );
 
-	int  getColor();
-	void setColor( int rgba );
-	void setColor( unsigned char r, unsigned char g, unsigned char b, unsigned char a );
+	void setModelViewMatrix( const SWMatrix4x4& matrix );
+	void setProjectionMatrix( const SWMatrix4x4& matrix );
 
-	void setTranslate( float x, float y );
-	void setRotate( float radian );
-	void setScale( float x, float y );
-
-	void drawImageRegion( const int& img, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight );
+	//void drawImageRegion( const int& img, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight );
 	void drawFillRect( float x, float y, float width, float height );
 
 	static SWGameContext& getInstance();

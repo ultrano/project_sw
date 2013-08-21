@@ -7,6 +7,8 @@ public:
 	static const SWVector3f axisX;
 	static const SWVector3f axisY;
 	static const SWVector3f axisZ;
+	static const SWVector3f zero;
+	static const SWVector3f one;
 public:
 	union
 	{

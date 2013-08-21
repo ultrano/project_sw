@@ -24,7 +24,7 @@ public:
 	SWMatrix4x4& operator *= ( float f );
 	SWMatrix4x4& operator *= ( const SWMatrix4x4& mat );
 
-	void		identify();
+	void		identity();
 	float		determinant() const;
 	float		minorDet(unsigned char row, unsigned char col) const;
 	void		inverse(SWMatrix4x4& m) const;
