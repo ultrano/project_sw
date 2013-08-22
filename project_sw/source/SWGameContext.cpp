@@ -133,6 +133,11 @@ void  SWGameContext::free( void* memory )
 	free( memory );
 }
 
+SWGameScene* SWGameContext::getScene()
+{
+	return m_pimpl()->currentScene();
+}
+
 void SWGameContext::setModelViewMatrix( const SWMatrix4x4& matrix )
 {
 	glMatrixMode( GL_MODELVIEW );

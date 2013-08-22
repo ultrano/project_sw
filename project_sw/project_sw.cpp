@@ -28,16 +28,4 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	SW_GC.onStart( new TestScene, "", 320, 480 );
 	return 0;
-	SWQuaternion quat;
-	quat = SWQuaternion().rotate( SWVector3f::axisY, 3.14f/2 );
-	quat *= SWQuaternion().rotate( SWVector3f::axisX, 0 );
-	quat *= SWQuaternion().rotate( SWVector3f::axisZ, 3.14f/2 );
-
-	SWVector3f ret = SWVector3f::one * quat;
-	SWMatrix4x4 mat;
-	mat *= SWMatrix4x4().transform( SWVector3f(1,1,1), SWQuaternion().rotate( SWVector3f::axisY, 3.14f/2 ), SWVector3f(0,0,0) );
-	mat *= SWMatrix4x4().transform( SWVector3f(1,1,1), SWQuaternion().rotate( SWVector3f::axisX, 0 ), SWVector3f(0,0,0) );
-	mat *= SWMatrix4x4().transform( SWVector3f(1,1,1), SWQuaternion().rotate( SWVector3f::axisZ, 3.14f/2 ), SWVector3f(0,0,0) );
-	ret = SWVector3f(1,1,1) * mat;
-	return 0;
 }

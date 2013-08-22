@@ -6,6 +6,10 @@
 class SWMatrix4x4
 {
 public:
+
+	const static SWMatrix4x4 unit;
+
+public:
 	union
 	{
 		struct 
@@ -30,7 +34,7 @@ public:
 	void		inverse(SWMatrix4x4& m) const;
 	void		adjoint(SWMatrix4x4& m) const;
 	void		transpose(SWMatrix4x4& t) const;
-	SWMatrix4x4&	transform(const SWVector3f& scale, const SWQuaternion& rot, const SWVector3f& trans );
+	SWMatrix4x4&	transform(const SWVector3f& scale, const SWQuaternion& rotate, const SWVector3f& translate );
 	SWQuaternion	row(unsigned char r) const;
 	SWQuaternion	col(unsigned char c) const;
 

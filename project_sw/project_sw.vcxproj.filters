@@ -326,11 +326,11 @@
     <ClCompile Include="source\SWVector3f.cpp">
       <Filter>SWVector3f</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWQuaternion.cpp">
-      <Filter>SWQuaternion</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWMatrix4x4.cpp">
       <Filter>SWMatrix4x4</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWQuaternion.cpp">
+      <Filter>SWQuaternion</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

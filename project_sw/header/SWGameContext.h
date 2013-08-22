@@ -3,11 +3,12 @@
 
 #include "SWRefCounter.h"
 #include <string>
-class SWGameScene;
 
 #define SW_GC ( SWGameContext::getInstance() )
 
 class SWMatrix4x4;
+class SWGameScene;
+
 class SWGameContext
 {
 	class Pimpl;
@@ -26,6 +27,8 @@ public:
 
 	void* alloc( size_t size );
 	void  free( void* memory );
+
+	SWGameScene* getScene();
 
 	void setModelViewMatrix( const SWMatrix4x4& matrix );
 	void setProjectionMatrix( const SWMatrix4x4& matrix );
