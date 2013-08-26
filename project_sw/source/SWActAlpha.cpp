@@ -28,8 +28,8 @@ bool SWActAlpha::isDone()
 bool SWActAlpha::onStart()
 {
     if ( !getActor() ) return false;
-    if ( !getActor()->owner() ) return false;
-    m_drawer = swrtti_cast<SWDrawer>( getActor()->owner()->getDrawer() );
+    if ( !getActor()->getGameObject() ) return false;
+    m_drawer = swrtti_cast<SWDrawer>( getActor()->getGameObject()->getDrawer() );
     if ( !m_drawer() ) return false;
     m_accumulation = 0;
     return true;

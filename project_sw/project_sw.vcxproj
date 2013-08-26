@@ -52,6 +52,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./header;./source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +119,7 @@
     <ClInclude Include="header\SWLog.h" />
     <ClInclude Include="header\SWMatrix4x4.h" />
     <ClInclude Include="header\SWMemory.h" />
+    <ClInclude Include="header\SWMesh.h" />
     <ClInclude Include="header\SWObject.h" />
     <ClInclude Include="header\SWQuaternion.h" />
     <ClInclude Include="header\SWVector2f.h" />
@@ -177,6 +179,13 @@
     <ClCompile Include="source\SWTransform.cpp" />
     <ClCompile Include="source\SWVector3f.cpp" />
     <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

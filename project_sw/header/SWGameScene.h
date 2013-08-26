@@ -33,6 +33,9 @@ protected:
     //! 객체 관리용.
     GameObjectList m_objects;
     
+	//! root game objects
+	GameObjectList m_rootObjects;
+
 public:
     
     //! 메소드들

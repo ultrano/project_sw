@@ -13,7 +13,7 @@
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
-#include "SWDrawer.h"
+#include "SWMesh.h"
 #include "SWCollider.h"
 #include "SWTouchSensor.h"
 #include "SWCollisionInfo.h"
@@ -26,16 +26,16 @@ SWGameScene::SWGameScene()
 
 SWGameScene::~SWGameScene()
 {
-    SW_OutputLog( "game scene", "deleted" );
+	SW_OutputLog( "game scene", "deleted" );
 }
 
 SWGameObject* SWGameScene::find( const char *name )
 {
-    GameObjectList::iterator itor = m_objects.begin();
-    for ( ; itor != m_objects.end() ; ++itor )
-    {
-        SWGameObject* object = (*itor)();
-        if ( strcmp( name, object->getName() ) == 0 ) return object;
+	GameObjectList::iterator itor = m_objects.begin();
+	for ( ; itor != m_objects.end() ; ++itor )
+	{
+		SWGameObject* object = (*itor)();
+		if ( name == object->getName() ) return object;
     }
     return NULL;
 }
@@ -70,6 +70,13 @@ void SWGameScene::update( float elapsed )
 void SWGameScene::draw()
 {
     onDraw();
+	GameObjectList::iterator itor = m_rootObjects.begin();
+	for ( ; itor != m_rootObjects.end() ; ++itor )
+	{
+		SWMesh* mesh = (*itor)()->getComponent<SWMesh>();
+		if ( mesh ) mesh->render();
+	}
+	
     
 }
 

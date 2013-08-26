@@ -49,6 +49,9 @@
     <Filter Include="SWMatrix4x4">
       <UniqueIdentifier>{7cfbad08-1636-4df7-92fe-e9950e2bd7f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWMesh">
+      <UniqueIdentifier>{01fb586c-a08e-4d91-8409-ffb29a556157}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="header\SWMatrix4x4.h">
       <Filter>SWMatrix4x4</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWMesh.h">
+      <Filter>SWMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

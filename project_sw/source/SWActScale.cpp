@@ -28,8 +28,8 @@ bool SWActScale::isDone()
 bool SWActScale::onStart()
 {
     if ( !getActor() ) return false;
-    if ( !getActor()->owner() ) return false;
-    m_trans = getActor()->owner()->getTransform();
+    if ( !getActor()->getGameObject() ) return false;
+    m_trans = getActor()->getGameObject()->getTransform();
     if ( !m_trans() ) return false;
     m_accumulation = 0;
     return true;

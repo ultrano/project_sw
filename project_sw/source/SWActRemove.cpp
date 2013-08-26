@@ -27,7 +27,7 @@ bool SWActRemove::isDone()
 bool SWActRemove::onStart()
 {
     if ( !getActor() ) return false;
-    m_owner = getActor()->owner();
+    m_owner = getActor()->getGameObject();
     if ( !m_owner() ) return false;
     m_accumulation = 0;
     return true;
