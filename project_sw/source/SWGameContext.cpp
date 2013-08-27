@@ -34,6 +34,7 @@ public:
 	float screenHeight;
 	int   lastFrameTime;
 	SWCriticalSection idleSection;
+	SWMatrix4x4 viewMatrix;
 };
 
 SWGameContext::SWGameContext()
@@ -138,10 +139,15 @@ SWGameScene* SWGameContext::getScene()
 	return m_pimpl()->currentScene();
 }
 
-void SWGameContext::setModelViewMatrix( const SWMatrix4x4& matrix )
+void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )
+{
+	m_pimpl()->viewMatrix = matrix;
+}
+
+void SWGameContext::setModelMatrix( const SWMatrix4x4& matrix )
 {
 	glMatrixMode( GL_MODELVIEW );
-	glLoadMatrixf( &matrix.m[0][0] );
+	glLoadMatrixf( (float*)&(matrix * m_pimpl()->viewMatrix) );
 }
 
 void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
@@ -186,4 +192,14 @@ void SWGameContext::drawFillRect( float x, float y, float width, float height )
 void SWGameContext::setVertexBuffer( const float* buffer )
 {
 	glVertexPointer( 3, GL_FLOAT, 0, buffer );
+}
+
+void SWGameContext::setTexCoordBuffer( const float* buffer )
+{
+	glTexCoordPointer( 2, GL_FLOAT, 0, buffer );
+}
+
+void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
+{
+	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }

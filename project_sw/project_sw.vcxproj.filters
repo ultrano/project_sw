@@ -31,9 +31,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="NewFilter1">
-      <UniqueIdentifier>{abf48f21-422b-4dd4-9d10-8507e7fb15de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SWRtti">
       <UniqueIdentifier>{a2e0de22-a0db-4f7e-b16b-d5a5385a7868}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,30 @@
     </Filter>
     <Filter Include="SWMesh">
       <UniqueIdentifier>{01fb586c-a08e-4d91-8409-ffb29a556157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWMeshRenderer">
+      <UniqueIdentifier>{d37d7ca5-6f1f-4d7a-8d79-3492dccd3fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWTransform">
+      <UniqueIdentifier>{e2cf3c4f-1cee-43b1-8b30-fbad2e4d42d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWVector2f">
+      <UniqueIdentifier>{7c13e6ee-49b4-4d75-b8e3-aba2f74e41cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWTimer">
+      <UniqueIdentifier>{339794a3-eac0-4bfe-90cf-7a7ca549ff5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWRect">
+      <UniqueIdentifier>{30040ce0-2054-48ae-8605-7090e6ee038e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWCriticalSection">
+      <UniqueIdentifier>{16c5ebcb-9f3e-4e4d-9a5e-292d485bf32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWBehavior">
+      <UniqueIdentifier>{39a75a20-8771-42aa-89c1-32b3ecc62459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWDefines">
+      <UniqueIdentifier>{abf48f21-422b-4dd4-9d10-8507e7fb15de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -84,113 +105,14 @@
     <ClInclude Include="header\SWComponent.h">
       <Filter>SWComponent</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWBehavior.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWCollider.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWDrawer.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWTouchSensor.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWTransform.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWRect.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWRtti.h">
       <Filter>SWRtti</Filter>
     </ClInclude>
     <ClInclude Include="header\SWGameScene.h">
       <Filter>SWGameScene</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWCriticalSection.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWDefines.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWSphereCollider.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWTimer.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActor.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActSequence.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActScaleTo.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActScaleBy.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActScale.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActRotateTo.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActRotateBy.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActRotate.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActRepeat.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActRemove.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActNotify.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActMoveTo.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActMoveBy.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActMove.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWAction.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActHeader.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActEndless.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActDuration.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActDelay.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActAnd.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActAlpha.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWImageDrawer.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWImageRegion.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWVector2f.h">
-      <Filter>NewFilter1</Filter>
+      <Filter>SWDefines</Filter>
     </ClInclude>
     <ClInclude Include="header\SWVector3f.h">
       <Filter>SWVector3f</Filter>
@@ -203,6 +125,27 @@
     </ClInclude>
     <ClInclude Include="header\SWMesh.h">
       <Filter>SWMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWMeshRenderer.h">
+      <Filter>SWMeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWTransform.h">
+      <Filter>SWTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWVector2f.h">
+      <Filter>SWVector2f</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWTimer.h">
+      <Filter>SWTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWRect.h">
+      <Filter>SWRect</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWCriticalSection.h">
+      <Filter>SWCriticalSection</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWBehavior.h">
+      <Filter>SWBehavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,101 +176,8 @@
     <ClCompile Include="source\SWComponent.cpp">
       <Filter>SWComponent</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWBehavior.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWCollider.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWDrawer.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWTransform.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWTouchSensor.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWRect.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWGameScene.cpp">
       <Filter>SWGameScene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWCriticalSection.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWTimer.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActor.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActSequence.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActScaleTo.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActScaleBy.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActScale.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActRotateTo.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActRotateBy.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActRotate.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActRepeat.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActRemove.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActNotify.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActMoveTo.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActMoveBy.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActMove.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWAction.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActEndless.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActDuration.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActDelay.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActAnd.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActAlpha.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWImageDrawer.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWImageRegion.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWVector2f.cpp">
-      <Filter>NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="source\SWVector3f.cpp">
       <Filter>SWVector3f</Filter>
@@ -340,6 +190,27 @@
     </ClCompile>
     <ClCompile Include="source\SWMesh.cpp">
       <Filter>SWMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWMeshRenderer.cpp">
+      <Filter>SWMeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWTransform.cpp">
+      <Filter>SWTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWVector2f.cpp">
+      <Filter>SWVector2f</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWTimer.cpp">
+      <Filter>SWTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWRect.cpp">
+      <Filter>SWRect</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWCriticalSection.cpp">
+      <Filter>SWCriticalSection</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWBehavior.cpp">
+      <Filter>SWBehavior</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

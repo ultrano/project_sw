@@ -16,10 +16,6 @@ class TestScene : public SWGameScene
 
 	void onDraw()
 	{
-		SWMatrix4x4 mat;
-		mat.transform( SWVector3f::one*100, SWQuaternion().rotate(SWVector3f::axisZ, 3.14/8), SWVector3f::zero );
-		SW_GC.setModelViewMatrix( mat );
-		SW_GC.drawFillRect( 0, 0, 100, 100 );
 	}
 
 };

@@ -8,15 +8,11 @@
 
 #include "SWGameScene.h"
 #include "SWGameObject.h"
-#include "SWCollisionManager.h"
 #include "SWLog.h"
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
 #include "SWMesh.h"
-#include "SWCollider.h"
-#include "SWTouchSensor.h"
-#include "SWCollisionInfo.h"
 #include "SWGameContext.h"
 
 SWGameScene::SWGameScene()
@@ -76,8 +72,6 @@ void SWGameScene::draw()
 		SWMesh* mesh = (*itor)()->getComponent<SWMesh>();
 		if ( mesh ) mesh->render();
 	}
-	
-    
 }
 
 void SWGameScene::handleEvent( int type, int x, int y )
