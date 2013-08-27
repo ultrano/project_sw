@@ -36,8 +36,9 @@ public:
 	//void drawImageRegion( const int& img, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight );
 	void drawFillRect( float x, float y, float width, float height );
 
-	static SWGameContext& getInstance();
+	void setVertexBuffer( const float* buffer );
 
+	static SWGameContext& getInstance();
 private:
 	
 };

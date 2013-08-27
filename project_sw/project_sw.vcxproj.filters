@@ -338,5 +338,8 @@
     <ClCompile Include="source\SWQuaternion.cpp">
       <Filter>SWQuaternion</Filter>
     </ClCompile>
+    <ClCompile Include="source\SWMesh.cpp">
+      <Filter>SWMesh</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

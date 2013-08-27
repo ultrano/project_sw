@@ -36,13 +36,13 @@ SWImageDrawer::SWImageDrawer( const SWImageRegion& region, float width, float he
 void SWImageDrawer::onDraw()
 {
     if ( m_alpha <= 0 ) return;
-    if ( !owner.isValid() )
+    if ( !getGameObject.isValid() )
     {
         SW_OutputLog( "on draw", "invalid owner" );
         return;
     }
 
-    SWTransform* trans = owner()->getTransform();
+    SWTransform* trans = getGameObject()->getTransform();
     if ( trans == NULL ) return;
     
     float width  = m_width;

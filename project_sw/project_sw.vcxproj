@@ -169,6 +169,7 @@
     <ClCompile Include="source\SWLog.cpp" />
     <ClCompile Include="source\SWMatrix4x4.cpp" />
     <ClCompile Include="source\SWMemory.cpp" />
+    <ClCompile Include="source\SWMesh.cpp" />
     <ClCompile Include="source\SWObject.cpp" />
     <ClCompile Include="source\SWQuaternion.cpp" />
     <ClCompile Include="source\SWVector2f.cpp" />

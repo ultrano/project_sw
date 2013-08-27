@@ -182,3 +182,8 @@ void SWGameContext::drawFillRect( float x, float y, float width, float height )
 	glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, &s_indices[0] );
 
 }
+
+void SWGameContext::setVertexBuffer( const float* buffer )
+{
+	glVertexPointer( 3, GL_FLOAT, 0, buffer );
+}
