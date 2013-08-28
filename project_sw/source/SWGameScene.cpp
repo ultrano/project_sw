@@ -61,6 +61,7 @@ void SWGameScene::update( float elapsed )
 {
     //! 파생 씬의 업데이트
     onUpdate( elapsed );
+
 }
 
 void SWGameScene::draw()
