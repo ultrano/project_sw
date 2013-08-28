@@ -39,9 +39,8 @@ public:
     SWGameScene();
     ~SWGameScene();
     
-    //! 객체를 이름으로 찾는다.
-    //! 객체의 이름이 중복될 경우 배열의 앞에 있는 한개만 찾는다.
-    SWGameObject* find( const char* name );
+    //! 객체를 찾는다.
+    SWGameObject* find( const char* query );
     
     void awake();
     void destroy();

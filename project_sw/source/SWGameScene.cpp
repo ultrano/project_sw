@@ -25,15 +25,9 @@ SWGameScene::~SWGameScene()
 	SW_OutputLog( "game scene", "deleted" );
 }
 
-SWGameObject* SWGameScene::find( const char *name )
+SWGameObject* SWGameScene::find( const char *query )
 {
-	GameObjectList::iterator itor = m_objects.begin();
-	for ( ; itor != m_objects.end() ; ++itor )
-	{
-		SWGameObject* object = (*itor)();
-		if ( name == object->getName() ) return object;
-    }
-    return NULL;
+	return m_root()->find( query );
 }
 
 void SWGameScene::awake()
