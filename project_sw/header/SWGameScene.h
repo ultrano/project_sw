@@ -31,7 +31,7 @@ protected:
     typedef std::list< SWHardRef<SWComponent> >  ComponentList;
     
 	//! root game objects
-
+	SWHardRef<SWGameObject> m_root;
 
 public:
     
