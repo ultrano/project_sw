@@ -67,12 +67,6 @@ void SWGameScene::update( float elapsed )
 void SWGameScene::draw()
 {
     onDraw();
-	GameObjectList::iterator itor = m_rootObjects.begin();
-	for ( ; itor != m_rootObjects.end() ; ++itor )
-	{
-		SWMesh* mesh = (*itor)()->getComponent<SWMesh>();
-		if ( mesh ) mesh->render();
-	}
 }
 
 void SWGameScene::handleEvent( int type, int x, int y )
