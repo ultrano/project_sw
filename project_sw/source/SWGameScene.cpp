@@ -12,7 +12,7 @@
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
-#include "SWMesh.h"
+#include "SWMeshRenderer.h"
 #include "SWGameContext.h"
 
 SWGameScene::SWGameScene()
@@ -27,7 +27,7 @@ SWGameScene::~SWGameScene()
 
 SWGameObject* SWGameScene::find( const char *query )
 {
-	return m_root()->find( query );
+	return NULL;
 }
 
 void SWGameScene::awake()
@@ -54,13 +54,25 @@ void SWGameScene::pause()
 void SWGameScene::update( float elapsed )
 {
     //! 파생 씬의 업데이트
-    onUpdate( elapsed );
-
+	onUpdate( elapsed );
+	m_updates = m_roots;
+	GameObjectList::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ; ++itor )
+	{
+		(*itor)()->udpate();
+	}
 }
 
 void SWGameScene::draw()
 {
     onDraw();
+	GameObjectList::iterator itor = m_roots.begin();
+	for ( ; itor != m_roots.end() ; ++itor )
+	{
+		SWMeshRenderer* renderer = (*itor)()->getComponent<SWMeshRenderer>();
+		if ( renderer ) renderer->render();
+	}
+
 }
 
 void SWGameScene::handleEvent( int type, int x, int y )

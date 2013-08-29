@@ -18,5 +18,8 @@ public:
 	void setIndexStream( size_t countOfShort, unsigned short* stream );
 
 	void render();
+
+	void onAdded();
+	void onRemoved();
 };
 #endif // SWMesh_h__

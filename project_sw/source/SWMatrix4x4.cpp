@@ -45,17 +45,16 @@ SWMatrix4x4& SWMatrix4x4::operator*=( const SWMatrix4x4& mat )
 const SWMatrix4x4 operator*( const SWMatrix4x4& a, const SWMatrix4x4& b )
 {
 	SWMatrix4x4 ret;
-	ret.m11 = (a.m11*b.m11) + (a.m12*b.m21) + (a.m13*b.m31);
-	ret.m12 = (a.m11*b.m12) + (a.m12*b.m22) + (a.m13*b.m32);
-	ret.m13 = (a.m11*b.m13) + (a.m12*b.m23) + (a.m13*b.m33);
+	float t1,t2,t3,t4;
 
-	ret.m21 = (a.m21*b.m11) + (a.m22*b.m21) + (a.m23*b.m31);
-	ret.m22 = (a.m21*b.m12) + (a.m22*b.m22) + (a.m23*b.m32);
-	ret.m23 = (a.m21*b.m13) + (a.m22*b.m23) + (a.m23*b.m33);
-
-	ret.m31 = (a.m31*b.m11) + (a.m32*b.m21) + (a.m33*b.m31);
-	ret.m32 = (a.m31*b.m12) + (a.m32*b.m22) + (a.m33*b.m32);
-	ret.m33 = (a.m31*b.m13) + (a.m32*b.m23) + (a.m33*b.m33);
+	for ( int r = 0 ; r < 4 ; ++r )
+	{
+		t1 = a.m[r][0]; t2 = a.m[r][1]; t3 = a.m[r][2]; t4 = a.m[r][3];
+		ret.m[r][0] = (t1*b.m11) + (t2*b.m21) + (t3*b.m31) + (t4*b.m41);
+		ret.m[r][1] = (t1*b.m12) + (t2*b.m22) + (t3*b.m32) + (t4*b.m42);
+		ret.m[r][2] = (t1*b.m13) + (t2*b.m23) + (t3*b.m33) + (t4*b.m43);
+		ret.m[r][3] = (t1*b.m14) + (t2*b.m24) + (t3*b.m34) + (t4*b.m44);
+	}
 	return ret;
 }
 

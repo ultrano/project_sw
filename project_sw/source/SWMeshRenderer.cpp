@@ -14,14 +14,18 @@ void SWMeshRenderer::render()
 		m_mesh()->render();
 	}
 
-	SWTransform::TransformList children;
+	SWTransform::ChildList children;
 	transform->copyChildren( children );
 
-	SWTransform::TransformList::iterator itor = children.begin();
+	SWTransform::ChildList::iterator itor = children.begin();
 	for ( ; itor != children.end() ; ++itor )
 	{
-		SWGameObject* object = (*itor)()->getGameObject();
-		SWMeshRenderer* renderer = object->getComponent<SWMeshRenderer>();
+		SWMeshRenderer* renderer = (*itor)()->getComponent<SWMeshRenderer>();
 		if ( renderer ) renderer->render();
 	}
+}
+
+void SWMeshRenderer::onAdded()
+{
+	m_mesh = getGameObject()->getComponent<SWMesh>();
 }

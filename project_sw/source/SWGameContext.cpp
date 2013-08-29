@@ -19,8 +19,9 @@ void callbackIdle()
 
 void callbackMouse( int button, int state, int x, int y )
 {
-
-
+	SWGameScene* scene = SW_GC.getScene();
+	
+	if ( scene ) scene->handleEvent( state, x, y );
 }
 
 class SWGameContext::Pimpl : public SWRefCountable
@@ -78,7 +79,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	// 프로젝션 매트릭스를 직교 행렬로 지정.
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glOrtho(-width/2,width/2,-height/2,height/2,1,-1);
+	glOrtho( 0, width, width, 0,1,-1);
 
 	glutMouseFunc(callbackMouse);
 	glutDisplayFunc(callbackDisplay);
@@ -131,7 +132,7 @@ void* SWGameContext::alloc( size_t size )
 
 void  SWGameContext::free( void* memory )
 {
-	free( memory );
+	::free( memory );
 }
 
 SWGameScene* SWGameContext::getScene()
@@ -201,5 +202,6 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 
 void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 {
+	glColor3f( 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }

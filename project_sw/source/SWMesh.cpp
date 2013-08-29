@@ -1,5 +1,7 @@
 #include "SWMesh.h"
 #include "SWGameContext.h"
+#include "SWGameObject.h"
+#include "SWMeshRenderer.h"
 #include <memory>
 
 void SWMesh::setVertexStream( size_t countOfFloat, const float* stream )
@@ -23,7 +25,17 @@ void SWMesh::setIndexStream( size_t countOfShort, unsigned short* stream )
 void SWMesh::render()
 {
 	SW_GC.setVertexBuffer( &m_vertices[0] );
-	SW_GC.setTexCoordBuffer( &m_texCoords[0] );
+	//SW_GC.setTexCoordBuffer( &m_texCoords[0] );
 	SW_GC.indexedDraw( m_indeces.size(), &m_indeces[0] );
+}
+
+void SWMesh::onAdded()
+{
+	getGameObject()->addComponent<SWMeshRenderer>();
+}
+
+void SWMesh::onRemoved()
+{
+
 }
 

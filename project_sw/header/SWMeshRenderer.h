@@ -11,7 +11,11 @@ class SWMeshRenderer : public SWComponent
 
 	SWWeakRef<SWMesh> m_mesh;
 
+public:
+
 	void render();
+
+	void onAdded();
 };
 
 #endif // SWMeshRenderer_h__

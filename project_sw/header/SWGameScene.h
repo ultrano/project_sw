@@ -23,7 +23,7 @@ class SWCollisionManager;
 class SWGameScene : public SWObject
 {
     SW_RTTI( SWGameScene, SWObject );
-	friend class SWGameObject;
+	friend class SWTransform;
 protected:
 
 	typedef std::set< SWHardRef<SWGameObject> >  GameObjectSet;
@@ -31,7 +31,8 @@ protected:
     typedef std::list< SWHardRef<SWComponent> >  ComponentList;
     
 	//! root game objects
-	SWHardRef<SWGameObject> m_root;
+	GameObjectList m_roots;
+	GameObjectList m_updates;
 
 public:
     
