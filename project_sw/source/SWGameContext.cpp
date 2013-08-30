@@ -54,10 +54,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
-	glutCreateWindow("TSP");
-
 	// 윈도우 크기 및 생성.
 	glutInitWindowSize( (int)width, (int)height);
+	glutCreateWindow("TSP");
 
 	// 버퍼 클리어 색상 지정.
 	glClearColor(0,0,0,1);
@@ -155,39 +154,6 @@ void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
 {
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( &matrix.m[0][0] );
-}
-
-/*
-void SWGameContext::drawImageRegion( const int& img, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight )
-{
-	static SWVector2f s_verties[] = { SWVector2f( -0.5f, -0.5f )
-		, SWVector2f(  0.5f, -0.5f )
-		, SWVector2f(  0.5f,  0.5f )
-		, SWVector2f( -0.5f,  0.5f ) };
-
-	static short s_indices[] = { 0, 1, 2, 2, 3, 0 };
-
-}
-*/
-void SWGameContext::drawFillRect( float x, float y, float width, float height )
-{
-	static SWVector2f s_verties[] = { SWVector2f( -0.5f, -0.5f )
-		, SWVector2f(  0.5f, -0.5f )
-		, SWVector2f(  0.5f,  0.5f )
-		, SWVector2f( -0.5f,  0.5f ) };
-	static SWVector2f s_coords[]  = { SWVector2f( 0.0f, 1.0f )
-		, SWVector2f( 1.0f, 1.0f )
-		, SWVector2f( 1.0f, 0.0f )
-		, SWVector2f( 0.0f, 0.0f ) };
-
-	static short s_indices[] = { 0, 1, 2, 2, 3, 0 };
-
-	glColor3f( 1, 1, 1 );
-
-	glVertexPointer( 2, GL_FLOAT, 0, &s_verties[0] );
-
-	glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, &s_indices[0] );
-
 }
 
 void SWGameContext::setVertexBuffer( const float* buffer )

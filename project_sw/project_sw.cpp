@@ -58,6 +58,6 @@ class TestScene : public SWGameScene
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "", 800, 600 );
+	SW_GC.onStart( new TestScene, "", 320, 480 );
 	return 0;
 }

@@ -34,12 +34,10 @@ public:
 	void setModelMatrix( const SWMatrix4x4& matrix );
 	void setProjectionMatrix( const SWMatrix4x4& matrix );
 
-	//void drawImageRegion( const int& img, float dstX, float dstY, float dstWidth, float dstHeight, float srcX, float srcY, float srcWidth, float srcHeight );
-	void drawFillRect( float x, float y, float width, float height );
-
 	void setVertexBuffer( const float* buffer );
 	void setTexCoordBuffer( const float* buffer );
 	void indexedDraw( size_t count, unsigned short* indeces);
+
 	static SWGameContext& getInstance();
 private:
 	
