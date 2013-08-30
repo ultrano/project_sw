@@ -9,6 +9,7 @@
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWMesh.h"
+#include "SWMeshData.h"
 #include <set>
 #include <map>
 using namespace std;
@@ -20,21 +21,28 @@ class TestScene : public SWGameScene
 
 	void onAwake()
 	{
-		obj1 = new SWGameObject;
-		SWMesh* mesh = obj1->addComponent<SWMesh>();
 
 		static SWVector3f s_verties[] = { SWVector3f( -0.5f, -0.5f, 0 )
-			                            , SWVector3f(  0.5f, -0.5f, 0 )
-			                            , SWVector3f(  0.5f,  0.5f, 0 )
-			                            , SWVector3f( -0.5f,  0.5f, 0 ) };
+			, SWVector3f(  0.5f, -0.5f, 0 )
+			, SWVector3f(  0.5f,  0.5f, 0 )
+			, SWVector3f( -0.5f,  0.5f, 0 ) };
 
 		static unsigned short s_indices[] = { 0, 1, 2, 2, 3, 0 };
 
-		mesh->setVertexStream( 12, (float*)&s_verties[0] );
-		mesh->setIndexStream( 6, &s_indices[0] );
-		
-		SWTransform* trans = obj1->getComponent<SWTransform>();
-		trans->setLocalScale( SWVector3f::one * 100 );
+		SWMeshData* meshData = new SWMeshData;
+		meshData->setVertexStream( 12, (float*)&s_verties[0] );
+		meshData->setIndexStream( 6, &s_indices[0] );
+
+		SWTransform* trans
+		obj1 = new SWGameObject;
+		obj1->addComponent<SWMesh>()->setData(meshData);
+		obj1->getComponent<SWTransform>()->setLocalScale( SWVector3f::one * 100 );
+
+		obj1 = new SWGameObject;
+		obj1->addComponent<SWMesh>()->setData(meshData);
+		obj1->getComponent<SWTransform>()->setLocalScale( SWVector3f::one * 10 );
+		obj1->getComponent<SWTransform>()->setLocalPosition( SWVector3f::one * 200 );
+
 	}
 
 	void onDraw()

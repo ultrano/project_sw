@@ -3,20 +3,17 @@
 
 #include "SWComponent.h"
 #include <vector>
+
+class SWMeshData;
+
 class SWMesh : public SWComponent
 {
 	SW_RTTI( SWMesh, SWComponent );
-private:
 
-	std::vector<float>  m_vertices;
-	std::vector<float>  m_texCoords;
-	std::vector<unsigned short> m_indeces;
-public:
-
-	void setVertexStream( size_t countOfFloat, const float* stream );
-	void setTexCoordStream( size_t countOfFloat, const float* stream );
-	void setIndexStream( size_t countOfShort, unsigned short* stream );
-
+	SWHardRef<SWMeshData> m_data;
+	public:
+	
+		void setData( SWMeshData* data );
 	void render();
 
 	void onAdded();

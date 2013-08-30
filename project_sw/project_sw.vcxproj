@@ -95,6 +95,7 @@
     <ClInclude Include="header\SWMatrix4x4.h" />
     <ClInclude Include="header\SWMemory.h" />
     <ClInclude Include="header\SWMesh.h" />
+    <ClInclude Include="header\SWMeshData.h" />
     <ClInclude Include="header\SWMeshRenderer.h" />
     <ClInclude Include="header\SWObject.h" />
     <ClInclude Include="header\SWQuaternion.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="source\SWMatrix4x4.cpp" />
     <ClCompile Include="source\SWMemory.cpp" />
     <ClCompile Include="source\SWMesh.cpp" />
+    <ClCompile Include="source\SWMeshData.cpp" />
     <ClCompile Include="source\SWMeshRenderer.cpp" />
     <ClCompile Include="source\SWObject.cpp" />
     <ClCompile Include="source\SWQuaternion.cpp" />
