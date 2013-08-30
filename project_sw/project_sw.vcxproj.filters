@@ -153,6 +153,9 @@
     <ClInclude Include="header\SWMeshData.h">
       <Filter>SWMeshData</Filter>
     </ClInclude>
+    <ClInclude Include="header\stb_image.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="source\SWMeshData.cpp">
       <Filter>SWMeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="source\stb_image.c">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

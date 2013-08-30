@@ -11,6 +11,7 @@ void SWMeshRenderer::render()
 	if ( m_mesh.isValid() )
 	{
 		SW_GC.setModelMatrix( transform->getWorldMatrix() );
+		SW_GC.bindTexture( m_texID );
 		m_mesh()->render();
 	}
 
@@ -28,4 +29,14 @@ void SWMeshRenderer::render()
 void SWMeshRenderer::onAdded()
 {
 	m_mesh = getGameObject()->getComponent<SWMesh>();
+}
+
+void SWMeshRenderer::setTexture( unsigned int texID )
+{
+	m_texID = texID;
+}
+
+unsigned int SWMeshRenderer::getTexture()
+{
+	return m_texID;
 }

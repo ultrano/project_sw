@@ -38,6 +38,9 @@ public:
 	void setTexCoordBuffer( const float* buffer );
 	void indexedDraw( size_t count, unsigned short* indeces);
 
+	unsigned int loadTexture( const std::string& path );
+	void bindTexture( unsigned int texID );
+
 	static SWGameContext& getInstance();
 private:
 	

@@ -7,6 +7,7 @@
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
 #include "SWMatrix4x4.h"
+#include "stb_image.h"
 
 void callbackDisplay()
 {
@@ -63,14 +64,14 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 
 	// 버텍스 버퍼 사용
 	glEnableClientState( GL_VERTEX_ARRAY );
-	/*
+	
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glAlphaFunc(GL_GREATER, 0);
-	*/
+	
 
 	// 뷰포트 지정.
 	glViewport(0,0,width,height);
@@ -170,4 +171,56 @@ void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 {
 	glColor3f( 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
+}
+
+unsigned int glLoadTexture( const char* fileName );
+
+unsigned int SWGameContext::loadTexture( const std::string& path )
+{
+	return glLoadTexture( path.c_str() );
+}
+
+void SWGameContext::bindTexture( unsigned int texID )
+{
+	glBindTexture( GL_TEXTURE_2D, texID );
+}
+
+unsigned int glLoadTexture( const char* fileName )
+{
+	if ( !fileName ) return 0;
+
+	int x,y,comp;
+
+	unsigned char* data = stbi_load( fileName, &x, &y, &comp, 0 );
+
+	if ( !data ) return 0;
+
+	unsigned int texID[1];
+
+	glGenTextures(1,&texID[0]);
+	glBindTexture(GL_TEXTURE_2D,texID[0]);
+	gluBuild2DMipmaps( GL_TEXTURE_2D
+		             , (comp==4)? GL_RGBA8 : (comp==3)? GL_RGB8 : GL_INVALID_ENUM
+					 , x, y
+					 , (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GLU_INVALID_VALUE
+					 , GL_UNSIGNED_BYTE, data );
+	/*
+	glTexImage2D(GL_TEXTURE_2D, 0
+	, (comp==4)? GL_RGBA8 : (comp==3)? GL_RGB8 : GL_INVALID_ENUM
+	, x, y, 0
+	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GLU_INVALID_VALUE
+	, GL_UNSIGNED_BYTE, data);
+	*/
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
+	stbi_image_free(data);
+
+	GLenum err = glGetError();
+	if ( err ) return 0;
+
+	return texID[0];
 }

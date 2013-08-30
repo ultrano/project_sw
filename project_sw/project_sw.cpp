@@ -10,6 +10,8 @@
 #include "SWTransform.h"
 #include "SWMesh.h"
 #include "SWMeshData.h"
+#include "SWVector2f.h"
+#include "SWMeshRenderer.h"
 #include <set>
 #include <map>
 using namespace std;
@@ -26,17 +28,23 @@ class TestScene : public SWGameScene
 			, SWVector3f(  0.5f, -0.5f, 0 )
 			, SWVector3f(  0.5f,  0.5f, 0 )
 			, SWVector3f( -0.5f,  0.5f, 0 ) };
+		SWVector2f s_coords[]  = { SWVector2f( 0.0f, 1.0f )
+			, SWVector2f( 1.0f, 1.0f )
+			, SWVector2f( 1.0f, 0.0f )
+			, SWVector2f( 0.0f, 0.0f ) };
 
 		unsigned short s_indices[] = { 0, 1, 2, 2, 3, 0 };
 
 		SWMeshData* meshData = new SWMeshData;
 		meshData->setVertexStream( 12, (float*)&s_verties[0] );
+		meshData->setTexCoordStream( 8, (float*)&s_coords[0] );
 		meshData->setIndexStream( 6, &s_indices[0] );
-		
+
 		obj1 = new SWGameObject;
 		obj1->addComponent<SWMesh>()->setData(meshData);
+		obj1->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("./unit1.png") );
 		SWTransform* trans1 = obj1->getComponent<SWTransform>();
-		trans1->setLocalScale( SWVector3f::one * 10 );
+		trans1->setLocalScale( SWVector3f::one * 50 );
 
 		SWGameObject* obj2 = new SWGameObject;
 		obj2->addComponent<SWMesh>()->setData(meshData);
