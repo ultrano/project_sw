@@ -79,7 +79,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	// 프로젝션 매트릭스를 직교 행렬로 지정.
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glOrtho( 0, width, width, 0,1,-1);
+	glOrtho( 0, width, width, 0,1000,-1000);
 
 	glutMouseFunc(callbackMouse);
 	glutDisplayFunc(callbackDisplay);

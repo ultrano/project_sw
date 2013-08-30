@@ -32,17 +32,17 @@ class TestScene : public SWGameScene
 		SWMeshData* meshData = new SWMeshData;
 		meshData->setVertexStream( 12, (float*)&s_verties[0] );
 		meshData->setIndexStream( 6, &s_indices[0] );
-
-		SWTransform* trans
+		
 		obj1 = new SWGameObject;
 		obj1->addComponent<SWMesh>()->setData(meshData);
-		obj1->getComponent<SWTransform>()->setLocalScale( SWVector3f::one * 100 );
+		SWTransform* trans1 = obj1->getComponent<SWTransform>();
+		trans1->setLocalScale( SWVector3f::one * 10 );
 
-		obj1 = new SWGameObject;
-		obj1->addComponent<SWMesh>()->setData(meshData);
-		obj1->getComponent<SWTransform>()->setLocalScale( SWVector3f::one * 10 );
-		obj1->getComponent<SWTransform>()->setLocalPosition( SWVector3f::one * 200 );
-
+		SWGameObject* obj2 = new SWGameObject;
+		obj2->addComponent<SWMesh>()->setData(meshData);
+		SWTransform* trans2 = obj2->getComponent<SWTransform>();
+		trans2->setLocalPosition( SWVector3f::one * 3 );
+		trans2->setParent( trans1 );
 	}
 
 	void onDraw()
