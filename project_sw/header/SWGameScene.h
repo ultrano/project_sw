@@ -41,7 +41,7 @@ public:
     ~SWGameScene();
     
     //! 객체를 찾는다.
-    SWGameObject* find( const char* query );
+    SWGameObject* find( const char* name );
     
     void awake();
     void destroy();

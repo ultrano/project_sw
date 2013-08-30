@@ -3,14 +3,14 @@
 
 #include "SWComponent.h"
 
-class SWMesh;
+class SWMeshFilter;
 
 class SWMeshRenderer : public SWComponent
 {
 	SW_RTTI( SWMeshRenderer, SWComponent );
 
 	unsigned int m_texID;
-	SWWeakRef<SWMesh> m_mesh;
+	SWWeakRef<SWMeshFilter> m_filter;
 
 public:
 

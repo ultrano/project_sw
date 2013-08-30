@@ -126,9 +126,6 @@
     <ClInclude Include="header\SWMatrix4x4.h">
       <Filter>SWMatrix4x4</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWMesh.h">
-      <Filter>SWMesh</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWMeshRenderer.h">
       <Filter>SWMeshRenderer</Filter>
     </ClInclude>
@@ -150,11 +147,14 @@
     <ClInclude Include="header\SWBehavior.h">
       <Filter>SWBehavior</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWMeshData.h">
-      <Filter>SWMeshData</Filter>
-    </ClInclude>
     <ClInclude Include="header\stb_image.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWMeshFilter.h">
+      <Filter>SWMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWMesh.h">
+      <Filter>SWMeshData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +197,6 @@
     <ClCompile Include="source\SWQuaternion.cpp">
       <Filter>SWQuaternion</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWMesh.cpp">
-      <Filter>SWMesh</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWMeshRenderer.cpp">
       <Filter>SWMeshRenderer</Filter>
     </ClCompile>
@@ -221,11 +218,14 @@
     <ClCompile Include="source\SWBehavior.cpp">
       <Filter>SWBehavior</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWMeshData.cpp">
-      <Filter>SWMeshData</Filter>
-    </ClCompile>
     <ClCompile Include="source\stb_image.c">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWMeshFilter.cpp">
+      <Filter>SWMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWMesh.cpp">
+      <Filter>SWMeshData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

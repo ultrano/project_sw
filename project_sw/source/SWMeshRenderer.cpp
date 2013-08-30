@@ -1,18 +1,18 @@
 
 #include "SWMeshRenderer.h"
 #include "SWGameContext.h"
-#include "SWMesh.h"
+#include "SWMeshFilter.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
 
 void SWMeshRenderer::render()
 {
 	SWTransform* transform = getGameObject()->getComponent<SWTransform>();
-	if ( m_mesh.isValid() )
+	if ( m_filter.isValid() )
 	{
 		SW_GC.setModelMatrix( transform->getWorldMatrix() );
 		SW_GC.bindTexture( m_texID );
-		m_mesh()->render();
+		m_filter()->render();
 	}
 
 	SWTransform::ChildList children;
@@ -28,7 +28,7 @@ void SWMeshRenderer::render()
 
 void SWMeshRenderer::onAdded()
 {
-	m_mesh = getGameObject()->getComponent<SWMesh>();
+	m_filter = getGameObject()->getComponent<SWMeshFilter>();
 }
 
 void SWMeshRenderer::setTexture( unsigned int texID )

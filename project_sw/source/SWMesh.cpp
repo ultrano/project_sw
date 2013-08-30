@@ -1,35 +1,34 @@
 #include "SWMesh.h"
-#include "SWGameContext.h"
-#include "SWGameObject.h"
-#include "SWMeshRenderer.h"
-#include "SWMeshData.h"
-#include <memory>
 
-void SWMesh::render()
+void SWMesh::setVertexStream( size_t countOfFloat, const float* stream )
 {
-	if ( m_data.isValid() )
-	{
-		std::vector<float>& vertices  = m_data()->getVertexStream();
-		std::vector<float>& texCoords = m_data()->getTexCoordStream();
-		std::vector<unsigned short>& indeces = m_data()->getIndexStream();
-		SW_GC.setVertexBuffer( &vertices[0] );
-		SW_GC.setTexCoordBuffer( &texCoords[0] );
-		SW_GC.indexedDraw( indeces.size(), &indeces[0] );
-	}
+	m_vertices.resize(countOfFloat);
+	memcpy( &m_vertices[0], stream, sizeof(float)*countOfFloat );
 }
 
-void SWMesh::onAdded()
+void SWMesh::setTexCoordStream( size_t countOfFloat, const float* stream )
 {
-	getGameObject()->addComponent<SWMeshRenderer>();
+	m_texCoords.resize(countOfFloat);
+	memcpy( &m_texCoords[0], stream, sizeof(float)*countOfFloat );
 }
 
-void SWMesh::onRemoved()
+std::vector<float>& SWMesh::getTexCoordStream()
 {
-
+	return m_texCoords;
 }
 
-void SWMesh::setData( SWMeshData* data )
+std::vector<unsigned short>& SWMesh::getIndexStream()
 {
-	m_data = data;
+	return m_indeces;
 }
 
+void SWMesh::setIndexStream( size_t countOfShort, unsigned short* stream )
+{
+	m_indeces.resize(countOfShort);
+	memcpy( &m_indeces[0], stream, sizeof(unsigned short)*countOfShort );
+}
+
+std::vector<float>& SWMesh::getVertexStream()
+{
+	return m_vertices;
+}

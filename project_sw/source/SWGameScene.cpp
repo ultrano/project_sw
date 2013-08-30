@@ -25,8 +25,15 @@ SWGameScene::~SWGameScene()
 	SW_OutputLog( "game scene", "deleted" );
 }
 
-SWGameObject* SWGameScene::find( const char *query )
+SWGameObject* SWGameScene::find( const char *name )
 {
+
+	GameObjectList::iterator itor = m_roots.begin();
+	for ( ; itor != m_roots.end() ; ++itor )
+	{
+		SWGameObject* object = (*itor)();
+		if ( object->getName() == name ) return object;
+	}
 	return NULL;
 }
 
@@ -53,8 +60,8 @@ void SWGameScene::pause()
 
 void SWGameScene::update( float elapsed )
 {
-    //! 파생 씬의 업데이트
 	onUpdate( elapsed );
+
 	m_updates = m_roots;
 	GameObjectList::iterator itor = m_updates.begin();
 	for ( ; itor != m_updates.end() ; ++itor )
@@ -66,6 +73,7 @@ void SWGameScene::update( float elapsed )
 void SWGameScene::draw()
 {
     onDraw();
+
 	GameObjectList::iterator itor = m_roots.begin();
 	for ( ; itor != m_roots.end() ; ++itor )
 	{

@@ -1,22 +1,26 @@
 #ifndef SWMesh_h__
 #define SWMesh_h__
 
-#include "SWComponent.h"
+#include "SWObject.h"
 #include <vector>
 
-class SWMeshData;
-
-class SWMesh : public SWComponent
+class SWMesh : public SWObject
 {
-	SW_RTTI( SWMesh, SWComponent );
+	SW_RTTI( SWMesh, SWObject );
 
-	SWHardRef<SWMeshData> m_data;
-	public:
-	
-		void setData( SWMeshData* data );
-	void render();
 
-	void onAdded();
-	void onRemoved();
+	std::vector<float>  m_vertices;
+	std::vector<float>  m_texCoords;
+	std::vector<unsigned short> m_indeces;
+public:
+
+	void setVertexStream( size_t countOfFloat, const float* stream );
+	void setTexCoordStream( size_t countOfFloat, const float* stream );
+	void setIndexStream( size_t countOfShort, unsigned short* stream );
+
+	std::vector<float>& getVertexStream();
+	std::vector<float>& getTexCoordStream();
+	std::vector<unsigned short>& getIndexStream();
 };
+
 #endif // SWMesh_h__
