@@ -57,7 +57,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	glutCreateWindow("TSP");
 
 	// 윈도우 크기 및 생성.
-	glutInitWindowSize(width,height);
+	glutInitWindowSize( (int)width, (int)height);
 
 	// 버퍼 클리어 색상 지정.
 	glClearColor(0,0,0,1);
@@ -79,7 +79,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	// 프로젝션 매트릭스를 직교 행렬로 지정.
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glOrtho( 0, width, width, 0,1000,-1000);
+	glOrtho( 0, width, height, 0,1000,-1000);
 
 	glutMouseFunc(callbackMouse);
 	glutDisplayFunc(callbackDisplay);

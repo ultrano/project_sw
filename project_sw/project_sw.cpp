@@ -22,12 +22,12 @@ class TestScene : public SWGameScene
 	void onAwake()
 	{
 
-		static SWVector3f s_verties[] = { SWVector3f( -0.5f, -0.5f, 0 )
+		SWVector3f s_verties[] = { SWVector3f( -0.5f, -0.5f, 0 )
 			, SWVector3f(  0.5f, -0.5f, 0 )
 			, SWVector3f(  0.5f,  0.5f, 0 )
 			, SWVector3f( -0.5f,  0.5f, 0 ) };
 
-		static unsigned short s_indices[] = { 0, 1, 2, 2, 3, 0 };
+		unsigned short s_indices[] = { 0, 1, 2, 2, 3, 0 };
 
 		SWMeshData* meshData = new SWMeshData;
 		meshData->setVertexStream( 12, (float*)&s_verties[0] );
@@ -58,6 +58,6 @@ class TestScene : public SWGameScene
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "", 320, 480 );
+	SW_GC.onStart( new TestScene, "", 800, 600 );
 	return 0;
 }
