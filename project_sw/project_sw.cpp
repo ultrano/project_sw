@@ -21,7 +21,7 @@ class TestScene : public SWGameScene
 {
 	SW_RTTI( TestScene, SWGameScene );
 	SWHardRef<SWGameObject> target;
-
+	float accum;
 	void onAwake()
 	{
 
@@ -45,24 +45,31 @@ class TestScene : public SWGameScene
 		obj1->addComponent<SWMeshFilter>()->setData(meshData);
 		obj1->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("./unit1.png") );
 		SWTransform* trans1 = obj1->getComponent<SWTransform>();
-		trans1->setLocalScale( SWVector3f::one * 50 );
+		trans1->setLocalScale( SWVector3f::one * 20 );
+		trans1->setLocalPosition( SWVector3f::one * 100 );
 
 		SWGameObject* obj2 = new SWGameObject;
 		obj2->addComponent<SWMeshFilter>()->setData(meshData);
+		obj2->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("./unit1.png") );
 		SWTransform* trans2 = obj2->getComponent<SWTransform>();
-		trans2->setLocalPosition( SWVector3f::one * 3 );
+		trans2->setLocalPosition( SWVector3f::one * 1 );
 		trans2->setParent( trans1 );
-		
+		trans2->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ,1.57f) );
 		target = obj1;
+		accum = 0;
 	}
 
+	void onUpdate( float elapsed )
+	{
+		if ( !target() ) return;
+		SWTransform* trans = target()->getComponent<SWTransform>();
+		trans->setLocalRotate(SWQuaternion().rotate(SWVector3f::axisZ,accum+=0.1f));
+	}
 	void onHandleTouch( int type, int x, int y )
 	{
 		if ( !target() ) return;
 		SWTransform* trans = target()->getComponent<SWTransform>();
 		trans->setLocalPosition( SWVector3f( x, y, 0 ) );
-		SW_OutputLog("s", target()->toString().c_str() );
-		target()->destroy();
 	}
 };
 
