@@ -7,7 +7,7 @@
 
 void SWMeshRenderer::render()
 {
-	SWTransform* transform = getGameObject()->getComponent<SWTransform>();
+	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	if ( m_filter.isValid() )
 	{
 		SW_GC.setModelMatrix( transform->getWorldMatrix() );
@@ -28,7 +28,7 @@ void SWMeshRenderer::render()
 
 void SWMeshRenderer::onAdded()
 {
-	m_filter = getGameObject()->getComponent<SWMeshFilter>();
+	m_filter = gameObject()->getComponent<SWMeshFilter>();
 }
 
 void SWMeshRenderer::setTexture( unsigned int texID )

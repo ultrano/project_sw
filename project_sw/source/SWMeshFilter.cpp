@@ -20,7 +20,7 @@ void SWMeshFilter::render()
 
 void SWMeshFilter::onAdded()
 {
-	getGameObject()->addComponent<SWMeshRenderer>();
+	gameObject()->addComponent<SWMeshRenderer>();
 }
 
 void SWMeshFilter::onRemoved()
