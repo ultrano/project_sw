@@ -5,7 +5,7 @@
 #include "SWMesh.h"
 #include <memory>
 
-void SWMeshFilter::render()
+void SWMeshFilter::draw()
 {
 	if ( m_mesh.isValid() )
 	{
@@ -28,8 +28,13 @@ void SWMeshFilter::onRemoved()
 
 }
 
-void SWMeshFilter::setData( SWMesh* data )
+void SWMeshFilter::setMesh( SWMesh* mesh )
 {
-	m_mesh = data;
+	m_mesh = mesh;
+}
+
+SWMesh* SWMeshFilter::getMesh() const
+{
+	return m_mesh();
 }
 

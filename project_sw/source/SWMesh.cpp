@@ -32,3 +32,8 @@ std::vector<float>& SWMesh::getVertexStream()
 {
 	return m_vertices;
 }
+
+void SWMesh::updateMesh()
+{
+	
+}

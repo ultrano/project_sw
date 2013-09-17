@@ -18,6 +18,8 @@ public:
 	void setTexCoordStream( size_t countOfFloat, const float* stream );
 	void setIndexStream( size_t countOfShort, unsigned short* stream );
 
+	void updateMesh();
+
 	std::vector<float>& getVertexStream();
 	std::vector<float>& getTexCoordStream();
 	std::vector<unsigned short>& getIndexStream();

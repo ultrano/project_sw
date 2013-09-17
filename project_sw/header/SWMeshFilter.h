@@ -13,8 +13,9 @@ class SWMeshFilter : public SWComponent
 	SWHardRef<SWMesh> m_mesh;
 	public:
 	
-		void setData( SWMesh* data );
-	void render();
+	void setMesh( SWMesh* mesh );
+	SWMesh* getMesh() const;
+	void draw();
 
 	void onAdded();
 	void onRemoved();

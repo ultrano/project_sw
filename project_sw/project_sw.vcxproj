@@ -92,6 +92,7 @@
     <ClInclude Include="header\SWGameContext.h" />
     <ClInclude Include="header\SWGameObject.h" />
     <ClInclude Include="header\SWGameScene.h" />
+    <ClInclude Include="header\SWIOStream.h" />
     <ClInclude Include="header\SWLog.h" />
     <ClInclude Include="header\SWMatrix4x4.h" />
     <ClInclude Include="header\SWMemory.h" />

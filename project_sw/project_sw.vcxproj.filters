@@ -76,6 +76,9 @@
     <Filter Include="SWMeshData">
       <UniqueIdentifier>{7eab4a69-01e2-445b-960e-8ff0c4d39ee8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWIOStream">
+      <UniqueIdentifier>{874cbedd-84c4-4c95-b920-a4d96c5fecc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="header\SWMesh.h">
       <Filter>SWMeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWIOStream.h">
+      <Filter>SWIOStream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

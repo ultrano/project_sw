@@ -42,14 +42,14 @@ class TestScene : public SWGameScene
 		meshData->setIndexStream( 6, &s_indices[0] );
 
 		SWGameObject* obj1 = new SWGameObject;
-		obj1->addComponent<SWMeshFilter>()->setData(meshData);
+		obj1->addComponent<SWMeshFilter>()->setMesh(meshData);
 		obj1->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("./unit1.png") );
 		SWTransform* trans1 = obj1->getComponent<SWTransform>();
 		trans1->setLocalScale( SWVector3f::one * 20 );
 		trans1->setLocalPosition( SWVector3f::one * 100 );
 
 		SWGameObject* obj2 = new SWGameObject;
-		obj2->addComponent<SWMeshFilter>()->setData(meshData);
+		obj2->addComponent<SWMeshFilter>()->setMesh(meshData);
 		obj2->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("./unit1.png") );
 		SWTransform* trans2 = obj2->getComponent<SWTransform>();
 		trans2->setLocalPosition( SWVector3f::one * 1 );
