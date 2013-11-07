@@ -2,7 +2,7 @@
 #include "SWGameContext.h"
 #include <memory>
 #include <Windows.h>
-#include <gl/glut.h>
+#include "glut.h"
 #include "SWGameScene.h"
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
