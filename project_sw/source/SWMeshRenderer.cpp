@@ -26,9 +26,9 @@ void SWMeshRenderer::render()
 	}
 }
 
-void SWMeshRenderer::onAdded()
+void SWMeshRenderer::onStart()
 {
-	__super::onAdded();
+	__super::onStart();
 	m_filter = gameObject()->getComponent<SWMeshFilter>();
 }
 

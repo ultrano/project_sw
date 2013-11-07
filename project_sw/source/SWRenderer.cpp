@@ -3,13 +3,13 @@
 #include "SWGameContext.h"
 #include "SWGameScene.h"
 
-void SWRenderer::onAdded()
+void SWRenderer::onStart()
 {
 	SWGameScene* scene = SW_GC.getScene();
 	scene->m_renderers.push_back( this );
 }
 
-void SWRenderer::onRemoved()
+void SWRenderer::onRemove()
 {
 	SWGameScene* scene = SW_GC.getScene();
 	scene->m_renderers.remove( this );

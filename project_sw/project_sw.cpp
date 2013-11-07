@@ -13,6 +13,10 @@
 #include "SWVector2f.h"
 #include "SWMeshRenderer.h"
 #include "SWLog.h"
+
+#include "Cat.h"
+#include "Ball.h"
+
 #include <set>
 #include <map>
 using namespace std;
@@ -28,16 +32,8 @@ class TestScene : public SWGameScene
 		SWMeshRenderer* renderer = go->addComponent<SWMeshRenderer>();
 		renderer->setTexture( SW_GC.loadTexture( "background_01.png" ) );
 		
-		SWVector3f vertices[] = 
-		{ SWVector3f(0,0,0)
-		, SWVector3f(100,0,0)
-		, SWVector3f(0,100,0)
-		, SWVector3f(100,100,0)};
-		SWVector2f texCoords[] = 
-		{ SWVector2f(0,0)
-		, SWVector2f(1,0)
-		, SWVector2f(0,1)
-		, SWVector2f(1,1)};
+		SWVector3f vertices[] = { SWVector3f(0,0,0), SWVector3f(1920,0,0), SWVector3f(0,1280,0), SWVector3f(1920,1280,0) };
+		SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
 		unsigned short indices[] = {0,1,2,3,2,1};
 		SWMesh* mesh = new SWMesh();
 		mesh->setVertexStream( 12, (float*)&vertices[0] );
@@ -46,10 +42,26 @@ class TestScene : public SWGameScene
 
 		SWMeshFilter* meshFilter = go->addComponent<SWMeshFilter>();
 		meshFilter->setMesh( mesh );
+
+		SWGameObject* catGO = new SWGameObject;
+		catGO->addComponent<Cat>();
+		catGO->setName( "cat" );
+
+		accum = 0;
 	}
 
 	void onUpdate( float elapsed )
 	{
+		accum -= SW_GC.deltaTime();
+		if ( accum <= 0 )
+		{
+			accum = 0.1f;
+
+			SWGameObject* ballGO = new SWGameObject;
+			Ball* ball = ballGO->addComponent<Ball>();
+			ballGO->setName( "ball" );
+			ball->velocity = SWVector3f( 10 + rand()%100, 10 + rand()%100, 0 );
+		}
 	}
 	void onHandleTouch( int type, int x, int y )
 	{
@@ -58,6 +70,6 @@ class TestScene : public SWGameScene
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "../resource/", 320, 480 );
+	SW_GC.onStart( new TestScene, "../resource/", 1920, 1280 );
 	return 0;
 }

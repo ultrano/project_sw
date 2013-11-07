@@ -18,13 +18,13 @@ void SWMeshFilter::draw()
 	}
 }
 
-void SWMeshFilter::onAdded()
+void SWMeshFilter::onStart()
 {
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setMeshFilter( this );
 }
 
-void SWMeshFilter::onRemoved()
+void SWMeshFilter::onRemove()
 {
 
 }

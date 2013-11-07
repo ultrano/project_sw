@@ -9,8 +9,8 @@ class SWRenderer : public SWComponent
 	
 protected:
 
-	void onAdded();
-	void onRemoved();
+	void onStart();
+	void onRemove();
 
 public:
 

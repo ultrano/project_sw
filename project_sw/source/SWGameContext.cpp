@@ -37,6 +37,8 @@ public:
 	int   lastFrameTime;
 	SWCriticalSection idleSection;
 	SWMatrix4x4 viewMatrix;
+	bool  exitMainLoop;
+	float deltaTime;
 };
 
 SWGameContext::SWGameContext()
@@ -46,13 +48,6 @@ SWGameContext::SWGameContext()
 
 void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFolder, float width, float height )
 {
-	Pimpl* pimpl = new Pimpl;
-	m_pimpl = pimpl;
-	pimpl->nextScene = firstScene;
-	pimpl->resFolder = resFolder;
-	pimpl->screenWidth  = width;
-	pimpl->screenHeight = height;
-
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
 	// 윈도우 크기 및 생성.
@@ -89,6 +84,15 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	//glutMotionFunc(motionCallBack);
 	//glutReshapeFunc(windowReshape);
 
+	Pimpl* pimpl = new Pimpl;
+	m_pimpl = pimpl;
+	pimpl->nextScene = firstScene;
+	pimpl->resFolder = resFolder;
+	pimpl->screenWidth  = width;
+	pimpl->screenHeight = height;
+	pimpl->exitMainLoop = false;
+	pimpl->lastFrameTime = GetTickCount();
+
 	glutMainLoop();
 }
 
@@ -97,7 +101,7 @@ void SWGameContext::onFrameMove()
 	Pimpl* pimpl = m_pimpl();
 
 	int newFrameTime = GetTickCount();
-	int elapsedTime  = newFrameTime - pimpl->lastFrameTime;
+	pimpl->deltaTime = ( (float)(newFrameTime - pimpl->lastFrameTime) ) / 1000.0f;
 	pimpl->lastFrameTime = newFrameTime;
 
 	if ( pimpl->nextScene.isValid() )
@@ -110,7 +114,7 @@ void SWGameContext::onFrameMove()
 
 	if ( SWGameScene* scene = pimpl->currentScene() )
 	{
-		scene->update( ( (float)elapsedTime ) / 1000.0f );
+		scene->update( pimpl->deltaTime );
 
 		glClearColor( 0, 0, 1, 1 );
 		glClear( GL_COLOR_BUFFER_BIT );
@@ -138,6 +142,11 @@ void  SWGameContext::free( void* memory )
 SWGameScene* SWGameContext::getScene()
 {
 	return m_pimpl()->currentScene();
+}
+
+void SWGameContext::setNextScene( SWGameScene* scene )
+{
+	m_pimpl()->nextScene = scene;
 }
 
 void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )
@@ -184,6 +193,11 @@ unsigned int SWGameContext::loadTexture( const std::string& path )
 void SWGameContext::bindTexture( unsigned int texID )
 {
 	glBindTexture( GL_TEXTURE_2D, texID );
+}
+
+float SWGameContext::deltaTime() const
+{
+	return m_pimpl()->deltaTime;
 }
 
 unsigned int glLoadTexture( const char* fileName )

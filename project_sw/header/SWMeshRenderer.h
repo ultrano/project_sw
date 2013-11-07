@@ -21,7 +21,7 @@ public:
 
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();
-	void onAdded();
+	void onStart();
 };
 
 #endif // SWMeshRenderer_h__

@@ -168,6 +168,12 @@
     <ClInclude Include="header\SWIOStream.h">
       <Filter>SWIOStream</Filter>
     </ClInclude>
+    <ClInclude Include="Cat.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -241,6 +247,12 @@
     </ClCompile>
     <ClCompile Include="source\SWRenderer.cpp">
       <Filter>SWRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cat.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

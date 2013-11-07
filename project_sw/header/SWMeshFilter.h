@@ -18,7 +18,7 @@ public:
 
 	void draw();
 
-	void onAdded();
-	void onRemoved();
+	void onStart();
+	void onRemove();
 };
 #endif // SWMeshFilter_h__
