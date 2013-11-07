@@ -177,7 +177,8 @@ unsigned int glLoadTexture( const char* fileName );
 
 unsigned int SWGameContext::loadTexture( const std::string& path )
 {
-	return glLoadTexture( path.c_str() );
+	std::string solvedPath = m_pimpl()->resFolder + path;
+	return glLoadTexture(  solvedPath.c_str() );
 }
 
 void SWGameContext::bindTexture( unsigned int texID )

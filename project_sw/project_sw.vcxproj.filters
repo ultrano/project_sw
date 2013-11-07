@@ -46,9 +46,6 @@
     <Filter Include="SWMatrix4x4">
       <UniqueIdentifier>{7cfbad08-1636-4df7-92fe-e9950e2bd7f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWMesh">
-      <UniqueIdentifier>{01fb586c-a08e-4d91-8409-ffb29a556157}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SWMeshRenderer">
       <UniqueIdentifier>{d37d7ca5-6f1f-4d7a-8d79-3492dccd3fc1}</UniqueIdentifier>
     </Filter>
@@ -73,7 +70,13 @@
     <Filter Include="SWDefines">
       <UniqueIdentifier>{abf48f21-422b-4dd4-9d10-8507e7fb15de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWMeshData">
+    <Filter Include="SWRenderer">
+      <UniqueIdentifier>{dea0fdeb-5a64-47f7-bc63-bd6b58e4b14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWMeshFilter">
+      <UniqueIdentifier>{01fb586c-a08e-4d91-8409-ffb29a556157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWMesh">
       <UniqueIdentifier>{7eab4a69-01e2-445b-960e-8ff0c4d39ee8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -151,10 +154,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMeshFilter.h">
-      <Filter>SWMesh</Filter>
+      <Filter>SWMeshFilter</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMesh.h">
-      <Filter>SWMeshData</Filter>
+      <Filter>SWMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWRenderer.h">
+      <Filter>SWRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,10 +228,13 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMeshFilter.cpp">
-      <Filter>SWMesh</Filter>
+      <Filter>SWMeshFilter</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMesh.cpp">
-      <Filter>SWMeshData</Filter>
+      <Filter>SWMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWRenderer.cpp">
+      <Filter>SWRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

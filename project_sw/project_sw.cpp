@@ -25,7 +25,19 @@ class TestScene : public SWGameScene
 	void onAwake()
 	{
 		SWGameObject* go = new SWGameObject;
-		go->destroy();
+		SWMeshRenderer* renderer = go->addComponent<SWMeshRenderer>();
+		renderer->setTexture( SW_GC.loadTexture( "background_01.png" ) );
+		
+		SWVector3f vertices[] = 
+		{ SWVector3f()
+		, SWVector3f()
+		, SWVector3f()
+		, SWVector3f()};
+		SWMesh* mesh = new SWMesh();
+		//mesh->setVertexStream(4, 
+
+		SWMeshFilter* meshFilter = go->getComponent<SWMeshFilter>();
+		meshFilter->setMesh(  );
 	}
 
 	void onUpdate( float elapsed )
@@ -38,6 +50,6 @@ class TestScene : public SWGameScene
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "", 320, 480 );
+	SW_GC.onStart( new TestScene, "C:/Users/hahasasa/Desktop/project_sw/resource/", 320, 480 );
 	return 0;
 }

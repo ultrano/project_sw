@@ -12,7 +12,7 @@ void SWMeshRenderer::render()
 	{
 		SW_GC.setModelMatrix( transform->getWorldMatrix() );
 		SW_GC.bindTexture( m_texID );
-		m_filter()->render();
+		m_filter()->draw();
 	}
 
 	SWTransform::ChildList children;

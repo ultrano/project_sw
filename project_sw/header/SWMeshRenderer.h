@@ -1,11 +1,11 @@
 #ifndef SWMeshRenderer_h__
 #define SWMeshRenderer_h__
 
-#include "SWComponent.h"
+#include "SWRenderer.h"
 
 class SWMeshFilter;
 
-class SWMeshRenderer : public SWComponent
+class SWMeshRenderer : public SWRenderer
 {
 	SW_RTTI( SWMeshRenderer, SWComponent );
 
@@ -13,10 +13,11 @@ class SWMeshRenderer : public SWComponent
 	SWWeakRef<SWMeshFilter> m_filter;
 
 public:
+	
+	void render();
 
 	void setTexture( unsigned int texID );
 	unsigned int getTexture();
-	void render();
 
 	void onAdded();
 };
