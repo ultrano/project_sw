@@ -1,23 +1,26 @@
 #ifndef SWMeshRenderer_h__
 #define SWMeshRenderer_h__
 
-#include "SWComponent.h"
+#include "SWRenderer.h"
 
 class SWMeshFilter;
 
-class SWMeshRenderer : public SWComponent
+class SWMeshRenderer : public SWRenderer
 {
-	SW_RTTI( SWMeshRenderer, SWComponent );
+	SW_RTTI( SWMeshRenderer, SWRenderer );
 
 	unsigned int m_texID;
 	SWWeakRef<SWMeshFilter> m_filter;
 
 public:
+	
+	void render();
 
 	void setTexture( unsigned int texID );
 	unsigned int getTexture();
-	void render();
 
+	void setMeshFilter( SWMeshFilter* filter );
+	SWMeshFilter* getMeshFilter();
 	void onAdded();
 };
 

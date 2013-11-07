@@ -11,10 +11,11 @@ class SWMeshFilter : public SWComponent
 	SW_RTTI( SWMeshFilter, SWComponent );
 
 	SWHardRef<SWMesh> m_mesh;
-	public:
+public:
 	
-	void setMesh( SWMesh* mesh );
+	void setMesh( SWMesh* data );
 	SWMesh* getMesh() const;
+
 	void draw();
 
 	void onAdded();

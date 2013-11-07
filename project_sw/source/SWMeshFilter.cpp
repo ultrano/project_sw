@@ -20,7 +20,8 @@ void SWMeshFilter::draw()
 
 void SWMeshFilter::onAdded()
 {
-	getGameObject()->addComponent<SWMeshRenderer>();
+	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
+	renderer->setMeshFilter( this );
 }
 
 void SWMeshFilter::onRemoved()
@@ -37,4 +38,3 @@ SWMesh* SWMeshFilter::getMesh() const
 {
 	return m_mesh();
 }
-

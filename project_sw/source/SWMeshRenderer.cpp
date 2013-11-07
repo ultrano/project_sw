@@ -7,7 +7,7 @@
 
 void SWMeshRenderer::render()
 {
-	SWTransform* transform = getGameObject()->getComponent<SWTransform>();
+	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	if ( m_filter.isValid() )
 	{
 		SW_GC.setModelMatrix( transform->getWorldMatrix() );
@@ -28,7 +28,8 @@ void SWMeshRenderer::render()
 
 void SWMeshRenderer::onAdded()
 {
-	m_filter = getGameObject()->getComponent<SWMeshFilter>();
+	__super::onAdded();
+	m_filter = gameObject()->getComponent<SWMeshFilter>();
 }
 
 void SWMeshRenderer::setTexture( unsigned int texID )
@@ -39,4 +40,14 @@ void SWMeshRenderer::setTexture( unsigned int texID )
 unsigned int SWMeshRenderer::getTexture()
 {
 	return m_texID;
+}
+
+void SWMeshRenderer::setMeshFilter( SWMeshFilter* filter )
+{
+	m_filter = filter;
+}
+
+SWMeshFilter* SWMeshRenderer::getMeshFilter()
+{
+	return m_filter();
 }

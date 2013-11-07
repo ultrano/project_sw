@@ -2,7 +2,7 @@
 #include "SWGameContext.h"
 #include <memory>
 #include <Windows.h>
-#include <gl/glut.h>
+#include "glut.h"
 #include "SWGameScene.h"
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
@@ -177,7 +177,8 @@ unsigned int glLoadTexture( const char* fileName );
 
 unsigned int SWGameContext::loadTexture( const std::string& path )
 {
-	return glLoadTexture( path.c_str() );
+	std::string solvedPath = m_pimpl()->resFolder + path;
+	return glLoadTexture(  solvedPath.c_str() );
 }
 
 void SWGameContext::bindTexture( unsigned int texID )

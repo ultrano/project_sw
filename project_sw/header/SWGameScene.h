@@ -24,6 +24,7 @@ class SWGameScene : public SWObject
 {
     SW_RTTI( SWGameScene, SWObject );
 	friend class SWTransform;
+	friend class SWRenderer;
 protected:
 
 	typedef std::set< SWHardRef<SWGameObject> >  GameObjectSet;
@@ -33,7 +34,7 @@ protected:
 	//! root game objects
 	GameObjectList m_roots;
 	GameObjectList m_updates;
-
+	ComponentList  m_renderers;
 public:
     
     //! 메소드들

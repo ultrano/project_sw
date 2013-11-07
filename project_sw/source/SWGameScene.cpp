@@ -72,15 +72,14 @@ void SWGameScene::update( float elapsed )
 
 void SWGameScene::draw()
 {
-    onDraw();
-
-	GameObjectList::iterator itor = m_roots.begin();
-	for ( ; itor != m_roots.end() ; ++itor )
+	ComponentList::iterator itor = m_renderers.begin();
+	for ( ; itor != m_renderers.end() ; ++itor )
 	{
-		SWMeshRenderer* renderer = (*itor)()->getComponent<SWMeshRenderer>();
-		if ( renderer ) renderer->render();
+		SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
+		renderer->render();
 	}
-
+	
+    onDraw();
 }
 
 void SWGameScene::handleEvent( int type, int x, int y )
