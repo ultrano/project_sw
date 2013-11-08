@@ -7,14 +7,14 @@
 #include "SWVector2f.h"
 #include "SWVector3f.h"
 #include "SWTransform.h"
-
+#include "SWMath.h"
 void Cat::onAwake()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
 
-	SWVector3f vertices[] = { SWVector3f(0,0,0), SWVector3f(1,0,0), SWVector3f(0,1,0), SWVector3f(1,1,0) };
+	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
 	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
 	unsigned short indices[] = {0,1,2,3,2,1};
 	SWMesh* mesh = new SWMesh();
@@ -38,6 +38,8 @@ void Cat::onUpdate()
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWVector3f pos = transform->getLocalPosition();
 	pos.x -= SW_GC.deltaTime() * 10;
+	float limit = SWMath.pi/18.0f;
+	float angle = SWMath.pingPong( SW_GC.awakeTime(), limit)-limit/2;
 	transform->setLocalPosition( pos );
-	transform->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ, 3.14f/2.0f ) );
+	transform->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ, angle ) );
 }

@@ -82,6 +82,9 @@
     <Filter Include="SWIOStream">
       <UniqueIdentifier>{874cbedd-84c4-4c95-b920-a4d96c5fecc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWMath">
+      <UniqueIdentifier>{34b4e97a-c1e2-434e-9f63-14a4fbb5bbbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -174,6 +177,9 @@
     <ClInclude Include="Ball.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWMath.h">
+      <Filter>SWMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -253,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="Ball.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWMath.cpp">
+      <Filter>SWMath</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

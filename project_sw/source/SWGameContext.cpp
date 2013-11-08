@@ -40,6 +40,7 @@ public:
 	SWMatrix4x4 viewMatrix;
 	bool  exitMainLoop;
 	float deltaTime;
+	float awakeTime;
 	std::map<std::string,int> textureCache;
 };
 
@@ -94,6 +95,8 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->screenHeight = height;
 	pimpl->exitMainLoop = false;
 	pimpl->lastFrameTime = GetTickCount();
+	pimpl->deltaTime = 0;
+	pimpl->awakeTime = 0;
 
 	glutMainLoop();
 }
@@ -105,6 +108,7 @@ void SWGameContext::onFrameMove()
 	int newFrameTime = GetTickCount();
 	pimpl->deltaTime = ( (float)(newFrameTime - pimpl->lastFrameTime) ) / 1000.0f;
 	pimpl->lastFrameTime = newFrameTime;
+	pimpl->awakeTime += pimpl->deltaTime;
 
 	if ( pimpl->nextScene.isValid() )
 	{
@@ -207,6 +211,11 @@ void SWGameContext::bindTexture( unsigned int texID )
 float SWGameContext::deltaTime() const
 {
 	return m_pimpl()->deltaTime;
+}
+
+float SWGameContext::awakeTime() const
+{
+	return m_pimpl()->awakeTime;
 }
 
 unsigned int glLoadTexture( const char* fileName )

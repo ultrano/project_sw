@@ -98,6 +98,7 @@
     <ClInclude Include="header\SWGameScene.h" />
     <ClInclude Include="header\SWIOStream.h" />
     <ClInclude Include="header\SWLog.h" />
+    <ClInclude Include="header\SWMath.h" />
     <ClInclude Include="header\SWMatrix4x4.h" />
     <ClInclude Include="header\SWMemory.h" />
     <ClInclude Include="header\SWMeshFilter.h" />
@@ -128,6 +129,7 @@
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
     <ClCompile Include="source\SWLog.cpp" />
+    <ClCompile Include="source\SWMath.cpp" />
     <ClCompile Include="source\SWMatrix4x4.cpp" />
     <ClCompile Include="source\SWMemory.cpp" />
     <ClCompile Include="source\SWMeshFilter.cpp" />

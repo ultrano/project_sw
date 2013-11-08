@@ -32,6 +32,7 @@ public:
 	void setNextScene( SWGameScene* scene );
 
 	float deltaTime() const;
+	float awakeTime() const;
 
 	void setViewMatrix( const SWMatrix4x4& matrix );
 	void setModelMatrix( const SWMatrix4x4& matrix );
