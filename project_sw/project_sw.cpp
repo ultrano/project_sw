@@ -29,20 +29,6 @@ class TestScene : public SWGameScene
 	SWVector2f force;
 	void onAwake()
 	{
-		SWGameObject* go = new SWGameObject;
-		SWMeshRenderer* renderer = go->addComponent<SWMeshRenderer>();
-		renderer->setTexture( SW_GC.loadTexture( "background_01.png" ) );
-		
-		SWVector3f vertices[] = { SWVector3f(0,0,0), SWVector3f(1920,0,0), SWVector3f(0,1280,0), SWVector3f(1920,1280,0) };
-		SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
-		unsigned short indices[] = {0,1,2,3,2,1};
-		SWMesh* mesh = new SWMesh();
-		mesh->setVertexStream( 12, (float*)&vertices[0] );
-		mesh->setTexCoordStream( 8, (float*)&texCoords[0]);
-		mesh->setIndexStream( 6, &indices[0] );
-
-		SWMeshFilter* meshFilter = go->addComponent<SWMeshFilter>();
-		meshFilter->setMesh( mesh );
 
 		SWGameObject* catGO = new SWGameObject;
 		catGO->addComponent<Cat>();

@@ -17,8 +17,8 @@ void Ball::onAwake()
 	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
 	unsigned short indices[] = {0,1,2,3,2,1};
 	SWMesh* mesh = new SWMesh();
-	mesh->setVertexStream( 12, (float*)&vertices[0] );
-	mesh->setTexCoordStream( 8, (float*)&texCoords[0]);
+	mesh->setVertexStream( 4, &vertices[0] );
+	mesh->setTexCoordStream( 4, &texCoords[0]);
 	mesh->setIndexStream( 6, &indices[0] );
 
 	filter->setMesh( mesh );
