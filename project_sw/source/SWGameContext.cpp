@@ -189,9 +189,14 @@ unsigned int glLoadTexture( const char* fileName );
 unsigned int SWGameContext::loadTexture( const std::string& path )
 {
 	std::string solvedPath = m_pimpl()->resFolder + path;
-	m_pimpl()->textureCache.find( solvedPath );
-	if ( m_pimpl()->textureCache.end() != )
-	return glLoadTexture(  solvedPath.c_str() );
+	std::map<std::string,int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
+	
+	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
+
+	int texID = glLoadTexture(  solvedPath.c_str() );
+	if ( texID != 0 ) m_pimpl()->textureCache.insert( std::make_pair( solvedPath, texID ) );
+
+	return texID;
 }
 
 void SWGameContext::bindTexture( unsigned int texID )
