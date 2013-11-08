@@ -7,15 +7,7 @@
 
 void SWMeshFilter::draw()
 {
-	if ( m_mesh.isValid() )
-	{
-		std::vector<float>& vertices  = m_mesh()->getVertexStream();
-		std::vector<float>& texCoords = m_mesh()->getTexCoordStream();
-		std::vector<unsigned short>& indeces = m_mesh()->getIndexStream();
-		SW_GC.setVertexBuffer( &vertices[0] );
-		SW_GC.setTexCoordBuffer( &texCoords[0] );
-		SW_GC.indexedDraw( indeces.size(), &indeces[0] );
-	}
+	if ( m_mesh.isValid() ) m_mesh()->drawMesh();
 }
 
 void SWMeshFilter::onStart()
@@ -26,7 +18,7 @@ void SWMeshFilter::onStart()
 
 void SWMeshFilter::onRemove()
 {
-
+	__super::onRemove();
 }
 
 void SWMeshFilter::setMesh( SWMesh* mesh )
