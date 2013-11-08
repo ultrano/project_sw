@@ -21,6 +21,7 @@ public:
 
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();
+
 	void onStart();
 };
 

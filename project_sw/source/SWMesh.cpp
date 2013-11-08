@@ -47,7 +47,7 @@ void SWMesh::updateMesh()
 	//! this is for when using graphic buffer
 }
 
-void SWMesh::drawMesh()
+void SWMesh::draw()
 {
 	if ( m_updateMesh ) updateMesh();
 	SW_GC.setVertexBuffer( &m_vertices[0] );

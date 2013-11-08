@@ -7,7 +7,7 @@
 
 void SWMeshFilter::draw()
 {
-	if ( m_mesh.isValid() ) m_mesh()->drawMesh();
+	if ( m_mesh.isValid() ) m_mesh()->draw();
 }
 
 void SWMeshFilter::onStart()

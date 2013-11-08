@@ -25,7 +25,7 @@ public:
 	std::vector<unsigned short>& getIndexStream();
 
 	void updateMesh();
-	void drawMesh();
+	void draw();
 };
 
 #endif // SWMesh_h__
