@@ -1,6 +1,7 @@
 
 #include "SWGameContext.h"
 #include <memory>
+#include <map>
 #include <Windows.h>
 #include "glut.h"
 #include "SWGameScene.h"
@@ -39,6 +40,7 @@ public:
 	SWMatrix4x4 viewMatrix;
 	bool  exitMainLoop;
 	float deltaTime;
+	std::map<std::string,int> textureCache;
 };
 
 SWGameContext::SWGameContext()
@@ -187,6 +189,8 @@ unsigned int glLoadTexture( const char* fileName );
 unsigned int SWGameContext::loadTexture( const std::string& path )
 {
 	std::string solvedPath = m_pimpl()->resFolder + path;
+	m_pimpl()->textureCache.find( solvedPath );
+	if ( m_pimpl()->textureCache.end() != )
 	return glLoadTexture(  solvedPath.c_str() );
 }
 

@@ -26,6 +26,7 @@ class TestScene : public SWGameScene
 	SW_RTTI( TestScene, SWGameScene );
 	SWHardRef<SWGameObject> target;
 	float accum;
+	SWVector2f force;
 	void onAwake()
 	{
 		SWGameObject* go = new SWGameObject;
@@ -60,11 +61,13 @@ class TestScene : public SWGameScene
 			SWGameObject* ballGO = new SWGameObject;
 			Ball* ball = ballGO->addComponent<Ball>();
 			ballGO->setName( "ball" );
-			ball->velocity = SWVector3f( 10 + rand()%100, 10 + rand()%100, 0 );
+			ball->velocity = SWVector3f( force.x + rand()%100, force.y + rand()%100, 0 );
 		}
 	}
 	void onHandleTouch( int type, int x, int y )
 	{
+		force.x = x;
+		force.y = y;
 	}
 };
 
