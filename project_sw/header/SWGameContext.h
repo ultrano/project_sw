@@ -8,6 +8,7 @@
 
 class SWMatrix4x4;
 class SWGameScene;
+class SWObject;
 
 class SWGameContext
 {
@@ -20,10 +21,12 @@ public:
 
 	void onStart( SWGameScene* firstScene, const std::string& resFolder, float width, float height );
 	void onFrameMove();
+	void onRender();
 	void onResume();
 	void onPause();
 	void onDestroy();
 	void onHandleEvent( int type, int param1, int param2 );
+	void onResize( int width, int height );
 
 	void* alloc( size_t size );
 	void  free( void* memory );
@@ -33,6 +36,14 @@ public:
 
 	float deltaTime() const;
 	float awakeTime() const;
+
+	bool storeItem( const std::string& key, SWObject* item );
+	void removeItem( const std::string& key );
+	SWObject* findItem( const std::string& key );
+
+	int  getTouchState() const;
+	int  getTouchX() const;
+	int  getTouchY() const;
 
 	void setViewMatrix( const SWMatrix4x4& matrix );
 	void setModelMatrix( const SWMatrix4x4& matrix );

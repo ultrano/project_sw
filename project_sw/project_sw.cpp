@@ -13,9 +13,13 @@
 #include "SWVector2f.h"
 #include "SWMeshRenderer.h"
 #include "SWLog.h"
+#include "SWDefines.h"
+#include "SWMath.h"
 
 #include "Cat.h"
 #include "Ball.h"
+#include "BallGenerator.h"
+#include "CatGenerator.h"
 
 #include <set>
 #include <map>
@@ -25,40 +29,82 @@ class TestScene : public SWGameScene
 {
 	SW_RTTI( TestScene, SWGameScene );
 	SWHardRef<SWGameObject> target;
-	float accum;
-	SWVector2f force;
 	void onAwake()
 	{
 
-		SWGameObject* catGO = new SWGameObject;
-		catGO->addComponent<Cat>();
-		catGO->setName( "cat" );
+		SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
+		SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
+		unsigned short indices[] = {0,1,2,3,2,1};
+		SWMesh* mesh = new SWMesh();
+		mesh->setVertexStream( 4, &vertices[0] );
+		mesh->setTexCoordStream( 4, &texCoords[0]);
+		mesh->setIndexStream( 6, &indices[0] );
 
-		accum = 0;
+		SW_GC.storeItem("unitRectMesh", mesh);
+
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<SWMeshFilter>()->setMesh( mesh );
+			go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("background_02.png") );
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalScale( SWVector3f(800,600,0) );
+			transform->setLocalPosition( SWVector3f( 400,300,0 ) );
+		}
+
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<CatGenerator>();
+		}
+
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( "rat.png" ) );
+			go->addComponent<SWMeshFilter>()->setMesh(mesh);
+			go->setName( "rat" );
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( SWVector3f( 170,500,0 ) );
+			transform->setLocalScale( SWVector3f( 50,50,0 ) );
+		}
+
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<BallGenerator>();
+			go->setName( "generator" );
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setParent( find( "rat" )->getComponent<SWTransform>() );
+			transform->setLocalPosition( SWVector3f( 0.5,0.1,0 ) );
+		}
+
 	}
 
 	void onUpdate( float elapsed )
 	{
-		accum -= SW_GC.deltaTime();
-		if ( accum <= 0 )
-		{
-			accum = 0.1f;
+		SWGameObject* ratGO = find( "rat" );
+		SWTransform* ratTrans = ratGO->getComponent<SWTransform>();
 
-			SWGameObject* ballGO = new SWGameObject;
-			Ball* ball = ballGO->addComponent<Ball>();
-			ballGO->setName( "ball" );
-			ball->velocity = SWVector3f( force.x + rand()%100, force.y + rand()%100, 0 );
+		SWGameObject* go = ratTrans->find("generator")->gameObject();
+		BallGenerator* gen = go->getComponent<BallGenerator>();
+
+		switch ( SW_GC.getTouchState() )
+		{
+		case SW_TouchPress :   gen->turnOn = true;  break;
+		case SW_TouchRelease : gen->turnOn = false; break;
+		case SW_TouchMove :
+			{
+				SWVector3f worldPos = ratTrans->getLocalPosition() * ratTrans->getWorldMatrix();
+				SWVector3f touchPos( SW_GC.getTouchX(), SW_GC.getTouchY(), 0 );
+				SWVector2f delta = (worldPos - touchPos).xy;
+				gen->force = delta;
+				delta = delta.normalize();
+				ratTrans->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, SWMath.atan( delta.y, delta.x ) ) );
+			}
+			break;
 		}
-	}
-	void onHandleTouch( int type, int x, int y )
-	{
-		force.x = x;
-		force.y = y;
 	}
 };
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "../resource/", 1920, 1280 );
+	SW_GC.onStart( new TestScene, "../resource/", 800, 600 );
 	return 0;
 }

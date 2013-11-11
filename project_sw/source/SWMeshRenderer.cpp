@@ -10,7 +10,7 @@ void SWMeshRenderer::render()
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	if ( m_filter.isValid() )
 	{
-		SW_GC.setModelMatrix( transform->getWorldMatrix() );
+		SW_GC.setModelMatrix( transform->getFinalMatrix() );
 		SW_GC.bindTexture( m_texID );
 		m_filter()->draw();
 	}

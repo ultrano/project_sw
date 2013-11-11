@@ -180,6 +180,12 @@
     <ClInclude Include="header\SWMath.h">
       <Filter>SWMath</Filter>
     </ClInclude>
+    <ClInclude Include="BallGenerator.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CatGenerator.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -262,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="source\SWMath.cpp">
       <Filter>SWMath</Filter>
+    </ClCompile>
+    <ClCompile Include="BallGenerator.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CatGenerator.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

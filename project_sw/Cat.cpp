@@ -14,18 +14,18 @@ void Cat::onAwake()
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
 
-	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
-	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
-	unsigned short indices[] = {0,1,2,3,2,1};
-	SWMesh* mesh = new SWMesh();
-	mesh->setVertexStream( 4, &vertices[0] );
-	mesh->setTexCoordStream( 4, &texCoords[0]);
-	mesh->setIndexStream( 6, &indices[0] );
+	filter->setMesh( swrtti_cast<SWMesh>(SW_GC.findItem("unitRectMesh")) );
+	switch ( SWMath.randomInt(1,3) )
+	{
+	case 1: renderer->setTexture( SW_GC.loadTexture( "cat1.png" ) ); break;
+	case 2: renderer->setTexture( SW_GC.loadTexture( "cat2.png" ) ); break;
+	case 3: renderer->setTexture( SW_GC.loadTexture( "cat3.png" ) ); break;
+	}
+	
+	transform->setLocalScale( SWVector3f(50,50,1) );
+	transform->setLocalPosition( SWVector3f( 800, 500, 0 ) );
 
-	filter->setMesh( mesh );
-	renderer->setTexture( SW_GC.loadTexture( "cat1.png" ) );
-	transform->setLocalScale( SWVector3f(100,100,1) );
-	transform->setLocalPosition( SWVector3f( 1000, 1000, 0 ) );
+	lifeTime = 10;
 }
 
 void Cat::onStart()
@@ -42,4 +42,5 @@ void Cat::onUpdate()
 	float angle = SWMath.pingPong( SW_GC.awakeTime(), limit)-limit/2;
 	transform->setLocalPosition( pos );
 	transform->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ, angle ) );
+	if ( (lifeTime -= SW_GC.deltaTime()) < 0 ) gameObject()->destroy();
 }

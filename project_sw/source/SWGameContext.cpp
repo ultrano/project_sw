@@ -8,22 +8,39 @@
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
 #include "SWMatrix4x4.h"
+#include "SWDefines.h"
+
 #include "stb_image.h"
 
 void callbackDisplay()
 {
+	SW_GC.onRender();
 }
 
 void callbackIdle()
 {
 	SW_GC.onFrameMove();
+	glutPostRedisplay();
 }
 
 void callbackMouse( int button, int state, int x, int y )
 {
-	SWGameScene* scene = SW_GC.getScene();
-	
-	if ( scene ) scene->handleEvent( state, x, y );
+	switch ( state )
+	{
+	case GLUT_DOWN: state = SW_TouchPress;   break;
+	case GLUT_UP:   state = SW_TouchRelease; break;
+	}
+	SW_GC.onHandleEvent( state, x, y );
+}
+
+void callbackMouseMove( int x, int y )
+{
+	SW_GC.onHandleEvent( SW_TouchMove, x, y );
+}
+
+void callbackReshape( int width, int height )
+{
+	SW_GC.onResize( width, height );
 }
 
 class SWGameContext::Pimpl : public SWRefCountable
@@ -42,6 +59,11 @@ public:
 	float deltaTime;
 	float awakeTime;
 	std::map<std::string,int> textureCache;
+	std::map<std::string, SWHardRef<SWObject>> storage;
+	int touchState;
+	int touchX;
+	int touchY;
+	int lastBindedTexID;
 };
 
 SWGameContext::SWGameContext()
@@ -80,8 +102,10 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	glOrtho( 0, width, height, 0,1000,-1000);
 
 	glutMouseFunc(callbackMouse);
+	glutMotionFunc( callbackMouseMove );
 	glutDisplayFunc(callbackDisplay);
 	glutIdleFunc(callbackIdle);
+	glutReshapeFunc( callbackReshape );
 	//glutKeyboardFunc(callbackKeyboard);
 	//glutPassiveMotionFunc(motionCallBack);
 	//glutMotionFunc(motionCallBack);
@@ -97,6 +121,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->lastFrameTime = GetTickCount();
 	pimpl->deltaTime = 0;
 	pimpl->awakeTime = 0;
+	pimpl->lastBindedTexID = 0;
 
 	glutMainLoop();
 }
@@ -121,7 +146,13 @@ void SWGameContext::onFrameMove()
 	if ( SWGameScene* scene = pimpl->currentScene() )
 	{
 		scene->update( pimpl->deltaTime );
+	}
+}
 
+void SWGameContext::onRender()
+{
+	if ( SWGameScene* scene = m_pimpl()->currentScene() )
+	{
 		glClearColor( 0, 0, 1, 1 );
 		glClear( GL_COLOR_BUFFER_BIT );
 		scene->draw();
@@ -205,7 +236,9 @@ unsigned int SWGameContext::loadTexture( const std::string& path )
 
 void SWGameContext::bindTexture( unsigned int texID )
 {
+	if ( m_pimpl()->lastBindedTexID == texID ) return;
 	glBindTexture( GL_TEXTURE_2D, texID );
+	m_pimpl()->lastBindedTexID = texID;
 }
 
 float SWGameContext::deltaTime() const
@@ -216,6 +249,62 @@ float SWGameContext::deltaTime() const
 float SWGameContext::awakeTime() const
 {
 	return m_pimpl()->awakeTime;
+}
+
+bool SWGameContext::storeItem( const std::string& key, SWObject* item )
+{
+	std::map<std::string, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
+	if ( itor != m_pimpl()->storage.end() ) return false;
+	
+	m_pimpl()->storage.insert( std::make_pair(key, item) );
+}
+
+void SWGameContext::removeItem( const std::string& key )
+{
+	m_pimpl()->storage.erase( key );
+}
+
+SWObject* SWGameContext::findItem( const std::string& key )
+{
+	std::map<std::string, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
+	if ( itor == m_pimpl()->storage.end() ) return NULL;
+	return itor->second();
+}
+
+void SWGameContext::onHandleEvent( int type, int param1, int param2 )
+{
+	m_pimpl()->touchState = type;
+	m_pimpl()->touchX = param1;
+	m_pimpl()->touchY = param2;
+
+	SWGameScene* scene = getScene();
+	if ( scene ) scene->handleEvent( type, param1, param2 );
+}
+
+void SWGameContext::onResize( int width, int height )
+{
+	// 뷰포트 지정.
+	glViewport(0,0,width,height);
+
+	// 프로젝션 매트릭스를 직교 행렬로 지정.
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho( 0, width, height, 0,1000,-1000);
+}
+
+int SWGameContext::getTouchState() const
+{
+	return m_pimpl()->touchState;
+}
+
+int SWGameContext::getTouchX() const
+{
+	return m_pimpl()->touchX;
+}
+
+int SWGameContext::getTouchY() const
+{
+	return m_pimpl()->touchY;
 }
 
 unsigned int glLoadTexture( const char* fileName )

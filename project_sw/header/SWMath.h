@@ -38,6 +38,10 @@ public:
 	float cos( float radian ) const;
 	float tan( float radian ) const;
 
+	float atan( float sinValue, float cosValue ) const;
+
+	int   randomInt( int kMin, int kMax ) const;
+
 };
 
 #endif //SWMath

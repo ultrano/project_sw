@@ -1,6 +1,8 @@
 #ifndef SWVector3f_h__
 #define SWVector3f_h__
 
+#include "SWVector2f.h"
+
 class SWVector3f
 {
 public:
@@ -12,6 +14,7 @@ public:
 public:
 	union
 	{
+		struct { SWVector2f xy; };
 		struct { float x,y,z; };
 		struct { float v1,v2,v3; };
 	};
