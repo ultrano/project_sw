@@ -10,7 +10,6 @@ class Cat : public SWBehavior
 public:
 	float lifeTime;
 	void onAwake();
-	void onStart();
 	void onUpdate();
 };
 

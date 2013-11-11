@@ -28,11 +28,6 @@ void Cat::onAwake()
 	lifeTime = 10;
 }
 
-void Cat::onStart()
-{
-
-}
-
 void Cat::onUpdate()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();

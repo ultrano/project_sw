@@ -85,6 +85,9 @@
     <Filter Include="SWMath">
       <UniqueIdentifier>{34b4e97a-c1e2-434e-9f63-14a4fbb5bbbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWAction">
+      <UniqueIdentifier>{d098dfcd-5664-483e-9f89-bac010d326db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -186,6 +189,9 @@
     <ClInclude Include="CatGenerator.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWAction.h">
+      <Filter>SWAction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -274,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="CatGenerator.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAction.cpp">
+      <Filter>SWAction</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

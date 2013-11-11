@@ -106,7 +106,7 @@ class TestScene : public SWGameScene
 	void onSetParent( SWTransform* transform )
 	{
 		SWGameObject* go = transform->gameObject();
-		SW_OutputLog( "test", go->getName().c_str() );
+		SWLog( "test", go->getName().c_str() );
 	}
 };
 

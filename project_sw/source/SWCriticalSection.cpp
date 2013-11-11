@@ -28,7 +28,7 @@ int  SWCriticalSection::wait()
 {
     while ( !m_signal )
     {
-        SW_OutputLog( "criticla section", "wait for signal" );
+        SWLog( "criticla section", "wait for signal" );
     }
     return 0;
 }

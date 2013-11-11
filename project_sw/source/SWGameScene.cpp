@@ -22,7 +22,7 @@ SWGameScene::SWGameScene()
 
 SWGameScene::~SWGameScene()
 {
-	SW_OutputLog( "game scene", "deleted" );
+	SWLog( "game scene", "deleted" );
 }
 
 SWGameObject* SWGameScene::find( const char *name )
@@ -66,7 +66,8 @@ void SWGameScene::update( float elapsed )
 	GameObjectList::iterator itor = m_updates.begin();
 	for ( ; itor != m_updates.end() ; ++itor )
 	{
-		(*itor)()->udpate();
+		SWGameObject* go = (*itor)();
+		go->udpate();
 	}
 }
 
