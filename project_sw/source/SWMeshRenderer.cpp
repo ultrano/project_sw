@@ -15,13 +15,14 @@ void SWMeshRenderer::render()
 		m_filter()->draw();
 	}
 
-	SWTransform::ChildList children;
+	SWObjectList children;
 	transform->copyChildren( children );
 
-	SWTransform::ChildList::iterator itor = children.begin();
+	SWObjectList::iterator itor = children.begin();
 	for ( ; itor != children.end() ; ++itor )
 	{
-		SWMeshRenderer* renderer = (*itor)()->getComponent<SWMeshRenderer>();
+		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+		SWMeshRenderer* renderer = go->getComponent<SWMeshRenderer>();
 		if ( renderer ) renderer->render();
 	}
 }
