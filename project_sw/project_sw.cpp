@@ -71,7 +71,7 @@ class TestScene : public SWGameScene
 			go->addComponent<BallGenerator>();
 			go->setName( "generator" );
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->addSetParentDelegate( NewDelegate( onSetParent ) );
+			transform->addSetParentDelegate( GetDelegate( onSetParent ) );
 			transform->setParent( find( "rat" )->getComponent<SWTransform>() );
 			transform->setLocalPosition( SWVector3f( 0.5,0.1,0 ) );
 		}
