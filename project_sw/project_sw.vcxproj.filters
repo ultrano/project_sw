@@ -88,6 +88,9 @@
     <Filter Include="SWAction">
       <UniqueIdentifier>{d098dfcd-5664-483e-9f89-bac010d326db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWAct">
+      <UniqueIdentifier>{417bfde0-887e-4bc4-b2d0-82158badd596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -192,6 +195,9 @@
     <ClInclude Include="header\SWAction.h">
       <Filter>SWAction</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWAct.h">
+      <Filter>SWAct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -283,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="source\SWAction.cpp">
       <Filter>SWAction</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAct.cpp">
+      <Filter>SWAct</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

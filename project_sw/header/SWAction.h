@@ -9,10 +9,11 @@ class SWAction : public SWComponent
 	SW_RTTI( SWAction, SWComponent );
 
 	SWHardRef<SWAct> m_act;
+	float m_spendTime;
 
 	void onStart();
 	void onRemove();
-	void onUpdate();
+	void onUpdate( SWObject* param );
 };
 
 #endif // SWAction_h__
