@@ -21,7 +21,6 @@ public:
 	void resume() { m_isPaused = false; };
 	bool isPaused() const { return m_isPaused; };
 
-	virtual float length() { return 0; };
 	virtual bool isDone() = 0;
 	virtual void onStart() = 0;
 	virtual void onUpdate() = 0;

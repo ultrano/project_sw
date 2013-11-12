@@ -94,6 +94,9 @@
     <Filter Include="SWAct\SWActSequence">
       <UniqueIdentifier>{bd8323b7-b59a-4bbf-918e-5657db5015f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWProfiler">
+      <UniqueIdentifier>{cd786f91-2f4b-4479-a086-efc0e3cf3b49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -201,6 +204,9 @@
     <ClInclude Include="header\SWAct.h">
       <Filter>SWAct</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWProfiler.h">
+      <Filter>SWProfiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -295,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="source\SWAct.cpp">
       <Filter>SWAct</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWProfiler.cpp">
+      <Filter>SWProfiler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

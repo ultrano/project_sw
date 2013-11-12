@@ -26,7 +26,7 @@ void BallGenerator::onUpdate()
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 
 		ballGO->setName( "ball" );
-		ball->velocity = SWVector3f( force.x, force.y, 0 ) * (float)SWMath.randomInt(100,200)/100.0f;
+		ball->velocity = SWVector3f( force.x, force.y, 0 ) * (float)SWMath.randomInt(100,100)/100.0f;
 
 		ballTrans->setLocalPosition( transform->getLocalPosition() * transform->getWorldMatrix() );
 	}

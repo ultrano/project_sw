@@ -10,6 +10,7 @@
 #include "SWMatrix4x4.h"
 #include "SWDefines.h"
 #include "SWLog.h"
+#include "SWProfiler.h"
 
 #include "stb_image.h"
 
@@ -21,7 +22,6 @@ void callbackDisplay()
 void callbackIdle()
 {
 	SW_GC.onFrameMove();
-	glutPostRedisplay();
 }
 
 void callbackMouse( int button, int state, int x, int y )
@@ -54,17 +54,22 @@ public:
 	float screenWidth;
 	float screenHeight;
 	int   lastFrameTime;
+	int   lastDrawTime;
+	float drawingTerm;
 	SWCriticalSection idleSection;
 	SWMatrix4x4 viewMatrix;
 	bool  exitMainLoop;
 	float deltaTime;
-	float awakeTime;
+	int   startTime;
 	std::map<std::string,int> textureCache;
 	std::map<std::string, SWHardRef<SWObject>> storage;
 	int touchState;
 	int touchX;
 	int touchY;
 	int lastBindedTexID;
+	float accumFrame;
+	float accumSecond;
+
 };
 
 SWGameContext::SWGameContext()
@@ -120,33 +125,55 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->screenHeight = height;
 	pimpl->exitMainLoop = false;
 	pimpl->lastFrameTime = GetTickCount();
+	pimpl->lastDrawTime = pimpl->lastFrameTime;
+	pimpl->drawingTerm  = 1.0f/10.0f;
 	pimpl->deltaTime = 0;
-	pimpl->awakeTime = 0;
+	pimpl->startTime = GetTickCount();
 	pimpl->lastBindedTexID = 0;
-
+	pimpl->accumFrame = 0;
+	pimpl->accumSecond = 0;
 	glutMainLoop();
 }
 
 void SWGameContext::onFrameMove()
 {
-	Pimpl* pimpl = m_pimpl();
-
-	int newFrameTime = GetTickCount();
-	pimpl->deltaTime = ( (float)(newFrameTime - pimpl->lastFrameTime) ) / 1000.0f;
-	pimpl->lastFrameTime = newFrameTime;
-	pimpl->awakeTime += pimpl->deltaTime;
-
-	if ( pimpl->nextScene.isValid() )
 	{
-		if ( pimpl->currentScene.isValid() ) pimpl->currentScene()->destroy();
-		pimpl->currentScene = pimpl->nextScene();
-		pimpl->nextScene = NULL;
-		if ( pimpl->currentScene.isValid() ) pimpl->currentScene()->awake();
-	}
+		Pimpl* pimpl = m_pimpl();
 
-	if ( SWGameScene* scene = pimpl->currentScene() )
-	{
-		scene->update( pimpl->deltaTime );
+		int nowFrameTime = GetTickCount();
+		pimpl->deltaTime = ( (float)(nowFrameTime - pimpl->lastFrameTime) ) / 1000.0f;
+		pimpl->lastFrameTime = nowFrameTime;
+
+		pimpl->accumFrame += 1;
+		pimpl->accumSecond += pimpl->deltaTime;
+
+		SWLog( "Frame Count : %d", (int)pimpl->accumFrame );
+		SWLog( "FPS : %.1f", ( pimpl->accumFrame / pimpl->accumSecond ) );
+		if ( pimpl->accumSecond > 10 )
+		{
+			pimpl->accumFrame /= pimpl->accumSecond;
+			pimpl->accumSecond /= pimpl->accumSecond;
+		}
+
+		if ( pimpl->nextScene.isValid() )
+		{
+			if ( pimpl->currentScene.isValid() ) pimpl->currentScene()->destroy();
+			pimpl->currentScene = pimpl->nextScene();
+			pimpl->nextScene = NULL;
+			if ( pimpl->currentScene.isValid() ) pimpl->currentScene()->awake();
+		}
+
+		if ( SWGameScene* scene = pimpl->currentScene() )
+		{
+			scene->update( pimpl->deltaTime );
+		}
+
+		float term = ((float)(nowFrameTime - pimpl->lastDrawTime))/1000.0f;
+		if ( term >= pimpl->drawingTerm )
+		{
+			pimpl->lastDrawTime = nowFrameTime;
+			glutPostRedisplay();
+		}
 	}
 
 	SWLogCenter::getInstance().present();
@@ -157,7 +184,7 @@ void SWGameContext::onRender()
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
 		glClearColor( 0, 0, 1, 1 );
-		glClear( GL_COLOR_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		scene->draw();
 		glutSwapBuffers();
 	}
@@ -251,7 +278,8 @@ float SWGameContext::deltaTime() const
 
 float SWGameContext::awakeTime() const
 {
-	return m_pimpl()->awakeTime;
+	int delta = (GetTickCount() - m_pimpl()->startTime);
+	return ( (float)delta )/1000.0f;
 }
 
 bool SWGameContext::storeItem( const std::string& key, SWObject* item )

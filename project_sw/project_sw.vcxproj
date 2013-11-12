@@ -108,6 +108,7 @@
     <ClInclude Include="header\SWMesh.h" />
     <ClInclude Include="header\SWMeshRenderer.h" />
     <ClInclude Include="header\SWObject.h" />
+    <ClInclude Include="header\SWProfiler.h" />
     <ClInclude Include="header\SWQuaternion.h" />
     <ClInclude Include="header\SWRenderer.h" />
     <ClInclude Include="header\SWVector2f.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="source\SWMesh.cpp" />
     <ClCompile Include="source\SWMeshRenderer.cpp" />
     <ClCompile Include="source\SWObject.cpp" />
+    <ClCompile Include="source\SWProfiler.cpp" />
     <ClCompile Include="source\SWQuaternion.cpp" />
     <ClCompile Include="source\SWRenderer.cpp" />
     <ClCompile Include="source\SWVector2f.cpp" />
