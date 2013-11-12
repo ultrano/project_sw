@@ -9,6 +9,7 @@
 #include "SWCriticalSection.h"
 #include "SWMatrix4x4.h"
 #include "SWDefines.h"
+#include "SWLog.h"
 
 #include "stb_image.h"
 
@@ -147,6 +148,8 @@ void SWGameContext::onFrameMove()
 	{
 		scene->update( pimpl->deltaTime );
 	}
+
+	SWLogCenter::getInstance().present();
 }
 
 void SWGameContext::onRender()

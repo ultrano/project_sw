@@ -71,7 +71,6 @@ class TestScene : public SWGameScene
 			go->addComponent<BallGenerator>();
 			go->setName( "generator" );
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->addSetParentDelegate( GetDelegate( onSetParent ) );
 			transform->setParent( find( "rat" )->getComponent<SWTransform>() );
 			transform->setLocalPosition( SWVector3f( 0.5,0.1,0 ) );
 		}
@@ -88,8 +87,8 @@ class TestScene : public SWGameScene
 
 		switch ( SW_GC.getTouchState() )
 		{
-		case SW_TouchPress :   gen->turnOn = true;  break;
 		case SW_TouchRelease : gen->turnOn = false; break;
+		case SW_TouchPress :   gen->turnOn = true;
 		case SW_TouchMove :
 			{
 				SWVector3f worldPos = ratTrans->getLocalPosition() * ratTrans->getWorldMatrix();
@@ -106,7 +105,7 @@ class TestScene : public SWGameScene
 	void onSetParent( SWTransform* transform )
 	{
 		SWGameObject* go = transform->gameObject();
-		SWLog( "test", go->getName().c_str() );
+		SWLog( go->getName().c_str() );
 	}
 };
 
