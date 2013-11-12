@@ -91,6 +91,9 @@
     <Filter Include="SWAct">
       <UniqueIdentifier>{417bfde0-887e-4bc4-b2d0-82158badd596}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWAct\SWActSequence">
+      <UniqueIdentifier>{bd8323b7-b59a-4bbf-918e-5657db5015f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

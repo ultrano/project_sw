@@ -14,12 +14,14 @@ class SWAct : SWObject
 
 public:
 
-	void setAction( SWAction* action );;
-	SWAction* getAction();;
+	void setAction( SWAction* action );
+	SWAction* getAction();
 
 	void pause() { m_isPaused = true; };
 	void resume() { m_isPaused = false; };
 	bool isPaused() const { return m_isPaused; };
+
+	virtual float length() { return 0; };
 	virtual bool isDone() = 0;
 	virtual void onStart() = 0;
 	virtual void onUpdate() = 0;
