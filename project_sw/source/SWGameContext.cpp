@@ -147,10 +147,9 @@ void SWGameContext::onFrameMove()
 		pimpl->accumFrame += 1;
 		pimpl->accumSecond += pimpl->deltaTime;
 
-		SWLog( "Frame Count : %d", (int)pimpl->accumFrame );
-		SWLog( "FPS : %.1f", ( pimpl->accumFrame / pimpl->accumSecond ) );
 		if ( pimpl->accumSecond > 10 )
 		{
+			SWLog( "FPS : %.1f", ( pimpl->accumFrame / pimpl->accumSecond ) );
 			pimpl->accumFrame /= pimpl->accumSecond;
 			pimpl->accumSecond /= pimpl->accumSecond;
 		}
@@ -176,7 +175,6 @@ void SWGameContext::onFrameMove()
 		}
 	}
 
-	SWLogCenter::getInstance().present();
 }
 
 void SWGameContext::onRender()
@@ -188,6 +186,7 @@ void SWGameContext::onRender()
 		scene->draw();
 		glutSwapBuffers();
 	}
+	SWLogCenter::getInstance().present();
 }
 
 SWGameContext& SWGameContext::getInstance()
