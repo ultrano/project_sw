@@ -96,9 +96,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 
 	// 버텍스 버퍼 사용
 	glEnableClientState( GL_VERTEX_ARRAY );
-	
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 	glEnable(GL_TEXTURE_2D);
+
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -133,7 +133,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->exitMainLoop = false;
 	pimpl->lastFrameTime = GetTickCount();
 	pimpl->lastDrawTime = pimpl->lastFrameTime;
-	pimpl->drawingTerm  = 1.0f/10.0f;
+	pimpl->drawingTerm  = 1.0f/60.0f;
 	pimpl->deltaTime = 0;
 	pimpl->startTime = GetTickCount();
 	pimpl->lastBindedTexID = 0;
@@ -154,7 +154,10 @@ void SWGameContext::onFrameMove()
 		pimpl->accumFrame += 1;
 		pimpl->accumSecond += pimpl->deltaTime;
 		
+		static float maxDelay = 0;
+		maxDelay = (pimpl->deltaTime>maxDelay)? pimpl->deltaTime : maxDelay;
 		float fps = ( pimpl->accumFrame / pimpl->accumSecond );
+		SWLog( "max delay : %f", maxDelay );
 		SWLog( "FPS : %.1f", fps );
 		if ( pimpl->accumSecond > 10 )
 		{
@@ -178,7 +181,6 @@ void SWGameContext::onFrameMove()
 		float term = ((float)(nowFrameTime - pimpl->lastDrawTime))/1000.0f;
 		if ( term >= pimpl->drawingTerm )
 		{
-			pimpl->lastDrawTime = nowFrameTime;
 			glutPostRedisplay();
 		}
 	}
@@ -190,10 +192,13 @@ void SWGameContext::onRender()
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
 		glClearColor( 0, 0, 1, 1 );
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT );
 		scene->draw();
+		glFlush();
+		Sleep(0);
 		glutSwapBuffers();
 	}
+	m_pimpl()->lastDrawTime = GetTickCount();
 }
 
 SWGameContext& SWGameContext::getInstance()
