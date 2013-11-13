@@ -24,6 +24,12 @@ void callbackIdle()
 	SW_GC.onFrameMove();
 }
 
+void callbackTimer( int value )
+{
+	SW_GC.onFrameMove();
+	glutTimerFunc(1,callbackTimer,0);
+}
+
 void callbackMouse( int button, int state, int x, int y )
 {
 	switch ( state )
@@ -110,7 +116,8 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	glutMouseFunc(callbackMouse);
 	glutMotionFunc( callbackMouseMove );
 	glutDisplayFunc(callbackDisplay);
-	glutIdleFunc(callbackIdle);
+	//glutIdleFunc(callbackIdle);
+	glutTimerFunc(1,callbackTimer,0);
 	glutReshapeFunc( callbackReshape );
 	//glutKeyboardFunc(callbackKeyboard);
 	//glutPassiveMotionFunc(motionCallBack);
@@ -146,10 +153,11 @@ void SWGameContext::onFrameMove()
 
 		pimpl->accumFrame += 1;
 		pimpl->accumSecond += pimpl->deltaTime;
-
+		
+		float fps = ( pimpl->accumFrame / pimpl->accumSecond );
+		SWLog( "FPS : %.1f", fps );
 		if ( pimpl->accumSecond > 10 )
 		{
-			SWLog( "FPS : %.1f", ( pimpl->accumFrame / pimpl->accumSecond ) );
 			pimpl->accumFrame /= pimpl->accumSecond;
 			pimpl->accumSecond /= pimpl->accumSecond;
 		}
@@ -174,7 +182,7 @@ void SWGameContext::onFrameMove()
 			glutPostRedisplay();
 		}
 	}
-
+	SWLogCenter::getInstance().present();
 }
 
 void SWGameContext::onRender()
@@ -186,7 +194,6 @@ void SWGameContext::onRender()
 		scene->draw();
 		glutSwapBuffers();
 	}
-	SWLogCenter::getInstance().present();
 }
 
 SWGameContext& SWGameContext::getInstance()

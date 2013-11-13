@@ -16,28 +16,4 @@ public:
 	~SWProfiler();
 };
 
-class SWProfileCenter : SWMemory
-{
-	SWProfileCenter();
-	~SWProfileCenter();
-public:
-	struct Profile
-	{
-		const char* file;
-		int line;
-		const char* scope;
-		float spendTime;
-	};
-	class MainFrame
-	{
-	public:
-		MainFrame();
-		~MainFrame();
-	};
-	float m_beginFrameTime;
-	std::vector<Profile> m_profiles;
-
-	static SWProfileCenter& getInstance();
-};
-
 #endif // SWProfiler_h__
