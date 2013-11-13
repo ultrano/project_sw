@@ -14,17 +14,6 @@ void SWMeshRenderer::render()
 		SW_GC.bindTexture( m_texID );
 		m_filter()->draw();
 	}
-
-	SWObjectList children;
-	transform->copyChildren( children );
-
-	SWObjectList::iterator itor = children.begin();
-	for ( ; itor != children.end() ; ++itor )
-	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		SWMeshRenderer* renderer = go->getComponent<SWMeshRenderer>();
-		if ( renderer ) renderer->render();
-	}
 }
 
 void SWMeshRenderer::onStart()
