@@ -4,6 +4,7 @@
 __SWTime::__SWTime()
 	: m_lastFrameTime(0)
 	, m_deltaFrameTime(0)
+	, m_accumDraw(0)
 	, m_accumFrame(0)
 	, m_accumTime(0)
 	, m_FPS(0)
@@ -35,4 +36,9 @@ float __SWTime::getDeltaTime()
 float __SWTime::getFPS()
 {
 	return m_FPS;
+}
+
+float __SWTime::getDPS()
+{
+	return m_DPS;
 }

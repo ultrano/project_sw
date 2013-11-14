@@ -147,6 +147,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 void SWGameContext::onFrameMove()
 {
 	{
+		SW_PROFILER(test);
 		Pimpl* pimpl = m_pimpl();
 
 		float nowTime = SWTime.getTime();
@@ -156,10 +157,13 @@ void SWGameContext::onFrameMove()
 		SWTime.m_accumFrame += 1;
 		SWTime.m_accumTime  += SWTime.getDeltaTime();
 		
+		SWTime.m_DPS = ( SWTime.m_accumDraw / SWTime.m_accumTime );
 		SWTime.m_FPS = ( SWTime.m_accumFrame / SWTime.m_accumTime );
 		SWLog( "FPS : %.1f", SWTime.getFPS() );
+		SWLog( "DPS : %.1f", SWTime.getDPS() );
 		if ( SWTime.m_accumTime > 10 )
 		{
+			SWTime.m_accumDraw  /= SWTime.m_accumTime;
 			SWTime.m_accumFrame /= SWTime.m_accumTime;
 			SWTime.m_accumTime  /= SWTime.m_accumTime;
 		}
@@ -177,7 +181,7 @@ void SWGameContext::onFrameMove()
 			scene->update();
 		}
 
-		float drawDeltaTIme = (nowTime - pimpl->lastDrawTime);
+		float drawDeltaTIme = (SWTime.getTime() - pimpl->lastDrawTime);
 		if ( drawDeltaTIme >= pimpl->drawingTerm )
 		{
 			glutPostRedisplay();
@@ -188,6 +192,7 @@ void SWGameContext::onFrameMove()
 
 void SWGameContext::onRender()
 {
+	SW_PROFILER(test);
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
 		glClearColor( 0, 0, 1, 1 );
@@ -195,6 +200,7 @@ void SWGameContext::onRender()
 		scene->draw();
 		glutSwapBuffers();
 	}
+	SWTime.m_accumDraw += 1;
 	m_pimpl()->lastDrawTime = SWTime.getTime();
 }
 

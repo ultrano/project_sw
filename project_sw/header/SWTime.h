@@ -11,9 +11,12 @@ class __SWTime : public SWMemory
 	float m_lastFrameTime;
 	float m_deltaFrameTime;
 
+	float m_accumDraw;
 	float m_accumFrame;
 	float m_accumTime;
+
 	float m_FPS;
+	float m_DPS;
 
 	__SWTime();
 	~__SWTime();
@@ -25,6 +28,7 @@ public:
 	float getTime();
 	float getDeltaTime();
 	float getFPS();
+	float getDPS();
 
 };
 
