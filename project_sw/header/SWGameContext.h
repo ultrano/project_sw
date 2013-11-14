@@ -34,9 +34,6 @@ public:
 	SWGameScene* getScene();
 	void setNextScene( SWGameScene* scene );
 
-	float deltaTime() const;
-	float awakeTime() const;
-
 	bool storeItem( const std::string& key, SWObject* item );
 	void removeItem( const std::string& key );
 	SWObject* findItem( const std::string& key );

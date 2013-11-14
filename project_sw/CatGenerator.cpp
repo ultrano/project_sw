@@ -3,6 +3,7 @@
 #include "SWMath.h"
 #include "Cat.h"
 #include "SWGameObject.h"
+#include "SWTime.h"
 
 void CatGenerator::onAwake()
 {
@@ -11,7 +12,7 @@ void CatGenerator::onAwake()
 
 void CatGenerator::onUpdate()
 {
-	accum -= SW_GC.deltaTime();
+	accum -= SWTime.getDeltaTime();
 	if ( accum < 0 )
 	{
 		accum = SWMath.randomInt( 30, 80 )/10.0f;

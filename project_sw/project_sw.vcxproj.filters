@@ -97,6 +97,12 @@
     <Filter Include="SWProfiler">
       <UniqueIdentifier>{cd786f91-2f4b-4479-a086-efc0e3cf3b49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWUtil">
+      <UniqueIdentifier>{033f681d-c964-4675-a04e-85d9dfb5c353}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWTime">
+      <UniqueIdentifier>{adf6ab0f-926d-45df-9248-04d85d1886e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -207,6 +213,12 @@
     <ClInclude Include="header\SWProfiler.h">
       <Filter>SWProfiler</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWUtil.h">
+      <Filter>SWUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWTime.h">
+      <Filter>SWTime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -304,6 +316,12 @@
     </ClCompile>
     <ClCompile Include="source\SWProfiler.cpp">
       <Filter>SWProfiler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWUtil.cpp">
+      <Filter>SWUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWTime.cpp">
+      <Filter>SWTime</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

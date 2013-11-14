@@ -48,7 +48,7 @@ public:
     void destroy();
     void resume();
     void pause();
-    void update( float elapsed );
+    void update();
     void draw();
     void handleEvent( int type, int x, int y );
     
@@ -65,7 +65,7 @@ public:
     virtual void onPause() {};
     
     //! @breif 매프레임 갱신시에 호출
-    virtual void onUpdate( float elapsed ) {};
+    virtual void onUpdate() {};
     
     //! @breif 정해진 FPS 마다 화면 갱신시에 호출.
     virtual void onDraw() {};

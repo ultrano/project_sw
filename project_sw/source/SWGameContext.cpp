@@ -2,7 +2,6 @@
 #include "SWGameContext.h"
 #include <memory>
 #include <map>
-#include <Windows.h>
 #include "glut.h"
 #include "SWGameScene.h"
 #include "SWVector2f.h"
@@ -11,6 +10,8 @@
 #include "SWDefines.h"
 #include "SWLog.h"
 #include "SWProfiler.h"
+#include "SWUtil.h"
+#include "SWTime.h"
 
 #include "stb_image.h"
 
@@ -56,25 +57,28 @@ public:
 
 	SWHardRef<SWGameScene> currentScene;
 	SWHardRef<SWGameScene> nextScene;
+	
 	std::string resFolder;
+
 	float screenWidth;
 	float screenHeight;
-	int   lastFrameTime;
-	int   lastDrawTime;
+	
+	float lastDrawTime;
 	float drawingTerm;
+
 	SWCriticalSection idleSection;
+
 	SWMatrix4x4 viewMatrix;
 	bool  exitMainLoop;
-	float deltaTime;
-	int   startTime;
+	
 	std::map<std::string,int> textureCache;
 	std::map<std::string, SWHardRef<SWObject>> storage;
+	
 	int touchState;
 	int touchX;
 	int touchY;
+
 	int lastBindedTexID;
-	float accumFrame;
-	float accumSecond;
 
 };
 
@@ -86,7 +90,7 @@ SWGameContext::SWGameContext()
 void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFolder, float width, float height )
 {
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
+	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 	// 윈도우 크기 및 생성.
 	glutInitWindowSize( (int)width, (int)height);
 	glutCreateWindow("TSP");
@@ -116,8 +120,8 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	glutMouseFunc(callbackMouse);
 	glutMotionFunc( callbackMouseMove );
 	glutDisplayFunc(callbackDisplay);
-	//glutIdleFunc(callbackIdle);
-	glutTimerFunc(1,callbackTimer,0);
+	glutIdleFunc(callbackIdle);
+	//glutTimerFunc(1,callbackTimer,0);
 	glutReshapeFunc( callbackReshape );
 	//glutKeyboardFunc(callbackKeyboard);
 	//glutPassiveMotionFunc(motionCallBack);
@@ -131,14 +135,12 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->screenWidth  = width;
 	pimpl->screenHeight = height;
 	pimpl->exitMainLoop = false;
-	pimpl->lastFrameTime = GetTickCount();
-	pimpl->lastDrawTime = pimpl->lastFrameTime;
+	pimpl->lastDrawTime = 0;
 	pimpl->drawingTerm  = 1.0f/60.0f;
-	pimpl->deltaTime = 0;
-	pimpl->startTime = GetTickCount();
 	pimpl->lastBindedTexID = 0;
-	pimpl->accumFrame = 0;
-	pimpl->accumSecond = 0;
+
+	SWTime.m_lastFrameTime = SWTime.getTime();
+
 	glutMainLoop();
 }
 
@@ -147,22 +149,19 @@ void SWGameContext::onFrameMove()
 	{
 		Pimpl* pimpl = m_pimpl();
 
-		int nowFrameTime = GetTickCount();
-		pimpl->deltaTime = ( (float)(nowFrameTime - pimpl->lastFrameTime) ) / 1000.0f;
-		pimpl->lastFrameTime = nowFrameTime;
+		float nowTime = SWTime.getTime();
+		SWTime.m_deltaFrameTime = ( nowTime - SWTime.m_lastFrameTime );
+		SWTime.m_lastFrameTime = nowTime;
 
-		pimpl->accumFrame += 1;
-		pimpl->accumSecond += pimpl->deltaTime;
+		SWTime.m_accumFrame += 1;
+		SWTime.m_accumTime  += SWTime.getDeltaTime();
 		
-		static float maxDelay = 0;
-		maxDelay = (pimpl->deltaTime>maxDelay)? pimpl->deltaTime : maxDelay;
-		float fps = ( pimpl->accumFrame / pimpl->accumSecond );
-		SWLog( "max delay : %f", maxDelay );
-		SWLog( "FPS : %.1f", fps );
-		if ( pimpl->accumSecond > 10 )
+		SWTime.m_FPS = ( SWTime.m_accumFrame / SWTime.m_accumTime );
+		SWLog( "FPS : %.1f", SWTime.getFPS() );
+		if ( SWTime.m_accumTime > 10 )
 		{
-			pimpl->accumFrame /= pimpl->accumSecond;
-			pimpl->accumSecond /= pimpl->accumSecond;
+			SWTime.m_accumFrame /= SWTime.m_accumTime;
+			SWTime.m_accumTime  /= SWTime.m_accumTime;
 		}
 
 		if ( pimpl->nextScene.isValid() )
@@ -175,11 +174,11 @@ void SWGameContext::onFrameMove()
 
 		if ( SWGameScene* scene = pimpl->currentScene() )
 		{
-			scene->update( pimpl->deltaTime );
+			scene->update();
 		}
 
-		float term = ((float)(nowFrameTime - pimpl->lastDrawTime))/1000.0f;
-		if ( term >= pimpl->drawingTerm )
+		float drawDeltaTIme = (nowTime - pimpl->lastDrawTime);
+		if ( drawDeltaTIme >= pimpl->drawingTerm )
 		{
 			glutPostRedisplay();
 		}
@@ -194,11 +193,9 @@ void SWGameContext::onRender()
 		glClearColor( 0, 0, 1, 1 );
 		glClear( GL_COLOR_BUFFER_BIT );
 		scene->draw();
-		glFlush();
-		Sleep(0);
 		glutSwapBuffers();
 	}
-	m_pimpl()->lastDrawTime = GetTickCount();
+	m_pimpl()->lastDrawTime = SWTime.getTime();
 }
 
 SWGameContext& SWGameContext::getInstance()
@@ -280,17 +277,6 @@ void SWGameContext::bindTexture( unsigned int texID )
 	if ( m_pimpl()->lastBindedTexID == texID ) return;
 	glBindTexture( GL_TEXTURE_2D, texID );
 	m_pimpl()->lastBindedTexID = texID;
-}
-
-float SWGameContext::deltaTime() const
-{
-	return m_pimpl()->deltaTime;
-}
-
-float SWGameContext::awakeTime() const
-{
-	int delta = (GetTickCount() - m_pimpl()->startTime);
-	return ( (float)delta )/1000.0f;
 }
 
 bool SWGameContext::storeItem( const std::string& key, SWObject* item )

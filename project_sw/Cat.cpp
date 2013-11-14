@@ -8,6 +8,8 @@
 #include "SWVector3f.h"
 #include "SWTransform.h"
 #include "SWMath.h"
+#include "SWTime.h"
+
 void Cat::onAwake()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
@@ -30,12 +32,13 @@ void Cat::onAwake()
 
 void Cat::onUpdate()
 {
+	float deltaTime = SWTime.getDeltaTime();
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWVector3f pos = transform->getLocalPosition();
-	pos.x -= SW_GC.deltaTime() * 10;
+	pos.x -= deltaTime * 10;
 	float limit = SWMath.pi/18.0f;
-	float angle = SWMath.pingPong( SW_GC.awakeTime(), limit)-limit/2;
+	float angle = SWMath.pingPong( SWTime.getTime(), limit)-limit/2;
 	transform->setLocalPosition( pos );
 	transform->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ, angle ) );
-	if ( (lifeTime -= SW_GC.deltaTime()) < 0 ) gameObject()->destroy();
+	if ( (lifeTime -= deltaTime) < 0 ) gameObject()->destroy();
 }

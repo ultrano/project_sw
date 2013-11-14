@@ -5,6 +5,7 @@
 #include "SWGameContext.h"
 #include "SWTransform.h"
 #include "SWMath.h"
+#include "SWTime.h"
 
 void BallGenerator::onAwake()
 {
@@ -15,7 +16,7 @@ void BallGenerator::onAwake()
 void BallGenerator::onUpdate()
 {
 	if ( !turnOn ) return;
-	accum -= SW_GC.deltaTime();
+	accum -= SWTime.getDeltaTime();
 	if ( accum <= 0 )
 	{
 		accum = 0.1f;

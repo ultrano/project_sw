@@ -1,6 +1,6 @@
 #include "SWAction.h"
 #include "SWGameObject.h"
-#include "SWGameContext.h"
+#include "SWTime.h"
 #include "SWAct.h"
 
 void SWAction::onStart()
@@ -21,6 +21,6 @@ void SWAction::onUpdate( SWObject* param )
 	if ( act == NULL ) return;
 	if ( act->isDone() ) return;
 	if ( act->isPaused() ) return;
-	m_spendTime += SW_GC.deltaTime();
+	m_spendTime += SWTime.getDeltaTime();
 	act->onUpdate();
 }

@@ -58,9 +58,9 @@ void SWGameScene::pause()
     onPause();
 }
 
-void SWGameScene::update( float elapsed )
+void SWGameScene::update()
 {
-	onUpdate( elapsed );
+	onUpdate();
 
 	m_updates = m_roots;
 	GameObjectList::iterator itor = m_updates.begin();

@@ -77,7 +77,7 @@ class TestScene : public SWGameScene
 
 	}
 
-	void onUpdate( float elapsed )
+	void onUpdate()
 	{
 		SWGameObject* ratGO = find( "rat" );
 		SWTransform* ratTrans = ratGO->getComponent<SWTransform>();

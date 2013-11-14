@@ -7,6 +7,7 @@
 #include "SWMesh.h"
 #include "SWVector2f.h"
 #include "SWMath.h"
+#include "SWTime.h"
 
 void Ball::onAwake()
 {
@@ -23,9 +24,10 @@ void Ball::onAwake()
 
 void Ball::onUpdate()
 {
-	velocity += SWVector3f( 0, 0.982f*100, 0 )*SW_GC.deltaTime();
+	float deltaTime = SWTime.getDeltaTime();
+	velocity += SWVector3f( 0, 0.982f*100, 0 )*deltaTime;
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWVector3f pos = transform->getLocalPosition();
-	transform->setLocalPosition( pos + (velocity*SW_GC.deltaTime()) );
-	if ( ( lifeTime -= SW_GC.deltaTime() ) < 0 ) gameObject()->destroy();
+	transform->setLocalPosition( pos + (velocity*deltaTime) );
+	if ( ( lifeTime -= deltaTime ) < 0 ) gameObject()->destroy();
 }
