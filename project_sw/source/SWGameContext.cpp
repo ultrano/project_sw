@@ -63,7 +63,7 @@ public:
 	float screenWidth;
 	float screenHeight;
 	
-	float lastDrawTime;
+	float accumDrawTime;
 	float drawingTerm;
 
 	SWCriticalSection idleSection;
@@ -96,7 +96,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	glutCreateWindow("TSP");
 
 	// 버퍼 클리어 색상 지정.
-	glClearColor(0,0,0,1);
+	glClearColor(0,0,1,1);
 
 	// 버텍스 버퍼 사용
 	glEnableClientState( GL_VERTEX_ARRAY );
@@ -135,7 +135,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->screenWidth  = width;
 	pimpl->screenHeight = height;
 	pimpl->exitMainLoop = false;
-	pimpl->lastDrawTime = 0;
+	pimpl->accumDrawTime = 0;
 	pimpl->drawingTerm  = 1.0f/60.0f;
 	pimpl->lastBindedTexID = 0;
 
@@ -181,9 +181,10 @@ void SWGameContext::onFrameMove()
 			scene->update();
 		}
 
-		float drawDeltaTIme = (SWTime.getTime() - pimpl->lastDrawTime);
-		if ( drawDeltaTIme >= pimpl->drawingTerm )
+		pimpl->accumDrawTime += SWTime.getDeltaTime();
+		if ( pimpl->accumDrawTime >= pimpl->drawingTerm )
 		{
+			pimpl->accumDrawTime -= pimpl->drawingTerm;
 			glutPostRedisplay();
 		}
 	}
@@ -195,13 +196,11 @@ void SWGameContext::onRender()
 	SW_PROFILER(test);
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
-		glClearColor( 0, 0, 1, 1 );
 		glClear( GL_COLOR_BUFFER_BIT );
 		scene->draw();
 		glutSwapBuffers();
 	}
 	SWTime.m_accumDraw += 1;
-	m_pimpl()->lastDrawTime = SWTime.getTime();
 }
 
 SWGameContext& SWGameContext::getInstance()
