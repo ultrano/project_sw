@@ -103,6 +103,9 @@
     <Filter Include="SWTime">
       <UniqueIdentifier>{adf6ab0f-926d-45df-9248-04d85d1886e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWInput">
+      <UniqueIdentifier>{75cc06d2-aaf4-4c03-b853-25f5a52cc109}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -219,6 +222,9 @@
     <ClInclude Include="header\SWTime.h">
       <Filter>SWTime</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWInput.h">
+      <Filter>SWInput</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -322,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="source\SWTime.cpp">
       <Filter>SWTime</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWInput.cpp">
+      <Filter>SWInput</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

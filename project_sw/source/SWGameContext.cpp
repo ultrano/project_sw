@@ -12,6 +12,7 @@
 #include "SWProfiler.h"
 #include "SWUtil.h"
 #include "SWTime.h"
+#include "SWInput.h"
 
 #include "stb_image.h"
 
@@ -38,12 +39,12 @@ void callbackMouse( int button, int state, int x, int y )
 	case GLUT_DOWN: state = SW_TouchPress;   break;
 	case GLUT_UP:   state = SW_TouchRelease; break;
 	}
-	SW_GC.onHandleEvent( state, x, y );
+	SWInput.onHandleEvent( state, x, y );
 }
 
 void callbackMouseMove( int x, int y )
 {
-	SW_GC.onHandleEvent( SW_TouchMove, x, y );
+	SWInput.onHandleEvent( SW_TouchMove, x, y );
 }
 
 void callbackReshape( int width, int height )
@@ -304,16 +305,6 @@ SWObject* SWGameContext::findItem( const std::string& key )
 	return itor->second();
 }
 
-void SWGameContext::onHandleEvent( int type, int param1, int param2 )
-{
-	m_pimpl()->touchState = type;
-	m_pimpl()->touchX = param1;
-	m_pimpl()->touchY = param2;
-
-	SWGameScene* scene = getScene();
-	if ( scene ) scene->handleEvent( type, param1, param2 );
-}
-
 void SWGameContext::onResize( int width, int height )
 {
 	// ºäÆ÷Æ® ÁöÁ¤.
@@ -323,21 +314,6 @@ void SWGameContext::onResize( int width, int height )
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	glOrtho( 0, width, height, 0,1000,-1000);
-}
-
-int SWGameContext::getTouchState() const
-{
-	return m_pimpl()->touchState;
-}
-
-int SWGameContext::getTouchX() const
-{
-	return m_pimpl()->touchX;
-}
-
-int SWGameContext::getTouchY() const
-{
-	return m_pimpl()->touchY;
 }
 
 unsigned int glLoadTexture( const char* fileName )

@@ -18,6 +18,7 @@ enum SWDefines
     SW_TouchPress    ,
     SW_TouchMove     ,
     SW_TouchRelease  ,
+	SW_TouchNone     ,
     
     //! 형태 관련.
     SW_Circle        ,

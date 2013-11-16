@@ -50,7 +50,7 @@ public:
     void pause();
     void update();
     void draw();
-    void handleEvent( int type, int x, int y );
+    void handleEvent( SWObject* );
     
     //! @breif 처음 시작할때만 한번 호출
     virtual void onAwake() {};
@@ -68,15 +68,10 @@ public:
     virtual void onUpdate() {};
     
     //! @breif 정해진 FPS 마다 화면 갱신시에 호출.
-    virtual void onDraw() {};
+    virtual void onPostDraw() {};
     
-    /*
-     @breif 터치 이벤트가 발생하면 호출
-     @param type SW_TouchPress, SW_TouchMove, SW_TouchRelease 가 넘어온다.
-     @param x 화면상의 가로 위치.
-     @param y 화면상의 세로 위치.
-     */
-    virtual void onHandleTouch( int type, int x, int y ) {};
+    //! @breif 터치 이벤트가 발생하면 호출
+	virtual void onHandleTouch() {};
     
 };
 

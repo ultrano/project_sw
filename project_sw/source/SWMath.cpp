@@ -33,6 +33,17 @@ float __SWMath::atan( float sinValue, float cosValue ) const
 	return atan2f( sinValue, cosValue );
 }
 
+float __SWMath::radianToAngle( float radian ) const
+{
+	return (radian*(180.0f/pi));
+}
+
+float __SWMath::angleToRadian( float angle ) const
+{
+	return (angle*(pi/180.0f));
+}
+
+
 int __SWMath::randomInt( int kMin, int kMax ) const
 {
 	if ( kMin > kMax )

@@ -15,6 +15,7 @@
 #include "SWLog.h"
 #include "SWDefines.h"
 #include "SWMath.h"
+#include "SWInput.h"
 
 #include "Cat.h"
 #include "Ball.h"
@@ -57,24 +58,37 @@ class TestScene : public SWGameScene
 		}
 
 		{
-			SWGameObject* go = new SWGameObject;
-			go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( "rat.png" ) );
-			go->addComponent<SWMeshFilter>()->setMesh(mesh);
-			go->setName( "rat" );
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( 170,500,0 ) );
-			transform->setLocalScale( SWVector3f( 50,50,0 ) );
+			SWGameObject* ratGO = new SWGameObject;
+			{
+				ratGO->setName( "rat" );
+				SWTransform* transform = ratGO->getComponent<SWTransform>();
+				transform->setLocalPosition( SWVector3f( 170,500,0 ) );
+				transform->setLocalScale( SWVector3f( 50,50,0 ) );
+			}
+
+			{
+				SWGameObject* go = new SWGameObject;
+				SWTransform* transform = go->getComponent<SWTransform>();
+				go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( "rat.png" ) );
+				go->addComponent<SWMeshFilter>()->setMesh(mesh);
+				transform->setParent( ratGO->getComponent<SWTransform>() );
+				transform->setLocalPosition( SWVector3f( 0.1, -0.35, 0 ) );
+			}
+
+			{
+				SWGameObject* go = new SWGameObject;
+				go->addComponent<BallGenerator>();
+				go->setName( "generator" );
+				SWTransform* transform = go->getComponent<SWTransform>();
+				transform->setParent( ratGO->getComponent<SWTransform>() );
+				transform->setLocalPosition( SWVector3f( 0.7,-0.25,0 ) );
+			}
 		}
 
-		{
-			SWGameObject* go = new SWGameObject;
-			go->addComponent<BallGenerator>();
-			go->setName( "generator" );
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setParent( find( "rat" )->getComponent<SWTransform>() );
-			transform->setLocalPosition( SWVector3f( 0.5,0.1,0 ) );
-		}
+	}
 
+	void OnTransformSet( SWTransform* transform )
+	{
 	}
 
 	void onUpdate()
@@ -85,18 +99,26 @@ class TestScene : public SWGameScene
 		SWGameObject* go = ratTrans->find("generator")->gameObject();
 		BallGenerator* gen = go->getComponent<BallGenerator>();
 
-		switch ( SW_GC.getTouchState() )
+		switch ( SWInput.getTouchState() )
 		{
 		case SW_TouchRelease : gen->turnOn = false; break;
 		case SW_TouchPress :   gen->turnOn = true;
 		case SW_TouchMove :
 			{
 				SWVector3f worldPos = ratTrans->getLocalPosition() * ratTrans->getWorldMatrix();
-				SWVector3f touchPos( SW_GC.getTouchX(), SW_GC.getTouchY(), 0 );
+				SWVector3f touchPos( SWInput.getTouchX(), SWInput.getTouchY(), 0 );
 				SWVector2f delta = (worldPos - touchPos).xy;
+				float power = delta.length();
 				gen->force = delta;
 				delta = delta.normalize();
-				ratTrans->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, SWMath.atan( delta.y, delta.x ) ) );
+				float maxRadian = SWMath.angleToRadian( 20 );
+				float minRadian = SWMath.angleToRadian( -20 );
+				float radian = SWMath.atan( delta.y, delta.x );
+				SWLog( "angle : %f", SWMath.radianToAngle( radian ) );
+				
+				radian = ( radian > maxRadian )? maxRadian : ( radian < minRadian )? minRadian : radian;
+				gen->force = SWVector2f( SWMath.cos(radian), SWMath.sin(radian) ) * power;
+				ratTrans->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, radian ) );
 			}
 			break;
 		}

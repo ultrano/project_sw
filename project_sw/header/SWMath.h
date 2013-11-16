@@ -40,6 +40,9 @@ public:
 
 	float atan( float sinValue, float cosValue ) const;
 
+	float radianToAngle( float radian ) const;
+	float angleToRadian( float angle ) const;
+
 	int   randomInt( int kMin, int kMax ) const;
 
 };

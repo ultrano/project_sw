@@ -99,6 +99,7 @@
     <ClInclude Include="header\SWGameContext.h" />
     <ClInclude Include="header\SWGameObject.h" />
     <ClInclude Include="header\SWGameScene.h" />
+    <ClInclude Include="header\SWInput.h" />
     <ClInclude Include="header\SWIOStream.h" />
     <ClInclude Include="header\SWLog.h" />
     <ClInclude Include="header\SWMath.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
+    <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWLog.cpp" />
     <ClCompile Include="source\SWMath.cpp" />
     <ClCompile Include="source\SWMatrix4x4.cpp" />

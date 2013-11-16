@@ -9,6 +9,7 @@
 #include "SWGameScene.h"
 #include "SWGameObject.h"
 #include "SWLog.h"
+#include "SWInput.h"
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
@@ -39,13 +40,14 @@ SWGameObject* SWGameScene::find( const char *name )
 
 void SWGameScene::awake()
 {
+	SWInput.addInputDelegate( GetDelegate(handleEvent) );
     onAwake();
 }
 
 void SWGameScene::destroy()
 {
-    onDestroy();
-    
+	onDestroy();
+	SWInput.removeInputDelegate( GetDelegate(handleEvent) );
 }
 
 void SWGameScene::resume()
@@ -80,11 +82,11 @@ void SWGameScene::draw()
 		renderer->render();
 	}
 	
-    onDraw();
+    onPostDraw();
 }
 
-void SWGameScene::handleEvent( int type, int x, int y )
+void SWGameScene::handleEvent( SWObject* )
 {
     //! 객체들에 대한 처리후 씬에게도 터치 처리를 호출
-    onHandleTouch( type, x, y );
+    onHandleTouch();
 }

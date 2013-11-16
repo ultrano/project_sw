@@ -25,22 +25,10 @@ public:
 	void onResume();
 	void onPause();
 	void onDestroy();
-	void onHandleEvent( int type, int param1, int param2 );
 	void onResize( int width, int height );
 
 	void* alloc( size_t size );
 	void  free( void* memory );
-
-	SWGameScene* getScene();
-	void setNextScene( SWGameScene* scene );
-
-	bool storeItem( const std::string& key, SWObject* item );
-	void removeItem( const std::string& key );
-	SWObject* findItem( const std::string& key );
-
-	int  getTouchState() const;
-	int  getTouchX() const;
-	int  getTouchY() const;
 
 	void setViewMatrix( const SWMatrix4x4& matrix );
 	void setModelMatrix( const SWMatrix4x4& matrix );
@@ -52,6 +40,13 @@ public:
 
 	unsigned int loadTexture( const std::string& path );
 	void bindTexture( unsigned int texID );
+
+	SWGameScene* getScene();
+	void setNextScene( SWGameScene* scene );
+
+	bool storeItem( const std::string& key, SWObject* item );
+	void removeItem( const std::string& key );
+	SWObject* findItem( const std::string& key );
 
 	static SWGameContext& getInstance();
 private:
