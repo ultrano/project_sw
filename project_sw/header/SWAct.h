@@ -5,14 +5,18 @@
 
 class SWAction;
 
-class SWAct : SWObject
+class SWAct : public SWObject
 {
+	friend class SWAction;
 	SW_RTTI( SWAct, SWObject );
 
 	SWWeakRef<SWAction> m_action;
 	bool m_isPaused;
 
 public:
+
+	SWAct();
+	~SWAct();
 
 	void setAction( SWAction* action );
 	SWAction* getAction();

@@ -8,18 +8,21 @@
 #include "SWVector2f.h"
 #include "SWMath.h"
 #include "SWTime.h"
+#include "SWAction.h"
+#include "SWActDestroy.h"
 
 void Ball::onAwake()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
+	SWAction* action = gameObject()->addComponent<SWAction>();
 
 	filter->setMesh( swrtti_cast<SWMesh>(SW_GC.findItem("unitRectMesh")) );
 	renderer->setTexture( SW_GC.loadTexture( "ball.png" ) );
 	transform->setLocalScale( SWVector3f::one * SWMath.randomInt( 5, 20 ) );
+	action->setAct( new SWActDestroy( 5 ) );
 
-	lifeTime = 5;
 }
 
 void Ball::onUpdate()
@@ -29,5 +32,4 @@ void Ball::onUpdate()
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWVector3f pos = transform->getLocalPosition();
 	transform->setLocalPosition( pos + (velocity*deltaTime) );
-	if ( ( lifeTime -= deltaTime ) < 0 ) gameObject()->destroy();
 }

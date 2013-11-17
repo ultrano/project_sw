@@ -8,7 +8,6 @@ class Cat : public SWBehavior
 	SW_RTTI( Cat, SWBehavior );
 
 public:
-	float lifeTime;
 	void onAwake();
 	void onUpdate();
 };

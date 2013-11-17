@@ -91,7 +91,9 @@
     <ClInclude Include="CatGenerator.h" />
     <ClInclude Include="header\stb_image.h" />
     <ClInclude Include="header\SWAct.h" />
+    <ClInclude Include="header\SWActDestroy.h" />
     <ClInclude Include="header\SWAction.h" />
+    <ClInclude Include="header\SWActSequence.h" />
     <ClInclude Include="header\SWBehavior.h" />
     <ClInclude Include="header\SWComponent.h" />
     <ClInclude Include="header\SWCriticalSection.h" />
@@ -133,7 +135,9 @@
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="source\stb_image.c" />
     <ClCompile Include="source\SWAct.cpp" />
+    <ClCompile Include="source\SWActDestroy.cpp" />
     <ClCompile Include="source\SWAction.cpp" />
+    <ClCompile Include="source\SWActSequence.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />

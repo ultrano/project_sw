@@ -15,7 +15,7 @@ void CatGenerator::onUpdate()
 	accum -= SWTime.getDeltaTime();
 	if ( accum < 0 )
 	{
-		accum = SWMath.randomInt( 30, 80 )/10.0f;
+		accum = SWMath.randomInt( 10, 50 )/10.0f;
 
 		SWGameObject* go = new SWGameObject;
 		go->addComponent<Cat>();

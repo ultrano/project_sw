@@ -24,3 +24,15 @@ void SWAction::onUpdate( SWObject* param )
 	m_spendTime += SWTime.getDeltaTime();
 	act->onUpdate();
 }
+
+void SWAction::setAct( SWAct* act )
+{
+	if ( act ) act->m_action = this;
+	m_act = act;
+	act->onStart();
+}
+
+SWAct* SWAction::getAct() const
+{
+	return m_act();
+}

@@ -11,7 +11,6 @@ class Ball : public SWBehavior
 public:
 	
 	SWVector3f velocity;
-	float lifeTime;
 
 	void onAwake();
 	void onUpdate();

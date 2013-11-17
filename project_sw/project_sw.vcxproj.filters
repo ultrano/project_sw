@@ -106,6 +106,9 @@
     <Filter Include="SWInput">
       <UniqueIdentifier>{75cc06d2-aaf4-4c03-b853-25f5a52cc109}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWAct\SWActDestroy">
+      <UniqueIdentifier>{15fe62fb-2bb8-4e57-921b-a5ad547aa75f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -225,6 +228,12 @@
     <ClInclude Include="header\SWInput.h">
       <Filter>SWInput</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActSequence.h">
+      <Filter>SWAct\SWActSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActDestroy.h">
+      <Filter>SWAct\SWActDestroy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -331,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="source\SWInput.cpp">
       <Filter>SWInput</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActSequence.cpp">
+      <Filter>SWAct\SWActSequence</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActDestroy.cpp">
+      <Filter>SWAct\SWActDestroy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

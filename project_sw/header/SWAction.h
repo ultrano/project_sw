@@ -11,6 +11,11 @@ class SWAction : public SWComponent
 	SWHardRef<SWAct> m_act;
 	float m_spendTime;
 
+public:
+
+	void setAct( SWAct* act );
+	SWAct* getAct() const;
+
 	void onStart();
 	void onRemove();
 	void onUpdate( SWObject* param );

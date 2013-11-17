@@ -19,7 +19,7 @@ void BallGenerator::onUpdate()
 	accum -= SWTime.getDeltaTime();
 	if ( accum <= 0 )
 	{
-		accum = 0.1f;
+		accum = 0.01f;
 
 		SWGameObject* ballGO = new SWGameObject;
 		Ball* ball = ballGO->addComponent<Ball>();

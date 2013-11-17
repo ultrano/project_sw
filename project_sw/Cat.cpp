@@ -9,12 +9,15 @@
 #include "SWTransform.h"
 #include "SWMath.h"
 #include "SWTime.h"
+#include "SWAction.h"
+#include "SWActDestroy.h"
 
 void Cat::onAwake()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
+	SWAction* action = gameObject()->addComponent<SWAction>();
 
 	filter->setMesh( swrtti_cast<SWMesh>(SW_GC.findItem("unitRectMesh")) );
 	switch ( SWMath.randomInt(1,3) )
@@ -27,7 +30,7 @@ void Cat::onAwake()
 	transform->setLocalScale( SWVector3f(50,50,1) );
 	transform->setLocalPosition( SWVector3f( 800, 500, 0 ) );
 
-	lifeTime = 10;
+	action->setAct( new SWActDestroy( 15 ) );
 }
 
 void Cat::onUpdate()
@@ -40,5 +43,4 @@ void Cat::onUpdate()
 	float angle = SWMath.pingPong( SWTime.getTime(), limit)-limit/2;
 	transform->setLocalPosition( pos );
 	transform->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ, angle ) );
-	if ( (lifeTime -= deltaTime) < 0 ) gameObject()->destroy();
 }
