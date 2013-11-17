@@ -43,6 +43,7 @@ class TestScene : public SWGameScene
 
 		SW_GC.storeItem("unitRectMesh", mesh);
 
+		//! background
 		{
 			SWGameObject* go = new SWGameObject;
 			go->addComponent<SWMeshFilter>()->setMesh( mesh );
@@ -50,6 +51,16 @@ class TestScene : public SWGameScene
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalScale( SWVector3f(800,600,0) );
 			transform->setLocalPosition( SWVector3f( 400,300,0 ) );
+		}
+		
+		//! under bar
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<SWMeshFilter>()->setMesh( mesh );
+			go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("under_bar.png") );
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalScale( SWVector3f(850,100,0) );
+			transform->setLocalPosition( SWVector3f( 400,560,0 ) );
 		}
 
 		{

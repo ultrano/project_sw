@@ -28,7 +28,7 @@ void Cat::onAwake()
 	}
 	
 	transform->setLocalScale( SWVector3f(50,50,1) );
-	transform->setLocalPosition( SWVector3f( 800, 500, 0 ) );
+	transform->setLocalPosition( SWVector3f( 800, 490, 0 ) );
 
 	action->setAct( new SWActDestroy( 15 ) );
 }
