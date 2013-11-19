@@ -39,6 +39,7 @@ public:
 	void indexedDraw( size_t count, unsigned short* indeces);
 
 	unsigned int loadTexture( const std::string& path );
+	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );
 
 	SWGameScene* getScene();

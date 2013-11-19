@@ -52,6 +52,13 @@ void callbackReshape( int width, int height )
 	SW_GC.onResize( width, height );
 }
 
+struct TextureInfo
+{
+	unsigned int id;
+	int width;
+	int height;
+};
+
 class SWGameContext::Pimpl : public SWRefCountable
 {
 public:
@@ -72,7 +79,8 @@ public:
 	SWMatrix4x4 viewMatrix;
 	bool  exitMainLoop;
 	
-	std::map<std::string,int> textureCache;
+	std::map<std::string,unsigned int> textureCache;
+	std::map<unsigned int,TextureInfo> textureTable;
 	std::map<std::string, SWHardRef<SWObject>> storage;
 	
 	int touchState;
@@ -263,19 +271,33 @@ void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
 
-unsigned int glLoadTexture( const char* fileName );
+unsigned int glLoadTexture( const char* fileName, int& width, int& height );
 
 unsigned int SWGameContext::loadTexture( const std::string& path )
 {
 	std::string solvedPath = m_pimpl()->resFolder + path;
-	std::map<std::string,int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
+	std::map<std::string,unsigned int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
 	
 	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
 
-	int texID = glLoadTexture(  solvedPath.c_str() );
-	if ( texID != 0 ) m_pimpl()->textureCache.insert( std::make_pair( solvedPath, texID ) );
+	TextureInfo info;
+	info.id = glLoadTexture(  solvedPath.c_str(), info.width, info.height );
+	if ( info.id != 0 )
+	{
+		m_pimpl()->textureTable.insert( std::make_pair( info.id, info ) );
+		m_pimpl()->textureCache.insert( std::make_pair( solvedPath, info.id ) );
+	}
 
-	return texID;
+	return info.id;
+}
+
+bool SWGameContext::getTextureSize( int texID, int& width, int& height )
+{
+	std::map<unsigned int,TextureInfo>::iterator itor = m_pimpl()->textureTable.find( texID );
+	if ( itor == m_pimpl()->textureTable.end() ) return false;
+	width  = itor->second.width;
+	height = itor->second.height;
+	return true;
 }
 
 void SWGameContext::bindTexture( unsigned int texID )
@@ -316,13 +338,13 @@ void SWGameContext::onResize( int width, int height )
 	glOrtho( 0, width, height, 0,1000,-1000);
 }
 
-unsigned int glLoadTexture( const char* fileName )
+unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 {
 	if ( !fileName ) return 0;
 
-	int x,y,comp;
+	int comp;
 
-	unsigned char* data = stbi_load( fileName, &x, &y, &comp, 0 );
+	unsigned char* data = stbi_load( fileName, &width, &height, &comp, 0 );
 
 	if ( !data ) return 0;
 
@@ -332,7 +354,7 @@ unsigned int glLoadTexture( const char* fileName )
 	glBindTexture(GL_TEXTURE_2D,texID[0]);
 	gluBuild2DMipmaps( GL_TEXTURE_2D
 		             , (comp==4)? GL_RGBA8 : (comp==3)? GL_RGB8 : GL_INVALID_ENUM
-					 , x, y
+					 , width, height
 					 , (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GLU_INVALID_VALUE
 					 , GL_UNSIGNED_BYTE, data );
 	/*

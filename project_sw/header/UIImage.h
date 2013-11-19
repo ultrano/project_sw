@@ -16,6 +16,11 @@ class UIImage : public SWComponent
 public:
 
 	void setSize( float width, float height );
+	void setSizeToTexture( float scaleW = 1, float scaleH = 1 );
+	
+	float getWidth() const { return m_width; }
+	float getHeight() const { return m_height; };
+
 	void setTexture( const std::string& filePath );
 
 };

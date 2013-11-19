@@ -35,16 +35,6 @@ class TestScene : public SWGameScene
 	void onAwake()
 	{
 
-		SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
-		SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
-		unsigned short indices[] = {0,1,2,3,2,1};
-		SWMesh* mesh = new SWMesh();
-		mesh->setVertexStream( 4, &vertices[0] );
-		mesh->setTexCoordStream( 4, &texCoords[0]);
-		mesh->setIndexStream( 6, &indices[0] );
-
-		SW_GC.storeItem("unitRectMesh", mesh);
-
 		//! background
 		{
 			SWGameObject* go = new SWGameObject;
@@ -55,16 +45,6 @@ class TestScene : public SWGameScene
 			image->setTexture( "background_02.png" );
 
 			transform->setLocalPosition( SWVector3f( 480,320,0 ) );
-		}
-		
-		//! under bar
-		{
-			SWGameObject* go = new SWGameObject;
-			go->addComponent<SWMeshFilter>()->setMesh( mesh );
-			go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("under_bar.png") );
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalScale( SWVector3f(850,100,0) );
-			transform->setLocalPosition( SWVector3f( 400,560,0 ) );
 		}
 
 		{
@@ -77,17 +57,17 @@ class TestScene : public SWGameScene
 			{
 				ratGO->setName( "rat" );
 				SWTransform* transform = ratGO->getComponent<SWTransform>();
-				transform->setLocalPosition( SWVector3f( 170,500,0 ) );
-				transform->setLocalScale( SWVector3f( 50,50,0 ) );
+				transform->setLocalPosition( SWVector3f( 170,550,0 ) );
 			}
 
 			{
 				SWGameObject* go = new SWGameObject;
 				SWTransform* transform = go->getComponent<SWTransform>();
-				go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( "rat.png" ) );
-				go->addComponent<SWMeshFilter>()->setMesh(mesh);
+				UIImage* image = go->addComponent<UIImage>();
+				image->setTexture( "rat.png" );
+				image->setSizeToTexture( 1.0f/2, 1.0f/2 );
 				transform->setParent( ratGO->getComponent<SWTransform>() );
-				transform->setLocalPosition( SWVector3f( 0.1, -0.35, 0 ) );
+				transform->setLocalPosition( SWVector3f( 0, -image->getHeight()/2, 0 ) );
 			}
 
 			{
@@ -96,7 +76,7 @@ class TestScene : public SWGameScene
 				go->setName( "generator" );
 				SWTransform* transform = go->getComponent<SWTransform>();
 				transform->setParent( ratGO->getComponent<SWTransform>() );
-				transform->setLocalPosition( SWVector3f( 0.7,-0.25,0 ) );
+				transform->setLocalPosition( SWVector3f( 30,-30,0 ) );
 			}
 		}
 
@@ -148,6 +128,6 @@ class TestScene : public SWGameScene
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "../resource/", 800, 600 );
+	SW_GC.onStart( new TestScene, "../resource/", 960, 640 );
 	return 0;
 }

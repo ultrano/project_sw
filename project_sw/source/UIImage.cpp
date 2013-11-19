@@ -9,7 +9,6 @@
 
 void UIImage::onAwake()
 {
-	
 	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
 	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
 	unsigned short indices[] = {0,1,2,3,2,1};
@@ -22,8 +21,21 @@ void UIImage::onAwake()
 	gameObject()->addComponent<SWMeshRenderer>();
 }
 
+void UIImage::setSizeToTexture( float scaleW, float scaleH )
+{
+	unsigned int texID = gameObject()->getComponent<SWMeshRenderer>()->getTexture();
+	if ( texID == 0 ) return;
+	int width, height;
+	SW_GC.getTextureSize( texID, width, height );
+	scaleW = (scaleW == 0)? 1:scaleW;
+	scaleH = (scaleH == 0)? 1:scaleH;
+	setSize( width*scaleW, height*scaleH );
+}
+
 void UIImage::setSize( float width, float height )
 {
+	m_width = width;
+	m_height = height;
 	SWMesh* mesh = gameObject()->getComponent<SWMeshFilter>()->getMesh();
 	
 	SWVector3f vertices[] = 

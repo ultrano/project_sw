@@ -11,24 +11,24 @@
 #include "SWTime.h"
 #include "SWAction.h"
 #include "SWActDestroy.h"
+#include "UIImage.h"
 
 void Cat::onAwake()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
-	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
-	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
 	SWAction* action = gameObject()->addComponent<SWAction>();
+	UIImage* image = gameObject()->addComponent<UIImage>();
 
-	filter->setMesh( swrtti_cast<SWMesh>(SW_GC.findItem("unitRectMesh")) );
 	switch ( SWMath.randomInt(1,3) )
 	{
-	case 1: renderer->setTexture( SW_GC.loadTexture( "cat1.png" ) ); break;
-	case 2: renderer->setTexture( SW_GC.loadTexture( "cat2.png" ) ); break;
-	case 3: renderer->setTexture( SW_GC.loadTexture( "cat3.png" ) ); break;
+	case 1: image->setTexture( "cat1.png" ); break;
+	case 2: image->setTexture( "cat2.png" ); break;
+	case 3: image->setTexture( "cat3.png" ); break;
 	}
 	
-	transform->setLocalScale( SWVector3f(50,50,1) );
-	transform->setLocalPosition( SWVector3f( 800, 490, 0 ) );
+	image->setSizeToTexture( 1.0f/8.0f, 1.0f/8.0f );
+
+	transform->setLocalPosition( SWVector3f( 800, 525, 0 ) );
 
 	action->setAct( new SWActDestroy( 15 ) );
 }
