@@ -123,6 +123,7 @@
     <ClInclude Include="header\SWTransform.h" />
     <ClInclude Include="header\SWVector3f.h" />
     <ClInclude Include="header\SWUtil.h" />
+    <ClInclude Include="header\UIImage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="BallGenerator.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="source\SWTransform.cpp" />
     <ClCompile Include="source\SWVector3f.cpp" />
     <ClCompile Include="source\SWUtil.cpp" />
+    <ClCompile Include="source\UIImage.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -9,105 +9,114 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="SWGameContext">
-      <UniqueIdentifier>{8fb5d447-6734-4df3-a384-1d6ca4771a77}</UniqueIdentifier>
+    <Filter Include="SW">
+      <UniqueIdentifier>{07ed3c36-2751-4471-9b54-228c0c2ad7aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWRefCounter">
-      <UniqueIdentifier>{d11294cc-3ff9-400d-b09e-c1164906f968}</UniqueIdentifier>
+    <Filter Include="SW\SWAct">
+      <UniqueIdentifier>{417bfde0-887e-4bc4-b2d0-82158badd596}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWGameObject">
-      <UniqueIdentifier>{3f54237a-f40f-4ff3-bd4b-dcf2ea602650}</UniqueIdentifier>
+    <Filter Include="SW\SWAct\SWActSequence">
+      <UniqueIdentifier>{bd8323b7-b59a-4bbf-918e-5657db5015f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWComponent">
+    <Filter Include="SW\SWAct\SWActDestroy">
+      <UniqueIdentifier>{15fe62fb-2bb8-4e57-921b-a5ad547aa75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWVector3f">
+      <UniqueIdentifier>{8ddbf9e9-95dd-4981-bcc6-23ecd2bbeb92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAction">
+      <UniqueIdentifier>{d098dfcd-5664-483e-9f89-bac010d326db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWBehavior">
+      <UniqueIdentifier>{39a75a20-8771-42aa-89c1-32b3ecc62459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWComponent">
       <UniqueIdentifier>{9d31a6eb-c5ac-4766-a289-35782ac2f3f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWObject">
-      <UniqueIdentifier>{c21dcecc-37fe-451b-928b-e74fa0f19540}</UniqueIdentifier>
+    <Filter Include="SW\SWCriticalSection">
+      <UniqueIdentifier>{16c5ebcb-9f3e-4e4d-9a5e-292d485bf32f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWMemory">
-      <UniqueIdentifier>{a50a777f-02d5-44ad-bedc-fb5abe23a8b3}</UniqueIdentifier>
+    <Filter Include="SW\SWDefines">
+      <UniqueIdentifier>{abf48f21-422b-4dd4-9d10-8507e7fb15de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWLog">
+    <Filter Include="SW\SWGameContext">
+      <UniqueIdentifier>{8fb5d447-6734-4df3-a384-1d6ca4771a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWGameObject">
+      <UniqueIdentifier>{3f54237a-f40f-4ff3-bd4b-dcf2ea602650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWGameScene">
+      <UniqueIdentifier>{19a6b752-b658-402d-b0b8-312db9eae0df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWInput">
+      <UniqueIdentifier>{75cc06d2-aaf4-4c03-b853-25f5a52cc109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWIOStream">
+      <UniqueIdentifier>{874cbedd-84c4-4c95-b920-a4d96c5fecc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWLog">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="SWRtti">
-      <UniqueIdentifier>{a2e0de22-a0db-4f7e-b16b-d5a5385a7868}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWGameScene">
-      <UniqueIdentifier>{19a6b752-b658-402d-b0b8-312db9eae0df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWVector3f">
-      <UniqueIdentifier>{8ddbf9e9-95dd-4981-bcc6-23ecd2bbeb92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWQuaternion">
-      <UniqueIdentifier>{186f0b12-d65e-49e2-8d8c-15ddfbae1c5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWMatrix4x4">
-      <UniqueIdentifier>{7cfbad08-1636-4df7-92fe-e9950e2bd7f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWMeshRenderer">
-      <UniqueIdentifier>{d37d7ca5-6f1f-4d7a-8d79-3492dccd3fc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWTransform">
-      <UniqueIdentifier>{e2cf3c4f-1cee-43b1-8b30-fbad2e4d42d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWVector2f">
-      <UniqueIdentifier>{7c13e6ee-49b4-4d75-b8e3-aba2f74e41cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWTimer">
-      <UniqueIdentifier>{339794a3-eac0-4bfe-90cf-7a7ca549ff5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWRect">
-      <UniqueIdentifier>{30040ce0-2054-48ae-8605-7090e6ee038e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWCriticalSection">
-      <UniqueIdentifier>{16c5ebcb-9f3e-4e4d-9a5e-292d485bf32f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWBehavior">
-      <UniqueIdentifier>{39a75a20-8771-42aa-89c1-32b3ecc62459}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWDefines">
-      <UniqueIdentifier>{abf48f21-422b-4dd4-9d10-8507e7fb15de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWRenderer">
-      <UniqueIdentifier>{dea0fdeb-5a64-47f7-bc63-bd6b58e4b14d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWMeshFilter">
-      <UniqueIdentifier>{01fb586c-a08e-4d91-8409-ffb29a556157}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWMesh">
-      <UniqueIdentifier>{7eab4a69-01e2-445b-960e-8ff0c4d39ee8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWIOStream">
-      <UniqueIdentifier>{874cbedd-84c4-4c95-b920-a4d96c5fecc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SWMath">
+    <Filter Include="SW\SWMath">
       <UniqueIdentifier>{34b4e97a-c1e2-434e-9f63-14a4fbb5bbbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWAction">
-      <UniqueIdentifier>{d098dfcd-5664-483e-9f89-bac010d326db}</UniqueIdentifier>
+    <Filter Include="SW\SWMatrix4x4">
+      <UniqueIdentifier>{7cfbad08-1636-4df7-92fe-e9950e2bd7f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWAct">
-      <UniqueIdentifier>{417bfde0-887e-4bc4-b2d0-82158badd596}</UniqueIdentifier>
+    <Filter Include="SW\SWMemory">
+      <UniqueIdentifier>{a50a777f-02d5-44ad-bedc-fb5abe23a8b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWAct\SWActSequence">
-      <UniqueIdentifier>{bd8323b7-b59a-4bbf-918e-5657db5015f4}</UniqueIdentifier>
+    <Filter Include="SW\SWMesh">
+      <UniqueIdentifier>{7eab4a69-01e2-445b-960e-8ff0c4d39ee8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWProfiler">
+    <Filter Include="SW\SWMeshFilter">
+      <UniqueIdentifier>{01fb586c-a08e-4d91-8409-ffb29a556157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWMeshRenderer">
+      <UniqueIdentifier>{d37d7ca5-6f1f-4d7a-8d79-3492dccd3fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWObject">
+      <UniqueIdentifier>{c21dcecc-37fe-451b-928b-e74fa0f19540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWProfiler">
       <UniqueIdentifier>{cd786f91-2f4b-4479-a086-efc0e3cf3b49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWUtil">
-      <UniqueIdentifier>{033f681d-c964-4675-a04e-85d9dfb5c353}</UniqueIdentifier>
+    <Filter Include="SW\SWQuaternion">
+      <UniqueIdentifier>{186f0b12-d65e-49e2-8d8c-15ddfbae1c5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWTime">
+    <Filter Include="SW\SWRect">
+      <UniqueIdentifier>{30040ce0-2054-48ae-8605-7090e6ee038e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWRefCounter">
+      <UniqueIdentifier>{d11294cc-3ff9-400d-b09e-c1164906f968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWRenderer">
+      <UniqueIdentifier>{dea0fdeb-5a64-47f7-bc63-bd6b58e4b14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWRtti">
+      <UniqueIdentifier>{a2e0de22-a0db-4f7e-b16b-d5a5385a7868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWTime">
       <UniqueIdentifier>{adf6ab0f-926d-45df-9248-04d85d1886e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWInput">
-      <UniqueIdentifier>{75cc06d2-aaf4-4c03-b853-25f5a52cc109}</UniqueIdentifier>
+    <Filter Include="SW\SWTimer">
+      <UniqueIdentifier>{339794a3-eac0-4bfe-90cf-7a7ca549ff5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWAct\SWActDestroy">
-      <UniqueIdentifier>{15fe62fb-2bb8-4e57-921b-a5ad547aa75f}</UniqueIdentifier>
+    <Filter Include="SW\SWTransform">
+      <UniqueIdentifier>{e2cf3c4f-1cee-43b1-8b30-fbad2e4d42d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWUtil">
+      <UniqueIdentifier>{033f681d-c964-4675-a04e-85d9dfb5c353}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWVector2f">
+      <UniqueIdentifier>{7c13e6ee-49b4-4d75-b8e3-aba2f74e41cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{36941f73-d2c9-4191-9c5b-92e204d297c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UIImage">
+      <UniqueIdentifier>{97020cc5-59cb-42ee-a602-e9d67883e7a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,79 +130,79 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMemory.h">
-      <Filter>SWMemory</Filter>
+      <Filter>SW\SWMemory</Filter>
     </ClInclude>
     <ClInclude Include="header\SWLog.h">
-      <Filter>SWLog</Filter>
+      <Filter>SW\SWLog</Filter>
     </ClInclude>
     <ClInclude Include="header\SWGameContext.h">
-      <Filter>SWGameContext</Filter>
+      <Filter>SW\SWGameContext</Filter>
     </ClInclude>
     <ClInclude Include="header\SWRefCounter.h">
-      <Filter>SWRefCounter</Filter>
+      <Filter>SW\SWRefCounter</Filter>
     </ClInclude>
     <ClInclude Include="header\SWObject.h">
-      <Filter>SWObject</Filter>
+      <Filter>SW\SWObject</Filter>
     </ClInclude>
     <ClInclude Include="header\SWGameObject.h">
-      <Filter>SWGameObject</Filter>
+      <Filter>SW\SWGameObject</Filter>
     </ClInclude>
     <ClInclude Include="header\SWComponent.h">
-      <Filter>SWComponent</Filter>
+      <Filter>SW\SWComponent</Filter>
     </ClInclude>
     <ClInclude Include="header\SWRtti.h">
-      <Filter>SWRtti</Filter>
+      <Filter>SW\SWRtti</Filter>
     </ClInclude>
     <ClInclude Include="header\SWGameScene.h">
-      <Filter>SWGameScene</Filter>
+      <Filter>SW\SWGameScene</Filter>
     </ClInclude>
     <ClInclude Include="header\SWDefines.h">
-      <Filter>SWDefines</Filter>
+      <Filter>SW\SWDefines</Filter>
     </ClInclude>
     <ClInclude Include="header\SWVector3f.h">
-      <Filter>SWVector3f</Filter>
+      <Filter>SW\SWVector3f</Filter>
     </ClInclude>
     <ClInclude Include="header\SWQuaternion.h">
-      <Filter>SWQuaternion</Filter>
+      <Filter>SW\SWQuaternion</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMatrix4x4.h">
-      <Filter>SWMatrix4x4</Filter>
+      <Filter>SW\SWMatrix4x4</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMeshRenderer.h">
-      <Filter>SWMeshRenderer</Filter>
+      <Filter>SW\SWMeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="header\SWTransform.h">
-      <Filter>SWTransform</Filter>
+      <Filter>SW\SWTransform</Filter>
     </ClInclude>
     <ClInclude Include="header\SWVector2f.h">
-      <Filter>SWVector2f</Filter>
+      <Filter>SW\SWVector2f</Filter>
     </ClInclude>
     <ClInclude Include="header\SWTimer.h">
-      <Filter>SWTimer</Filter>
+      <Filter>SW\SWTimer</Filter>
     </ClInclude>
     <ClInclude Include="header\SWRect.h">
-      <Filter>SWRect</Filter>
+      <Filter>SW\SWRect</Filter>
     </ClInclude>
     <ClInclude Include="header\SWCriticalSection.h">
-      <Filter>SWCriticalSection</Filter>
+      <Filter>SW\SWCriticalSection</Filter>
     </ClInclude>
     <ClInclude Include="header\SWBehavior.h">
-      <Filter>SWBehavior</Filter>
+      <Filter>SW\SWBehavior</Filter>
     </ClInclude>
     <ClInclude Include="header\stb_image.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMeshFilter.h">
-      <Filter>SWMeshFilter</Filter>
+      <Filter>SW\SWMeshFilter</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMesh.h">
-      <Filter>SWMesh</Filter>
+      <Filter>SW\SWMesh</Filter>
     </ClInclude>
     <ClInclude Include="header\SWRenderer.h">
-      <Filter>SWRenderer</Filter>
+      <Filter>SW\SWRenderer</Filter>
     </ClInclude>
     <ClInclude Include="header\SWIOStream.h">
-      <Filter>SWIOStream</Filter>
+      <Filter>SW\SWIOStream</Filter>
     </ClInclude>
     <ClInclude Include="Cat.h">
       <Filter>소스 파일</Filter>
@@ -202,7 +211,7 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="header\SWMath.h">
-      <Filter>SWMath</Filter>
+      <Filter>SW\SWMath</Filter>
     </ClInclude>
     <ClInclude Include="BallGenerator.h">
       <Filter>소스 파일</Filter>
@@ -211,28 +220,31 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="header\SWAction.h">
-      <Filter>SWAction</Filter>
+      <Filter>SW\SWAction</Filter>
     </ClInclude>
     <ClInclude Include="header\SWAct.h">
-      <Filter>SWAct</Filter>
+      <Filter>SW\SWAct</Filter>
     </ClInclude>
     <ClInclude Include="header\SWProfiler.h">
-      <Filter>SWProfiler</Filter>
+      <Filter>SW\SWProfiler</Filter>
     </ClInclude>
     <ClInclude Include="header\SWUtil.h">
-      <Filter>SWUtil</Filter>
+      <Filter>SW\SWUtil</Filter>
     </ClInclude>
     <ClInclude Include="header\SWTime.h">
-      <Filter>SWTime</Filter>
+      <Filter>SW\SWTime</Filter>
     </ClInclude>
     <ClInclude Include="header\SWInput.h">
-      <Filter>SWInput</Filter>
+      <Filter>SW\SWInput</Filter>
     </ClInclude>
     <ClInclude Include="header\SWActSequence.h">
-      <Filter>SWAct\SWActSequence</Filter>
+      <Filter>SW\SWAct\SWActSequence</Filter>
     </ClInclude>
     <ClInclude Include="header\SWActDestroy.h">
-      <Filter>SWAct\SWActDestroy</Filter>
+      <Filter>SW\SWAct\SWActDestroy</Filter>
+    </ClInclude>
+    <ClInclude Include="header\UIImage.h">
+      <Filter>UI\UIImage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,70 +255,70 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMemory.cpp">
-      <Filter>SWMemory</Filter>
+      <Filter>SW\SWMemory</Filter>
     </ClCompile>
     <ClCompile Include="source\SWLog.cpp">
-      <Filter>SWLog</Filter>
+      <Filter>SW\SWLog</Filter>
     </ClCompile>
     <ClCompile Include="source\SWGameContext.cpp">
-      <Filter>SWGameContext</Filter>
+      <Filter>SW\SWGameContext</Filter>
     </ClCompile>
     <ClCompile Include="source\SWRefCounter.cpp">
-      <Filter>SWRefCounter</Filter>
+      <Filter>SW\SWRefCounter</Filter>
     </ClCompile>
     <ClCompile Include="source\SWObject.cpp">
-      <Filter>SWObject</Filter>
+      <Filter>SW\SWObject</Filter>
     </ClCompile>
     <ClCompile Include="source\SWGameObject.cpp">
-      <Filter>SWGameObject</Filter>
+      <Filter>SW\SWGameObject</Filter>
     </ClCompile>
     <ClCompile Include="source\SWComponent.cpp">
-      <Filter>SWComponent</Filter>
+      <Filter>SW\SWComponent</Filter>
     </ClCompile>
     <ClCompile Include="source\SWGameScene.cpp">
-      <Filter>SWGameScene</Filter>
+      <Filter>SW\SWGameScene</Filter>
     </ClCompile>
     <ClCompile Include="source\SWVector3f.cpp">
-      <Filter>SWVector3f</Filter>
+      <Filter>SW\SWVector3f</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMatrix4x4.cpp">
-      <Filter>SWMatrix4x4</Filter>
+      <Filter>SW\SWMatrix4x4</Filter>
     </ClCompile>
     <ClCompile Include="source\SWQuaternion.cpp">
-      <Filter>SWQuaternion</Filter>
+      <Filter>SW\SWQuaternion</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMeshRenderer.cpp">
-      <Filter>SWMeshRenderer</Filter>
+      <Filter>SW\SWMeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="source\SWTransform.cpp">
-      <Filter>SWTransform</Filter>
+      <Filter>SW\SWTransform</Filter>
     </ClCompile>
     <ClCompile Include="source\SWVector2f.cpp">
-      <Filter>SWVector2f</Filter>
+      <Filter>SW\SWVector2f</Filter>
     </ClCompile>
     <ClCompile Include="source\SWTimer.cpp">
-      <Filter>SWTimer</Filter>
+      <Filter>SW\SWTimer</Filter>
     </ClCompile>
     <ClCompile Include="source\SWRect.cpp">
-      <Filter>SWRect</Filter>
+      <Filter>SW\SWRect</Filter>
     </ClCompile>
     <ClCompile Include="source\SWCriticalSection.cpp">
-      <Filter>SWCriticalSection</Filter>
+      <Filter>SW\SWCriticalSection</Filter>
     </ClCompile>
     <ClCompile Include="source\SWBehavior.cpp">
-      <Filter>SWBehavior</Filter>
+      <Filter>SW\SWBehavior</Filter>
     </ClCompile>
     <ClCompile Include="source\stb_image.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMeshFilter.cpp">
-      <Filter>SWMeshFilter</Filter>
+      <Filter>SW\SWMeshFilter</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMesh.cpp">
-      <Filter>SWMesh</Filter>
+      <Filter>SW\SWMesh</Filter>
     </ClCompile>
     <ClCompile Include="source\SWRenderer.cpp">
-      <Filter>SWRenderer</Filter>
+      <Filter>SW\SWRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Cat.cpp">
       <Filter>소스 파일</Filter>
@@ -315,7 +327,7 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="source\SWMath.cpp">
-      <Filter>SWMath</Filter>
+      <Filter>SW\SWMath</Filter>
     </ClCompile>
     <ClCompile Include="BallGenerator.cpp">
       <Filter>소스 파일</Filter>
@@ -324,28 +336,31 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="source\SWAction.cpp">
-      <Filter>SWAction</Filter>
+      <Filter>SW\SWAction</Filter>
     </ClCompile>
     <ClCompile Include="source\SWAct.cpp">
-      <Filter>SWAct</Filter>
+      <Filter>SW\SWAct</Filter>
     </ClCompile>
     <ClCompile Include="source\SWProfiler.cpp">
-      <Filter>SWProfiler</Filter>
+      <Filter>SW\SWProfiler</Filter>
     </ClCompile>
     <ClCompile Include="source\SWUtil.cpp">
-      <Filter>SWUtil</Filter>
+      <Filter>SW\SWUtil</Filter>
     </ClCompile>
     <ClCompile Include="source\SWTime.cpp">
-      <Filter>SWTime</Filter>
+      <Filter>SW\SWTime</Filter>
     </ClCompile>
     <ClCompile Include="source\SWInput.cpp">
-      <Filter>SWInput</Filter>
+      <Filter>SW\SWInput</Filter>
     </ClCompile>
     <ClCompile Include="source\SWActSequence.cpp">
-      <Filter>SWAct\SWActSequence</Filter>
+      <Filter>SW\SWAct\SWActSequence</Filter>
     </ClCompile>
     <ClCompile Include="source\SWActDestroy.cpp">
-      <Filter>SWAct\SWActDestroy</Filter>
+      <Filter>SW\SWAct\SWActDestroy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UIImage.cpp">
+      <Filter>UI\UIImage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

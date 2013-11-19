@@ -17,6 +17,8 @@
 #include "SWMath.h"
 #include "SWInput.h"
 
+#include "UIImage.h"
+
 #include "Cat.h"
 #include "Ball.h"
 #include "BallGenerator.h"
@@ -46,11 +48,13 @@ class TestScene : public SWGameScene
 		//! background
 		{
 			SWGameObject* go = new SWGameObject;
-			go->addComponent<SWMeshFilter>()->setMesh( mesh );
-			go->addComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture("background_02.png") );
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalScale( SWVector3f(800,600,0) );
-			transform->setLocalPosition( SWVector3f( 400,300,0 ) );
+			UIImage* image = go->addComponent<UIImage>();
+
+			image->setSize( 960, 640 );
+			image->setTexture( "background_02.png" );
+
+			transform->setLocalPosition( SWVector3f( 480,320,0 ) );
 		}
 		
 		//! under bar
