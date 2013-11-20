@@ -98,7 +98,7 @@ void SWGameScene::draw()
     onPostDraw();
 }
 
-void SWGameScene::handleEvent( SWObject* )
+void SWGameScene::handleEvent()
 {
     //! 객체들에 대한 처리후 씬에게도 터치 처리를 호출
     onHandleTouch();

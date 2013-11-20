@@ -50,7 +50,7 @@ public:
     void pause();
     void update();
     void draw();
-    void handleEvent( SWObject* );
+    void handleEvent();
     
     //! @breif 처음 시작할때만 한번 호출
     virtual void onAwake() {};

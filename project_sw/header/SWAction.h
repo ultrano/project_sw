@@ -18,7 +18,7 @@ public:
 
 	void onStart();
 	void onRemove();
-	void onUpdate( SWObject* param );
+	void onUpdate();
 };
 
 #endif // SWAction_h__
