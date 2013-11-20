@@ -32,9 +32,13 @@ class TestScene : public SWGameScene
 {
 	SW_RTTI( TestScene, SWGameScene );
 	SWHardRef<SWGameObject> target;
+
+	void noParam(){};
+	void hasParam( SWGameObject* ){};
 	void onAwake()
 	{
-
+		SWHandler2 h1 = SWHandler2::delimit(&SWTransform::onUpdate);
+		SWHandler2 h2 = SWHandler2::delimit(&__this::hasParam);
 		//! background
 		{
 			SWGameObject* go = new SWGameObject;
