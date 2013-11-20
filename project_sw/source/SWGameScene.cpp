@@ -47,7 +47,20 @@ void SWGameScene::awake()
 void SWGameScene::destroy()
 {
 	onDestroy();
+
+	m_updates = m_roots;
+	GameObjectList::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ; ++itor )
+	{
+		SWGameObject* object = (*itor)();
+		object->destroy();
+	}
+
+	m_updates.clear();
+	m_renderers.clear();
+
 	SWInput.removeInputDelegate( GetDelegate(handleEvent) );
+	__super::destroy();
 }
 
 void SWGameScene::resume()

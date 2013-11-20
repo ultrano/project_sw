@@ -130,8 +130,32 @@ class TestScene : public SWGameScene
 	}
 };
 
+class TitleScene : public SWGameScene
+{
+	SW_RTTI( TitleScene, SWGameScene );
+	void onAwake()
+	{
+		//! background
+		{
+			SWGameObject* go = new SWGameObject;
+			SWTransform* transform = go->getComponent<SWTransform>();
+			UIImage* image = go->addComponent<UIImage>();
+
+			image->setSize( 960, 640 );
+			image->setTexture( "background/title_01.png" );
+
+			transform->setLocalPosition( SWVector3f( 480,320,0 ) );
+		}
+	}
+	void onHandleTouch()
+	{
+		if ( SWInput.getTouchState() != SW_TouchPress ) return;
+		SW_GC.setNextScene( new TestScene );
+	}
+};
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TestScene, "../resource/", 960, 640 );
+	SW_GC.onStart( new TitleScene, "../resource/", 960, 640 );
 	return 0;
 }
