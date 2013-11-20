@@ -5,7 +5,7 @@
 //  Created by 한상운 on 13. 6. 12..
 //  Copyright (c) 2013년 한상운. All rights reserved.
 //
-
+/*
 #include "SWTimer.h"
 
 SWTimer::SWTimer( SWObject* target, SWHandler handler)
@@ -54,3 +54,4 @@ void SWTimer::update( float elapsed )
         (m_target()->*m_handler)( this );
     }
 }
+*/

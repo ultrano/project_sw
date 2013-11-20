@@ -8,7 +8,7 @@
 
 #ifndef protopang_SWTimer_h
 #define protopang_SWTimer_h
-
+/*
 #include "SWObject.h"
 #include <string>
 
@@ -54,5 +54,5 @@ public:
     //! 시간을 축척하기 위한 업데이트
     void update( float elapsed );
 };
-
+*/
 #endif
