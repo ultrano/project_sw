@@ -52,6 +52,6 @@ void __SWInput::onHandleEvent( int type, int param1, int param2 )
 	for ( ; itor != m_listeners.end() ; ++itor )
 	{
 		SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
-		del->call(NULL);
+		del->call();
 	}
 }

@@ -52,10 +52,10 @@ void UIImage::onUpdate()
 	case UI_Right  : anchor.x = -1.0f; break;
 	}
 	SWVector3f vertices[] = 
-	{ SWVector3f(anchor.x*m_width, anchor.y*m_height, 0)
-	, SWVector3f(anchor.x*m_width, anchor.y*m_height, 0)
-	, SWVector3f(anchor.x*m_width, anchor.y*m_height, 0)
-	, SWVector3f(anchor.x*m_width, anchor.y*m_height, 0) };
+	{ SWVector3f(-anchor.x*m_width, -anchor.y*m_height, 0)
+	, SWVector3f(+anchor.x*m_width, -anchor.y*m_height, 0)
+	, SWVector3f(-anchor.x*m_width, +anchor.y*m_height, 0)
+	, SWVector3f(+anchor.x*m_width, +anchor.y*m_height, 0) };
 	mesh->setVertexStream( 4, &vertices[0] );
 }
 

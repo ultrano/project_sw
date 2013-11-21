@@ -47,7 +47,20 @@ void SWGameScene::awake()
 void SWGameScene::destroy()
 {
 	onDestroy();
+
+	m_updates = m_roots;
+	GameObjectList::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ; ++itor )
+	{
+		SWGameObject* object = (*itor)();
+		object->destroy();
+	}
+
+	m_updates.clear();
+	m_renderers.clear();
+
 	SWInput.removeInputDelegate( GetDelegate(handleEvent) );
+	__super::destroy();
 }
 
 void SWGameScene::resume()
@@ -85,7 +98,7 @@ void SWGameScene::draw()
     onPostDraw();
 }
 
-void SWGameScene::handleEvent( SWObject* )
+void SWGameScene::handleEvent()
 {
     //! 객체들에 대한 처리후 씬에게도 터치 처리를 호출
     onHandleTouch();

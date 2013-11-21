@@ -15,7 +15,7 @@ void SWAction::onRemove()
 	__super::onRemove();
 }
 
-void SWAction::onUpdate( SWObject* param )
+void SWAction::onUpdate()
 {
 	SWAct* act = m_act();
 	if ( act == NULL ) return;
