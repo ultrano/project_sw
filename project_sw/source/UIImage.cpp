@@ -41,21 +41,22 @@ void UIImage::onUpdate()
 	SWVector2f anchor;
 	switch ( m_alignV )
 	{
-	case UI_Center : anchor.y = 0.5f; break;
-	case UI_Top    : anchor.y = 1.0f; break;
-	case UI_Bottom : anchor.y = -1.0f; break;
+	case UI_Center : anchor.x = 0; break;
+	case UI_Left   : anchor.x = +0.5f; break;
+	case UI_Right  : anchor.x = -0.5f; break;
 	}
 	switch ( m_alignH )
 	{
-	case UI_Center : anchor.x = 0.5f; break;
-	case UI_Left   : anchor.x = 1.0f; break;
-	case UI_Right  : anchor.x = -1.0f; break;
+	case UI_Center : anchor.y = 0; break;
+	case UI_Top    : anchor.y = +0.5f; break;
+	case UI_Bottom : anchor.y = -0.5f; break;
 	}
+	
 	SWVector3f vertices[] = 
-	{ SWVector3f(-anchor.x*m_width, -anchor.y*m_height, 0)
-	, SWVector3f(+anchor.x*m_width, -anchor.y*m_height, 0)
-	, SWVector3f(-anchor.x*m_width, +anchor.y*m_height, 0)
-	, SWVector3f(+anchor.x*m_width, +anchor.y*m_height, 0) };
+	{ SWVector3f((anchor.x-0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
+	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
+	, SWVector3f((anchor.x-0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
+	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y+0.5f)*m_height, 0) };
 	mesh->setVertexStream( 4, &vertices[0] );
 }
 

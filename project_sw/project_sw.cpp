@@ -17,6 +17,7 @@
 #include "SWMath.h"
 #include "SWInput.h"
 
+#include "UIDefines.h"
 #include "UIImage.h"
 
 #include "Cat.h"
@@ -43,8 +44,9 @@ class TestScene : public SWGameScene
 
 			image->setSize( 960, 640 );
 			image->setTexture( "background_02.png" );
+			image->setAlign( UI_Left, UI_Top );
 
-			transform->setLocalPosition( SWVector3f( 480,320,0 ) );
+			//transform->setLocalPosition( SWVector3f( 480,320,0 ) );
 		}
 
 		{
@@ -66,8 +68,8 @@ class TestScene : public SWGameScene
 				UIImage* image = go->addComponent<UIImage>();
 				image->setTexture( "rat.png" );
 				image->setSizeToTexture();
+				image->setAlignH( UI_Bottom );
 				transform->setParent( ratGO->getComponent<SWTransform>() );
-				transform->setLocalPosition( SWVector3f( 0, -image->getHeight()/2, 0 ) );
 			}
 
 			{
@@ -139,8 +141,9 @@ class TitleScene : public SWGameScene
 
 			image->setSize( 960, 640 );
 			image->setTexture( "background/title_01.png" );
+			image->setAlign( UI_Left, UI_Top );
 
-			transform->setLocalPosition( SWVector3f( 480,320,0 ) );
+			//transform->setLocalPosition( SWVector3f( 480,320,0 ) );
 		}
 	}
 	void onHandleTouch()
