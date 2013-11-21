@@ -69,7 +69,7 @@ class TestScene : public SWGameScene
 				SWTransform* transform = go->getComponent<SWTransform>();
 				UIImage* image = go->addComponent<UIImage>();
 				image->setTexture( "rat.png" );
-				image->setSizeToTexture( 1.0f/2, 1.0f/2 );
+				image->setSizeToTexture();
 				transform->setParent( ratGO->getComponent<SWTransform>() );
 				transform->setLocalPosition( SWVector3f( 0, -image->getHeight()/2, 0 ) );
 			}
@@ -80,7 +80,7 @@ class TestScene : public SWGameScene
 				go->setName( "generator" );
 				SWTransform* transform = go->getComponent<SWTransform>();
 				transform->setParent( ratGO->getComponent<SWTransform>() );
-				transform->setLocalPosition( SWVector3f( 30,-30,0 ) );
+				transform->setLocalPosition( SWVector3f( 60,-60,0 ) );
 			}
 		}
 

@@ -118,6 +118,12 @@
     <Filter Include="UI\UIImage">
       <UniqueIdentifier>{97020cc5-59cb-42ee-a602-e9d67883e7a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWList">
+      <UniqueIdentifier>{99112ec8-a06e-4070-bb65-992c0f897282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UIDefines">
+      <UniqueIdentifier>{bc61b419-56cc-4c7a-b9e2-93253a179dfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -245,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="header\UIImage.h">
       <Filter>UI\UIImage</Filter>
+    </ClInclude>
+    <ClInclude Include="header\UIDefines.h">
+      <Filter>UI\UIDefines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

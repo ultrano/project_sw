@@ -11,7 +11,14 @@ class UIImage : public SWComponent
 
 	int m_texID;
 	
+	int m_alignV;
+	int m_alignH;
+
+	bool m_updateMesh;
+
 	virtual void onAwake();
+	virtual void onRemove();
+	void onUpdate();
 
 public:
 
@@ -20,6 +27,10 @@ public:
 	
 	float getWidth() const { return m_width; }
 	float getHeight() const { return m_height; };
+
+	void setAlignV( int align );
+	void setAlignH( int align );
+	void setAlign( int alignV, int alignH );
 
 	void setTexture( const std::string& filePath );
 
