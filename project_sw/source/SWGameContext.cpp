@@ -137,6 +137,10 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	//glutMotionFunc(motionCallBack);
 	//glutReshapeFunc(windowReshape);
 
+	SWLog( "opengl version : %s", glGetString(GL_VERSION) );
+	SWLog( "opengl vendor : %s", glGetString(GL_VENDOR) );
+	SWLog( "opengl renderer : %s", glGetString(GL_RENDERER) );
+
 	Pimpl* pimpl = new Pimpl;
 	m_pimpl = pimpl;
 	pimpl->nextScene = firstScene;
@@ -149,7 +153,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->lastBindedTexID = 0;
 
 	SWTime.m_lastFrameTime = SWTime.getTime();
-
+	
 	glutMainLoop();
 }
 

@@ -16,6 +16,7 @@
 #include "SWDefines.h"
 #include "SWMath.h"
 #include "SWInput.h"
+#include "SWParam.h"
 
 #include "UIDefines.h"
 #include "UIImage.h"
@@ -81,11 +82,6 @@ class TestScene : public SWGameScene
 				transform->setLocalPosition( SWVector3f( 60,-60,0 ) );
 			}
 		}
-
-	}
-
-	void OnTransformSet( SWTransform* transform )
-	{
 	}
 
 	void onUpdate()
@@ -119,12 +115,6 @@ class TestScene : public SWGameScene
 			}
 			break;
 		}
-	}
-
-	void onSetParent( SWTransform* transform )
-	{
-		SWGameObject* go = transform->gameObject();
-		SWLog( go->getName().c_str() );
 	}
 };
 
