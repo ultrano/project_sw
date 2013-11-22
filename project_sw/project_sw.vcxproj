@@ -111,6 +111,7 @@
     <ClInclude Include="header\SWMeshFilter.h" />
     <ClInclude Include="header\SWMesh.h" />
     <ClInclude Include="header\SWMeshRenderer.h" />
+    <ClInclude Include="header\SWNumber.h" />
     <ClInclude Include="header\SWObject.h" />
     <ClInclude Include="header\SWParam.h" />
     <ClInclude Include="header\SWProfiler.h" />

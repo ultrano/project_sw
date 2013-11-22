@@ -127,6 +127,9 @@
     <Filter Include="SW\SWParam">
       <UniqueIdentifier>{4c4385c6-2182-4bf0-8047-9ab3ca5b2ff9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWNumber">
+      <UniqueIdentifier>{9e3fb74a-2912-4ee4-831e-d77c2273edb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -263,6 +266,9 @@
     </ClInclude>
     <ClInclude Include="header\SWParam.h">
       <Filter>SW\SWParam</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWNumber.h">
+      <Filter>SW\SWNumber</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
