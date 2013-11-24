@@ -1,6 +1,6 @@
 #include "SWArray.h"
 #include <algorithm>
-SWObject* SWArray::get( unsigned int index )
+SWObject* SWArray::get( unsigned int index ) const
 {
 	if ( index >= count() ) return NULL;
 	return m_array[ index ]();
@@ -23,7 +23,7 @@ void SWArray::remove( unsigned int index )
 	std::remove( m_array.begin(), m_array.end(), m_array[ index ] );
 }
 
-unsigned int SWArray::count()
+unsigned int SWArray::count() const
 {
 	return m_array.size();
 }

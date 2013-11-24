@@ -12,13 +12,13 @@ class SWArray : public SWObject
 
 public:
 
-	SWObject* get( unsigned int index );
+	SWObject* get( unsigned int index ) const;
 	void set( unsigned int index, const SWObject* object );
 	
 	void add( const SWObject* object );
 	void remove( unsigned int index );
 
-	 unsigned int count();
+	 unsigned int count() const;
 
 };
 

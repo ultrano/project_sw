@@ -49,16 +49,16 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./header;./source;../opengl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./header;./source;../opengl;../json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../opengl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../opengl;../json;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./header;./source;../opengl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./header;./source;../opengl;../json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -78,8 +78,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../opengl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../opengl;../json;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -96,6 +96,7 @@
     <ClInclude Include="header\SWActSequence.h" />
     <ClInclude Include="header\SWArray.h" />
     <ClInclude Include="header\SWBehavior.h" />
+    <ClInclude Include="header\SWBoolean.h" />
     <ClInclude Include="header\SWComponent.h" />
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
@@ -117,7 +118,10 @@
     <ClInclude Include="header\SWProfiler.h" />
     <ClInclude Include="header\SWQuaternion.h" />
     <ClInclude Include="header\SWRenderer.h" />
+    <ClInclude Include="header\SWString.h" />
+    <ClInclude Include="header\SWTable.h" />
     <ClInclude Include="header\SWTime.h" />
+    <ClInclude Include="header\SWValue.h" />
     <ClInclude Include="header\SWVector2f.h" />
     <ClInclude Include="header\SWRect.h" />
     <ClInclude Include="header\SWRefCounter.h" />
@@ -144,6 +148,7 @@
     <ClCompile Include="source\SWAction.cpp" />
     <ClCompile Include="source\SWActSequence.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
+    <ClCompile Include="source\SWBoolean.cpp" />
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
     <ClCompile Include="source\SWGameContext.cpp" />
@@ -158,12 +163,16 @@
     <ClCompile Include="source\SWMeshFilter.cpp" />
     <ClCompile Include="source\SWMesh.cpp" />
     <ClCompile Include="source\SWMeshRenderer.cpp" />
+    <ClCompile Include="source\SWNumber.cpp" />
     <ClCompile Include="source\SWObject.cpp" />
     <ClCompile Include="source\SWParam.cpp" />
     <ClCompile Include="source\SWProfiler.cpp" />
     <ClCompile Include="source\SWQuaternion.cpp" />
     <ClCompile Include="source\SWRenderer.cpp" />
+    <ClCompile Include="source\SWString.cpp" />
+    <ClCompile Include="source\SWTable.cpp" />
     <ClCompile Include="source\SWTime.cpp" />
+    <ClCompile Include="source\SWValue.cpp" />
     <ClCompile Include="source\SWVector2f.cpp" />
     <ClCompile Include="source\SWRect.cpp" />
     <ClCompile Include="source\SWRefCounter.cpp" />

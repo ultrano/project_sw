@@ -1,0 +1,40 @@
+
+{
+"width":960,
+"height":640,
+"ratX":170,
+"ratY":550,
+"ratScaleX":1,
+"ratScaleY":1,
+"fireHoleX":60,
+"fireHoleY":-60,
+"catX":900,
+"catY":600,
+"catWidth":80,
+"catHeight":80,
+"catAnchorX":"center",
+"catAnchorY":"bottom",
+"minAngle":-45,
+"maxAngle":45,
+
+"images":
+   [
+      {
+	     "name":"background",
+         "image":"background_02.png",
+         "size":[960,640],
+	     "pos":[0,0],
+		 "rotate":0,
+	     "anchor":["left","top"]
+	  }
+	  ,
+      {
+	     "name":"underBar",
+         "image":"under_bar.png",
+         "size":[960,172],
+	     "pos":[0,640],
+		 "rotate":0,
+	     "anchor":["left","bottom"]
+	  }
+   ]
+}

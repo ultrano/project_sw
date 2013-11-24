@@ -130,6 +130,18 @@
     <Filter Include="SW\SWNumber">
       <UniqueIdentifier>{9e3fb74a-2912-4ee4-831e-d77c2273edb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWTable">
+      <UniqueIdentifier>{97c521ea-5d98-46fe-9194-399dea467570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWString">
+      <UniqueIdentifier>{658f8904-2166-48f1-8a51-cc03bfc30892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWBoolean">
+      <UniqueIdentifier>{6709ac89-5efd-465a-be2f-d4da8dab37ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWValue">
+      <UniqueIdentifier>{7a1723bd-0bc7-40a1-afed-46a181ed8840}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -270,6 +282,18 @@
     <ClInclude Include="header\SWNumber.h">
       <Filter>SW\SWNumber</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWTable.h">
+      <Filter>SW\SWTable</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWString.h">
+      <Filter>SW\SWString</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWBoolean.h">
+      <Filter>SW\SWBoolean</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWValue.h">
+      <Filter>SW\SWValue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -391,6 +415,21 @@
     </ClCompile>
     <ClCompile Include="source\SWParam.cpp">
       <Filter>SW\SWParam</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWTable.cpp">
+      <Filter>SW\SWTable</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWNumber.cpp">
+      <Filter>SW\SWNumber</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWString.cpp">
+      <Filter>SW\SWString</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWBoolean.cpp">
+      <Filter>SW\SWBoolean</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWValue.cpp">
+      <Filter>SW\SWValue</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

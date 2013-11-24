@@ -17,6 +17,7 @@
 #include "SWMath.h"
 #include "SWInput.h"
 #include "SWParam.h"
+#include "SWValue.h"
 
 #include "UIDefines.h"
 #include "UIImage.h"
@@ -26,8 +27,14 @@
 #include "BallGenerator.h"
 #include "CatGenerator.h"
 
+#include "json.h"
+
+#include <stdio.h>
 #include <set>
 #include <map>
+#include <fstream>
+
+
 using namespace std;
 
 class TestScene : public SWGameScene
@@ -35,20 +42,61 @@ class TestScene : public SWGameScene
 	SW_RTTI( TestScene, SWGameScene );
 	SWHardRef<SWGameObject> target;
 
-	void onAwake()
+	float m_minAngle;
+	float m_maxAngle;
+	void makeImages( SWValue* images )
 	{
-		//! background
+		if ( images->isArray() == false ) return;
+		
+		for ( int i = 0 ; i < images->count() ; ++i )
 		{
+			SWValue* data   = images->get(i);
+			if ( data->isTable() == false ) continue;
+
+			SWValue* image  = data->find( "image" );
+			SWValue* size   = data->find( "size" );
+			SWValue* pos    = data->find( "pos" );
+			SWValue* rotate = data->find( "rotate" );
+			SWValue* anchor = data->find( "anchor" );
+
 			SWGameObject* go = new SWGameObject;
 			SWTransform* transform = go->getComponent<SWTransform>();
-			UIImage* image = go->addComponent<UIImage>();
+			transform->setLocalPosition( SWVector3f( pos->get(0)->asNumber(), pos->get(1)->asNumber(), 0 ) );
+			transform->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, SWMath.angleToRadian( rotate->asNumber() ) ) );
 
-			image->setSize( 960, 640 );
-			image->setTexture( "background_02.png" );
-			image->setAlign( UI_Left, UI_Top );
+			UIImage* uiImage = go->addComponent<UIImage>();
+			uiImage->setTexture( image->asString() );
+			uiImage->setSize( size->get(0)->asNumber(), size->get(1)->asNumber() );
 
-			//transform->setLocalPosition( SWVector3f( 480,320,0 ) );
+			if ( anchor->get(0)->asString() == "left" ) uiImage->setAlignV( UI_Left );
+			else if ( anchor->get(0)->asString() == "right" ) uiImage->setAlignV( UI_Right );
+			else uiImage->setAlignV( UI_Center );
+
+			if ( anchor->get(1)->asString() == "top" ) uiImage->setAlignH( UI_Top );
+			else if ( anchor->get(1)->asString() == "bottom" ) uiImage->setAlignH( UI_Bottom );
+			else uiImage->setAlignH( UI_Center );
 		}
+	}
+
+	void onAwake()
+	{
+		SWTable* config = swrtti_cast<SWTable>(SW_GC.findItem( "config" ));
+		
+		SWNumber* width = swrtti_cast<SWNumber>(config->find( "width" ));
+		SWNumber* height = swrtti_cast<SWNumber>(config->find( "height" ));
+		SWNumber* ratX = swrtti_cast<SWNumber>(config->find( "ratX" ));
+		SWNumber* ratY = swrtti_cast<SWNumber>(config->find( "ratY" ));
+		SWNumber* ratScaleX = swrtti_cast<SWNumber>(config->find( "ratScaleX" ));
+		SWNumber* ratScaleY = swrtti_cast<SWNumber>(config->find( "ratScaleY" ));
+		SWNumber* fireHoleX = swrtti_cast<SWNumber>(config->find( "fireHoleX" ));
+		SWNumber* fireHoleY = swrtti_cast<SWNumber>(config->find( "fireHoleY" ));
+		
+		m_maxAngle = swrtti_cast<SWNumber>(config->find( "maxAngle" ))->getValue();
+		m_minAngle = swrtti_cast<SWNumber>(config->find( "minAngle" ))->getValue();
+
+		makeImages( (SWValue*)config->find("images") );
+
+
 
 		{
 			SWGameObject* go = new SWGameObject;
@@ -60,7 +108,8 @@ class TestScene : public SWGameScene
 			{
 				ratGO->setName( "rat" );
 				SWTransform* transform = ratGO->getComponent<SWTransform>();
-				transform->setLocalPosition( SWVector3f( 170,550,0 ) );
+				transform->setLocalPosition( SWVector3f( ratX->getValue(), ratY->getValue(),0 ) );
+				transform->setLocalScale( SWVector3f( ratScaleX->getValue(), ratScaleY->getValue(), 1 ) );
 			}
 
 			{
@@ -79,7 +128,7 @@ class TestScene : public SWGameScene
 				go->setName( "generator" );
 				SWTransform* transform = go->getComponent<SWTransform>();
 				transform->setParent( ratGO->getComponent<SWTransform>() );
-				transform->setLocalPosition( SWVector3f( 60,-60,0 ) );
+				transform->setLocalPosition( SWVector3f( fireHoleX->getValue(), fireHoleY->getValue(),0 ) );
 			}
 		}
 	}
@@ -104,8 +153,8 @@ class TestScene : public SWGameScene
 				float power = delta.length();
 				gen->force = delta;
 				delta = delta.normalize();
-				float maxRadian = SWMath.angleToRadian( 20 );
-				float minRadian = SWMath.angleToRadian( -20 );
+				float maxRadian = SWMath.angleToRadian( m_maxAngle );
+				float minRadian = SWMath.angleToRadian( m_minAngle );
 				float radian = SWMath.atan( delta.y, delta.x );
 				SWLog( "angle : %f", SWMath.radianToAngle( radian ) );
 				
@@ -123,19 +172,24 @@ class TitleScene : public SWGameScene
 	SW_RTTI( TitleScene, SWGameScene );
 	void onAwake()
 	{
+		SWTable* config = swrtti_cast<SWTable>(SW_GC.findItem( "config" ));
+
+		SWNumber* width = swrtti_cast<SWNumber>(config->find( "width" ));
+		SWNumber* height = swrtti_cast<SWNumber>(config->find( "height" ));
 		//! background
 		{
 			SWGameObject* go = new SWGameObject;
 			SWTransform* transform = go->getComponent<SWTransform>();
 			UIImage* image = go->addComponent<UIImage>();
 
-			image->setSize( 960, 640 );
+			image->setSize( width->getValue(), height->getValue() );
 			image->setTexture( "background/title_01.png" );
 			image->setAlign( UI_Left, UI_Top );
 
 			//transform->setLocalPosition( SWVector3f( 480,320,0 ) );
 		}
 	}
+
 	void onHandleTouch()
 	{
 		if ( SWInput.getTouchState() != SW_TouchPress ) return;
@@ -143,8 +197,70 @@ class TitleScene : public SWGameScene
 	}
 };
 
+SWHardRef<SWObject> convertJsonValue( const Json::Value& value );
+
+class InitScene : public SWGameScene
+{
+	SW_RTTI( InitScene, SWGameScene );
+
+	void onAwake()
+	{
+		std::ifstream ifs( "../resource/config.json" );
+
+		Json::Reader reader;
+		Json::Value root;
+		reader.parse( (std::istream&)ifs, root );
+		
+		SWHardRef<SWObject> rootObj = convertJsonValue( root );
+
+		SW_GC.storeItem( "config", rootObj() );
+	}
+	void onUpdate()
+	{
+		SW_GC.setNextScene( new TitleScene );
+	}
+};
+
+SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
+{
+	switch ( value.type() )
+	{
+	case Json::ValueType::nullValue : return NULL;
+	case Json::ValueType::booleanValue : return new SWBoolean( value.asBool() );
+	case Json::ValueType::realValue : return new SWNumber( value.asDouble() );
+	case Json::ValueType::intValue  : return new SWNumber( value.asInt() );
+	case Json::ValueType::uintValue : return new SWNumber( value.asUInt() );
+	case Json::ValueType::stringValue : return new SWString( value.asString() );
+	case Json::ValueType::arrayValue :
+		{
+			SWArray* arr = new SWArray;
+			int count = value.size();
+			for ( Json::Value::UInt i = 0 ; i < count ; ++i )
+			{
+				SWHardRef<SWObject> object = convertJsonValue( value.get(i,Json::Value::null) );
+				arr->add( object() );
+			}
+			return arr;
+		}
+	case Json::ValueType::objectValue :
+		{
+			SWTable* tbl = new SWTable;
+			Json::Value::Members members = value.getMemberNames();
+			for ( int i = 0 ; i < members.size() ; ++i )
+			{
+				const std::string&  key    = members[i];
+				SWHardRef<SWObject> object = convertJsonValue( value.get( key, Json::Value::null ) );
+				tbl->insert( key, object() );
+			}
+			return tbl;
+		}
+	}
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	SW_GC.onStart( new TitleScene, "../resource/", 960, 640 );
+
+	
+	SW_GC.onStart( new InitScene, "../resource/", 960, 640 );
 	return 0;
 }

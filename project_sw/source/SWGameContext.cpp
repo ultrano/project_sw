@@ -111,12 +111,19 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	glEnableClientState( GL_VERTEX_ARRAY );
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 	glEnable(GL_TEXTURE_2D);
+// 	glEnable(GL_POINT_SMOOTH);
+// 	glEnable(GL_LINE_SMOOTH);
+// 	glEnable(GL_POLYGON_SMOOTH);
 
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glAlphaFunc(GL_GREATER, 0);
 	
+	//! Èñ¸Á ¿ì¼±¼øÀ§
+// 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+// 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+// 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
 	// ºäÆ÷Æ® ÁöÁ¤.
 	glViewport(0,0,width,height);
@@ -313,10 +320,12 @@ void SWGameContext::bindTexture( unsigned int texID )
 
 bool SWGameContext::storeItem( const std::string& key, SWObject* item )
 {
+	SWHardRef< SWObject > hold( item );
 	std::map<std::string, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor != m_pimpl()->storage.end() ) return false;
 	
 	m_pimpl()->storage.insert( std::make_pair(key, item) );
+	return true;
 }
 
 void SWGameContext::removeItem( const std::string& key )
@@ -364,7 +373,7 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	/*
 	glTexImage2D(GL_TEXTURE_2D, 0
 	, (comp==4)? GL_RGBA8 : (comp==3)? GL_RGB8 : GL_INVALID_ENUM
-	, x, y, 0
+	, width, height, 0
 	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GLU_INVALID_VALUE
 	, GL_UNSIGNED_BYTE, data);
 	*/
