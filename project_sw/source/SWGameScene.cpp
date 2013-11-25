@@ -13,7 +13,7 @@
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
-#include "SWMeshRenderer.h"
+#include "SWRenderer.h"
 #include "SWGameContext.h"
 
 SWGameScene::SWGameScene()
