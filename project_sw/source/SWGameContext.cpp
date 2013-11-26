@@ -171,7 +171,7 @@ void SWGameContext::setNextScene( SWGameScene* scene )
 
 void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )
 {
-	m_pimpl()->viewMatrix = matrix;
+	matrix.inverse( m_pimpl()->viewMatrix );
 }
 
 void SWGameContext::setModelMatrix( const SWMatrix4x4& matrix )
