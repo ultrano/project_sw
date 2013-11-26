@@ -294,6 +294,9 @@
     <ClInclude Include="header\SWValue.h">
       <Filter>SW\SWValue</Filter>
     </ClInclude>
+    <ClInclude Include="CatAss.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
