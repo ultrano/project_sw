@@ -229,16 +229,6 @@ SWGameContext& SWGameContext::getInstance()
 	return s_instance;
 }
 
-void* SWGameContext::alloc( size_t size )
-{
-	return malloc( size );
-}
-
-void  SWGameContext::free( void* memory )
-{
-	::free( memory );
-}
-
 SWGameScene* SWGameContext::getScene()
 {
 	return m_pimpl()->currentScene();

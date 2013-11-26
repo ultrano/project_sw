@@ -27,9 +27,6 @@ public:
 	void onDestroy();
 	void onResize( int width, int height );
 
-	void* alloc( size_t size );
-	void  free( void* memory );
-
 	void setViewMatrix( const SWMatrix4x4& matrix );
 	void setModelMatrix( const SWMatrix4x4& matrix );
 	void setProjectionMatrix( const SWMatrix4x4& matrix );

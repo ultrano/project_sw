@@ -54,7 +54,15 @@ unsigned int __SWUtil::getTickCount()
 
 }
 
+void* __SWUtil::alloc( size_t size )
+{
+	return malloc( size );
+}
 
+void  __SWUtil::free( void* memory )
+{
+	::free( memory );
+}
 
 void __SWUtil::consoleXY( int x, int y )
 

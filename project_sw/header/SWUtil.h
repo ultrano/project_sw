@@ -13,6 +13,8 @@ public:
 	static __SWUtil& getInstance();
 
 	unsigned int getTickCount();
+	void* alloc( size_t size );
+	void  free( void* memory );
 
 	void consoleXY( int x, int y );
 };
