@@ -177,12 +177,14 @@ SWMatrix4x4& SWMatrix4x4::ortho( float left, float right, float top, float botto
 
 	float x = (right + left)/2.0f;
 	float y = (bottom + top)/2.0f;
+	float z = (near + far)/2.0f;
 
 	m11 = 2.0f/w;
 	m22 = 2.0f/h;
 	m33 = -2.0f/d;
 	m41 = -(2*x)/w;
 	m42 = -(2*y)/h;
+	m43 = -(2*z)/d;
 
 	return *this;
 }

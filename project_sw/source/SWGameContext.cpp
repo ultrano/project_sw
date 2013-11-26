@@ -100,8 +100,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 
 		// 프로젝션 매트릭스를 직교 행렬로 지정.
 		SWMatrix4x4 proj;
-		proj.ortho( 0, width, 0, height,1000,-1000);
-		setProjectionMatrix( proj );
+		setProjectionMatrix( proj.ortho( 0, width, 0, height,1000,-1000) );
 	}
 
 }
@@ -269,8 +268,7 @@ void SWGameContext::onResize( int width, int height )
 
 	// 프로젝션 매트릭스를 직교 행렬로 지정.
 	SWMatrix4x4 proj;
-	proj.ortho( 0, width, 0, height,1000,-1000);
-	setProjectionMatrix( proj );
+	setProjectionMatrix( proj.ortho( 0, width, 0, height,1000,-1000) );
 }
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height )
