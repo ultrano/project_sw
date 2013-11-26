@@ -1,9 +1,16 @@
 
 #include "SWGameContext.h"
-#include <memory>
-#include <map>
+
+#ifdef WIN32
 #include "glew.h"
 #include "wglew.h"
+#else
+#include <OpenGLES/ES1/gl.h>
+#include <OpenGLES/ES1/glext.h>
+#endif
+
+#include <memory>
+#include <map>
 #include "SWGameScene.h"
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
@@ -95,7 +102,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		// 프로젝션 매트릭스를 직교 행렬로 지정.
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
-		glOrtho( 0, width, height, 0,1000,-1000);
+		glOrthof( 0, width, height, 0,1000,-1000);
 	}
 
 }
@@ -172,7 +179,8 @@ void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )
 void SWGameContext::setModelMatrix( const SWMatrix4x4& matrix )
 {
 	glMatrixMode( GL_MODELVIEW );
-	glLoadMatrixf( (float*)&(matrix * m_pimpl()->viewMatrix) );
+    SWMatrix4x4 result = (matrix * m_pimpl()->viewMatrix);
+	glLoadMatrixf( (float*)&result );
 }
 
 void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
@@ -193,7 +201,7 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 
 void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 {
-	glColor3f( 1, 1, 1 );
+	glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
 
@@ -263,7 +271,7 @@ void SWGameContext::onResize( int width, int height )
 	// 프로젝션 매트릭스를 직교 행렬로 지정.
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glOrtho( 0, width, height, 0,1000,-1000);
+	glOrthof( 0, width, height, 0,1000,-1000);
 }
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height )
@@ -282,7 +290,7 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	glBindTexture(GL_TEXTURE_2D,texID[0]);
 
 	glTexImage2D(GL_TEXTURE_2D, 0
-	, (comp==4)? GL_RGBA8 : (comp==3)? GL_RGB8 : GL_INVALID_ENUM
+	, (comp>2&&comp<5)? comp : GL_INVALID_ENUM
 	, width, height, 0
 	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
 	, GL_UNSIGNED_BYTE, data);
@@ -290,8 +298,8 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	stbi_image_free(data);
 

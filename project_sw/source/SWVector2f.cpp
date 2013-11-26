@@ -63,7 +63,8 @@ SWVector2f   SWVector2f::normalize() const
     else
     {
         //! 길이가 0인 벡터에 대한 단위화는 보장하지 않는다. (사전에 체크)
-        SWLog( "zero length vector" );
+       
+        //SWLog( "zero length vector" );
     }
     return pt;
 }
