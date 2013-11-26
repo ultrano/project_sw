@@ -49,6 +49,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	float width = 960;
 	float height = 640;
+
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 
@@ -61,7 +62,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutDisplayFunc(callbackDisplay);
 	glutIdleFunc(callbackIdle);
 	glutReshapeFunc( callbackReshape );
-	glutTimerFunc( (1.0f/60.0f)*1000 ,callbackTimer,0);
+	glutTimerFunc( 1 ,callbackTimer,0);
 
 	SW_GC.onStart( new InitScene, "../resource/", width, height );
 	glutMainLoop();

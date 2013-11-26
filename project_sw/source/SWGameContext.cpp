@@ -3,7 +3,6 @@
 
 #ifdef WIN32
 #include "glew.h"
-#include "wglew.h"
 #else
 #include <OpenGLES/ES1/gl.h>
 #include <OpenGLES/ES1/glext.h>
@@ -100,9 +99,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		glViewport(0,0,width,height);
 
 		// 프로젝션 매트릭스를 직교 행렬로 지정.
-		glMatrixMode( GL_PROJECTION );
-		glLoadIdentity();
-		glOrthof( 0, width, height, 0,1000,-1000);
+		SWMatrix4x4 proj;
+		proj.ortho( 0, width, 0, height,1000,-1000);
+		setProjectionMatrix( proj );
 	}
 
 }
@@ -269,9 +268,9 @@ void SWGameContext::onResize( int width, int height )
 	glViewport(0,0,width,height);
 
 	// 프로젝션 매트릭스를 직교 행렬로 지정.
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-	glOrthof( 0, width, height, 0,1000,-1000);
+	SWMatrix4x4 proj;
+	proj.ortho( 0, width, 0, height,1000,-1000);
+	setProjectionMatrix( proj );
 }
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height )

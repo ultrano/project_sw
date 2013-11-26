@@ -167,6 +167,26 @@ SWMatrix4x4& SWMatrix4x4::transform( const SWVector3f& scale, const SWQuaternion
 	return *this;
 }
 
+SWMatrix4x4& SWMatrix4x4::ortho( float left, float right, float top, float bottom, float near, float far )
+{
+	identity();
+	
+	float w = right - left;
+	float h = top - bottom;
+	float d = far - near;
+
+	float x = (right + left)/2.0f;
+	float y = (bottom + top)/2.0f;
+
+	m11 = 2.0f/w;
+	m22 = 2.0f/h;
+	m33 = -2.0f/d;
+	m41 = -(2*x)/w;
+	m42 = -(2*y)/h;
+
+	return *this;
+}
+
 SWQuaternion SWMatrix4x4::row( unsigned char r ) const
 {
 	if ( r < 4 ) return SWQuaternion( m[r][0], m[r][1], m[r][2], m[r][3] );
