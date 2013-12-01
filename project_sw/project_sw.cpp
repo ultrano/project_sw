@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "glew.h"
 #include "glut.h"
 #include "SWTime.h"
 #include "SWInput.h"
@@ -63,7 +64,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutIdleFunc(callbackIdle);
 	glutReshapeFunc( callbackReshape );
 	glutTimerFunc( 1 ,callbackTimer,0);
-
+	glewInit();
 	SW_GC.onStart( new InitScene, "../resource/", width, height );
 
 	glutMainLoop();

@@ -44,16 +44,19 @@ public:
 	
 	SWCriticalSection idleSection;
 
+	SWMatrix4x4 modelMatrix;
 	SWMatrix4x4 viewMatrix;
-	bool  exitMainLoop;
+	SWMatrix4x4 projMatrix;
+
+	GLuint programID;
+	GLuint aPosLoc;
+	GLuint aTexLoc;
+	GLuint uMVPLoc;
+	GLuint sTexLoc;
 	
 	std::map<std::string,unsigned int> textureCache;
 	std::map<unsigned int,TextureInfo> textureTable;
 	std::map<std::string, SWHardRef<SWObject>> storage;
-	
-	int touchState;
-	int touchX;
-	int touchY;
 
 	int lastBindedTexID;
 
@@ -62,6 +65,73 @@ public:
 SWGameContext::SWGameContext()
 	: m_pimpl( NULL )
 {
+}
+
+GLuint loadShader( GLenum type, const char* shaderSource )
+{
+	if ( shaderSource == NULL )
+	{
+		SWLog( "shader source is NULL" );
+		return 0;
+	}
+
+	GLuint shaderID = glCreateShader( type );
+	
+	if ( shaderID == 0 )
+	{
+		SWLog( "create shader failed" );
+		return 0;
+	}
+
+	glShaderSource( shaderID, 1, &shaderSource, NULL );
+	glCompileShader( shaderID );
+	
+	GLint compiled = false;
+	glGetShaderiv( shaderID, GL_COMPILE_STATUS, &compiled );
+	
+	if ( !compiled )
+	{
+		SWLog( "failed to compiling shader" );
+		glDeleteShader( shaderID );
+		return 0;
+	}
+	
+	return shaderID;
+}
+
+GLuint loadProgram( const char* vertSource, const char* fragSource )
+{
+	GLuint vsID = 0;
+	GLuint fsID = 0;
+	GLuint programID = 0;
+
+	if ( (vsID = loadShader( GL_VERTEX_SHADER, vertSource )) == 0 ) return 0;
+	if ( (fsID = loadShader( GL_FRAGMENT_SHADER, fragSource )) == 0 )
+	{
+		glDeleteShader( vsID );
+		return 0;
+	}
+
+	if ( (programID = glCreateProgram()) == 0 ) return 0;
+
+	glAttachShader( programID, vsID );
+	glAttachShader( programID, fsID );
+	glLinkProgram( programID );
+
+	GLint linked = false;
+	glGetProgramiv( programID, GL_LINK_STATUS, &linked );
+	if ( linked == 0 )
+	{
+		SWLog( "failed to linking program" );
+		glDeleteProgram( programID );
+		programID = 0;
+	}
+
+	glDeleteShader( vsID );
+	glDeleteShader( fsID );
+
+	if ( programID == 0 ) SWLog( "failed to loading program" );
+	return programID;
 }
 
 void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFolder, float width, float height )
@@ -73,16 +143,42 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	pimpl->resFolder = resFolder;
 	pimpl->screenWidth  = width;
 	pimpl->screenHeight = height;
-	pimpl->exitMainLoop = false;
 	pimpl->lastBindedTexID = 0;
 
 	SWTime.m_lastFrameTime = SWTime.getTime();
 
 	//! opengl initializing
 	{
+		const char vertSrc[] = 
+			"uniform   mat4 u_mvpMat;" "\n"
+			"attribute vec4 a_pos;"  "\n"
+			"attribute vec2 a_tex;"  "\n"
+			"varying   vec2 v_tex"   "\n"
+			"void maint()"           "\n"
+			"{"                      "\n"
+			"   gl_Position = u_mvpMat * a_pos;" "\n"
+			"   v_tex = a_tex;"      "\n"
+			"}";
+		const char fragSrc[] =
+			"presision mediump float"      "\n"
+			"varying vec2 v_tex;"          "\n"
+			"uniform sampler2D s_texture;" "\n"
+			"void main()"                  "\n"
+			"{"                            "\n"
+			"   gl_FragColor = texture2D( s_texture, v_tex );" "\n"
+			"}";
+
+		pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
+		pimpl->aPosLoc = glGetAttribLocation( pimpl->programID, "a_pos" );
+		pimpl->aTexLoc = glGetAttribLocation( pimpl->programID, "a_tex" );
+		pimpl->uMVPLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
+		pimpl->sTexLoc = glGetUniformLocation( pimpl->programID, "s_texture" );
+		
+		glUseProgram( pimpl->programID );
+
 		// 버퍼 클리어 색상 지정.
 		glClearColor(0,0,1,1);
-
+		
 		// 버텍스 버퍼 사용
 		glEnableClientState( GL_VERTEX_ARRAY );
 		glEnableClientState( GL_TEXTURE_COORD_ARRAY );
@@ -148,6 +244,11 @@ void SWGameContext::onRender()
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
 		glClear( GL_COLOR_BUFFER_BIT );
+		SWMatrix4x4 mvpMat;
+		mvpMat = m_pimpl()->modelMatrix;
+		mvpMat = mvpMat * m_pimpl()->viewMatrix;
+		mvpMat = mvpMat * m_pimpl()->projMatrix;
+		glUniformMatrix4fv( m_pimpl()->uMVPLoc, 1, GL_FALSE, (float*)&mvpMat );
 		scene->draw();
 	}
 	SWTime.m_accumDraw += 1;
@@ -176,25 +277,34 @@ void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )
 
 void SWGameContext::setModelMatrix( const SWMatrix4x4& matrix )
 {
-	glMatrixMode( GL_MODELVIEW );
-    SWMatrix4x4 result = (matrix * m_pimpl()->viewMatrix);
-	glLoadMatrixf( (float*)&result );
+	m_pimpl()->modelMatrix = matrix;
 }
 
 void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
 {
-	glMatrixMode( GL_PROJECTION );
-	glLoadMatrixf( &matrix.m[0][0] );
+	m_pimpl()->projMatrix = matrix;
 }
 
 void SWGameContext::setVertexBuffer( const float* buffer )
 {
-	glVertexPointer( 3, GL_FLOAT, 0, buffer );
+	glVertexAttribPointer
+		( m_pimpl()->aPosLoc
+		, 3
+		, GL_FLOAT
+		, GL_FALSE
+		, 0
+		, buffer );
 }
 
 void SWGameContext::setTexCoordBuffer( const float* buffer )
 {
-	glTexCoordPointer( 2, GL_FLOAT, 0, buffer );
+	glVertexAttribPointer
+		( m_pimpl()->aTexLoc
+		, 2
+		, GL_FLOAT
+		, GL_FALSE
+		, 0
+		, buffer );
 }
 
 void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
@@ -235,7 +345,9 @@ bool SWGameContext::getTextureSize( int texID, int& width, int& height )
 void SWGameContext::bindTexture( unsigned int texID )
 {
 	if ( m_pimpl()->lastBindedTexID == texID ) return;
+	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, texID );
+	glUniform1i( m_pimpl()->sTexLoc, 0 );
 	m_pimpl()->lastBindedTexID = texID;
 }
 
