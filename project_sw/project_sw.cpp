@@ -22,8 +22,8 @@ void callbackIdle()
 
 void callbackTimer( int value )
 {
-	SW_GC.onRender();
 	glutSwapBuffers();
+	glutPostRedisplay();
 	glutTimerFunc( (1.0f/60.0f)*1000 ,callbackTimer,0);
 }
 
