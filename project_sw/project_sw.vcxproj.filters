@@ -115,12 +115,6 @@
     <Filter Include="UI">
       <UniqueIdentifier>{36941f73-d2c9-4191-9c5b-92e204d297c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UIImage">
-      <UniqueIdentifier>{97020cc5-59cb-42ee-a602-e9d67883e7a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UIDefines">
-      <UniqueIdentifier>{bc61b419-56cc-4c7a-b9e2-93253a179dfc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWArray">
       <UniqueIdentifier>{99112ec8-a06e-4070-bb65-992c0f897282}</UniqueIdentifier>
     </Filter>
@@ -153,6 +147,12 @@
     </Filter>
     <Filter Include="SW\SWAct\SWActContinue">
       <UniqueIdentifier>{8c7ded1b-bde4-4855-89ca-30bb0d580915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\WIImage">
+      <UniqueIdentifier>{97020cc5-59cb-42ee-a602-e9d67883e7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\WIDefines">
+      <UniqueIdentifier>{bc61b419-56cc-4c7a-b9e2-93253a179dfc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -279,12 +279,6 @@
     <ClInclude Include="header\SWActDestroy.h">
       <Filter>SW\SWAct\SWActDestroy</Filter>
     </ClInclude>
-    <ClInclude Include="header\UIImage.h">
-      <Filter>UI\UIImage</Filter>
-    </ClInclude>
-    <ClInclude Include="header\UIDefines.h">
-      <Filter>UI\UIDefines</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWArray.h">
       <Filter>SW\SWArray</Filter>
     </ClInclude>
@@ -320,6 +314,12 @@
     </ClInclude>
     <ClInclude Include="header\SWActContinue.h">
       <Filter>SW\SWAct\SWActContinue</Filter>
+    </ClInclude>
+    <ClInclude Include="header\WIImage.h">
+      <Filter>UI\WIImage</Filter>
+    </ClInclude>
+    <ClInclude Include="header\WIDefines.h">
+      <Filter>UI\WIDefines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -434,9 +434,6 @@
     <ClCompile Include="source\SWActDestroy.cpp">
       <Filter>SW\SWAct\SWActDestroy</Filter>
     </ClCompile>
-    <ClCompile Include="source\UIImage.cpp">
-      <Filter>UI\UIImage</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWArray.cpp">
       <Filter>SW\SWArray</Filter>
     </ClCompile>
@@ -469,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActContinue.cpp">
       <Filter>SW\SWAct\SWActContinue</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WIImage.cpp">
+      <Filter>UI\WIImage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

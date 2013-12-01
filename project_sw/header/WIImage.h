@@ -2,9 +2,9 @@
 #define __UIImage_h_
 
 #include "SWComponent.h"
-class UIImage : public SWComponent
+class WIImage : public SWComponent
 {
-	SW_RTTI( UIImage, SWComponent );
+	SW_RTTI( WIImage, SWComponent );
 
 	float m_width;
 	float m_height;

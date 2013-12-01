@@ -1,4 +1,4 @@
-#include "UIImage.h"
+#include "WIImage.h"
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
 #include "SWMeshFilter.h"
@@ -7,9 +7,9 @@
 #include "SWVector2f.h"
 #include "SWGameContext.h"
 
-#include "UIDefines.h"
+#include "WIDefines.h"
 
-void UIImage::onAwake()
+void WIImage::onAwake()
 {
 	m_updateMesh = false;
 	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
@@ -26,12 +26,12 @@ void UIImage::onAwake()
 	gameObject()->addUpdateDelegate( GetDelegate( onUpdate ) );
 }
 
-void UIImage::onRemove()
+void WIImage::onRemove()
 {
 	gameObject()->removeUpdateDelegate( GetDelegate( onUpdate ) );
 }
 
-void UIImage::onUpdate()
+void WIImage::onUpdate()
 {
 	if ( !m_updateMesh ) return;
 	m_updateMesh = false;
@@ -60,7 +60,7 @@ void UIImage::onUpdate()
 	mesh->setVertexStream( 4, &vertices[0] );
 }
 
-void UIImage::setSizeToTexture( float scaleW, float scaleH )
+void WIImage::setSizeToTexture( float scaleW, float scaleH )
 {
 	unsigned int texID = gameObject()->getComponent<SWMeshRenderer>()->getTexture();
 	if ( texID == 0 ) return;
@@ -71,30 +71,30 @@ void UIImage::setSizeToTexture( float scaleW, float scaleH )
 	setSize( width*scaleW, height*scaleH );
 }
 
-void UIImage::setSize( float width, float height )
+void WIImage::setSize( float width, float height )
 {
 	m_width = width;
 	m_height = height;
 	m_updateMesh = true;
 }
-void UIImage::setTexture( const std::string& filePath )
+void WIImage::setTexture( const std::string& filePath )
 {
 	gameObject()->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( filePath ) );
 }
 
-void UIImage::setAlignV( int align )
+void WIImage::setAlignV( int align )
 {
 	m_alignV = align;
 	m_updateMesh = true;
 }
 
-void UIImage::setAlignH( int align )
+void WIImage::setAlignH( int align )
 {
 	m_alignH = align;
 	m_updateMesh = true;
 }
 
-void UIImage::setAlign( int alignV, int alignH )
+void WIImage::setAlign( int alignV, int alignH )
 {
 	m_alignV = alignV;
 	m_alignH = alignH;

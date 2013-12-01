@@ -17,14 +17,14 @@
 #include "SWActPlay.h"
 #include "SWActContinue.h"
 
-#include "UIImage.h"
-#include "UIDefines.h"
+#include "WIImage.h"
+#include "WIDefines.h"
 
 void Cat::onAwake()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWAction* action = gameObject()->addComponent<SWAction>();
-	UIImage* image = gameObject()->addComponent<UIImage>();
+	WIImage* image = gameObject()->addComponent<WIImage>();
 	SWTable* spriteData = swrtti_cast<SWTable>(gameObject()->getProp( "spriteData" ));
 	SWArray* anim = swrtti_cast<SWArray>(spriteData->find( "idle" ));
 	float duration = swrtti_cast<SWNumber>( anim->get(0) )->getValue();

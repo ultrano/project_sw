@@ -423,10 +423,12 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	glBindTexture(GL_TEXTURE_2D,texID[0]);
 
 	glTexImage2D(GL_TEXTURE_2D, 0
-	, (comp>2&&comp<5)? comp : GL_INVALID_ENUM
+	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
 	, width, height, 0
 	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
-	, GL_UNSIGNED_BYTE, data);
+                 , GL_UNSIGNED_BYTE, data);
+    
+	GLenum err = glGetError();
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
@@ -435,8 +437,6 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	stbi_image_free(data);
-
-	GLenum err = glGetError();
 	if ( err ) return 0;
 
 	return texID[0];

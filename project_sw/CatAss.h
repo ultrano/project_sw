@@ -22,8 +22,8 @@
 #include "SWAction.h"
 #include "SWActContinue.h"
 
-#include "UIDefines.h"
-#include "UIImage.h"
+#include "WIDefines.h"
+#include "WIImage.h"
 
 #include "Cat.h"
 #include "Ball.h"
@@ -71,7 +71,7 @@ class TestScene : public SWGameScene
 			transform->setLocalPosition( SWVector3f( pos->get(0)->asNumber(), pos->get(1)->asNumber(), 0 ) );
 			transform->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, SWMath.angleToRadian( rotate->asNumber() ) ) );
 
-			UIImage* uiImage = go->addComponent<UIImage>();
+			WIImage* uiImage = go->addComponent<WIImage>();
 			uiImage->setTexture( image->asString() );
 			uiImage->setSize( size->get(0)->asNumber(), size->get(1)->asNumber() );
 
@@ -123,7 +123,7 @@ class TestScene : public SWGameScene
 			{
 				SWGameObject* go = new SWGameObject;
 				SWTransform* transform = go->getComponent<SWTransform>();
-				UIImage* image = go->addComponent<UIImage>();
+				WIImage* image = go->addComponent<WIImage>();
 				image->setTexture( "rat.png" );
 				image->setSizeToTexture();
 				image->setAlignH( UI_Bottom );
@@ -235,7 +235,7 @@ class TitleScene : public SWGameScene
 		{
 			SWGameObject* go = new SWGameObject;
 			SWTransform* transform = go->getComponent<SWTransform>();
-			UIImage* image = go->addComponent<UIImage>();
+			WIImage* image = go->addComponent<WIImage>();
 
 			image->setSize( width->getValue(), height->getValue() );
 			image->setTexture( "background/title_01.png" );
