@@ -20,6 +20,7 @@
 #include "SWUtil.h"
 #include "SWTime.h"
 #include "SWInput.h"
+#include "SWString.h"
 
 #include "stb_image.h"
 
@@ -91,7 +92,16 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 	
 	if ( !compiled )
 	{
-		SWLog( "failed to compiling shader" );
+		int infoLen = 0;
+		glGetShaderiv( shaderID, GL_INFO_LOG_LENGTH, &infoLen );
+		if ( infoLen > 0 )
+		{
+			SWString::Value msg;
+			msg.resize( infoLen );
+			glGetProgramInfoLog( shaderID, infoLen, NULL, &msg[0] );
+
+			SWLog( msg.c_str() );
+		}
 		glDeleteShader( shaderID );
 		return 0;
 	}
@@ -122,7 +132,16 @@ GLuint loadProgram( const char* vertSource, const char* fragSource )
 	glGetProgramiv( programID, GL_LINK_STATUS, &linked );
 	if ( linked == 0 )
 	{
-		SWLog( "failed to linking program" );
+		int infoLen = 0;
+		glGetProgramiv( programID, GL_INFO_LOG_LENGTH, &infoLen );
+		if ( infoLen > 0 )
+		{
+			SWString::Value msg;
+			msg.resize( infoLen );
+			glGetProgramInfoLog( programID, infoLen, NULL, &msg[0] );
+
+			SWLog( msg.c_str() );
+		}
 		glDeleteProgram( programID );
 		programID = 0;
 	}
@@ -150,21 +169,21 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	//! opengl initializing
 	{
 		const char vertSrc[] = 
-			"uniform   mat4 u_mvpMat;" "\n"
-			"attribute vec4 a_pos;"  "\n"
-			"attribute vec2 a_tex;"  "\n"
-			"varying   vec2 v_tex"   "\n"
-			"void maint()"           "\n"
-			"{"                      "\n"
+			"uniform   mat4 u_mvpMat;"           "\n"
+			"attribute vec4 a_pos;"              "\n"
+			"attribute vec2 a_tex;"              "\n"
+			"varying   vec2 v_tex;"              "\n"
+			"void main()"                        "\n"
+			"{"                                  "\n"
 			"   gl_Position = u_mvpMat * a_pos;" "\n"
-			"   v_tex = a_tex;"      "\n"
+			"   v_tex = a_tex;"                  "\n"
 			"}";
 		const char fragSrc[] =
-			"presision mediump float"      "\n"
-			"varying vec2 v_tex;"          "\n"
-			"uniform sampler2D s_texture;" "\n"
-			"void main()"                  "\n"
-			"{"                            "\n"
+			"precision mediump float;"                         "\n"
+			"uniform sampler2D s_texture;"                     "\n"
+			"varying vec2 v_tex;"                              "\n"
+			"void main()"                                      "\n"
+			"{"                                                "\n"
 			"   gl_FragColor = texture2D( s_texture, v_tex );" "\n"
 			"}";
 
@@ -175,6 +194,8 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		pimpl->sTexLoc = glGetUniformLocation( pimpl->programID, "s_texture" );
 		
 		glUseProgram( pimpl->programID );
+		glEnableVertexAttribArray( pimpl->aPosLoc );
+		glEnableVertexAttribArray( pimpl->aTexLoc );
 
 		// 버퍼 클리어 색상 지정.
 		glClearColor(0,0,1,1);
@@ -244,11 +265,6 @@ void SWGameContext::onRender()
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
 		glClear( GL_COLOR_BUFFER_BIT );
-		SWMatrix4x4 mvpMat;
-		mvpMat = m_pimpl()->modelMatrix;
-		mvpMat = mvpMat * m_pimpl()->viewMatrix;
-		mvpMat = mvpMat * m_pimpl()->projMatrix;
-		glUniformMatrix4fv( m_pimpl()->uMVPLoc, 1, GL_FALSE, (float*)&mvpMat );
 		scene->draw();
 	}
 	SWTime.m_accumDraw += 1;
@@ -309,6 +325,11 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 
 void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 {
+	SWMatrix4x4 mvpMat;
+	mvpMat = m_pimpl()->modelMatrix;
+	mvpMat = mvpMat * m_pimpl()->viewMatrix;
+	mvpMat = mvpMat * m_pimpl()->projMatrix;
+	glUniformMatrix4fv( m_pimpl()->uMVPLoc, 1, GL_FALSE, (float*)&mvpMat );
 	glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
