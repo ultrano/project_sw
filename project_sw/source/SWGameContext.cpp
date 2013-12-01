@@ -6,6 +6,8 @@
 #else
 #include <OpenGLES/ES1/gl.h>
 #include <OpenGLES/ES1/glext.h>
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
 #endif
 
 #include <memory>
@@ -209,6 +211,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		glEnable(GL_ALPHA_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glAlphaFunc(GL_GREATER, 0);
+
 
 		//! Èñ¸Á ¿ì¼±¼øÀ§
 

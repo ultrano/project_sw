@@ -18,7 +18,7 @@
  @param format 로그 내용
  */
 
-#define SWLog( format, ... ) SWLogCenter::getInstance().write( __FILE__, __LINE__, format, __VA_ARGS__ )
+#define SWLog( ... ) do{SWLogCenter::getInstance().write( (__FILE__), (__LINE__), __VA_ARGS__ );}while(0)
 
 class SWLogCenter
 {
