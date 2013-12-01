@@ -92,8 +92,10 @@
     <ClInclude Include="CatGenerator.h" />
     <ClInclude Include="header\stb_image.h" />
     <ClInclude Include="header\SWAct.h" />
+    <ClInclude Include="header\SWActContinue.h" />
     <ClInclude Include="header\SWActDestroy.h" />
     <ClInclude Include="header\SWAction.h" />
+    <ClInclude Include="header\SWActPlay.h" />
     <ClInclude Include="header\SWActSequence.h" />
     <ClInclude Include="header\SWArray.h" />
     <ClInclude Include="header\SWBehavior.h" />
@@ -106,6 +108,7 @@
     <ClInclude Include="header\SWGameScene.h" />
     <ClInclude Include="header\SWInput.h" />
     <ClInclude Include="header\SWIOStream.h" />
+    <ClInclude Include="header\SWList.h" />
     <ClInclude Include="header\SWLog.h" />
     <ClInclude Include="header\SWMath.h" />
     <ClInclude Include="header\SWMatrix4x4.h" />
@@ -119,6 +122,7 @@
     <ClInclude Include="header\SWProfiler.h" />
     <ClInclude Include="header\SWQuaternion.h" />
     <ClInclude Include="header\SWRenderer.h" />
+    <ClInclude Include="header\SWSpriteData.h" />
     <ClInclude Include="header\SWString.h" />
     <ClInclude Include="header\SWTable.h" />
     <ClInclude Include="header\SWTime.h" />
@@ -145,8 +149,10 @@
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="source\stb_image.c" />
     <ClCompile Include="source\SWAct.cpp" />
+    <ClCompile Include="source\SWActContinue.cpp" />
     <ClCompile Include="source\SWActDestroy.cpp" />
     <ClCompile Include="source\SWAction.cpp" />
+    <ClCompile Include="source\SWActPlay.cpp" />
     <ClCompile Include="source\SWActSequence.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
     <ClCompile Include="source\SWBoolean.cpp" />
@@ -157,6 +163,7 @@
     <ClCompile Include="source\SWGameScene.cpp" />
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWArray.cpp" />
+    <ClCompile Include="source\SWList.cpp" />
     <ClCompile Include="source\SWLog.cpp" />
     <ClCompile Include="source\SWMath.cpp" />
     <ClCompile Include="source\SWMatrix4x4.cpp" />
@@ -170,6 +177,7 @@
     <ClCompile Include="source\SWProfiler.cpp" />
     <ClCompile Include="source\SWQuaternion.cpp" />
     <ClCompile Include="source\SWRenderer.cpp" />
+    <ClCompile Include="source\SWSpriteData.cpp" />
     <ClCompile Include="source\SWString.cpp" />
     <ClCompile Include="source\SWTable.cpp" />
     <ClCompile Include="source\SWTime.cpp" />

@@ -23,7 +23,7 @@ void Ball::onAwake()
 	filter->setMesh( swrtti_cast<SWMesh>( gameObject()->getProp("mesh") ) );
 	renderer->setTexture( SW_GC.loadTexture( "ball.png" ) );
 	transform->setLocalScale( SWVector3f::one * SWMath.randomInt( 5, 20 ) );
-	action->setAct( new SWActDestroy( 5 ) );
+	action->runAct( new SWActDestroy( 5 ) );
 
 }
 

@@ -17,7 +17,7 @@ public:
 	~SWActDestroy();
 
 	virtual bool isDone();
-	virtual void onStart();
+	virtual bool onStart();
 	virtual void onUpdate();
 };
 

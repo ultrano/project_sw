@@ -142,6 +142,18 @@
     <Filter Include="SW\SWValue">
       <UniqueIdentifier>{7a1723bd-0bc7-40a1-afed-46a181ed8840}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWList">
+      <UniqueIdentifier>{54741d67-474a-4e77-a31a-40990efeda59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWSpriteData">
+      <UniqueIdentifier>{2cb19f83-3c4f-4e4f-8ff7-9188db5c9562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActPlay">
+      <UniqueIdentifier>{50285b47-a75b-45a4-adb2-a3e2960683a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActContinue">
+      <UniqueIdentifier>{8c7ded1b-bde4-4855-89ca-30bb0d580915}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -297,6 +309,18 @@
     <ClInclude Include="CatAss.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWList.h">
+      <Filter>SW\SWList</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWSpriteData.h">
+      <Filter>SW\SWSpriteData</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActPlay.h">
+      <Filter>SW\SWAct\SWActPlay</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActContinue.h">
+      <Filter>SW\SWAct\SWActContinue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -433,6 +457,18 @@
     </ClCompile>
     <ClCompile Include="source\SWValue.cpp">
       <Filter>SW\SWValue</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWList.cpp">
+      <Filter>SW\SWList</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSpriteData.cpp">
+      <Filter>SW\SWSpriteData</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActPlay.cpp">
+      <Filter>SW\SWAct\SWActPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActContinue.cpp">
+      <Filter>SW\SWAct\SWActContinue</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

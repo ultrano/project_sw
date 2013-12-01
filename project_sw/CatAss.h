@@ -17,6 +17,10 @@
 #include "SWInput.h"
 #include "SWParam.h"
 #include "SWValue.h"
+#include "SWActPlay.h"
+#include "SWSpriteData.h"
+#include "SWAction.h"
+#include "SWActContinue.h"
 
 #include "UIDefines.h"
 #include "UIImage.h"
@@ -36,6 +40,8 @@
 
 using namespace std;
 
+SWHardRef<SWObject> convertJsonValue( const Json::Value& value );
+
 class TestScene : public SWGameScene
 {
 	SW_RTTI( TestScene, SWGameScene );
@@ -52,6 +58,7 @@ class TestScene : public SWGameScene
 			SWValue* data   = images->get(i);
 			if ( data->isTable() == false ) continue;
 
+			SWValue* name   = data->find( "name" );
 			SWValue* image  = data->find( "image" );
 			SWValue* size   = data->find( "size" );
 			SWValue* pos    = data->find( "pos" );
@@ -59,6 +66,7 @@ class TestScene : public SWGameScene
 			SWValue* anchor = data->find( "anchor" );
 
 			SWGameObject* go = new SWGameObject;
+			go->setName( name->asString() );
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( SWVector3f( pos->get(0)->asNumber(), pos->get(1)->asNumber(), 0 ) );
 			transform->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, SWMath.angleToRadian( rotate->asNumber() ) ) );
@@ -100,6 +108,7 @@ class TestScene : public SWGameScene
 		{
 			SWGameObject* go = new SWGameObject;
 			go->addComponent<CatGenerator>();
+			go->setName( "catGenerator" );
 		}
 
 		{
@@ -130,6 +139,53 @@ class TestScene : public SWGameScene
 				transform->setLocalPosition( SWVector3f( fireHoleX->getValue(), fireHoleY->getValue(),0 ) );
 			}
 		}
+
+		{
+			std::ifstream ifs( "../resource/catAnim.json" );
+
+			Json::Reader reader;
+			Json::Value root;
+			reader.parse( (std::istream&)ifs, root );
+
+			SWTable* spriteData = new SWTable;
+			SWHardRef<SWTable> jsonData = swrtti_cast<SWTable>(convertJsonValue( root )());
+			SWTable::iterator itor = jsonData()->begin();
+			for ( ; itor != jsonData()->end() ; ++itor )
+			{
+				const SWTable::Key& name = itor->first;
+				SWArray* regions = new SWArray;
+
+				SWValue* data = (SWValue*)itor->second();
+				float duration = data->find( "duration" )->asNumber();
+				SWValue* regionsJson = (SWValue*)data->find( "regions" );
+				for ( int i = 0 ; i < regionsJson->count() ; ++i )
+				{
+					SWValue* imgPath = (SWValue*)regionsJson->get( i );
+					SWSpriteData::ImageRegion* region = new SWSpriteData::ImageRegion;
+					region->texID = SW_GC.loadTexture( imgPath->asString() );
+					regions->add( region );
+				}
+
+				SWArray* seqData = new SWArray;
+				seqData->add( new SWNumber(duration) );
+				seqData->add( regions );
+				spriteData->insert( name, seqData );
+			}
+
+			SWGameObject* go = find( "catGenerator" );
+			go->defineProp( "spriteData" );
+			go->setProp( "spriteData", spriteData );
+		}
+
+		{
+			SWGameObject* go = find( "siso_up" );
+			go->addUpdateDelegate( GetDelegate( onSisoUpUpdate ) );
+		}
+	}
+
+	void onSisoUpUpdate()
+	{
+
 	}
 
 	void onUpdate()
@@ -195,8 +251,6 @@ class TitleScene : public SWGameScene
 		SW_GC.setNextScene( new TestScene );
 	}
 };
-
-SWHardRef<SWObject> convertJsonValue( const Json::Value& value );
 
 class InitScene : public SWGameScene
 {

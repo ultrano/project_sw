@@ -29,6 +29,10 @@ class SWObject : public SWRefCountable
 	unsigned     m_id;        //< 객체의 유일성을 위한 ID
 	SWObjectList m_delegates;
 public:
+
+	typedef SWHardRef<SWObject> Ref;
+	typedef SWWeakRef<SWObject> WRef;
+
 	SWObject();
 	~SWObject();
 	unsigned getID() const { return m_id; };

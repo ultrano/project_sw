@@ -4,17 +4,21 @@
 #include "SWComponent.h"
 
 class SWAct;
+class SWList;
 class SWAction : public SWComponent
 {
 	SW_RTTI( SWAction, SWComponent );
 
-	SWHardRef<SWAct> m_act;
+	SWHardRef<SWList> m_actList;
 	float m_spendTime;
 
 public:
 
-	void setAct( SWAct* act );
-	SWAct* getAct() const;
+	SWAction();
+	~SWAction();
+
+	void runAct( SWAct* act );
+	void stopAct( SWAct* act );
 
 	void onStart();
 	void onRemove();

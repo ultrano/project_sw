@@ -21,10 +21,11 @@ bool SWActDestroy::isDone()
 	return m_destroied;
 }
 
-void SWActDestroy::onStart()
+bool SWActDestroy::onStart()
 {
 	m_destroied = false;
 	m_accum = m_delay;
+	return true;
 }
 
 void SWActDestroy::onUpdate()

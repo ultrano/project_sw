@@ -26,7 +26,7 @@ public:
 	bool isPaused() const { return m_isPaused; };
 
 	virtual bool isDone() = 0;
-	virtual void onStart() = 0;
+	virtual bool onStart() = 0;
 	virtual void onUpdate() = 0;
 
 };

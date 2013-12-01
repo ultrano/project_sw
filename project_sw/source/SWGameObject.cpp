@@ -52,13 +52,6 @@ void SWGameObject::destroy()
 	SWHardRef<SWGameObject> holder = this;
 	removeComponentAll();
 
-	ObjectMap::iterator itor = m_propTable.begin();
-	for ( ; itor != m_propTable.end() ; ++itor )
-	{
-		SWProperty* prop = swrtti_cast<SWProperty>( (itor->second)() );
-		if ( !prop ) continue;
-		prop->destroy();
-	}
 	m_propTable.clear();
 
 	__super::destroy();

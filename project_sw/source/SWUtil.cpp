@@ -4,43 +4,23 @@
 #include <Windows.h>
 #else
 #include <sys/time.h>
-
 #endif
 
 __SWUtil::__SWUtil()
-
 {
-
-
-
 }
-
-
 
 __SWUtil::~__SWUtil()
-
 {
-
-
-
 }
-
-
 
 __SWUtil& __SWUtil::getInstance()
-
 {
-
 	static __SWUtil instance;
-
 	return instance;
-
 }
 
-
-
 unsigned int __SWUtil::getTickCount()
-
 {
 #ifdef WIN32
     return GetTickCount();
@@ -49,9 +29,6 @@ unsigned int __SWUtil::getTickCount()
     gettimeofday(&tick, 0);
     return (tick.tv_sec*1000 + tick.tv_usec/1000);
 #endif
-        
-
-
 }
 
 void* __SWUtil::alloc( size_t size )
@@ -65,12 +42,9 @@ void  __SWUtil::free( void* memory )
 }
 
 void __SWUtil::consoleXY( int x, int y )
-
 {
-
-	//COORD pos = {x, y};
-
-	//SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-
+#ifdef WIN32
+	COORD pos = {x, y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+#endif
 }
-

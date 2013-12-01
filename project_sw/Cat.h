@@ -6,7 +6,7 @@
 class Cat : public SWBehavior
 {
 	SW_RTTI( Cat, SWBehavior );
-
+	float m_speed;
 public:
 	void onAwake();
 	void onUpdate();

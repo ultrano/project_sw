@@ -17,7 +17,7 @@ SWObject* SWTable::find( const std::string& key ) const
 	return (itor->second)();
 }
 
-void SWTable::insert( const std::string& key, SWObject* object )
+void SWTable::insert( const std::string& key, const SWObject* object )
 {
 	m_table.insert( std::make_pair( key, object ) );
 }
@@ -25,4 +25,24 @@ void SWTable::insert( const std::string& key, SWObject* object )
 void SWTable::remove( const std::string& key )
 {
 	m_table.erase( key );
+}
+
+SWTable::iterator SWTable::begin()
+{
+	return m_table.begin();
+}
+
+SWTable::const_iterator SWTable::begin() const
+{
+	return m_table.begin();
+}
+
+SWTable::iterator SWTable::end()
+{
+	return m_table.end();
+}
+
+SWTable::const_iterator SWTable::end() const
+{
+	return m_table.end();
 }

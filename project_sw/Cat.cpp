@@ -14,6 +14,8 @@
 #include "SWNumber.h"
 #include "SWString.h"
 #include "SWTable.h"
+#include "SWActPlay.h"
+#include "SWActContinue.h"
 
 #include "UIImage.h"
 #include "UIDefines.h"
@@ -23,6 +25,10 @@ void Cat::onAwake()
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWAction* action = gameObject()->addComponent<SWAction>();
 	UIImage* image = gameObject()->addComponent<UIImage>();
+	SWTable* spriteData = swrtti_cast<SWTable>(gameObject()->getProp( "spriteData" ));
+	SWArray* anim = swrtti_cast<SWArray>(spriteData->find( "idle" ));
+	float duration = swrtti_cast<SWNumber>( anim->get(0) )->getValue();
+	SWArray* regions = swrtti_cast<SWArray>( anim->get(1) );
 
 	switch ( SWMath.randomInt(1,3) )
 	{
@@ -57,7 +63,12 @@ void Cat::onAwake()
 
 	transform->setLocalPosition( SWVector3f( posX->getValue(), posY->getValue(), 0 ) );
 
-	action->setAct( new SWActDestroy( 15 ) );
+	
+	SWNumber* catLife = swrtti_cast<SWNumber>(config->find("catLife"));
+	SWNumber* catSpeed = swrtti_cast<SWNumber>(config->find("catSpeed"));
+	m_speed = catSpeed->getValue();
+	action->runAct( new SWActDestroy( catLife->getValue() ) );
+	action->runAct( new SWActContinue( new SWActPlay( regions, duration ) ) );
 }
 
 void Cat::onUpdate()
@@ -65,9 +76,6 @@ void Cat::onUpdate()
 	float deltaTime = SWTime.getDeltaTime();
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	SWVector3f pos = transform->getLocalPosition();
-	pos.x -= deltaTime * 10;
-	float limit = SWMath.pi/18.0f;
-	float angle = SWMath.pingPong( SWTime.getTime(), limit)-limit/2;
+	pos.x -= deltaTime * m_speed;
 	transform->setLocalPosition( pos );
-	transform->setLocalRotate( SWQuaternion().rotate(SWVector3f::axisZ, angle ) );
 }

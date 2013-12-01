@@ -2,39 +2,113 @@
 {
 "width":960,
 "height":640,
-"ratX":170,
-"ratY":550,
-"ratScaleX":1,
-"ratScaleY":1,
-"fireHoleX":60,
-"fireHoleY":-60,
-"catX":900,
-"catY":600,
-"catWidth":80,
-"catHeight":80,
+"ratX":225,
+"ratY":500,
+"ratScaleX":0.5,
+"ratScaleY":0.5,
+"fireHoleX":120,
+"fireHoleY":-117,
+"catX":920,
+"catY":520,
+"catWidth":110,
+"catHeight":110,
 "catAnchorX":"center",
 "catAnchorY":"bottom",
-"minAngle":-45,
-"maxAngle":45,
-
+"minAngle":-40,
+"maxAngle":0,
+"catGen":4,
+"catSpeed":10,
+"catLife":10,
 "images":
    [
       {
-	     "name":"background",
+	 "name":"background",
          "image":"background_02.png",
          "size":[960,640],
-	     "pos":[0,0],
-		 "rotate":0,
-	     "anchor":["left","top"]
-	  }
-	  ,
+	 "pos":[0,0],
+	"rotate":0,
+	"anchor":["left","top"]
+      }
+      ,
       {
-	     "name":"underBar",
+	 "name":"underBar",
          "image":"under_bar.png",
          "size":[960,172],
-	     "pos":[0,640],
-		 "rotate":0,
-	     "anchor":["left","bottom"]
+	 "pos":[0,640],
+	 "rotate":0,
+	 "anchor":["left","bottom"]
+      }
+      ,
+      {
+	 "name":"house",
+         "image":"house_00.png",
+         "size":[256,256],
+	 "pos":[0,250],
+	 "rotate":0,
+	 "anchor":["left","top"]
+      }
+      ,
+      {
+	 "name":"spring",
+         "image":"spring_01.png",
+         "size":[36,80],
+	 "pos":[170,516],
+	 "rotate":-28,
+	 "anchor":["left","top"]
 	  }
+      ,
+      {
+	 "name":"siso_up",
+         "image":"siso_up.png",
+         "size":[212,54],
+	 "pos":[68,484],
+	 "rotate":0,
+	 "anchor":["left","top"]
+	  }
+      ,
+      {
+	 "name":"hp_bar_00",
+         "image":"hp_bar_00.png",
+         "size":[186,24],
+	 "pos":[394,565],
+	 "rotate":0,
+	 "anchor":["left","top"]
+      }
+      ,
+      {
+	 "name":"wp_bar_00",
+         "image":"wp_bar_00.png",
+         "size":[186,24],
+	 "pos":[395,600],
+	 "rotate":0,
+	 "anchor":["left","top"]
+      }
+      ,
+      {
+	 "name":"pause_00",
+         "image":"pause_00.png",
+         "size":[48,48],
+	 "pos":[889,570],
+	 "rotate":0,
+	 "anchor":["left","top"]
+      }
+      ,
+      {
+	 "name":"control_button",
+         "image":"control_button_01.png",
+         "size":[128,128],
+	 "pos":[135,514],
+	 "rotate":0,
+	 "anchor":["center","center"]
+      }
+      ,
+      {
+	 "name":"control_button",
+         "image":"control_button_00.png",
+         "size":[128,128],
+	 "pos":[135,514],
+	 "rotate":0,
+	 "anchor":["center","center"]
+      }
    ]
 }

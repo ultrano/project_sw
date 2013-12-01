@@ -5,6 +5,7 @@
 #include "glut.h"
 #include "SWTime.h"
 #include "SWInput.h"
+#include "SWVector3f.h"
 
 #include "CatAss.h"
 
@@ -49,7 +50,6 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	float width = 960;
 	float height = 640;
-
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 
@@ -65,6 +65,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutTimerFunc( 1 ,callbackTimer,0);
 
 	SW_GC.onStart( new InitScene, "../resource/", width, height );
+
 	glutMainLoop();
 	return 0;
 }

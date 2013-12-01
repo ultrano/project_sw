@@ -7,6 +7,7 @@ class CatGenerator : public SWBehavior
 {
 	SW_RTTI( CatGenerator, SWBehavior );
 
+	float genTime;
 	float accum;
 	void onAwake();
 	void onUpdate();

@@ -29,6 +29,10 @@ public:
     SWComponent();
     ~SWComponent();
 
+	template<typename T>
+	T* getComponent() { return (T*)getComponent( T::getRtti() ); };
+	SWComponent* getComponent( const SWRtti* rtti );
+
 	virtual void onAwake() {};
 	virtual void onStart() {};
 	virtual void onRemove() {};

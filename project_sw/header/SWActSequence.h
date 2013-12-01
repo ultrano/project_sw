@@ -17,7 +17,7 @@ class SWActSequence : public SWAct
 	void addAct( SWAct* act );
 
 	virtual bool isDone();
-	virtual void onStart();
+	virtual bool onStart();
 	virtual void onUpdate();
 };
 

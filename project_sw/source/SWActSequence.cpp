@@ -23,9 +23,10 @@ bool SWActSequence::isDone()
 	return ( ( m_acts.size() <= 0 ) || (m_acts.size() == m_cursor) );
 }
 
-void SWActSequence::onStart()
+bool SWActSequence::onStart()
 {
 	m_cursor = 0;
+	return true;
 }
 
 void SWActSequence::onUpdate()

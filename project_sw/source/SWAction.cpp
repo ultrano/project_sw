@@ -1,7 +1,19 @@
 #include "SWAction.h"
+#include "SWList.h"
 #include "SWGameObject.h"
 #include "SWTime.h"
 #include "SWAct.h"
+
+SWAction::SWAction()
+	: m_actList( new SWList )
+{
+
+}
+
+SWAction::~SWAction()
+{
+
+}
 
 void SWAction::onStart()
 {
@@ -17,22 +29,38 @@ void SWAction::onRemove()
 
 void SWAction::onUpdate()
 {
-	SWAct* act = m_act();
+	SWWeakRef<SWAction> vital = this;
+	SWList::Value itorList;
+	m_actList()->copy( itorList );
+	SWList::iterator itor = itorList.begin();
+	for ( ; itor != itorList.end() ; ++itor )
+	{
+		if ( vital.isValid() == false ) break;
+		SWAct* act = swrtti_cast<SWAct>( (*itor)() );
+		if ( act == NULL ) break;
+		if ( act->isPaused() ) continue;
+		if ( act->isDone() )
+		{
+			stopAct( act );
+			continue;
+		}
+		act->onUpdate();
+	}
+}
+
+void SWAction::runAct( SWAct* act )
+{
 	if ( act == NULL ) return;
-	if ( act->isDone() ) return;
-	if ( act->isPaused() ) return;
-	m_spendTime += SWTime.getDeltaTime();
-	act->onUpdate();
-}
 
-void SWAction::setAct( SWAct* act )
-{
+	SWHardRef<SWAct> hold = act;
+
 	if ( act ) act->m_action = this;
-	m_act = act;
-	act->onStart();
+	if ( !act->onStart() ) return;
+	m_actList()->add( act );
 }
 
-SWAct* SWAction::getAct() const
+void SWAction::stopAct( SWAct* act )
 {
-	return m_act();
+	if ( act == NULL ) return;
+	m_actList()->remove( act );
 }
