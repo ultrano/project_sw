@@ -181,7 +181,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 			"   v_tex = a_tex;"                  "\n"
 			"}";
 		const char fragSrc[] =
-			//"precision mediump float;"                         "\n"
+#ifndef WIN32
+			"precision mediump float;"                         "\n"
+#endif
 			"uniform sampler2D s_texture;"                     "\n"
 			"varying vec2 v_tex;"                              "\n"
 			"void main()"                                      "\n"
