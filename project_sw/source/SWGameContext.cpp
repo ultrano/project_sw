@@ -199,10 +199,10 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		glEnableVertexAttribArray( pimpl->aPosLoc );
 		glEnableVertexAttribArray( pimpl->aTexLoc );
 
-		// ¹öÆÛ Å¬¸®¾î »ö»ó ÁöÁ¤.
+		// ë²„í¼ í´ë¦¬ì–´ ìƒ‰ìƒ ì§€ì •.
 		glClearColor(0,0,1,1);
 		
-		// ¹öÅØ½º ¹öÆÛ »ç¿ë
+		// ë²„í…ìŠ¤ ë²„í¼ ì‚¬ìš©
 		glEnable(GL_TEXTURE_2D);
 
 		glEnable(GL_BLEND);
@@ -211,14 +211,15 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		glAlphaFunc(GL_GREATER, 0);
 
 
-		//! Èñ¸Á ¿ì¼±¼øÀ§
+		//! Â»Ã’âˆÂ¡ Ã¸ÃÂºÂ±ÂºÂ¯Â¿ÃŸ
 
-		// ºäÆ÷Æ® ÁöÁ¤.
+		// âˆ«â€°âˆ†Ëœâˆ†Ã† Â¡Ë†Â¡Â§.
 		glViewport(0,0,width,height);
 
-		// ÇÁ·ÎÁ§¼Ç ¸ÅÆ®¸¯½º¸¦ Á÷±³ Çà·Ä·Î ÁöÁ¤.
-		SWMatrix4x4 proj;
-		setProjectionMatrix( proj.ortho( 0, width, 0, height,1000,-1000) );
+		// Â«Â¡âˆ‘Å’Â¡ÃŸÂºÂ« âˆâ‰ˆâˆ†Ã†âˆÃ˜Î©âˆ«âˆÂ¶ Â¡ËœÂ±â‰¥ Â«â€¡âˆ‘Æ’âˆ‘Å’ Â¡Ë†Â¡Â§.
+		SWMatrix4x4 mat;
+        setViewMatrix( mat );
+		setProjectionMatrix( mat.ortho( 0, width, 0, height,1000,-1000) );
 	}
 
 }
@@ -397,10 +398,10 @@ SWObject* SWGameContext::findItem( const std::string& key )
 
 void SWGameContext::onResize( int width, int height )
 {
-	// ºäÆ÷Æ® ÁöÁ¤.
+	// âˆ«â€°âˆ†Ëœâˆ†Ã† Â¡Ë†Â¡Â§.
 	glViewport(0,0,width,height);
 
-	// ÇÁ·ÎÁ§¼Ç ¸ÅÆ®¸¯½º¸¦ Á÷±³ Çà·Ä·Î ÁöÁ¤.
+	// Â«Â¡âˆ‘Å’Â¡ÃŸÂºÂ« âˆâ‰ˆâˆ†Ã†âˆÃ˜Î©âˆ«âˆÂ¶ Â¡ËœÂ±â‰¥ Â«â€¡âˆ‘Æ’âˆ‘Å’ Â¡Ë†Â¡Â§.
 	SWMatrix4x4 proj;
 	setProjectionMatrix( proj.ortho( 0, width, 0, height,1000,-1000) );
 }

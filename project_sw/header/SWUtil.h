@@ -9,10 +9,11 @@ class __SWUtil : public SWMemory
 {
 	__SWUtil();
 	~__SWUtil();
+    unsigned int tickCount;
 public:
 	static __SWUtil& getInstance();
 
-	unsigned int getTickCount();
+	unsigned int getMicroCount();
 	void* alloc( size_t size );
 	void  free( void* memory );
 

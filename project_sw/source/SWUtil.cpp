@@ -20,14 +20,16 @@ __SWUtil& __SWUtil::getInstance()
 	return instance;
 }
 
-unsigned int __SWUtil::getTickCount()
+unsigned int __SWUtil::getMicroCount()
 {
 #ifdef WIN32
-    return GetTickCount();
+    return GetTickCount()*1000;
 #else
     struct timeval tick;
     gettimeofday(&tick, 0);
-    return (tick.tv_sec*1000 + tick.tv_usec/1000);
+    unsigned int sec = tick.tv_sec*1000000;
+    unsigned int usec = tick.tv_usec;
+    return (sec + usec);
 #endif
 }
 

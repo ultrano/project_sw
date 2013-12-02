@@ -25,7 +25,8 @@ __SWTime& __SWTime::getInstance()
 
 float __SWTime::getTime()
 {
-	return ((float)SWUtil.getTickCount()) / 1000.0f;
+    unsigned int tick = SWUtil.getMicroCount();
+	return ((float)tick) / 1000000.0f;
 }
 
 float __SWTime::getDeltaTime()
