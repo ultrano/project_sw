@@ -13,6 +13,7 @@
 void callbackDisplay()
 {
 	SW_GC.onRender();
+	glutSwapBuffers();
 }
 
 void callbackIdle()
@@ -22,7 +23,6 @@ void callbackIdle()
 
 void callbackTimer( int value )
 {
-	glutSwapBuffers();
 	glutPostRedisplay();
 	glutTimerFunc( (1.0f/60.0f)*1000 ,callbackTimer,0);
 }
