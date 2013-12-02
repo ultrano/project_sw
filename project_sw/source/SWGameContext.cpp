@@ -203,8 +203,6 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		glClearColor(0,0,1,1);
 		
 		// 버텍스 버퍼 사용
-		glEnableClientState( GL_VERTEX_ARRAY );
-		glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 		glEnable(GL_TEXTURE_2D);
 
 		glEnable(GL_BLEND);
