@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{20EC4D68-699A-4330-9487-D502066EEBE0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>swmodule</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./header;./source;../opengl</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./header;./source;../opengl</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="header\stb_image.h" />
+    <ClInclude Include="header\SWAct.h" />
+    <ClInclude Include="header\SWActContinue.h" />
+    <ClInclude Include="header\SWActDestroy.h" />
+    <ClInclude Include="header\SWAction.h" />
+    <ClInclude Include="header\SWActPlay.h" />
+    <ClInclude Include="header\SWActSequence.h" />
+    <ClInclude Include="header\SWArray.h" />
+    <ClInclude Include="header\SWBehavior.h" />
+    <ClInclude Include="header\SWBoolean.h" />
+    <ClInclude Include="header\SWComponent.h" />
+    <ClInclude Include="header\SWCriticalSection.h" />
+    <ClInclude Include="header\SWDefines.h" />
+    <ClInclude Include="header\SWGameContext.h" />
+    <ClInclude Include="header\SWGameObject.h" />
+    <ClInclude Include="header\SWGameScene.h" />
+    <ClInclude Include="header\SWInput.h" />
+    <ClInclude Include="header\SWIOStream.h" />
+    <ClInclude Include="header\SWList.h" />
+    <ClInclude Include="header\SWLog.h" />
+    <ClInclude Include="header\SWMath.h" />
+    <ClInclude Include="header\SWMatrix4x4.h" />
+    <ClInclude Include="header\SWMemory.h" />
+    <ClInclude Include="header\SWMesh.h" />
+    <ClInclude Include="header\SWMeshFilter.h" />
+    <ClInclude Include="header\SWMeshRenderer.h" />
+    <ClInclude Include="header\SWNumber.h" />
+    <ClInclude Include="header\SWObject.h" />
+    <ClInclude Include="header\SWParam.h" />
+    <ClInclude Include="header\SWProfiler.h" />
+    <ClInclude Include="header\SWQuaternion.h" />
+    <ClInclude Include="header\SWRect.h" />
+    <ClInclude Include="header\SWRefCounter.h" />
+    <ClInclude Include="header\SWRenderer.h" />
+    <ClInclude Include="header\SWRtti.h" />
+    <ClInclude Include="header\SWSpriteData.h" />
+    <ClInclude Include="header\SWString.h" />
+    <ClInclude Include="header\SWTable.h" />
+    <ClInclude Include="header\SWTime.h" />
+    <ClInclude Include="header\SWTimer.h" />
+    <ClInclude Include="header\SWTransform.h" />
+    <ClInclude Include="header\SWUtil.h" />
+    <ClInclude Include="header\SWValue.h" />
+    <ClInclude Include="header\SWVector2f.h" />
+    <ClInclude Include="header\SWVector3f.h" />
+    <ClInclude Include="header\WIDefines.h" />
+    <ClInclude Include="header\WIImage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\stb_image.c" />
+    <ClCompile Include="source\SWAct.cpp" />
+    <ClCompile Include="source\SWActContinue.cpp" />
+    <ClCompile Include="source\SWActDestroy.cpp" />
+    <ClCompile Include="source\SWAction.cpp" />
+    <ClCompile Include="source\SWActPlay.cpp" />
+    <ClCompile Include="source\SWActSequence.cpp" />
+    <ClCompile Include="source\SWArray.cpp" />
+    <ClCompile Include="source\SWBehavior.cpp" />
+    <ClCompile Include="source\SWBoolean.cpp" />
+    <ClCompile Include="source\SWComponent.cpp" />
+    <ClCompile Include="source\SWCriticalSection.cpp" />
+    <ClCompile Include="source\SWGameContext.cpp" />
+    <ClCompile Include="source\SWGameObject.cpp" />
+    <ClCompile Include="source\SWGameScene.cpp" />
+    <ClCompile Include="source\SWInput.cpp" />
+    <ClCompile Include="source\SWList.cpp" />
+    <ClCompile Include="source\SWLog.cpp" />
+    <ClCompile Include="source\SWMath.cpp" />
+    <ClCompile Include="source\SWMatrix4x4.cpp" />
+    <ClCompile Include="source\SWMemory.cpp" />
+    <ClCompile Include="source\SWMesh.cpp" />
+    <ClCompile Include="source\SWMeshFilter.cpp" />
+    <ClCompile Include="source\SWMeshRenderer.cpp" />
+    <ClCompile Include="source\SWNumber.cpp" />
+    <ClCompile Include="source\SWObject.cpp" />
+    <ClCompile Include="source\SWParam.cpp" />
+    <ClCompile Include="source\SWProfiler.cpp" />
+    <ClCompile Include="source\SWQuaternion.cpp" />
+    <ClCompile Include="source\SWRect.cpp" />
+    <ClCompile Include="source\SWRefCounter.cpp" />
+    <ClCompile Include="source\SWRenderer.cpp" />
+    <ClCompile Include="source\SWSpriteData.cpp" />
+    <ClCompile Include="source\SWString.cpp" />
+    <ClCompile Include="source\SWTable.cpp" />
+    <ClCompile Include="source\SWTime.cpp" />
+    <ClCompile Include="source\SWTimer.cpp" />
+    <ClCompile Include="source\SWTransform.cpp" />
+    <ClCompile Include="source\SWUtil.cpp" />
+    <ClCompile Include="source\SWValue.cpp" />
+    <ClCompile Include="source\SWVector2f.cpp" />
+    <ClCompile Include="source\SWVector3f.cpp" />
+    <ClCompile Include="source\WIImage.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

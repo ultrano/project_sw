@@ -8,7 +8,7 @@
 #include "SWInput.h"
 #include "SWVector3f.h"
 
-#include "CatAss.h"
+//#include "CatAss.h"
 #include "TestScene.h"
 
 void callbackDisplay()
@@ -66,7 +66,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutReshapeFunc( callbackReshape );
 	glutTimerFunc( 1 ,callbackTimer,0);
 	glewInit();
-	SW_GC.onStart( new InitScene, "../resource/", width, height );
+	SW_GC.onStart( new TestScene, "../resource/", width, height );
 
 	glutMainLoop();
 	return 0;

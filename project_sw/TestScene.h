@@ -1,11 +1,29 @@
 #ifndef TestScene_h__
 #define TestScene_h__
 
-#include "SWGameObject.h"
-#include "SWGameScene.h"
-#include "WIImage.h"
+#include "SWGameContext.h"
+#include "SWMatrix4x4.h"
 #include "SWQuaternion.h"
-#include "SWVector3f.h"
+#include "SWGameScene.h"
+#include "SWGameObject.h"
+#include "SWTransform.h"
+#include "SWMeshFilter.h"
+#include "SWMesh.h"
+#include "SWVector2f.h"
+#include "SWMeshRenderer.h"
+#include "SWLog.h"
+#include "SWDefines.h"
+#include "SWMath.h"
+#include "SWInput.h"
+#include "SWParam.h"
+#include "SWValue.h"
+#include "SWActPlay.h"
+#include "SWSpriteData.h"
+#include "SWAction.h"
+#include "SWActContinue.h"
+
+#include "WIDefines.h"
+#include "WIImage.h"
 
 class TestScene : public SWGameScene
 {
