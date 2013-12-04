@@ -50,12 +50,14 @@ public:
 	SWMatrix4x4 modelMatrix;
 	SWMatrix4x4 viewMatrix;
 	SWMatrix4x4 projMatrix;
+	SWMatrix4x4 textureMatrix;
 
 	GLuint programID;
 	GLuint aPosLoc;
 	GLuint aTexLoc;
-	GLuint uMVPLoc;
 	GLuint sTexLoc;
+	GLuint uMVPMatLoc;
+	GLuint uTexMatLoc;
 	
 	std::map<std::string,unsigned int> textureCache;
 	std::map<unsigned int,TextureInfo> textureTable;
@@ -100,7 +102,7 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 		{
 			SWString::Value msg;
 			msg.resize( infoLen );
-			glGetProgramInfoLog( shaderID, infoLen, NULL, &msg[0] );
+			glGetProgramInfoLog( shaderID, infoLen, &infoLen, &msg[0] );
 
 			SWLog( msg.c_str() );
 		}
@@ -117,10 +119,15 @@ GLuint loadProgram( const char* vertSource, const char* fragSource )
 	GLuint fsID = 0;
 	GLuint programID = 0;
 
-	if ( (vsID = loadShader( GL_VERTEX_SHADER, vertSource )) == 0 ) return 0;
+	if ( (vsID = loadShader( GL_VERTEX_SHADER, vertSource )) == 0 )
+	{
+		SWLog( "failed compile vertex shader" );
+		return 0;
+	}
 	if ( (fsID = loadShader( GL_FRAGMENT_SHADER, fragSource )) == 0 )
 	{
 		glDeleteShader( vsID );
+		SWLog( "failed compile fragment shader" );
 		return 0;
 	}
 
@@ -172,13 +179,15 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 	{
 		const char vertSrc[] = 
 			"uniform   mat4 u_mvpMat;"           "\n"
+			"uniform   mat4 u_texMat;"           "\n"
 			"attribute vec4 a_pos;"              "\n"
 			"attribute vec2 a_tex;"              "\n"
 			"varying   vec2 v_tex;"              "\n"
 			"void main()"                        "\n"
 			"{"                                  "\n"
 			"   gl_Position = u_mvpMat * a_pos;" "\n"
-			"   v_tex = a_tex;"                  "\n"
+			"   vec4 aTex = vec4(a_tex.xy,0,1);" "\n"
+			"   v_tex = ( u_texMat * aTex ).xy;" "\n"
 			"}";
 		const char fragSrc[] =
 #ifndef WIN32
@@ -194,8 +203,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFold
 		pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
 		pimpl->aPosLoc = glGetAttribLocation( pimpl->programID, "a_pos" );
 		pimpl->aTexLoc = glGetAttribLocation( pimpl->programID, "a_tex" );
-		pimpl->uMVPLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
 		pimpl->sTexLoc = glGetUniformLocation( pimpl->programID, "s_texture" );
+		pimpl->uMVPMatLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
+		pimpl->uTexMatLoc = glGetUniformLocation( pimpl->programID, "u_texMat" );
 		
 		glUseProgram( pimpl->programID );
 		glEnableVertexAttribArray( pimpl->aPosLoc );
@@ -274,6 +284,22 @@ void SWGameContext::onRender()
 	SWTime.m_accumDraw += 1;
 }
 
+void SWGameContext::onHandleEvent( int type, int param1, int param2 )
+{
+	SWInput.m_touchState = type;
+	SWInput.m_touchX = param1;
+	SWInput.m_touchY = param2;
+
+	SWList::Value copy = SWInput.m_listeners;
+	SWList::iterator itor = copy.begin();
+	for ( ; itor != copy.end() ; ++itor )
+	{
+		SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+		if ( del ) del->call();
+		else SWInput.m_listeners.remove( del );
+	}
+}
+
 SWGameContext& SWGameContext::getInstance()
 {
 	static SWGameContext s_instance;
@@ -305,6 +331,11 @@ void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
 	m_pimpl()->projMatrix = matrix;
 }
 
+void SWGameContext::setTextureMatrix( const SWMatrix4x4& matrix )
+{
+	m_pimpl()->textureMatrix = matrix;
+}
+
 void SWGameContext::setVertexBuffer( const float* buffer )
 {
 	glVertexAttribPointer
@@ -333,7 +364,8 @@ void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 	mvpMat = m_pimpl()->modelMatrix;
 	mvpMat = mvpMat * m_pimpl()->viewMatrix;
 	mvpMat = mvpMat * m_pimpl()->projMatrix;
-	glUniformMatrix4fv( m_pimpl()->uMVPLoc, 1, GL_FALSE, (float*)&mvpMat );
+	glUniformMatrix4fv( m_pimpl()->uMVPMatLoc, 1, GL_FALSE, (float*)&mvpMat );
+	glUniformMatrix4fv( m_pimpl()->uTexMatLoc, 1, GL_FALSE, (float*)&m_pimpl()->textureMatrix );
 	glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
@@ -353,6 +385,10 @@ unsigned int SWGameContext::loadTexture( const std::string& path )
 	{
 		m_pimpl()->textureTable.insert( std::make_pair( info.id, info ) );
 		m_pimpl()->textureCache.insert( std::make_pair( solvedPath, info.id ) );
+	}
+	else
+	{
+		SWLog( "failed to load texture : %s", path.c_str() );
 	}
 
 	return info.id;

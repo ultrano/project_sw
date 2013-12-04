@@ -42,9 +42,9 @@ using namespace std;
 
 SWHardRef<SWObject> convertJsonValue( const Json::Value& value );
 
-class TestScene : public SWGameScene
+class GameMainScene : public SWGameScene
 {
-	SW_RTTI( TestScene, SWGameScene );
+	SW_RTTI( GameMainScene, SWGameScene );
 	SWHardRef<SWGameObject> target;
 
 	float m_minAngle;
@@ -248,7 +248,7 @@ class TitleScene : public SWGameScene
 	void onHandleTouch()
 	{
 		if ( SWInput.getTouchState() != SW_TouchPress ) return;
-		SW_GC.setNextScene( new TestScene );
+		SW_GC.setNextScene( new GameMainScene );
 	}
 };
 

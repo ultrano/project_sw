@@ -20,6 +20,9 @@ private:
 
 public:
 
+	SWList();
+	~SWList();
+
 	void add( const SWObject* object );
 	void remove( const SWObject* object );
 	void clear();

@@ -71,6 +71,7 @@ void SWGameObject::udpate()
 		}
 	}
 
+	if ( m_updateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
 		SWObjectList copy = m_updateDelegates;

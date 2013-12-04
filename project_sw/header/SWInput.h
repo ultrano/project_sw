@@ -2,7 +2,7 @@
 #define SWInput_h__
 
 #include "SWMemory.h"
-#include "SWObject.h"
+#include "SWList.h"
 
 #define SWInput (__SWInput::getInstance())
 
@@ -14,7 +14,7 @@ private:
 	int m_touchState;
 	int m_touchX;
 	int m_touchY;
-	SWObjectList m_listeners;
+	SWList::Value m_listeners;
 
 	__SWInput();
 	~__SWInput();
@@ -29,8 +29,6 @@ public:
 
 	void addInputDelegate( SWDelegate* del );
 	void removeInputDelegate( SWDelegate* del );
-
-	void onHandleEvent( int type, int param1, int param2 );
 };
 
 #endif // SWInput_h__

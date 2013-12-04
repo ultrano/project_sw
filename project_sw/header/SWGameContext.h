@@ -26,10 +26,12 @@ public:
 	void onPause();
 	void onDestroy();
 	void onResize( int width, int height );
+	void onHandleEvent( int type, int param1, int param2 );
 
 	void setViewMatrix( const SWMatrix4x4& matrix );
 	void setModelMatrix( const SWMatrix4x4& matrix );
 	void setProjectionMatrix( const SWMatrix4x4& matrix );
+	void setTextureMatrix( const SWMatrix4x4& matrix );
 
 	void setVertexBuffer( const float* buffer );
 	void setTexCoordBuffer( const float* buffer );

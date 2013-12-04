@@ -20,6 +20,9 @@ private:
 
 public:
 
+	SWArray();
+	~SWArray();
+
 	SWObject* get( unsigned int index ) const;
 	void set( unsigned int index, const SWObject* object );
 

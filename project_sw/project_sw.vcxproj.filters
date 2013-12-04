@@ -321,6 +321,9 @@
     <ClInclude Include="header\WIDefines.h">
       <Filter>UI\WIDefines</Filter>
     </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

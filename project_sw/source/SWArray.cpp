@@ -1,5 +1,16 @@
 #include "SWArray.h"
 #include <algorithm>
+
+SWArray::SWArray()
+{
+
+}
+
+SWArray::~SWArray()
+{
+
+}
+
 SWObject* SWArray::get( unsigned int index ) const
 {
 	if ( index >= count() ) return NULL;

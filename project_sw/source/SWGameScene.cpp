@@ -92,6 +92,7 @@ void SWGameScene::draw()
 	for ( ; itor != m_renderers.end() ; ++itor )
 	{
 		SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
+		renderer->preRender();
 		renderer->render();
 	}
 	

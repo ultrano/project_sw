@@ -9,6 +9,7 @@
 #include "SWVector3f.h"
 
 #include "CatAss.h"
+#include "TestScene.h"
 
 void callbackDisplay()
 {
@@ -34,12 +35,12 @@ void callbackMouse( int button, int state, int x, int y )
 	case GLUT_DOWN: state = SW_TouchPress;   break;
 	case GLUT_UP:   state = SW_TouchRelease; break;
 	}
-	SWInput.onHandleEvent( state, x, y );
+	SW_GC.onHandleEvent( state, x, y );
 }
 
 void callbackMouseMove( int x, int y )
 {
-	SWInput.onHandleEvent( SW_TouchMove, x, y );
+	SW_GC.onHandleEvent( SW_TouchMove, x, y );
 }
 
 void callbackReshape( int width, int height )

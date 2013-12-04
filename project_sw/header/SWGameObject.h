@@ -22,7 +22,7 @@ class SWGameObject : public SWObject
 {
     SW_RTTI( SWGameObject, SWObject );
 	friend class SWGameScene;
-protected:
+private:
 
 	typedef std::vector< SWHardRef<SWComponent> > ComponentArray;
 	typedef std::list< SWHardRef<SWComponent> > ComponentList;

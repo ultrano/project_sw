@@ -1,5 +1,15 @@
 #include "SWList.h"
 
+SWList::SWList()
+{
+
+}
+
+SWList::~SWList()
+{
+
+}
+
 void SWList::add( const SWObject* object )
 {
 	m_value.push_back( object );
