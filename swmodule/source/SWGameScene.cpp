@@ -15,6 +15,7 @@
 #include "SWBehavior.h"
 #include "SWRenderer.h"
 #include "SWGameContext.h"
+#include "SWCamera.h"
 
 SWGameScene::SWGameScene()
 {
@@ -42,6 +43,10 @@ void SWGameScene::awake()
 {
 	SWInput.addInputDelegate( GetDelegate(handleEvent) );
     onAwake();
+	SWGameObject* go = new SWGameObject;
+	SWCamera* cam = go->addComponent<SWCamera>();
+	cam->cameraMatrix.ortho( 0, SW_GC.getScreenWidth(), 0, SW_GC.getScreenHeight(),1000,-1000);
+	SWCamera::mainCamera = cam;
 }
 
 void SWGameScene::destroy()
@@ -88,6 +93,13 @@ void SWGameScene::update()
 
 void SWGameScene::draw()
 {
+	if ( SWCamera::mainCamera.isValid() == false ) return;
+	
+	SWCamera* cam = SWCamera::mainCamera();
+	SWTransform* trans = cam->getComponent<SWTransform>();
+	SW_GC.setViewMatrix( trans->getFinalMatrix() );
+	SW_GC.setProjectionMatrix( cam->cameraMatrix );
+
 	ComponentList::iterator itor = m_renderers.begin();
 	for ( ; itor != m_renderers.end() ; ++itor )
 	{

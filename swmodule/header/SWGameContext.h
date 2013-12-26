@@ -19,7 +19,7 @@ private:
 	SWGameContext( const SWGameContext& );
 public:
 
-	void onStart( SWGameScene* firstScene, const std::string& resFolder, float width, float height );
+	void onStart( SWGameScene* firstScene, const std::string& resFolder, int width, int height );
 	void onFrameMove();
 	void onRender();
 	void onResume();
@@ -43,6 +43,9 @@ public:
 
 	SWGameScene* getScene();
 	void setNextScene( SWGameScene* scene );
+
+	int getScreenWidth();
+	int getScreenHeight();
 
 	bool storeItem( const std::string& key, SWObject* item );
 	void removeItem( const std::string& key );

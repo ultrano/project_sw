@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="UI">
-      <UniqueIdentifier>{6ae5dbc5-9cf8-411e-93eb-50200dd71469}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\WIImage">
-      <UniqueIdentifier>{f7326522-e76c-4322-8213-fba7a0c1da04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\WIDefines">
-      <UniqueIdentifier>{66dc6591-02fb-4a32-9fa4-06f1c7c6449f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW">
       <UniqueIdentifier>{c1a95910-304e-479d-81c0-09d667d3d38f}</UniqueIdentifier>
     </Filter>
@@ -151,6 +142,18 @@
     <Filter Include="stb_image">
       <UniqueIdentifier>{52ef00e5-7d5a-4ada-b830-ab56de0df871}</UniqueIdentifier>
     </Filter>
+    <Filter Include="WI">
+      <UniqueIdentifier>{6ae5dbc5-9cf8-411e-93eb-50200dd71469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WI\WIImage">
+      <UniqueIdentifier>{f7326522-e76c-4322-8213-fba7a0c1da04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WI\WIDefines">
+      <UniqueIdentifier>{66dc6591-02fb-4a32-9fa4-06f1c7c6449f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWCamera">
+      <UniqueIdentifier>{f2acb6cd-d1c4-45d7-b853-5a64ad51574d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -289,13 +292,16 @@
       <Filter>SW\SWVector3f</Filter>
     </ClInclude>
     <ClInclude Include="header\WIImage.h">
-      <Filter>UI\WIImage</Filter>
+      <Filter>WI\WIImage</Filter>
     </ClInclude>
     <ClInclude Include="header\WIDefines.h">
-      <Filter>UI\WIDefines</Filter>
+      <Filter>WI\WIDefines</Filter>
     </ClInclude>
     <ClInclude Include="header\stb_image.h">
       <Filter>stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWCamera.h">
+      <Filter>SW\SWCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -423,10 +429,13 @@
       <Filter>SW\SWVector3f</Filter>
     </ClCompile>
     <ClCompile Include="source\WIImage.cpp">
-      <Filter>UI\WIImage</Filter>
+      <Filter>WI\WIImage</Filter>
     </ClCompile>
     <ClCompile Include="source\stb_image.c">
       <Filter>stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWCamera.cpp">
+      <Filter>SW\SWCamera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

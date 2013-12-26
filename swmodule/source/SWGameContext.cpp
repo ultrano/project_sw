@@ -42,8 +42,8 @@ public:
 	
 	std::string resFolder;
 
-	float screenWidth;
-	float screenHeight;
+	int screenWidth;
+	int screenHeight;
 	
 	SWCriticalSection idleSection;
 
@@ -162,7 +162,7 @@ GLuint loadProgram( const char* vertSource, const char* fragSource )
 	return programID;
 }
 
-void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFolder, float width, float height )
+void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFolder, int width, int height )
 {
 
 	Pimpl* pimpl = new Pimpl;
@@ -314,6 +314,16 @@ SWGameScene* SWGameContext::getScene()
 void SWGameContext::setNextScene( SWGameScene* scene )
 {
 	m_pimpl()->nextScene = scene;
+}
+
+int SWGameContext::getScreenWidth()
+{
+	return m_pimpl()->screenWidth;
+}
+
+int SWGameContext::getScreenHeight()
+{
+	return m_pimpl()->screenHeight;
 }
 
 void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )

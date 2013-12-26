@@ -1,12 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "project_sw", "project_sw\project_sw.vcxproj", "{4AF26BED-157F-4FDD-A13C-B8E600647FE3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{20EC4D68-699A-4330-9487-D502066EEBE0} = {20EC4D68-699A-4330-9487-D502066EEBE0}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "swmodule", "swmodule\swmodule.vcxproj", "{20EC4D68-699A-4330-9487-D502066EEBE0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sparky", "sparky\sparky.vcxproj", "{87C6FB3A-6635-4A6A-BA28-E0D04FF84C7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +24,10 @@ Global
 		{20EC4D68-699A-4330-9487-D502066EEBE0}.Debug|Win32.Build.0 = Debug|Win32
 		{20EC4D68-699A-4330-9487-D502066EEBE0}.Release|Win32.ActiveCfg = Release|Win32
 		{20EC4D68-699A-4330-9487-D502066EEBE0}.Release|Win32.Build.0 = Release|Win32
+		{87C6FB3A-6635-4A6A-BA28-E0D04FF84C7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{87C6FB3A-6635-4A6A-BA28-E0D04FF84C7B}.Debug|Win32.Build.0 = Debug|Win32
+		{87C6FB3A-6635-4A6A-BA28-E0D04FF84C7B}.Release|Win32.ActiveCfg = Release|Win32
+		{87C6FB3A-6635-4A6A-BA28-E0D04FF84C7B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
