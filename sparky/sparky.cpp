@@ -8,6 +8,10 @@
 
 void callbackDisplay()
 {
+	glColor3f(1,1,1);
+	glLoadIdentity();
+	glTranslatef(100,100,0);
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
 	glutSwapBuffers();
 }
 
@@ -57,7 +61,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutReshapeFunc( callbackReshape );
 	glutTimerFunc( 1 ,callbackTimer,0);
 	glewInit();
-
 	glutCreateMenu( callBackMenu );
 	glutAddMenuEntry("test",1);
 	glutAttachMenu( GLUT_RIGHT_BUTTON );
