@@ -24,6 +24,9 @@
 
 #include "WIDefines.h"
 #include "WIImage.h"
+#include "WIFontChar.h"
+#include "WIFontData.h"
+#include "WIText.h"
 
 #include "Cat.h"
 #include "Ball.h"
@@ -267,6 +270,7 @@ class InitScene : public SWGameScene
 		SWHardRef<SWObject> rootObj = convertJsonValue( root );
 
 		SW_GC.storeItem( "config", rootObj() );
+		
 	}
 	void onUpdate()
 	{
@@ -274,40 +278,5 @@ class InitScene : public SWGameScene
 	}
 };
 
-SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
-{
-	switch ( value.type() )
-	{
-	case Json::ValueType::nullValue : return NULL;
-	case Json::ValueType::booleanValue : return new SWBoolean( value.asBool() );
-	case Json::ValueType::realValue : return new SWNumber( value.asDouble() );
-	case Json::ValueType::intValue  : return new SWNumber( value.asInt() );
-	case Json::ValueType::uintValue : return new SWNumber( value.asUInt() );
-	case Json::ValueType::stringValue : return new SWString( value.asString() );
-	case Json::ValueType::arrayValue :
-		{
-			SWArray* arr = new SWArray;
-			int count = value.size();
-			for ( Json::Value::UInt i = 0 ; i < count ; ++i )
-			{
-				SWHardRef<SWObject> object = convertJsonValue( value.get(i,Json::Value::null) );
-				arr->add( object() );
-			}
-			return arr;
-		}
-	case Json::ValueType::objectValue :
-		{
-			SWTable* tbl = new SWTable;
-			Json::Value::Members members = value.getMemberNames();
-			for ( int i = 0 ; i < members.size() ; ++i )
-			{
-				const std::string&  key    = members[i];
-				SWHardRef<SWObject> object = convertJsonValue( value.get( key, Json::Value::null ) );
-				tbl->insert( key, object() );
-			}
-			return tbl;
-		}
-	}
-}
 
 #endif // CatAss_h__

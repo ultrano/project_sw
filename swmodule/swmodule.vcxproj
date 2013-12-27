@@ -45,7 +45,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./header;./source;../opengl</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./header;./source;../opengl;./json</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -62,7 +62,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./header;./source;../opengl</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./header;./source;../opengl;./json</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -73,6 +73,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="json\json_internalarray.inl" />
+    <None Include="json\json_internalmap.inl" />
+    <None Include="json\json_valueiterator.inl" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -86,10 +89,12 @@
     <ClInclude Include="header\SWArray.h" />
     <ClInclude Include="header\SWBehavior.h" />
     <ClInclude Include="header\SWBoolean.h" />
+    <ClInclude Include="header\SWBuffer.h" />
     <ClInclude Include="header\SWCamera.h" />
     <ClInclude Include="header\SWComponent.h" />
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
+    <ClInclude Include="header\WIFontData.h" />
     <ClInclude Include="header\SWGameContext.h" />
     <ClInclude Include="header\SWGameObject.h" />
     <ClInclude Include="header\SWGameScene.h" />
@@ -123,9 +128,23 @@
     <ClInclude Include="header\SWVector2f.h" />
     <ClInclude Include="header\SWVector3f.h" />
     <ClInclude Include="header\WIDefines.h" />
+    <ClInclude Include="header\WIFontChar.h" />
     <ClInclude Include="header\WIImage.h" />
+    <ClInclude Include="header\WIText.h" />
+    <ClInclude Include="json\autolink.h" />
+    <ClInclude Include="json\config.h" />
+    <ClInclude Include="json\features.h" />
+    <ClInclude Include="json\forwards.h" />
+    <ClInclude Include="json\json.h" />
+    <ClInclude Include="json\json_batchallocator.h" />
+    <ClInclude Include="json\reader.h" />
+    <ClInclude Include="json\value.h" />
+    <ClInclude Include="json\writer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="json\json_reader.cpp" />
+    <ClCompile Include="json\json_value.cpp" />
+    <ClCompile Include="json\json_writer.cpp" />
     <ClCompile Include="source\stb_image.c" />
     <ClCompile Include="source\SWAct.cpp" />
     <ClCompile Include="source\SWActContinue.cpp" />
@@ -136,6 +155,7 @@
     <ClCompile Include="source\SWArray.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
     <ClCompile Include="source\SWBoolean.cpp" />
+    <ClCompile Include="source\SWBuffer.cpp" />
     <ClCompile Include="source\SWCamera.cpp" />
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
@@ -169,7 +189,9 @@
     <ClCompile Include="source\SWValue.cpp" />
     <ClCompile Include="source\SWVector2f.cpp" />
     <ClCompile Include="source\SWVector3f.cpp" />
+    <ClCompile Include="source\WIFontData.cpp" />
     <ClCompile Include="source\WIImage.cpp" />
+    <ClCompile Include="source\WIText.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

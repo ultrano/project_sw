@@ -26,6 +26,18 @@
 
 #include "stb_image.h"
 
+#include "SWTable.h"
+#include "SWString.h"
+#include "SWNumber.h"
+#include "SWArray.h"
+#include "SWValue.h"
+#include "json.h"
+
+#include <stdio.h>
+#include <set>
+#include <map>
+#include <fstream>
+
 struct TextureInfo
 {
 	unsigned int id;
@@ -487,4 +499,52 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	if ( err ) return 0;
 
 	return texID[0];
+}
+
+SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
+{
+	switch ( value.type() )
+	{
+	case Json::ValueType::nullValue : return NULL;
+	case Json::ValueType::booleanValue : return new SWBoolean( value.asBool() );
+	case Json::ValueType::realValue : return new SWNumber( value.asDouble() );
+	case Json::ValueType::intValue  : return new SWNumber( value.asInt() );
+	case Json::ValueType::uintValue : return new SWNumber( value.asUInt() );
+	case Json::ValueType::stringValue : return new SWString( value.asString() );
+	case Json::ValueType::arrayValue :
+		{
+			SWArray* arr = new SWArray;
+			int count = value.size();
+			for ( Json::Value::UInt i = 0 ; i < count ; ++i )
+			{
+				SWHardRef<SWObject> object = convertJsonValue( value.get(i,Json::Value::null) );
+				arr->add( object() );
+			}
+			return arr;
+		}
+	case Json::ValueType::objectValue :
+		{
+			SWTable* tbl = new SWTable;
+			Json::Value::Members members = value.getMemberNames();
+			for ( int i = 0 ; i < members.size() ; ++i )
+			{
+				const std::string&  key    = members[i];
+				SWHardRef<SWObject> object = convertJsonValue( value.get( key, Json::Value::null ) );
+				tbl->insert( key, object() );
+			}
+			return tbl;
+		}
+	}
+}
+
+SWHardRef<SWObject> SWGameContext::loadJson( const std::string& path )
+{
+	std::string solvedPath = m_pimpl()->resFolder + path;
+	std::ifstream ifs( solvedPath.c_str() );
+
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse( (std::istream&)ifs, root );
+
+	return convertJsonValue( root );
 }

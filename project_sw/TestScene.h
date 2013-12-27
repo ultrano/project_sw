@@ -24,6 +24,14 @@
 
 #include "WIDefines.h"
 #include "WIImage.h"
+#include "WIFontChar.h"
+#include "WIFontData.h"
+#include "WIText.h"
+
+#include <stdio.h>
+#include <set>
+#include <map>
+#include <fstream>
 
 class TestScene : public SWGameScene
 {
@@ -32,22 +40,33 @@ class TestScene : public SWGameScene
 	SWMatrix4x4 mat;
 	void onAwake()
 	{
-		SWGameObject* go = new SWGameObject;
-		WIImage* image = go->addComponent<WIImage>();
-		image->setTexture( "cat3.png" );
-		image->setSizeToTexture();
-		SWTransform* transform = go->getComponent<SWTransform>();
-		transform->setLocalPosition( SWVector3f( 300,300,0 ) );
+		{
+			SWGameObject* go = new SWGameObject;
+			WIImage* image = go->addComponent<WIImage>();
+			image->setTexture( "cat3.png" );
+			image->setSizeToTexture();
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
+		}
+		{
+			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font.json" );
+			WIFontData* fontData = new WIFontData;
+			fontData->load( fontJson() );
+
+			SWGameObject* go = new SWGameObject;
+			WIText* text = go->addComponent<WIText>();
+			text->setFont( fontData );
+			text->setText( "0111100" );
+
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
+		}
 	}
+
+
 
 	void onUpdate()
 	{
-		
-		mat.transform
-			( SWVector3f::one*SWMath.pingPong( SWTime.getTime(), 5 )/5
-			, SWQuaternion().rotate( SWVector3f::axisZ, SWMath.pi/4 )
-			, SWVector3f::zero );
-		SW_GC.setTextureMatrix( mat );
 	}
 };
 

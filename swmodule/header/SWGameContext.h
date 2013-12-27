@@ -36,7 +36,8 @@ public:
 	void setVertexBuffer( const float* buffer );
 	void setTexCoordBuffer( const float* buffer );
 	void indexedDraw( size_t count, unsigned short* indeces);
-
+	
+	SWHardRef<SWObject> loadJson( const std::string& path );
 	unsigned int loadTexture( const std::string& path );
 	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );

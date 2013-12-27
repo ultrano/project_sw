@@ -8,9 +8,36 @@
 
 void callbackDisplay()
 {
-	glColor3f(1,1,1);
-	glLoadIdentity();
-	glTranslatef(100,100,0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glEnable(GL_DEPTH_TEST);
+
+  float width = 800;
+  float height = 600;
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(width/-2.0, width/2.0, height/-2.0, height/2.0, -2.0, 500.0);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt( 0, 0, 100, 0.0, 0.0, 0.0, 0.0, 1.0, 0);
+  glScalef(.5,.5,.05);
+  glTranslatef( 0, 0, -100);
+
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
 	glutSwapBuffers();
 }

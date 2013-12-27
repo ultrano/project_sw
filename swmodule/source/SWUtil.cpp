@@ -1,4 +1,5 @@
 #include "SWUtil.h"
+
 #include <stdlib.h>
 #ifdef WIN32
 #include <Windows.h>

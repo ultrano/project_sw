@@ -1,6 +1,8 @@
 #include "SWCamera.h"
 #include "SWGameObject.h"
 
+SWHardRef<SWCamera> SWCamera::mainCamera = NULL;
+
 void SWCamera::onAwake()
 {
 	__super::onAwake();
