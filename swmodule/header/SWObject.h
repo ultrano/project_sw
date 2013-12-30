@@ -37,7 +37,7 @@ public:
 	~SWObject();
 	unsigned getID() const { return m_id; };
 	SWDelegate* getDelegate( const SWHandler& handler );
-	virtual std::string toString();
+	virtual std::string toString() const;
 	virtual void destroy();
 };
 

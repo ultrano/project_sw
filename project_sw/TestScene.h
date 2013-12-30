@@ -49,7 +49,7 @@ class TestScene : public SWGameScene
 			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
 		}
 		{
-			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font.json" );
+			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font/goongseo.fnt" );
 			WIFontData* fontData = new WIFontData;
 			fontData->load( fontJson() );
 

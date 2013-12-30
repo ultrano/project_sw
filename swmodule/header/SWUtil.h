@@ -3,6 +3,8 @@
 
 #include "SWMemory.h"
 #include "SWRefCounter.h"
+#include "SWString.h"
+#include "SWNumber.h"
 
 #define SWUtil (__SWUtil::getInstance())
 
@@ -19,6 +21,8 @@ public:
 
 	void* alloc( size_t size );
 	void  free( void* memory );
+
+	SWNumber::Value strToNum( const SWString::Value& str );
 
 	void consoleXY( int x, int y );
 };

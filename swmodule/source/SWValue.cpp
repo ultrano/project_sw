@@ -1,5 +1,5 @@
 #include "SWValue.h"
-
+#include "SWUtil.h"
 
 bool SWValue::isNumber() const
 {
@@ -33,8 +33,19 @@ bool SWValue::isValue() const
 
 const SWNumber::Value& SWValue::asNumber() const
 {
-	SWNumber* object = swrtti_cast<SWNumber>(this);
-	if ( object != NULL ) return object->getValue();
+	{
+		SWNumber* object = swrtti_cast<SWNumber>(this);
+		if ( object != NULL ) return object->getValue();
+	}
+
+	{
+		SWString* object = swrtti_cast<SWString>(this);
+		if ( object != NULL )
+		{
+			return SWUtil.strToNum( object->getValue() );
+		}
+	}
+	
 	static SWNumber::Value static_value = 0;
 	return static_value;
 }
@@ -44,7 +55,7 @@ const SWString::Value& SWValue::asString() const
 	SWString* object = swrtti_cast<SWString>(this);
 	if ( object != NULL ) return object->getValue();
 	static SWString::Value static_value = "";
-	return static_value;
+	return toString();
 }
 
 const SWBoolean::Value& SWValue::asBoolean() const

@@ -44,6 +44,13 @@ void  __SWUtil::free( void* memory )
 	::free( memory );
 }
 
+SWNumber::Value __SWUtil::strToNum( const SWString::Value& str )
+{
+	float num = 0;
+	sscanf( str.c_str(), "%f", &num );
+	return num;
+}
+
 void __SWUtil::consoleXY( int x, int y )
 {
 #ifdef WIN32

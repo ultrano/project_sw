@@ -33,22 +33,25 @@ void WIFontData::setChar( WIFontChar* fontChar )
 void WIFontData::load( SWObject* data )
 {
 	SWValue* tbl = (SWValue*)( data );
-	SWArray* characters = swrtti_cast<SWArray>( tbl->find( "characters" ) );
-	if ( characters == NULL ) return;
-	SWArray::iterator itor = characters->begin();
-	for ( ; itor != characters->end() ; ++itor )
+	SWValue* font = tbl->find( "font" );
+	SWValue* chars = (SWValue*)font->find( "chars" );
+	SWValue* charList = chars->find( "char" );
+	if ( charList == NULL ) return;
+	for ( size_t i = 0 ; i < charList->count() ; ++i )
 	{
 		WIFontChar* charInfo = new WIFontChar;
-		SWValue* charVal = (SWValue*)(*itor)();
-		charInfo->id = charVal->find( "id" )->asNumber();
-		charInfo->x = charVal->find( "x" )->asNumber();
-		charInfo->y = charVal->find( "y" )->asNumber();
-		charInfo->w = charVal->find( "width" )->asNumber();
-		charInfo->h = charVal->find( "height" )->asNumber();
-		charInfo->offsetX = charVal->find( "offsetX" )->asNumber();
-		charInfo->offsetY = charVal->find( "offsetY" )->asNumber();
+		SWValue* charVal = (SWValue*)charList->get( i );
+		charInfo->id = charVal->find( "-id" )->asNumber();
+		charInfo->x = charVal->find( "-x" )->asNumber();
+		charInfo->y = charVal->find( "-y" )->asNumber();
+		charInfo->w = charVal->find( "-width" )->asNumber();
+		charInfo->h = charVal->find( "-height" )->asNumber();
+		charInfo->offsetX = charVal->find( "-xoffset" )->asNumber();
+		charInfo->offsetY = charVal->find( "-yoffset" )->asNumber();
 		setChar( charInfo );
 	}
 
-	setFontTexture( SW_GC.loadTexture( tbl->find( "font_image" )->asString() ) );
+	SWValue* pages = (SWValue*)font->find( "pages" );
+	SWValue* page0 = pages->find( "page" );
+	setFontTexture( SW_GC.loadTexture( page0->find( "-file" )->asString() ) );
 }
