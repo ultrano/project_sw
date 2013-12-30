@@ -393,6 +393,7 @@ void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 }
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height );
+unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& width, int& height );
 
 unsigned int SWGameContext::loadTexture( const std::string& path )
 {
@@ -412,6 +413,14 @@ unsigned int SWGameContext::loadTexture( const std::string& path )
 	{
 		SWLog( "failed to load texture : %s", path.c_str() );
 	}
+
+	return info.id;
+}
+
+unsigned int SWGameContext::loadTextureFromMemory( const unsigned char* buf, size_t len )
+{
+	TextureInfo info;
+	info.id = glLoadTextureFromMemory(  buf, len, info.width, info.height );
 
 	return info.id;
 }
@@ -464,6 +473,41 @@ void SWGameContext::onResize( int width, int height )
 	// «¡∑Œ¡ßº« ∏≈∆Æ∏ØΩ∫∏¶ ¡˜±≥ «‡∑ƒ∑Œ ¡ˆ¡§.
 	SWMatrix4x4 proj;
 	setProjectionMatrix( proj.ortho( 0, width, 0, height,1000,-1000) );
+}
+
+unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& width, int& height )
+{
+	if ( !buf || !len ) return 0;
+
+	int comp;
+
+	unsigned char* data = stbi_load_from_memory( buf, len, &width, &height, &comp, 0 );
+
+	if ( !data ) return 0;
+
+	unsigned int texID[1];
+
+	glGenTextures(1,&texID[0]);
+	glBindTexture(GL_TEXTURE_2D,texID[0]);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+	glTexImage2D(GL_TEXTURE_2D, 0
+	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
+	, width, height, 0
+	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
+                 , GL_UNSIGNED_BYTE, data);
+    
+	GLenum err = glGetError();
+
+	stbi_image_free(data);
+	if ( err ) return 0;
+
+	return texID[0];
 }
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height )
@@ -545,6 +589,15 @@ SWHardRef<SWObject> SWGameContext::loadJson( const std::string& path )
 	Json::Reader reader;
 	Json::Value root;
 	reader.parse( (std::istream&)ifs, root );
+
+	return convertJsonValue( root );
+}
+
+SWHardRef<SWObject> SWGameContext::loadJsonFromString( const std::string& doc )
+{
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse( doc, root );
 
 	return convertJsonValue( root );
 }

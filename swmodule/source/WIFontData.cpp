@@ -43,8 +43,8 @@ void WIFontData::load( SWObject* data )
 		charInfo->id = charVal->find( "id" )->asNumber();
 		charInfo->x = charVal->find( "x" )->asNumber();
 		charInfo->y = charVal->find( "y" )->asNumber();
-		charInfo->w = charVal->find( "w" )->asNumber();
-		charInfo->h = charVal->find( "h" )->asNumber();
+		charInfo->w = charVal->find( "width" )->asNumber();
+		charInfo->h = charVal->find( "height" )->asNumber();
 		charInfo->offsetX = charVal->find( "offsetX" )->asNumber();
 		charInfo->offsetY = charVal->find( "offsetY" )->asNumber();
 		setChar( charInfo );

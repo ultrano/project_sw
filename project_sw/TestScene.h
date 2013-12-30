@@ -54,16 +54,22 @@ class TestScene : public SWGameScene
 			fontData->load( fontJson() );
 
 			SWGameObject* go = new SWGameObject;
+			go->setName( "font" );
 			WIText* text = go->addComponent<WIText>();
 			text->setFont( fontData );
-			text->setText( "0111100" );
+			text->setText( "hello.    :;[]font" );
+			text->setFontSize( 40);
 
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
 		}
 	}
 
-
+	void onHandleTouch()
+	{
+		WIText* text = find("font")->getComponent<WIText>();
+		text->setFontSize( text->getFontSize() + 1 );
+	}
 
 	void onUpdate()
 	{

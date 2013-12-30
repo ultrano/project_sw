@@ -2,7 +2,7 @@
 #define SWMeshRenderer_h__
 
 #include "SWRenderer.h"
-
+#include "SWMatrix4x4.h"
 class SWMeshFilter;
 
 class SWMeshRenderer : public SWRenderer
@@ -10,6 +10,7 @@ class SWMeshRenderer : public SWRenderer
 	SW_RTTI( SWMeshRenderer, SWRenderer );
 
 	unsigned int m_texID;
+	SWMatrix4x4  m_texMat;
 	SWWeakRef<SWMeshFilter> m_filter;
 
 public:

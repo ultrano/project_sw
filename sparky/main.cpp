@@ -23,22 +23,8 @@ void callbackDisplay()
   glScalef(.5,.5,.05);
   glTranslatef( 0, 0, -100);
 
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'k');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, '¤±');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, '¤±');
 	glutSwapBuffers();
 }
 

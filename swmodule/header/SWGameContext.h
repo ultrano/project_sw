@@ -38,7 +38,9 @@ public:
 	void indexedDraw( size_t count, unsigned short* indeces);
 	
 	SWHardRef<SWObject> loadJson( const std::string& path );
+	SWHardRef<SWObject> loadJsonFromString( const std::string& doc );
 	unsigned int loadTexture( const std::string& path );
+	unsigned int loadTextureFromMemory( const unsigned char* buf, size_t len );
 	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );
 

@@ -14,6 +14,7 @@ class WIText : public SWComponent
 	SWHardRef<SWMesh> m_mesh;
 	SWString::Value m_text;
 	bool m_updateMesh;
+	size_t m_fontSize;
 
 public:
 
@@ -21,6 +22,9 @@ public:
 	void onRemove();
 
 	void setFont( WIFontData* font );
+
+	void setFontSize( size_t fontSize );
+	size_t getFontSize() const;
 
 	void setText( const SWString::Value& text );
 	const SWString::Value& getText() const;

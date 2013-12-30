@@ -12,6 +12,7 @@ void SWMeshRenderer::render()
 	{
 		SW_GC.setModelMatrix( transform->getFinalMatrix() );
 		SW_GC.bindTexture( m_texID );
+		SW_GC.setTextureMatrix( m_texMat );
 		m_filter()->draw();
 	}
 }

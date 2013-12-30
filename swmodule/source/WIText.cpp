@@ -10,6 +10,7 @@
 
 void WIText::onAwake()
 {
+	m_fontSize = 40;
 	m_updateMesh = false;
 	gameObject()->addComponent<SWMeshRenderer>();
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
@@ -27,6 +28,17 @@ void WIText::setFont( WIFontData* font )
 {
 	m_font = font;
 	m_updateMesh = true;
+}
+
+void WIText::setFontSize( size_t fontSize )
+{
+	m_fontSize = fontSize;
+	m_updateMesh = true;
+}
+
+size_t WIText::getFontSize() const
+{
+	return m_fontSize;
 }
 
 void WIText::setText( const SWString::Value& text )
@@ -56,14 +68,27 @@ void WIText::updateMesh()
 	m_tex.resize( m_text.size() * 4 );
 	m_indices.resize( m_text.size() * 3 * 2 );
 
+	int defaultSize = 40;
+	float sizeScale = (float)m_fontSize/(float)defaultSize;
 	int width = 0;
 	int height = 0;
+	int spaceWidth = 5;
 	SW_GC.getTextureSize( m_font()->getFontTexture(), width, height );
 	float startOffsetX = 0;
 	for ( int i = 0 ; i < m_text.size() ; ++i )
 	{
-		WIFontChar* ch = m_font()->getChar( (int)m_text[i] );
-		if ( ch == NULL ) break;
+		int charID = m_text[i];
+		if ( charID > 0 && isspace( charID ) != 0 )
+		{
+			startOffsetX += spaceWidth;
+			continue;
+		}
+		WIFontChar* ch = m_font()->getChar( charID );
+		if ( ch == NULL )
+		{
+			ch = m_font()->getChar( (int)'?' );
+			if ( ch == NULL ) break;
+		}
 
 		m_indices[i*6+0] = 2+(i*4);
 		m_indices[i*6+1] = 1+(i*4);
@@ -73,10 +98,10 @@ void WIText::updateMesh()
 		m_indices[i*6+4] = 0+(i*4);
 		m_indices[i*6+5] = 2+(i*4);
 
-		m_pos[(i*4)+0] = SWVector3f( startOffsetX + ch->offsetX, ch->offsetY, 0 );
-		m_pos[(i*4)+1] = SWVector3f( startOffsetX + ch->offsetX, ch->h+ch->offsetY, 0 );
-		m_pos[(i*4)+2] = SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->h+ch->offsetY, 0 );
-		m_pos[(i*4)+3] = SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->offsetY, 0 );
+		m_pos[(i*4)+0] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->offsetY, 0 );
+		m_pos[(i*4)+1] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->h+ch->offsetY, 0 );
+		m_pos[(i*4)+2] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->h+ch->offsetY, 0 );
+		m_pos[(i*4)+3] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->offsetY, 0 );
 		startOffsetX = startOffsetX + ch->w+ch->offsetX;
 
 		m_tex[(i*4)+0] = SWVector2f( ch->x/(float)width, ch->y/(float)height );
