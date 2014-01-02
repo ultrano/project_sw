@@ -22,6 +22,12 @@ class SWObject;
 class SWDelegate;
 class SWHandler;
 typedef std::list< SWHardRef<SWObject> > SWObjectList;
+typedef std::string tstring;
+typedef double      tnumber;
+
+#define tlist std::list
+#define ttable std::map
+
 
 class SWObject : public SWRefCountable
 {

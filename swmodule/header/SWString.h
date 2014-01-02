@@ -11,6 +11,7 @@ class SWString : public SWObject
 public:
 
 	typedef std::string Value;
+	typedef std::wstring WValue;
 
 private:
 

@@ -12,7 +12,7 @@ class WIText : public SWComponent
 
 	SWHardRef<WIFontData> m_font;
 	SWHardRef<SWMesh> m_mesh;
-	SWString::Value m_text;
+	std::wstring m_text;
 	bool m_updateMesh;
 	size_t m_fontSize;
 
@@ -26,8 +26,8 @@ public:
 	void setFontSize( size_t fontSize );
 	size_t getFontSize() const;
 
-	void setText( const SWString::Value& text );
-	const SWString::Value& getText() const;
+	void setText( const std::wstring& text );
+	const std::wstring& getText() const;
 
 	void updateMesh();
 };

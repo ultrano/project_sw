@@ -49,7 +49,7 @@ class TestScene : public SWGameScene
 			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
 		}
 		{
-			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font/goongseo.fnt" );
+			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font/font2.fnt" );
 			WIFontData* fontData = new WIFontData;
 			fontData->load( fontJson() );
 
@@ -57,7 +57,7 @@ class TestScene : public SWGameScene
 			go->setName( "font" );
 			WIText* text = go->addComponent<WIText>();
 			text->setFont( fontData );
-			text->setText( "hello.    :;[]font" );
+			text->setText( L"아아아아:;[]font" );
 			text->setFontSize( 40);
 
 			SWTransform* transform = go->getComponent<SWTransform>();

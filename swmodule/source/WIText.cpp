@@ -41,13 +41,13 @@ size_t WIText::getFontSize() const
 	return m_fontSize;
 }
 
-void WIText::setText( const SWString::Value& text )
+void WIText::setText( const std::wstring& text )
 {
 	m_text = text;
 	m_updateMesh = true;
 }
 
-const SWString::Value& WIText::getText() const
+const std::wstring& WIText::getText() const
 {
 	return m_text;
 }
@@ -78,7 +78,7 @@ void WIText::updateMesh()
 	for ( int i = 0 ; i < m_text.size() ; ++i )
 	{
 		int charID = m_text[i];
-		if ( charID > 0 && isspace( charID ) != 0 )
+		if ( charID < 256 && isspace( charID ) != 0 )
 		{
 			startOffsetX += spaceWidth;
 			continue;

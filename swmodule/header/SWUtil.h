@@ -24,6 +24,8 @@ public:
 
 	SWNumber::Value strToNum( const SWString::Value& str );
 
+
+
 	void consoleXY( int x, int y );
 };
 
