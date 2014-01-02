@@ -7,12 +7,20 @@ SWBuffer::SWBuffer()
 	, m_size( 0 )
 {
 }
+
+SWBuffer::SWBuffer( tuint size )
+	: m_buf( NULL )
+	, m_size( 0 )
+{
+	allocMem( size );
+}
+
 SWBuffer::~SWBuffer()
 {
 	freeMem();
 }
 
-void SWBuffer::allocMem( size_t size )
+void SWBuffer::allocMem( tuint size )
 {
 	freeMem();
 	
@@ -29,4 +37,9 @@ void SWBuffer::freeMem()
 void* SWBuffer::getPtr()
 {
 	return m_buf;
+}
+
+tuint SWBuffer::size() const
+{
+	return m_size;
 }

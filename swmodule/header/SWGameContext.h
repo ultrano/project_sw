@@ -43,10 +43,11 @@ public:
 	SWHardRef<SWObject> loadJson( const tstring& path );
 	SWHardRef<SWObject> loadJsonFromString( const tstring& doc );
 	unsigned int loadTexture( const tstring& path );
-	unsigned int loadTextureFromMemory( const unsigned char* buf, size_t len );
+	unsigned int loadTextureFromMemory( const tbyte* buf, size_t len );
 	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );
 	const tstring& assetFolder() const;
+	const tstring  assetPath( const tstring& assetFile) const;
 	//! asset
 
 	SWGameScene* getScene();

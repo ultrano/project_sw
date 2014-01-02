@@ -42,13 +42,6 @@ class TestScene : public SWGameScene
 	void onAwake()
 	{
 		{
-			SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetFolder() + "catAnim.json" );
-			tuint len = fis()->size();
-			char* buf = new char[len];
-			fis()->read( (tbyte*)&buf[0], len );
-			delete buf;
-		}
-		{
 			SWGameObject* go = new SWGameObject;
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( "cat3.png" );

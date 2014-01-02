@@ -22,6 +22,8 @@
 #include "SWTime.h"
 #include "SWInput.h"
 #include "SWString.h"
+#include "SWFileStream.h"
+#include "SWBuffer.h"
 
 #include "stb_image.h"
 
@@ -396,11 +398,16 @@ unsigned int SWGameContext::loadTexture( const tstring& path )
 {
 	tstring solvedPath = m_pimpl()->resFolder + path;
 	ttable<tstring,unsigned int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
-	
+
 	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
 
+	SWHardRef<SWFileInputStream> fis = new SWFileInputStream( solvedPath );
+	SWHardRef<SWBuffer> buf = new SWBuffer( fis()->size() );
+	fis()->read( (tbyte*)buf()->getPtr(), buf()->size() );
+
 	TextureInfo info;
-	info.id = glLoadTexture(  solvedPath.c_str(), info.width, info.height );
+	info.id = glLoadTextureFromMemory( (const tbyte*)buf()->getPtr(), buf()->size(), info.width, info.height );
+	buf()->freeMem();
 	if ( info.id != 0 )
 	{
 		m_pimpl()->textureTable.insert( std::make_pair( info.id, info ) );
@@ -414,7 +421,7 @@ unsigned int SWGameContext::loadTexture( const tstring& path )
 	return info.id;
 }
 
-unsigned int SWGameContext::loadTextureFromMemory( const unsigned char* buf, size_t len )
+unsigned int SWGameContext::loadTextureFromMemory( const tbyte* buf, size_t len )
 {
 	TextureInfo info;
 	info.id = glLoadTextureFromMemory(  buf, len, info.width, info.height );
@@ -443,6 +450,11 @@ void SWGameContext::bindTexture( unsigned int texID )
 const tstring& SWGameContext::assetFolder() const
 {
 	return m_pimpl()->resFolder;
+}
+
+const tstring  SWGameContext::assetPath( const tstring& assetFile) const
+{
+	return assetFolder() + assetFile;
 }
 
 bool SWGameContext::storeItem( const tstring& key, SWObject* item )
