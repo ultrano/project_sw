@@ -46,6 +46,7 @@ public:
 	unsigned int loadTextureFromMemory( const tbyte* buf, size_t len );
 	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );
+
 	const tstring& assetFolder() const;
 	const tstring  assetPath( const tstring& assetFile) const;
 	//! asset
