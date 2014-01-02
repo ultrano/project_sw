@@ -2,7 +2,7 @@
 #define __SWArray_h_
 
 #include "SWObject.h"
-#include <vector>
+#include "SWType.h"
 
 class SWArray : public SWObject
 {

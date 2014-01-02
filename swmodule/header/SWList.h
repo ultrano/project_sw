@@ -2,7 +2,6 @@
 #define SWList_h__
 
 #include "SWObject.h"
-#include <list>
 
 class SWList : public SWObject
 {

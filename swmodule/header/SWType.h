@@ -11,6 +11,8 @@
 #include <string>
 #include <list>
 #include <map>
+#include <set>
+#include <vector>
 
 typedef std::string  tstring;
 typedef std::wstring twstring;

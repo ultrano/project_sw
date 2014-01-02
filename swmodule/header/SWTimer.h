@@ -10,7 +10,6 @@
 #define protopang_SWTimer_h
 /*
 #include "SWObject.h"
-#include <string>
 
 class SWTimer : public SWObject
 {

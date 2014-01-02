@@ -2,7 +2,6 @@
 #define SWMesh_h__
 
 #include "SWObject.h"
-#include <vector>
 
 class SWVector3f;
 class SWVector2f;

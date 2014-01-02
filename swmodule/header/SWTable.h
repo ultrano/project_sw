@@ -2,7 +2,6 @@
 #define SWTable_h__
 
 #include "SWObject.h"
-#include <map>
 
 class SWTable : public SWObject
 {

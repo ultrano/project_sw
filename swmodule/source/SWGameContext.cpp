@@ -34,8 +34,6 @@
 #include "json.h"
 
 #include <stdio.h>
-#include <set>
-#include <map>
 #include <fstream>
 
 struct TextureInfo

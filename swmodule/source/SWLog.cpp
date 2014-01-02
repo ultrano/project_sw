@@ -9,7 +9,6 @@
 #include "SWLog.h"
 #include <stdio.h>
 #include <stdarg.h>
-#include <string.h>
 #include "SWProfiler.h"
 #include "SWUtil.h"
 /*

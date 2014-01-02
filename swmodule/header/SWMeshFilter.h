@@ -2,7 +2,6 @@
 #define SWMeshFilter_h__
 
 #include "SWComponent.h"
-#include <vector>
 
 class SWMesh;
 

@@ -10,8 +10,6 @@
 #define prototype_SWGameScene_h
 
 #include "SWObject.h"
-#include <list>
-#include <set>
 
 class SWGameObject;
 class SWComponent;

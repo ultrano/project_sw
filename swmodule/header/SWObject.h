@@ -13,8 +13,6 @@
 #include "SWRefCounter.h"
 #include "SWRtti.h"
 #include "SWType.h"
-#include <string>
-#include <list>
 
 //! 상호 작용의 기본 단위이자 객체성을 띄는 클레스의 뿌리.
 //! 객체간 상호작용은 SWHandler 라고 지정한 포맷의

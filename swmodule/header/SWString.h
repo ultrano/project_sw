@@ -2,7 +2,6 @@
 #define SWString_h__
 
 #include "SWObject.h"
-#include <string>
 
 class SWString : public SWObject
 {

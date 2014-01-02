@@ -11,7 +11,6 @@
 
 #include "SWComponent.h"
 #include "SWMatrix4x4.h"
-#include <list>
 
 /**
  @brief 객체가 공간 개념을 갖게 한다.
