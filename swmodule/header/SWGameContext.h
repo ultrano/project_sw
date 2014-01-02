@@ -46,7 +46,7 @@ public:
 	unsigned int loadTextureFromMemory( const unsigned char* buf, size_t len );
 	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );
-
+	const tstring& assetFolder() const;
 	//! asset
 
 	SWGameScene* getScene();

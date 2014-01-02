@@ -440,6 +440,11 @@ void SWGameContext::bindTexture( unsigned int texID )
 	m_pimpl()->lastBindedTexID = texID;
 }
 
+const tstring& SWGameContext::assetFolder() const
+{
+	return m_pimpl()->resFolder;
+}
+
 bool SWGameContext::storeItem( const tstring& key, SWObject* item )
 {
 	SWHardRef< SWObject > hold( item );

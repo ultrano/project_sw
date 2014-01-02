@@ -1,16 +1,17 @@
 #ifndef SWIOStream_h__
 #define SWIOStream_h__
 
+#include "SWRefCounter.h"
 #include "SWType.h"
 
-class SWOutputStream
+class SWOutputStream : public SWRefCountable
 {
 public:
 	virtual void write(tbyte* b, tuint len) = 0;
 	void writeByte(tbyte b) { write(&b,1); };
 };
 
-class SWInputStream
+class SWInputStream : public SWRefCountable
 {
 public:
 	/* return : 읽은 바이트 수. 읽을게 없다면 -1 */

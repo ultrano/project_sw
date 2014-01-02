@@ -21,6 +21,7 @@
 #include "SWSpriteData.h"
 #include "SWAction.h"
 #include "SWActContinue.h"
+#include "SWFileStream.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -40,6 +41,13 @@ class TestScene : public SWGameScene
 	SWMatrix4x4 mat;
 	void onAwake()
 	{
+		{
+			SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetFolder() + "catAnim.json" );
+			tuint len = fis()->size();
+			char* buf = new char[len];
+			fis()->read( (tbyte*)&buf[0], len );
+			delete buf;
+		}
 		{
 			SWGameObject* go = new SWGameObject;
 			WIImage* image = go->addComponent<WIImage>();
