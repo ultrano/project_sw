@@ -21,12 +21,12 @@ public:
 	bool isArray() const;
 	bool isValue() const;
 
-	const SWNumber::Value& asNumber() const;
-	const SWString::Value& asString() const;
-	const SWBoolean::Value& asBoolean() const;
+	const tnumber&  asNumber() const;
+	const tstring&  asString() const;
+	const tboolean& asBoolean() const;
 
 	SWValue* get( unsigned int index ) const;
-	SWValue* find( const SWString::Value& key ) const;
+	SWValue* find( const tstring& key ) const;
 
 	unsigned int count() const;
 };

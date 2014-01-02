@@ -57,7 +57,7 @@ class TestScene : public SWGameScene
 			go->setName( "font" );
 			WIText* text = go->addComponent<WIText>();
 			text->setFont( fontData );
-			text->setText( L"아아아아:;[]font" );
+			text->setText( L"헬로우 월드 ㅇㅇ" );
 			text->setFontSize( 40);
 
 			SWTransform* transform = go->getComponent<SWTransform>();

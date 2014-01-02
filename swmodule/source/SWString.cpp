@@ -6,7 +6,7 @@ SWString::SWString()
 
 }
 
-SWString::SWString( const Value& value )
+SWString::SWString( const tstring& value )
 	: m_value( value )
 {
 
@@ -17,12 +17,12 @@ SWString::~SWString()
 
 }
 
-const SWString::Value& SWString::getValue()
+const tstring& SWString::getValue()
 {
 	return m_value;
 }
 
-void SWString::setValue( const SWString::Value& value )
+void SWString::setValue( const tstring& value )
 {
 	m_value = value;
 }

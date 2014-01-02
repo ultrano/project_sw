@@ -16,12 +16,12 @@ SWBoolean::~SWBoolean()
 
 }
 
-const SWBoolean::Value& SWBoolean::getValue()
+const tboolean& SWBoolean::getValue()
 {
 	return m_value;
 }
 
-void SWBoolean::setValue( const SWBoolean::Value& value )
+void SWBoolean::setValue( const tboolean& value )
 {
 	m_value = value;
 }

@@ -6,7 +6,7 @@
 
 class Sparky : public SWMemory
 {
-	void drawText( const SWString::Value& text );
+	void drawText( const tstring& text );
 };
 
 #endif // Sparky_h__

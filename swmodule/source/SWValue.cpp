@@ -31,7 +31,7 @@ bool SWValue::isValue() const
 	return ( isNumber() || isString() || isBoolean() || isTable() || isArray() );
 }
 
-const SWNumber::Value& SWValue::asNumber() const
+const tnumber& SWValue::asNumber() const
 {
 	{
 		SWNumber* object = swrtti_cast<SWNumber>(this);
@@ -46,23 +46,23 @@ const SWNumber::Value& SWValue::asNumber() const
 		}
 	}
 	
-	static SWNumber::Value static_value = 0;
+	static tnumber static_value = 0;
 	return static_value;
 }
 
-const SWString::Value& SWValue::asString() const
+const tstring& SWValue::asString() const
 {
 	SWString* object = swrtti_cast<SWString>(this);
 	if ( object != NULL ) return object->getValue();
-	static SWString::Value static_value = "";
+	static tstring static_value = "";
 	return toString();
 }
 
-const SWBoolean::Value& SWValue::asBoolean() const
+const tboolean& SWValue::asBoolean() const
 {
 	SWBoolean* object = swrtti_cast<SWBoolean>(this);
 	if ( object != NULL ) return object->getValue();
-	static SWBoolean::Value static_value = false;
+	static tboolean static_value = false;
 	return static_value;
 }
 
@@ -73,7 +73,7 @@ SWValue* SWValue::get( unsigned int index ) const
 	return NULL;
 }
 
-SWValue* SWValue::find( const SWString::Value& key ) const
+SWValue* SWValue::find( const tstring& key ) const
 {
 	SWTable* object = swrtti_cast<SWTable>(this);
 	if ( object != NULL ) return (SWValue*)object->find( key );

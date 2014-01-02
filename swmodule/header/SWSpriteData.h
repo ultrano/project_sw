@@ -25,8 +25,8 @@ public:
 	SWSpriteData();
 	~SWSpriteData();
 
-	void addSequence( const SWString::Value& name, const SWArray* regions );
-	SWArray* findSequence( const SWString::Value& name );
+	void addSequence( const tstring& name, const SWArray* regions );
+	SWArray* findSequence( const tstring& name );
 
 };
 

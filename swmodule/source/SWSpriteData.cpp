@@ -11,12 +11,12 @@ SWSpriteData::~SWSpriteData()
 	m_sequences = NULL;
 }
 
-void SWSpriteData::addSequence( const SWString::Value& name, const SWArray* regions )
+void SWSpriteData::addSequence( const tstring& name, const SWArray* regions )
 {
 	m_sequences()->insert( name, regions );
 }
 
-SWArray* SWSpriteData::findSequence( const SWString::Value& name )
+SWArray* SWSpriteData::findSequence( const tstring& name )
 {
 	return swrtti_cast<SWArray>( m_sequences()->find( name ) );
 }

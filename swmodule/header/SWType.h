@@ -14,9 +14,13 @@
 #include <set>
 #include <vector>
 
-typedef std::string  tstring;
-typedef std::wstring twstring;
-typedef double       tnumber;
+typedef std::string    tstring;
+typedef std::wstring   twstring;
+typedef double         tnumber;
+typedef bool           tboolean;
+typedef unsigned int   tuint;
+typedef unsigned short tushort;
+typedef unsigned char  tbyte;
 
 #define tlist  std::list
 #define ttable std::map

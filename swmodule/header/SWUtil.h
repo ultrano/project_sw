@@ -22,7 +22,7 @@ public:
 	void* alloc( size_t size );
 	void  free( void* memory );
 
-	SWNumber::Value strToNum( const SWString::Value& str );
+	tnumber strToNum( const tstring& str );
 
 
 

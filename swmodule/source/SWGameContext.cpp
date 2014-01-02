@@ -11,7 +11,6 @@
 #endif
 
 #include <memory>
-#include <map>
 #include "SWGameScene.h"
 #include "SWVector2f.h"
 #include "SWCriticalSection.h"
@@ -110,7 +109,7 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 		glGetShaderiv( shaderID, GL_INFO_LOG_LENGTH, &infoLen );
 		if ( infoLen > 0 )
 		{
-			SWString::Value msg;
+			tstring msg;
 			msg.resize( infoLen );
 			glGetProgramInfoLog( shaderID, infoLen, &infoLen, &msg[0] );
 
@@ -155,7 +154,7 @@ GLuint loadProgram( const char* vertSource, const char* fragSource )
 		glGetProgramiv( programID, GL_INFO_LOG_LENGTH, &infoLen );
 		if ( infoLen > 0 )
 		{
-			SWString::Value msg;
+			tstring msg;
 			msg.resize( infoLen );
 			glGetProgramInfoLog( programID, infoLen, NULL, &msg[0] );
 
