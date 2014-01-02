@@ -32,7 +32,7 @@ public:
 	void setAlignH( int align );
 	void setAlign( int alignV, int alignH );
 
-	void setTexture( const std::string& filePath );
+	void setTexture( const tstring& filePath );
 
 };
 

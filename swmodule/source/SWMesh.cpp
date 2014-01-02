@@ -36,17 +36,17 @@ void SWMesh::setIndexStream( size_t countOfShort, unsigned short* stream )
 	m_updateMesh = true;
 }
 
-std::vector<float>& SWMesh::getTexCoordStream()
+tarray<float>& SWMesh::getTexCoordStream()
 {
 	return m_texCoords;
 }
 
-std::vector<unsigned short>& SWMesh::getIndexStream()
+tarray<unsigned short>& SWMesh::getIndexStream()
 {
 	return m_indeces;
 }
 
-std::vector<float>& SWMesh::getVertexStream()
+tarray<float>& SWMesh::getVertexStream()
 {
 	return m_vertices;
 }

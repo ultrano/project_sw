@@ -27,9 +27,9 @@ class SWGameScene : public SWObject
 	friend class SWRenderer;
 protected:
 
-	typedef std::set< SWHardRef<SWGameObject> >  GameObjectSet;
-    typedef std::list< SWHardRef<SWGameObject> > GameObjectList;
-    typedef std::list< SWHardRef<SWComponent> >  ComponentList;
+	typedef tset< SWHardRef<SWGameObject> >  GameObjectSet;
+    typedef tlist< SWHardRef<SWGameObject> > GameObjectList;
+    typedef tlist< SWHardRef<SWComponent> >  ComponentList;
     
 	//! root game objects
 	GameObjectList m_roots;

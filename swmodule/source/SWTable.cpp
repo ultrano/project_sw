@@ -10,19 +10,19 @@ SWTable::~SWTable()
 
 }
 
-SWObject* SWTable::find( const std::string& key ) const
+SWObject* SWTable::find( const tstring& key ) const
 {
 	Value::const_iterator itor = m_table.find( key );
 	if ( itor == m_table.end() ) return NULL;
 	return (itor->second)();
 }
 
-void SWTable::insert( const std::string& key, const SWObject* object )
+void SWTable::insert( const tstring& key, const SWObject* object )
 {
 	m_table.insert( std::make_pair( key, object ) );
 }
 
-void SWTable::remove( const std::string& key )
+void SWTable::remove( const tstring& key )
 {
 	m_table.erase( key );
 }

@@ -10,8 +10,8 @@ class SWString : public SWObject
 
 public:
 
-	typedef std::string Value;
-	typedef std::wstring WValue;
+	typedef tstring Value;
+	typedef twstring WValue;
 
 private:
 

@@ -10,9 +10,9 @@ class SWMesh : public SWObject
 {
 	SW_RTTI( SWMesh, SWObject );
 
-	std::vector<float>  m_vertices;
-	std::vector<float>  m_texCoords;
-	std::vector<unsigned short> m_indeces;
+	tarray<float>  m_vertices;
+	tarray<float>  m_texCoords;
+	tarray<unsigned short> m_indeces;
 	bool m_updateMesh;
 public:
 
@@ -20,9 +20,9 @@ public:
 	void setTexCoordStream( size_t count, const SWVector2f* stream );
 	void setIndexStream( size_t count, unsigned short* stream );
 
-	std::vector<float>& getVertexStream();
-	std::vector<float>& getTexCoordStream();
-	std::vector<unsigned short>& getIndexStream();
+	tarray<float>& getVertexStream();
+	tarray<float>& getTexCoordStream();
+	tarray<unsigned short>& getIndexStream();
 
 	void updateMesh();
 	void draw();

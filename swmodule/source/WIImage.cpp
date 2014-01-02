@@ -77,7 +77,7 @@ void WIImage::setSize( float width, float height )
 	m_height = height;
 	m_updateMesh = true;
 }
-void WIImage::setTexture( const std::string& filePath )
+void WIImage::setTexture( const tstring& filePath )
 {
 	gameObject()->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( filePath ) );
 }

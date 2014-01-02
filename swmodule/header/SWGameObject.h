@@ -24,11 +24,11 @@ class SWGameObject : public SWObject
 	friend class SWGameScene;
 private:
 
-	typedef std::vector< SWHardRef<SWComponent> > ComponentArray;
-	typedef std::list< SWHardRef<SWComponent> > ComponentList;
-	typedef std::map<std::string,SWHardRef<SWObject>> ObjectMap;
+	typedef tarray< SWHardRef<SWComponent> > ComponentArray;
+	typedef tlist< SWHardRef<SWComponent> > ComponentList;
+	typedef ttable<tstring,SWHardRef<SWObject>> ObjectMap;
 
-    std::string    m_name;
+    tstring    m_name;
 	ComponentArray m_components;
 	ComponentList  m_addedComponents;
 
@@ -38,7 +38,7 @@ private:
 public:
 
 	SWGameObject();
-	SWGameObject( const std::string& name );
+	SWGameObject( const tstring& name );
     ~SWGameObject();
 
     void awake();
@@ -46,8 +46,8 @@ public:
 
 	void udpate();
 
-	void setName( const std::string& name ) { m_name = name; };
-	const std::string&  getName() const { return m_name; };
+	void setName( const tstring& name ) { m_name = name; };
+	const tstring&  getName() const { return m_name; };
 
 	template<typename T>
 	T* addComponent() { return (T*)addComponent( new T() ); };
@@ -72,15 +72,15 @@ public:
 	void addUpdateDelegate( SWDelegate* dg );
 	void removeUpdateDelegate( SWDelegate* dg );
 
-	void defineProp( const std::string& name );
-	bool isDefinedProp( const std::string& name );
-	void setProp( const std::string& name, SWObject* value );
-	SWObject* getProp( const std::string& name );
+	void defineProp( const tstring& name );
+	bool isDefinedProp( const tstring& name );
+	void setProp( const tstring& name, SWObject* value );
+	SWObject* getProp( const tstring& name );
 
-	void addPropSetDelegate( const std::string& name, SWDelegate* del );
-	void removePropSetDelegate( const std::string& name, SWDelegate* del );
-	void removeAllPropSetDelegate( const std::string& name );
-	void cleanPropSetDelegate( const std::string& name );
+	void addPropSetDelegate( const tstring& name, SWDelegate* del );
+	void removePropSetDelegate( const tstring& name, SWDelegate* del );
+	void removeAllPropSetDelegate( const tstring& name );
+	void cleanPropSetDelegate( const tstring& name );
 };
 
 #endif

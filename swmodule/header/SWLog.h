@@ -8,8 +8,7 @@
 
 #ifndef sw_SWLog_h
 #define sw_SWLog_h
-#include <map>
-#include <string>
+#include "SWType.h"
 /**
  @brief CS_knlPrintk 튜닝 로그 함수
  자동 줄넘긴 추가
@@ -22,8 +21,8 @@
 
 class SWLogCenter
 {
-	typedef std::pair<const char*,unsigned int> LogKey;
-	typedef std::map<LogKey, std::string> LogTable;
+	typedef tpair<const char*,unsigned int> LogKey;
+	typedef ttable<LogKey, tstring> LogTable;
 	LogTable m_logTable;
 	SWLogCenter();
 	~SWLogCenter();

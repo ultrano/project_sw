@@ -10,7 +10,7 @@ class SWArray : public SWObject
 
 public:
 
-	typedef std::vector< SWHardRef<SWObject> > Value;
+	typedef tarray< SWHardRef<SWObject> > Value;
 	typedef Value::iterator iterator;
 	typedef Value::const_iterator const_iterator;
 

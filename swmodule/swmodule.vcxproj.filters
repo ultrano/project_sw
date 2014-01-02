@@ -166,6 +166,9 @@
     <Filter Include="json">
       <UniqueIdentifier>{83a83fd1-34b2-4adc-8d2a-d7604cba7b39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType">
+      <UniqueIdentifier>{bc146a21-946b-4b67-892b-648a194fe9b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -362,6 +365,9 @@
     </ClInclude>
     <ClInclude Include="json\json_batchallocator.h">
       <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWType.h">
+      <Filter>SW\SWType</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

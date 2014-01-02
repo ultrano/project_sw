@@ -41,13 +41,13 @@ size_t WIText::getFontSize() const
 	return m_fontSize;
 }
 
-void WIText::setText( const std::wstring& text )
+void WIText::setText( const twstring& text )
 {
 	m_text = text;
 	m_updateMesh = true;
 }
 
-const std::wstring& WIText::getText() const
+const twstring& WIText::getText() const
 {
 	return m_text;
 }
@@ -60,9 +60,9 @@ void WIText::updateMesh()
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setTexture( m_font()->getFontTexture() );
 
-	std::vector<SWVector3f> m_pos;
-	std::vector<SWVector2f> m_tex;
-	std::vector<unsigned short> m_indices;
+	tarray<SWVector3f> m_pos;
+	tarray<SWVector2f> m_tex;
+	tarray<unsigned short> m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );

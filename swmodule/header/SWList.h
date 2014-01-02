@@ -10,7 +10,7 @@ class SWList : public SWObject
 
 public:
 
-	typedef std::list< SWObject::Ref > Value;
+	typedef tlist< SWObject::Ref > Value;
 	typedef Value::iterator iterator;
 	typedef Value::const_iterator const_iterator;
 

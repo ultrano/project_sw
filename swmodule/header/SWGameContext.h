@@ -2,7 +2,7 @@
 #define SWGameContext_h__
 
 #include "SWRefCounter.h"
-#include <string>
+#include "SWType.h"
 
 #define SW_GC ( SWGameContext::getInstance() )
 
@@ -19,7 +19,7 @@ private:
 	SWGameContext( const SWGameContext& );
 public:
 
-	void onStart( SWGameScene* firstScene, const std::string& resFolder, int width, int height );
+	void onStart( SWGameScene* firstScene, const tstring& resFolder, int width, int height );
 	void onFrameMove();
 	void onRender();
 	void onResume();
@@ -37,9 +37,9 @@ public:
 	void setTexCoordBuffer( const float* buffer );
 	void indexedDraw( size_t count, unsigned short* indeces);
 	
-	SWHardRef<SWObject> loadJson( const std::string& path );
-	SWHardRef<SWObject> loadJsonFromString( const std::string& doc );
-	unsigned int loadTexture( const std::string& path );
+	SWHardRef<SWObject> loadJson( const tstring& path );
+	SWHardRef<SWObject> loadJsonFromString( const tstring& doc );
+	unsigned int loadTexture( const tstring& path );
 	unsigned int loadTextureFromMemory( const unsigned char* buf, size_t len );
 	bool getTextureSize( int texID, int& width, int& height );
 	void bindTexture( unsigned int texID );
@@ -50,9 +50,9 @@ public:
 	int getScreenWidth();
 	int getScreenHeight();
 
-	bool storeItem( const std::string& key, SWObject* item );
-	void removeItem( const std::string& key );
-	SWObject* findItem( const std::string& key );
+	bool storeItem( const tstring& key, SWObject* item );
+	void removeItem( const tstring& key );
+	SWObject* findItem( const tstring& key );
 
 	static SWGameContext& getInstance();
 private:

@@ -132,7 +132,7 @@ void SWTransform::setLocalPosition( const SWVector3f& position )
 	m_position = position;
 }
 
-SWTransform* SWTransform::find( const std::string& name )
+SWTransform* SWTransform::find( const tstring& name )
 {
 	SWObjectList::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )

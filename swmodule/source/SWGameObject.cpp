@@ -32,7 +32,7 @@ SWGameObject::SWGameObject()
 	comp->onStart();
 }
 
-SWGameObject::SWGameObject( const std::string& name )
+SWGameObject::SWGameObject( const tstring& name )
 	: m_name( name )
 {
 	addComponent<SWTransform>();
@@ -157,18 +157,18 @@ void SWGameObject::removeUpdateDelegate( SWDelegate* dg )
 	m_updateDelegates.remove( dg );
 }
 
-void SWGameObject::defineProp( const std::string& name )
+void SWGameObject::defineProp( const tstring& name )
 {
 	if ( isDefinedProp(name) ) return;
 	m_propTable.insert( std::make_pair( name, new SWProperty ) );
 }
 
-bool SWGameObject::isDefinedProp( const std::string& name )
+bool SWGameObject::isDefinedProp( const tstring& name )
 {
 	return ( m_propTable.find( name ) != m_propTable.end() );
 }
 
-void SWGameObject::setProp( const std::string& name, SWObject* value )
+void SWGameObject::setProp( const tstring& name, SWObject* value )
 {
 	SWProperty* prop = NULL;
 	{
@@ -190,7 +190,7 @@ void SWGameObject::setProp( const std::string& name, SWObject* value )
 	}
 }
 
-SWObject* SWGameObject::getProp( const std::string& name )
+SWObject* SWGameObject::getProp( const tstring& name )
 {
 	ObjectMap::iterator itor = m_propTable.find( name );
 	if ( itor == m_propTable.end() ) return NULL;
@@ -198,7 +198,7 @@ SWObject* SWGameObject::getProp( const std::string& name )
 	return prop->m_value();
 }
 
-void SWGameObject::addPropSetDelegate( const std::string& name, SWDelegate* del )
+void SWGameObject::addPropSetDelegate( const tstring& name, SWDelegate* del )
 {
 	if ( del == NULL ) return;
 	SWProperty* prop = NULL;
@@ -213,7 +213,7 @@ void SWGameObject::addPropSetDelegate( const std::string& name, SWDelegate* del 
 	prop->m_setDelegates.push_back( del );
 }
 
-void SWGameObject::removePropSetDelegate( const std::string& name, SWDelegate* del )
+void SWGameObject::removePropSetDelegate( const tstring& name, SWDelegate* del )
 {
 	if ( del == NULL ) return;
 	SWProperty* prop = NULL;
@@ -228,7 +228,7 @@ void SWGameObject::removePropSetDelegate( const std::string& name, SWDelegate* d
 	prop->m_setDelegates.remove( del );
 }
 
-void SWGameObject::removeAllPropSetDelegate( const std::string& name )
+void SWGameObject::removeAllPropSetDelegate( const tstring& name )
 {
 	SWProperty* prop = NULL;
 	{
@@ -242,7 +242,7 @@ void SWGameObject::removeAllPropSetDelegate( const std::string& name )
 	prop->m_setDelegates.clear();
 }
 
-void SWGameObject::cleanPropSetDelegate( const std::string& name )
+void SWGameObject::cleanPropSetDelegate( const tstring& name )
 {
 	SWProperty* prop = NULL;
 	{

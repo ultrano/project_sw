@@ -10,8 +10,8 @@ class SWTable : public SWObject
 
 public:
 
-	typedef std::string Key;
-	typedef std::map< Key, SWHardRef<SWObject> > Value;
+	typedef tstring Key;
+	typedef ttable< Key, SWHardRef<SWObject> > Value;
 	typedef Value::iterator iterator;
 	typedef Value::const_iterator const_iterator;
 
@@ -24,9 +24,9 @@ public:
 	SWTable();
 	~SWTable();
 
-	SWObject* find( const std::string& key ) const;
-	void insert( const std::string& key, const SWObject* object );
-	void remove( const std::string& key );
+	SWObject* find( const tstring& key ) const;
+	void insert( const tstring& key, const SWObject* object );
+	void remove( const tstring& key );
 
 	iterator begin();
 	iterator end();

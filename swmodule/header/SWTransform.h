@@ -53,7 +53,7 @@ public:
 	void setLocalRotate( const SWQuaternion& rotate );
 	void setLocalPosition( const SWVector3f& position );
 
-	SWTransform* find( const std::string& name );
+	SWTransform* find( const tstring& name );
 	void copyChildren( SWObjectList& transList );
 
 	void onStart();

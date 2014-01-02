@@ -20,7 +20,7 @@ class SWTimer : public SWObject
     SWHandler m_handler;
     
     float m_interval;
-    std::string m_tag;
+    tstring m_tag;
     
     float m_accumulation;
     bool  m_isRunning;
@@ -35,8 +35,8 @@ public:
     float getInterval() const { return m_interval; };
     
     //! 같은 핸들러를 공유할때 타이머 구분을 위한 태그
-    void  setTag( const std::string& tag ) { m_tag = tag; };
-    const std::string& getTag() const { return m_tag; };
+    void  setTag( const tstring& tag ) { m_tag = tag; };
+    const tstring& getTag() const { return m_tag; };
     
     //! stop & start
     void reStart();

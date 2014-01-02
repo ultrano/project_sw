@@ -12,6 +12,7 @@
 
 #include "SWRefCounter.h"
 #include "SWRtti.h"
+#include "SWType.h"
 #include <string>
 #include <list>
 
@@ -21,12 +22,7 @@
 class SWObject;
 class SWDelegate;
 class SWHandler;
-typedef std::list< SWHardRef<SWObject> > SWObjectList;
-typedef std::string tstring;
-typedef double      tnumber;
-
-#define tlist std::list
-#define ttable std::map
+typedef tlist< SWHardRef<SWObject> > SWObjectList;
 
 
 class SWObject : public SWRefCountable
@@ -43,7 +39,7 @@ public:
 	~SWObject();
 	unsigned getID() const { return m_id; };
 	SWDelegate* getDelegate( const SWHandler& handler );
-	virtual std::string toString() const;
+	virtual tstring toString() const;
 	virtual void destroy();
 };
 

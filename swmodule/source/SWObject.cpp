@@ -49,7 +49,7 @@ SWDelegate* SWObject::getDelegate( const SWHandler& handler )
 	return dg;
 }
 
-std::string SWObject::toString() const
+tstring SWObject::toString() const
 {
 	static char buf[64];
     sprintf( &buf[0], "%d", m_id );

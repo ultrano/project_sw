@@ -52,7 +52,7 @@ public:
 	SWHardRef<SWGameScene> currentScene;
 	SWHardRef<SWGameScene> nextScene;
 	
-	std::string resFolder;
+	tstring resFolder;
 
 	int screenWidth;
 	int screenHeight;
@@ -71,9 +71,9 @@ public:
 	GLuint uMVPMatLoc;
 	GLuint uTexMatLoc;
 	
-	std::map<std::string,unsigned int> textureCache;
-	std::map<unsigned int,TextureInfo> textureTable;
-	std::map<std::string, SWHardRef<SWObject>> storage;
+	ttable<tstring,unsigned int> textureCache;
+	ttable<unsigned int,TextureInfo> textureTable;
+	ttable<tstring, SWHardRef<SWObject>> storage;
 
 	int lastBindedTexID;
 
@@ -174,7 +174,7 @@ GLuint loadProgram( const char* vertSource, const char* fragSource )
 	return programID;
 }
 
-void SWGameContext::onStart( SWGameScene* firstScene, const std::string& resFolder, int width, int height )
+void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, int width, int height )
 {
 
 	Pimpl* pimpl = new Pimpl;
@@ -395,10 +395,10 @@ void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 unsigned int glLoadTexture( const char* fileName, int& width, int& height );
 unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& width, int& height );
 
-unsigned int SWGameContext::loadTexture( const std::string& path )
+unsigned int SWGameContext::loadTexture( const tstring& path )
 {
-	std::string solvedPath = m_pimpl()->resFolder + path;
-	std::map<std::string,unsigned int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
+	tstring solvedPath = m_pimpl()->resFolder + path;
+	ttable<tstring,unsigned int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
 	
 	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
 
@@ -427,7 +427,7 @@ unsigned int SWGameContext::loadTextureFromMemory( const unsigned char* buf, siz
 
 bool SWGameContext::getTextureSize( int texID, int& width, int& height )
 {
-	std::map<unsigned int,TextureInfo>::iterator itor = m_pimpl()->textureTable.find( texID );
+	ttable<unsigned int,TextureInfo>::iterator itor = m_pimpl()->textureTable.find( texID );
 	if ( itor == m_pimpl()->textureTable.end() ) return false;
 	width  = itor->second.width;
 	height = itor->second.height;
@@ -443,24 +443,24 @@ void SWGameContext::bindTexture( unsigned int texID )
 	m_pimpl()->lastBindedTexID = texID;
 }
 
-bool SWGameContext::storeItem( const std::string& key, SWObject* item )
+bool SWGameContext::storeItem( const tstring& key, SWObject* item )
 {
 	SWHardRef< SWObject > hold( item );
-	std::map<std::string, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
+	ttable<tstring, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor != m_pimpl()->storage.end() ) return false;
 	
 	m_pimpl()->storage.insert( std::make_pair(key, item) );
 	return true;
 }
 
-void SWGameContext::removeItem( const std::string& key )
+void SWGameContext::removeItem( const tstring& key )
 {
 	m_pimpl()->storage.erase( key );
 }
 
-SWObject* SWGameContext::findItem( const std::string& key )
+SWObject* SWGameContext::findItem( const tstring& key )
 {
-	std::map<std::string, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
+	ttable<tstring, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor == m_pimpl()->storage.end() ) return NULL;
 	return itor->second();
 }
@@ -572,7 +572,7 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 			Json::Value::Members members = value.getMemberNames();
 			for ( int i = 0 ; i < members.size() ; ++i )
 			{
-				const std::string&  key    = members[i];
+				const tstring&  key    = members[i];
 				SWHardRef<SWObject> object = convertJsonValue( value.get( key, Json::Value::null ) );
 				tbl->insert( key, object() );
 			}
@@ -581,9 +581,9 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 	}
 }
 
-SWHardRef<SWObject> SWGameContext::loadJson( const std::string& path )
+SWHardRef<SWObject> SWGameContext::loadJson( const tstring& path )
 {
-	std::string solvedPath = m_pimpl()->resFolder + path;
+	tstring solvedPath = m_pimpl()->resFolder + path;
 	std::ifstream ifs( solvedPath.c_str() );
 
 	Json::Reader reader;
@@ -593,7 +593,7 @@ SWHardRef<SWObject> SWGameContext::loadJson( const std::string& path )
 	return convertJsonValue( root );
 }
 
-SWHardRef<SWObject> SWGameContext::loadJsonFromString( const std::string& doc )
+SWHardRef<SWObject> SWGameContext::loadJsonFromString( const tstring& doc )
 {
 	Json::Reader reader;
 	Json::Value root;
