@@ -94,6 +94,7 @@
     <ClInclude Include="header\SWComponent.h" />
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
+    <ClInclude Include="header\SWFileStream.h" />
     <ClInclude Include="header\SWType.h" />
     <ClInclude Include="header\WIFontData.h" />
     <ClInclude Include="header\SWGameContext.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="source\SWCamera.cpp" />
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
+    <ClCompile Include="source\SWFileStream.cpp" />
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />

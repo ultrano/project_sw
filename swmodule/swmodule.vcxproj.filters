@@ -169,6 +169,9 @@
     <Filter Include="SW\SWType">
       <UniqueIdentifier>{bc146a21-946b-4b67-892b-648a194fe9b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWFileStream">
+      <UniqueIdentifier>{804995eb-f036-452b-8088-052d01e3b454}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -369,6 +372,9 @@
     <ClInclude Include="header\SWType.h">
       <Filter>SW\SWType</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWFileStream.h">
+      <Filter>SW\SWFileStream</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -520,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="json\json_writer.cpp">
       <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWFileStream.cpp">
+      <Filter>SW\SWFileStream</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
