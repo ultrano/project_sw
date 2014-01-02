@@ -82,6 +82,7 @@ void WIText::updateMesh()
 			startOffsetX += spaceWidth;
 			continue;
 		}
+		if ( charID == 0xfeff ) continue;
 		WIFontChar* ch = m_font()->getChar( charID );
 		if ( ch == NULL )
 		{
