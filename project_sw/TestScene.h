@@ -84,6 +84,11 @@ class TestScene : public SWGameScene
 	void onUpdate()
 	{
 	}
+
+	void onPostDraw()
+	{
+		SW_GC.drawRect(0,0, SWInput.getTouchX(), SWInput.getTouchY() );
+	}
 };
 
 #endif // TestScene_h__

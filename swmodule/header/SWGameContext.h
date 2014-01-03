@@ -37,7 +37,8 @@ public:
 
 	void setVertexBuffer( const float* buffer );
 	void setTexCoordBuffer( const float* buffer );
-	void indexedDraw( size_t count, unsigned short* indeces);
+	void drawIndexed( size_t count, unsigned short* indeces);
+	void drawRect( float left, float top, float right, float bottom );
 	
 	//! asset
 	SWHardRef<SWObject> loadJson( const tstring& path );

@@ -379,7 +379,7 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 		, buffer );
 }
 
-void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
+void SWGameContext::drawIndexed( size_t count, unsigned short* indeces)
 {
 	SWMatrix4x4 mvpMat;
 	mvpMat = m_pimpl()->modelMatrix;
@@ -389,6 +389,18 @@ void SWGameContext::indexedDraw( size_t count, unsigned short* indeces)
 	glUniformMatrix4fv( m_pimpl()->uTexMatLoc, 1, GL_FALSE, (float*)&m_pimpl()->textureMatrix );
 	glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
+}
+
+void SWGameContext::drawRect( float left, float top, float right, float bottom )
+{
+	SWVector3f vertex[] = 
+	{ SWVector3f( left, top, 0 )
+	, SWVector3f( left, bottom, 0 )
+	, SWVector3f( right, bottom, 0 )
+	, SWVector3f( right, top, 0) };
+	setVertexBuffer( (float*)&vertex[0] );
+	bindTexture(0);
+	glDrawArrays( GL_LINE_LOOP, 0, 4 );
 }
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height );

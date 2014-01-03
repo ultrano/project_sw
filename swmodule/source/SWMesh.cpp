@@ -67,5 +67,5 @@ void SWMesh::draw()
 	  SW_GC.setTexCoordBuffer( &m_texCoords[0] );
 	}
 	lastMeshID = getID();
-	SW_GC.indexedDraw( m_indeces.size(), &m_indeces[0] );
+	SW_GC.drawIndexed( m_indeces.size(), &m_indeces[0] );
 }
