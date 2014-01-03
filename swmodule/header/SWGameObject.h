@@ -77,6 +77,9 @@ public:
 	void removePropSetDelegate( const tstring& name, SWDelegate* del );
 	void removeAllPropSetDelegate( const tstring& name );
 	void cleanPropSetDelegate( const tstring& name );
+
+	void sendMessage( const tstring& msgName, SWObject* param );
+
 };
 
 #endif

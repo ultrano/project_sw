@@ -79,7 +79,7 @@ SWDelegate::SWDelegate( const SWDelegate& copy )
 
 }
 
-void SWDelegate::call()
+void SWDelegate::call() const
 {
 	if ( !isValid() ) return;
 	if ( m_handler.m_needParam ) (m_object()->*m_handler.m_method)(NULL);
@@ -90,7 +90,7 @@ void SWDelegate::call()
 	}
 }
 
-void SWDelegate::call( SWObject* object )
+void SWDelegate::call( SWObject* object ) const
 {
 	if ( !isValid() ) return;
 	if ( m_handler.m_needParam ) (m_object()->*m_handler.m_method)(object);
@@ -101,18 +101,18 @@ void SWDelegate::call( SWObject* object )
 	}
 }
 
-bool SWDelegate::isValid()
+bool SWDelegate::isValid() const
 {
 	return m_object() && m_handler.m_method;
 }
-bool SWDelegate::isEqual( const SWDelegate* dg )
+bool SWDelegate::isEqual( const SWDelegate* dg ) const
 {
 	bool check1 = ( dg->getHandler().m_method == m_handler.m_method );
 	bool check2 = ( dg->getObject() == m_object() );
 	return ( check1 && check2 );
 }
 
-bool SWDelegate::isEqual( SWObject* object, const SWHandler& handler )
+bool SWDelegate::isEqual( SWObject* object, const SWHandler& handler ) const
 {
 	bool check1 = ( handler.m_method == m_handler.m_method );
 	bool check2 = ( object == m_object() );

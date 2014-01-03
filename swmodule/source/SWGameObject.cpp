@@ -266,3 +266,16 @@ void SWGameObject::cleanPropSetDelegate( const tstring& name )
 		}
 	}
 }
+
+void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
+{
+	ComponentArray copy = m_components;
+	ComponentArray::iterator itor = copy.end();
+	
+	for ( ; itor != copy.end() ; ++itor )
+	{
+		SWBehavior* comp = swrtti_cast<SWBehavior>( (*itor)() );
+		if ( comp == NULL ) continue;
+		comp->callMessageReceiver( msgName, param );
+	}
+}

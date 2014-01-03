@@ -80,12 +80,12 @@ public:
 	SWDelegate( SWObject* object, const SWHandler& handler );
 	SWDelegate( const SWDelegate& copy );
 	
-	void call();
-	void call(SWObject* param);
+	void call() const;
+	void call(SWObject* param) const;
 
-	bool isValid();
-	bool isEqual( const SWDelegate* dg );
-	bool isEqual( SWObject* object, const SWHandler& handler );
+	bool isValid() const;
+	bool isEqual( const SWDelegate* dg ) const;
+	bool isEqual( SWObject* object, const SWHandler& handler ) const;
 	SWObject* getObject() const { return m_object(); };
 	const SWHandler& getHandler() const { return m_handler; };
 };
