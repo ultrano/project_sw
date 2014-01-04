@@ -91,6 +91,7 @@ class TestScene : public SWGameScene
 
 	void onHandleTouch()
 	{
+		if ( !SWInput.getKey( SWInput.getLastKey() ) ) return;
 		SWGameObject* go = find( "font" );
 		WIText* text = go->getComponent<WIText>();
 		tstring str = SWUtil.unicodeToUtf8( text->getText() );

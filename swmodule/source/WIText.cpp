@@ -60,9 +60,9 @@ void WIText::updateMesh()
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setTexture( m_font()->getFontTexture() );
 
-	tarray<SWVector3f> m_pos;
-	tarray<SWVector2f> m_tex;
-	tarray<unsigned short> m_indices;
+	tarray<SWVector3f>& m_pos = m_mesh()->getVertexStream();
+	tarray<SWVector2f>& m_tex = m_mesh()->getTexCoordStream();
+	tarray<tushort>& m_indices = m_mesh()->getIndexStream();
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );
@@ -117,7 +117,7 @@ void WIText::updateMesh()
 		m_pos[(i*4)+1] = sizeScale*SWVector3f( right, top, 0 );
 		m_pos[(i*4)+2] = sizeScale*SWVector3f(  left, bottom, 0 );
 		m_pos[(i*4)+3] = sizeScale*SWVector3f( right, bottom, 0 );
-		startOffsetX = startOffsetX + ch->w+ch->offsetX;
+		startOffsetX = startOffsetX + ch->advanceX;
 
 		m_tex[(i*4)+0] = SWVector2f(           ch->x/width, (ch->y)/height );
 		m_tex[(i*4)+1] = SWVector2f( (ch->x + ch->w)/width, (ch->y)/height );
@@ -125,8 +125,5 @@ void WIText::updateMesh()
 		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/width, (ch->y + ch->h)/height );
 	}
 
-	m_mesh()->setVertexStream( m_pos.size(), &m_pos[0] );
-	m_mesh()->setTexCoordStream( m_tex.size(), &m_tex[0] );
-	m_mesh()->setIndexStream( m_indices.size(), &m_indices[0] );
 	m_mesh()->updateMesh();
 }

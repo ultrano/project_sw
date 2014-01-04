@@ -6,19 +6,19 @@
 void SWMesh::setVertexStream( size_t count, const SWVector3f* stream )
 {
 	size_t newCount = count*3;
-	size_t oldCount = m_vertices.size();
 	size_t byteSize = sizeof(SWVector3f)*count;
-	if ( newCount > oldCount ) m_vertices.resize( newCount );
-	
+	m_vertices.resize( newCount );
 	memcpy( &m_vertices[0], stream, byteSize );
+	m_updateMesh = true;
 
+	/*
+	size_t oldCount = m_vertices.size();
 	if ( oldCount > newCount )
 	{
 		size_t spareSize = sizeof(SWVector3f)*(oldCount - newCount);
 		memset( &m_vertices[newCount], 0, spareSize );
 	}
-
-	m_updateMesh = true;
+	*/
 }
 
 void SWMesh::setTexCoordStream( size_t count, const SWVector2f* stream )
@@ -36,7 +36,7 @@ void SWMesh::setIndexStream( size_t countOfShort, unsigned short* stream )
 	m_updateMesh = true;
 }
 
-tarray<float>& SWMesh::getTexCoordStream()
+tarray<SWVector2f>& SWMesh::getTexCoordStream()
 {
 	return m_texCoords;
 }
@@ -46,7 +46,7 @@ tarray<unsigned short>& SWMesh::getIndexStream()
 	return m_indeces;
 }
 
-tarray<float>& SWMesh::getVertexStream()
+tarray<SWVector3f>& SWMesh::getVertexStream()
 {
 	return m_vertices;
 }
@@ -64,8 +64,8 @@ void SWMesh::draw()
 	{
 	  if ( m_updateMesh ) updateMesh();
 	  if ( m_vertices.size() == 0 ) return;
-	  SW_GC.setVertexBuffer( &m_vertices[0] );
-	  SW_GC.setTexCoordBuffer( &m_texCoords[0] );
+	  SW_GC.setVertexBuffer( (float*)&m_vertices[0] );
+	  SW_GC.setTexCoordBuffer( (float*)&m_texCoords[0] );
 	}
 	lastMeshID = getID();
 	if ( m_indeces.size() == 0 ) return;

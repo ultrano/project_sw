@@ -9,6 +9,7 @@ __SWInput& __SWInput::getInstance()
 
 __SWInput::__SWInput()
 	: m_lastKey( 0 )
+	, m_keyDownCount( 0 )
 {
 
 }

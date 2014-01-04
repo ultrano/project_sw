@@ -46,8 +46,9 @@ void WIFontData::load( SWObject* data )
 		charInfo->y = charVal->find( "-y" )->asNumber();
 		charInfo->w = charVal->find( "-width" )->asNumber();
 		charInfo->h = charVal->find( "-height" )->asNumber();
-		charInfo->offsetX = charVal->find( "-xoffset" )->asNumber();
-		charInfo->offsetY = charVal->find( "-yoffset" )->asNumber();
+		charInfo->offsetX  = charVal->find( "-xoffset" )->asNumber();
+		charInfo->offsetY  = charVal->find( "-yoffset" )->asNumber();
+		charInfo->advanceX = charVal->find( "-xadvance" )->asNumber();
 		setChar( charInfo );
 	}
 

@@ -326,6 +326,7 @@ void SWGameContext::onKeyChange( tuint key, bool press )
 	if ( key >= SWInput.eKeyCount ) return;
 	SWInput.m_keyFlags[ key ] = press;
 	SWInput.m_lastKey = key;
+	SWInput.m_keyDownCount += press? +1:-1;
 
 	//////////////////////////////////////////////////////////////////////////
 	{
