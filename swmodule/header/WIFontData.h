@@ -14,7 +14,10 @@ class WIFontData : public SWObject
 
 	int m_texID;
 	CharTable m_charTable;
-	
+	int m_lineHeight;
+	int m_scaleW;
+	int m_scaleH;
+
 public:
 
 	void setFontTexture( int texID );
@@ -22,6 +25,10 @@ public:
 
 	WIFontChar* getChar( int id );
 	void setChar( WIFontChar* fontChar );
+
+	int getLineHeight() const { return m_lineHeight; };
+	int getScaleW() const { return m_scaleW; };
+	int getScaleH() const { return m_scaleH; };
 
 	void load( SWObject* data );
 

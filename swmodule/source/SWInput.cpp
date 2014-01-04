@@ -8,6 +8,7 @@ __SWInput& __SWInput::getInstance()
 }
 
 __SWInput::__SWInput()
+	: m_lastKey( 0 )
 {
 
 }
@@ -46,6 +47,11 @@ bool __SWInput::getKey( tuint code ) const
 {
 	if ( code < eKeyCount ) return m_keyFlags[code];
 	return false;
+}
+
+tuint __SWInput::getLastKey() const
+{
+	return m_lastKey;
 }
 
 void __SWInput::addInputDelegate( SWDelegate* del )

@@ -63,9 +63,11 @@ void SWMesh::draw()
 	if ( getID() != lastMeshID )
 	{
 	  if ( m_updateMesh ) updateMesh();
+	  if ( m_vertices.size() == 0 ) return;
 	  SW_GC.setVertexBuffer( &m_vertices[0] );
 	  SW_GC.setTexCoordBuffer( &m_texCoords[0] );
 	}
 	lastMeshID = getID();
+	if ( m_indeces.size() == 0 ) return;
 	SW_GC.drawIndexed( m_indeces.size(), &m_indeces[0] );
 }

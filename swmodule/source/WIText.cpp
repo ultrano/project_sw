@@ -54,6 +54,7 @@ const twstring& WIText::getText() const
 void WIText::updateMesh()
 {
 	if ( m_updateMesh == false ) return;
+	if ( m_text.size() == 0 ) return;
 	m_updateMesh = false;
 
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
@@ -69,18 +70,28 @@ void WIText::updateMesh()
 
 	int defaultSize = 40;
 	float sizeScale = (float)m_fontSize/(float)defaultSize;
-	int width = 0;
-	int height = 0;
+	float width = m_font()->getScaleW();
+	float height = m_font()->getScaleH();
 	int spaceWidth = 5;
-	SW_GC.getTextureSize( m_font()->getFontTexture(), width, height );
+	float lineHeight = m_font()->getLineHeight()*sizeScale;
 	float startOffsetX = 0;
+	float startOffsetY = 0;
 	for ( int i = 0 ; i < m_text.size() ; ++i )
 	{
 		int charID = m_text[i];
-		if ( charID < 256 && isspace( charID ) != 0 )
+		if ( charID < 256 )
 		{
-			startOffsetX += spaceWidth;
-			continue;
+			if ( charID == (int)'\n' || charID == (int)'\r' )
+			{
+				startOffsetY -= lineHeight;
+				startOffsetX = 0;
+				continue;
+			}
+			else if ( isspace( charID ) != 0 )
+			{
+				startOffsetX += spaceWidth;
+				continue;
+			}
 		}
 		if ( charID == 0xfeff ) continue;
 		WIFontChar* ch = m_font()->getChar( charID );
@@ -98,16 +109,20 @@ void WIText::updateMesh()
 		m_indices[i*6+4] = 2+(i*4);
 		m_indices[i*6+5] = 1+(i*4);
 
-		m_pos[(i*4)+0] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->h+ch->offsetY, 0 );
-		m_pos[(i*4)+1] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->h+ch->offsetY, 0 );
-		m_pos[(i*4)+2] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->offsetY, 0 );
-		m_pos[(i*4)+3] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->offsetY, 0 );
+		float left   = startOffsetX + ch->offsetX;
+		float top    = startOffsetY - ch->offsetY;
+		float right  = left + ch->w;
+		float bottom = top  - ch->h;
+		m_pos[(i*4)+0] = sizeScale*SWVector3f(  left, top, 0 );
+		m_pos[(i*4)+1] = sizeScale*SWVector3f( right, top, 0 );
+		m_pos[(i*4)+2] = sizeScale*SWVector3f(  left, bottom, 0 );
+		m_pos[(i*4)+3] = sizeScale*SWVector3f( right, bottom, 0 );
 		startOffsetX = startOffsetX + ch->w+ch->offsetX;
 
-		m_tex[(i*4)+0] = SWVector2f( ch->x/(float)width, (ch->y)/(float)height );
-		m_tex[(i*4)+1] = SWVector2f( (ch->x + ch->w)/(float)width, (ch->y)/(float)height );
-		m_tex[(i*4)+2] = SWVector2f( ch->x/(float)width, (ch->y + ch->h)/(float)height );
-		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/(float)width, (ch->y + ch->h)/(float)height );
+		m_tex[(i*4)+0] = SWVector2f(           ch->x/width, (ch->y)/height );
+		m_tex[(i*4)+1] = SWVector2f( (ch->x + ch->w)/width, (ch->y)/height );
+		m_tex[(i*4)+2] = SWVector2f(           ch->x/width, (ch->y + ch->h)/height );
+		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/width, (ch->y + ch->h)/height );
 	}
 
 	m_mesh()->setVertexStream( m_pos.size(), &m_pos[0] );

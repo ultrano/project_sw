@@ -308,13 +308,16 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 	SWInput.m_touchX = param1;
 	SWInput.m_touchY = param2;
 
-	SWList::Value copy = SWInput.m_listeners;
-	SWList::iterator itor = copy.begin();
-	for ( ; itor != copy.end() ; ++itor )
+	//////////////////////////////////////////////////////////////////////////
 	{
-		SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
-		if ( del ) del->call();
-		else SWInput.m_listeners.remove( del );
+		SWList::Value copy = SWInput.m_listeners;
+		SWList::iterator itor = copy.begin();
+		for ( ; itor != copy.end() ; ++itor )
+		{
+			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+			if ( del ) del->call();
+			else SWInput.m_listeners.remove( del );
+		}
 	}
 }
 
@@ -322,14 +325,18 @@ void SWGameContext::onKeyChange( tuint key, bool press )
 {
 	if ( key >= SWInput.eKeyCount ) return;
 	SWInput.m_keyFlags[ key ] = press;
+	SWInput.m_lastKey = key;
 
-	SWList::Value copy = SWInput.m_listeners;
-	SWList::iterator itor = copy.begin();
-	for ( ; itor != copy.end() ; ++itor )
+	//////////////////////////////////////////////////////////////////////////
 	{
-		SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
-		if ( del ) del->call();
-		else SWInput.m_listeners.remove( del );
+		SWList::Value copy = SWInput.m_listeners;
+		SWList::iterator itor = copy.begin();
+		for ( ; itor != copy.end() ; ++itor )
+		{
+			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+			if ( del ) del->call();
+			else SWInput.m_listeners.remove( del );
+		}
 	}
 }
 

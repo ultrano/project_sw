@@ -54,4 +54,9 @@ void WIFontData::load( SWObject* data )
 	SWValue* pages = (SWValue*)font->find( "pages" );
 	SWValue* page0 = pages->find( "page" );
 	setFontTexture( SW_GC.loadTexture( page0->find( "-file" )->asString() ) );
+
+	SWValue* common = (SWValue*)font->find( "common" );
+	m_lineHeight = common->find( "-lineHeight" )->asNumber();
+	m_scaleW     = common->find( "-scaleW" )->asNumber();
+	m_scaleH     = common->find( "-scaleH" )->asNumber();
 }

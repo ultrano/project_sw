@@ -19,6 +19,7 @@ private:
 
 	enum { eKeyCount = 256 };
 	bool m_keyFlags[eKeyCount];
+	tuint m_lastKey;
 
 	SWList::Value m_listeners;
 
@@ -37,6 +38,7 @@ public:
 	int getDeltaY() const;
 
 	bool getKey( tuint code ) const;
+	tuint getLastKey() const;
 
 	void addInputDelegate( SWDelegate* del );
 	void removeInputDelegate( SWDelegate* del );

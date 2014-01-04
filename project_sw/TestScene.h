@@ -52,6 +52,7 @@ class TestScene : public SWGameScene
 			float halfW = SW_GC.getScreenWidth()/2;
 			float halfH = SW_GC.getScreenHeight()/2;
 			cam->cameraMatrix.ortho( -halfW, halfW, -halfH, halfH, 1,1000);
+			cam->cameraMatrix.perspective( SWMath.angleToRadian(90), 1, 1, 1000 );
 			SWCamera::mainCamera = cam;
 		}
 		{
@@ -81,7 +82,7 @@ class TestScene : public SWGameScene
 			go->setName( "font" );
 			WIText* text = go->addComponent<WIText>();
 			text->setFont( fontData );
-			text->setText( SWUtil.utf8ToUnicode( (char*)&buf[0] ) );
+			//text->setText( SWUtil.utf8ToUnicode( (char*)&buf[0] ) );
 			text->setFontSize( 40 );
 
 			SWTransform* transform = go->getComponent<SWTransform>();
@@ -90,6 +91,11 @@ class TestScene : public SWGameScene
 
 	void onHandleTouch()
 	{
+		SWGameObject* go = find( "font" );
+		WIText* text = go->getComponent<WIText>();
+		tstring str = SWUtil.unicodeToUtf8( text->getText() );
+		str += (char)SWInput.getLastKey();
+		text->setText( SWUtil.utf8ToUnicode( str ) );
 	}
 
 	void onUpdate()
