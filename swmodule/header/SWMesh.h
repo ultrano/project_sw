@@ -19,9 +19,9 @@ public:
 	void setTexCoordStream( size_t count, const SWVector2f* stream );
 	void setIndexStream( size_t count, unsigned short* stream );
 
-	tarray<SWVector3f>& getVertexStream();
-	tarray<SWVector2f>& getTexCoordStream();
-	tarray<unsigned short>& getIndexStream();
+	const tarray<SWVector3f>& getVertexStream();
+	const tarray<SWVector2f>& getTexCoordStream();
+	const tarray<unsigned short>& getIndexStream();
 
 	void updateMesh();
 	void draw();

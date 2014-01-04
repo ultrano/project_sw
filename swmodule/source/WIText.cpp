@@ -60,9 +60,9 @@ void WIText::updateMesh()
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setTexture( m_font()->getFontTexture() );
 
-	tarray<SWVector3f>& m_pos = m_mesh()->getVertexStream();
-	tarray<SWVector2f>& m_tex = m_mesh()->getTexCoordStream();
-	tarray<tushort>& m_indices = m_mesh()->getIndexStream();
+	tarray<SWVector3f> m_pos;
+	tarray<SWVector2f> m_tex;
+	tarray<tushort> m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );
@@ -125,5 +125,7 @@ void WIText::updateMesh()
 		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/width, (ch->y + ch->h)/height );
 	}
 
-	m_mesh()->updateMesh();
+	m_mesh()->setVertexStream( m_pos.size(), &m_pos[0] );
+	m_mesh()->setTexCoordStream( m_tex.size(), &m_tex[0] );
+	m_mesh()->setIndexStream( m_indices.size(), &m_indices[0] );
 }
