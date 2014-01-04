@@ -14,6 +14,8 @@ private:
 	int m_touchState;
 	int m_touchX;
 	int m_touchY;
+	int m_deltaX;
+	int m_deltaY;
 	SWList::Value m_listeners;
 
 	__SWInput();
@@ -26,6 +28,9 @@ public:
 	int getTouchState() const;
 	int getTouchX() const;
 	int getTouchY() const;
+
+	int getDeltaX() const;
+	int getDeltaY() const;
 
 	void addInputDelegate( SWDelegate* del );
 	void removeInputDelegate( SWDelegate* del );

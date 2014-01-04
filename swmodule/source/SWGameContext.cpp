@@ -24,6 +24,7 @@
 #include "SWString.h"
 #include "SWFileStream.h"
 #include "SWBuffer.h"
+#include "SWMath.h"
 
 #include "stb_image.h"
 
@@ -239,10 +240,6 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 		// ∫‰∆˜∆Æ ¡ˆ¡§.
 		glViewport(0,0,width,height);
 
-		// «¡∑Œ¡ßº« ∏≈∆Æ∏ØΩ∫∏¶ ¡˜±≥ «‡∑ƒ∑Œ ¡ˆ¡§.
-		SWMatrix4x4 mat;
-        setViewMatrix( mat );
-		setProjectionMatrix( mat.ortho( 0, width, 0, height,1000,-1000) );
 	}
 
 }
@@ -298,6 +295,16 @@ void SWGameContext::onRender()
 void SWGameContext::onHandleEvent( int type, int param1, int param2 )
 {
 	SWInput.m_touchState = type;
+	if ( type == SW_TouchPress )
+	{
+		SWInput.m_deltaY = param1;
+		SWInput.m_deltaY = param2;
+	}
+	else if ( type == SW_TouchMove )
+	{
+		SWInput.m_deltaX = param1 - SWInput.m_touchX;
+		SWInput.m_deltaY = param2 - SWInput.m_touchY;
+	}
 	SWInput.m_touchX = param1;
 	SWInput.m_touchY = param2;
 
@@ -495,10 +502,6 @@ void SWGameContext::onResize( int width, int height )
 {
 	// ∫‰∆˜∆Æ ¡ˆ¡§.
 	glViewport(0,0,width,height);
-
-	// «¡∑Œ¡ßº« ∏≈∆Æ∏ØΩ∫∏¶ ¡˜±≥ «‡∑ƒ∑Œ ¡ˆ¡§.
-	SWMatrix4x4 proj;
-	setProjectionMatrix( proj.ortho( 0, width, 0, height,1000,-1000) );
 }
 
 unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& width, int& height )

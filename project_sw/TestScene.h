@@ -23,6 +23,7 @@
 #include "SWActContinue.h"
 #include "SWFileStream.h"
 #include "SWUtil.h"
+#include "SWCamera.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -45,6 +46,17 @@ class TestScene : public SWGameScene
 	void onAwake()
 	{
 		{
+		}
+		//! set default camera
+		{
+			SWGameObject* go = new SWGameObject;
+			SWCamera* cam = go->addComponent<SWCamera>();
+			//cam->cameraMatrix.ortho( 0, SW_GC.getScreenWidth(), 0, SW_GC.getScreenHeight(),1000,-1000);
+			cam->cameraMatrix.perspective( SWMath.pi/2,1,0,1000 );
+			SWVector3f vec = SWVector3f( 0,0,500 ) * cam->cameraMatrix;
+			SWCamera::mainCamera = cam;
+		}
+		{
 			tstring test = SWUtil.unicodeToUtf8( L"asdf123" );
 		}
 		{
@@ -53,7 +65,10 @@ class TestScene : public SWGameScene
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
+			transform->setLocalPosition( SWVector3f( 0,0,500 ) );
+			go->setName( "cat" );
+			go->defineProp( "rot" );
+			go->setProp( "rot", new SWNumber( 0 ) );
 		}
 			tarray<tbyte> buf;
 			SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetPath( "read_test.txt" ) );
@@ -72,22 +87,54 @@ class TestScene : public SWGameScene
 			text->setFontSize( 40);
 
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( 300,300,0 ) );
+			transform->setLocalPosition( SWVector3f( 0,0,500 ) );
+
+	
 	}
 
 	void onHandleTouch()
 	{
-		WIText* text = find("font")->getComponent<WIText>();
-		text->setFontSize( text->getFontSize() - 1 );
+		SWCamera* cam = SWCamera::mainCamera();
+		SWTransform* trans = cam->getComponent<SWTransform>();
+		static float near = 0;
+		near +=SWInput.getDeltaX();
+		SWLog( "near %f", near );
+		switch ( SWInput.getTouchState() )
+		{
+			/*
+		case SW_TouchRelease   : 
+			{
+				float halfW = SW_GC.getScreenWidth()/2;
+				float halfH = SW_GC.getScreenHeight()/2;
+				cam->cameraMatrix.ortho( -halfW, halfW, halfH, -halfH,500,1000);
+			SWVector3f vec = SWVector3f( 0,0,-500 ) * cam->cameraMatrix;
+			 vec = SWVector3f( 0,0,500 ) * cam->cameraMatrix;
+			}break;
+			*/
+		case SW_TouchMove : cam->cameraMatrix.perspective( SWMath.pi/2,1, near,1000 ); break;
+		}
+		SWVector3f vec = SWVector3f( 0,0,500 ) * cam->cameraMatrix;
+		SWLog( "vec %f", vec.z );
+		return;
+		SWVector3f pos = trans->getLocalPosition();
+		pos.z += SWInput.getDeltaX();
+		trans->setLocalPosition( pos );
+		SWLog( "pos %f", pos.z );
 	}
 
 	void onUpdate()
 	{
+		SWGameObject* go = find( "cat" );
+		SWNumber* num = swrtti_cast<SWNumber>( go->getProp( "rot" ) );
+		SWTransform* transform = go->getComponent<SWTransform>();
+		SWQuaternion quat;
+		quat.rotate( SWVector3f::axisY, num->getValue() );
+		transform->setLocalRotate( quat );
+		num->setValue( num->getValue() + (SWMath.pi/300) );
 	}
 
 	void onPostDraw()
 	{
-		SW_GC.drawRect(0,0, SWInput.getTouchX(), SWInput.getTouchY() );
 	}
 };
 

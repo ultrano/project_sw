@@ -32,6 +32,16 @@ int __SWInput::getTouchY() const
 	return m_touchY;
 }
 
+int __SWInput::getDeltaX() const
+{
+	return m_deltaX;
+}
+
+int __SWInput::getDeltaY() const
+{
+	return m_deltaY;
+}
+
 void __SWInput::addInputDelegate( SWDelegate* del )
 {
 	m_listeners.push_back( del );

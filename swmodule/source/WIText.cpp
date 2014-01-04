@@ -90,24 +90,24 @@ void WIText::updateMesh()
 			if ( ch == NULL ) break;
 		}
 
-		m_indices[i*6+0] = 2+(i*4);
+		m_indices[i*6+0] = 0+(i*4);
 		m_indices[i*6+1] = 1+(i*4);
-		m_indices[i*6+2] = 0+(i*4);
+		m_indices[i*6+2] = 2+(i*4);
 		
 		m_indices[i*6+3] = 3+(i*4);
-		m_indices[i*6+4] = 0+(i*4);
-		m_indices[i*6+5] = 2+(i*4);
+		m_indices[i*6+4] = 2+(i*4);
+		m_indices[i*6+5] = 1+(i*4);
 
-		m_pos[(i*4)+0] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->offsetY, 0 );
-		m_pos[(i*4)+1] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->h+ch->offsetY, 0 );
-		m_pos[(i*4)+2] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->h+ch->offsetY, 0 );
+		m_pos[(i*4)+0] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->h+ch->offsetY, 0 );
+		m_pos[(i*4)+1] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->h+ch->offsetY, 0 );
+		m_pos[(i*4)+2] = sizeScale*SWVector3f( startOffsetX + ch->offsetX, ch->offsetY, 0 );
 		m_pos[(i*4)+3] = sizeScale*SWVector3f( startOffsetX + ch->w+ch->offsetX, ch->offsetY, 0 );
 		startOffsetX = startOffsetX + ch->w+ch->offsetX;
 
-		m_tex[(i*4)+0] = SWVector2f( ch->x/(float)width, ch->y/(float)height );
-		m_tex[(i*4)+1] = SWVector2f( ch->x/(float)width, (ch->y + ch->h)/(float)height );
-		m_tex[(i*4)+2] = SWVector2f( (ch->x + ch->w)/(float)width, (ch->y + ch->h)/(float)height );
-		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/(float)width, ch->y/(float)height );
+		m_tex[(i*4)+0] = SWVector2f( ch->x/(float)width, (ch->y)/(float)height );
+		m_tex[(i*4)+1] = SWVector2f( (ch->x + ch->w)/(float)width, (ch->y)/(float)height );
+		m_tex[(i*4)+2] = SWVector2f( ch->x/(float)width, (ch->y + ch->h)/(float)height );
+		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/(float)width, (ch->y + ch->h)/(float)height );
 	}
 
 	m_mesh()->setVertexStream( m_pos.size(), &m_pos[0] );

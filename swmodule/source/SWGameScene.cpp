@@ -43,10 +43,6 @@ void SWGameScene::awake()
 {
 	SWInput.addInputDelegate( GetDelegate(handleEvent) );
     onAwake();
-	SWGameObject* go = new SWGameObject;
-	SWCamera* cam = go->addComponent<SWCamera>();
-	cam->cameraMatrix.ortho( 0, SW_GC.getScreenWidth(), 0, SW_GC.getScreenHeight(),1000,-1000);
-	SWCamera::mainCamera = cam;
 }
 
 void SWGameScene::destroy()

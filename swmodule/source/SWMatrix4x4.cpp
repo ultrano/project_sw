@@ -1,4 +1,5 @@
 #include "SWMatrix4x4.h"
+#include "SWMath.h"
 
 #include <math.h>
 #include <memory>
@@ -60,10 +61,12 @@ const SWMatrix4x4 operator*( const SWMatrix4x4& a, const SWMatrix4x4& b )
 
 const SWVector3f operator*( const SWVector3f& v, const SWMatrix4x4& m )
 {
+	float w = v.x*m.m14 + v.y*m.m24 + v.z*m.m34 + m.m44;
+	if ( w == 0 ) w = 1;
 	return SWVector3f
-		( v.x*m.m11 + v.y*m.m21 + v.z*m.m31 + m.m41
-		, v.x*m.m12 + v.y*m.m22 + v.z*m.m32 + m.m42
-		, v.x*m.m13 + v.y*m.m23 + v.z*m.m33 + m.m43 );
+		( (v.x*m.m11 + v.y*m.m21 + v.z*m.m31 + m.m41)/w
+		, (v.x*m.m12 + v.y*m.m22 + v.z*m.m32 + m.m42)/w
+		, (v.x*m.m13 + v.y*m.m23 + v.z*m.m33 + m.m43)/w );
 }
 
 float matDet( unsigned square, float* m )
@@ -181,10 +184,29 @@ SWMatrix4x4& SWMatrix4x4::ortho( float left, float right, float top, float botto
 
 	m11 = 2.0f/w;
 	m22 = 2.0f/h;
-	m33 = -2.0f/d;
+	m33 = 1.0f/d;
 	m41 = -(2*x)/w;
 	m42 = -(2*y)/h;
-	m43 = -(2*z)/d;
+	m43 = -(near)/d;
+
+	return *this;
+}
+
+SWMatrix4x4& SWMatrix4x4::perspective( float fov, float aspect, float near, float far )
+{
+	identity();
+
+	float cot = 1.0f/SWMath.tan( fov / 2.0f );
+	float cotW = (cot) * aspect;
+	float cotH = (cot);
+	float d = far - near;
+
+	m11 = cotW;
+	m22 = cotH;
+	m33 = far/d;
+	m34 = 1;
+	m43 = -far*near/d;
+	m44 = 0;
 
 	return *this;
 }

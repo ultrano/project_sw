@@ -12,7 +12,7 @@
 void WIImage::onAwake()
 {
 	m_updateMesh = false;
-	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
+	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(-0.5f, 0.5f,0), SWVector3f(0.5f, 0.5f,0), SWVector3f(0.5f,-0.5f,0) };
 	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
 	unsigned short indices[] = {0,1,2,3,2,1};
 	SWMesh* mesh = new SWMesh();
@@ -53,10 +53,10 @@ void WIImage::onUpdate()
 	}
 	
 	SWVector3f vertices[] = 
-	{ SWVector3f((anchor.x-0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
-	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
-	, SWVector3f((anchor.x-0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
-	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y+0.5f)*m_height, 0) };
+	{ SWVector3f((anchor.x-0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
+	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
+	, SWVector3f((anchor.x-0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
+	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y-0.5f)*m_height, 0) };
 	mesh->setVertexStream( 4, &vertices[0] );
 }
 
