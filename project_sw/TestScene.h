@@ -84,7 +84,7 @@ class TestScene : public SWGameScene
 			WIText* text = go->addComponent<WIText>();
 			text->setFont( fontData );
 			text->setText( SWUtil.utf8ToUnicode( (char*)&buf[0] ) );
-			text->setFontSize( 40);
+			text->setFontSize( 40 );
 
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( SWVector3f( 0,0,500 ) );
@@ -96,30 +96,26 @@ class TestScene : public SWGameScene
 	{
 		SWCamera* cam = SWCamera::mainCamera();
 		SWTransform* trans = cam->getComponent<SWTransform>();
-		static float near = 0;
-		near +=SWInput.getDeltaX();
-		SWLog( "near %f", near );
-		switch ( SWInput.getTouchState() )
+		static float temp = 500;
+		temp += SWInput.getDeltaX();
+		cam->cameraMatrix.perspective( SWMath.angleToRadian(90),1, temp,1000);
+		
+		do 
 		{
-			/*
-		case SW_TouchRelease   : 
-			{
-				float halfW = SW_GC.getScreenWidth()/2;
-				float halfH = SW_GC.getScreenHeight()/2;
-				cam->cameraMatrix.ortho( -halfW, halfW, halfH, -halfH,500,1000);
-			SWVector3f vec = SWVector3f( 0,0,-500 ) * cam->cameraMatrix;
-			 vec = SWVector3f( 0,0,500 ) * cam->cameraMatrix;
-			}break;
-			*/
-		case SW_TouchMove : cam->cameraMatrix.perspective( SWMath.pi/2,1, near,1000 ); break;
-		}
-		SWVector3f vec = SWVector3f( 0,0,500 ) * cam->cameraMatrix;
-		SWLog( "vec %f", vec.z );
-		return;
-		SWVector3f pos = trans->getLocalPosition();
-		pos.z += SWInput.getDeltaX();
-		trans->setLocalPosition( pos );
-		SWLog( "pos %f", pos.z );
+			break;
+			float halfW = SW_GC.getScreenWidth()/2;
+			float halfH = SW_GC.getScreenHeight()/2;
+			cam->cameraMatrix.ortho( -halfW, halfW, -halfH, halfH, temp,1000);
+			SWMatrix4x4 mat;
+			glMatrixMode( GL_PROJECTION );
+			glLoadIdentity();
+			glOrtho( -halfW, halfW, -halfH, halfH, temp,1000);
+			glGetFloatv( GL_PROJECTION_MATRIX, (float*)&mat);
+
+			int a=0;
+		} while ( false );
+
+		SWLog( "temp %f", temp );
 	}
 
 	void onUpdate()
@@ -130,7 +126,7 @@ class TestScene : public SWGameScene
 		SWQuaternion quat;
 		quat.rotate( SWVector3f::axisY, num->getValue() );
 		transform->setLocalRotate( quat );
-		num->setValue( num->getValue() + (SWMath.pi/300) );
+		num->setValue( num->getValue() + (SWMath.pi/900) );
 	}
 
 	void onPostDraw()

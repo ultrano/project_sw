@@ -170,7 +170,7 @@ SWMatrix4x4& SWMatrix4x4::transform( const SWVector3f& scale, const SWQuaternion
 	return *this;
 }
 
-SWMatrix4x4& SWMatrix4x4::ortho( float left, float right, float top, float bottom, float near, float far )
+SWMatrix4x4& SWMatrix4x4::ortho( float left, float right, float bottom, float top, float near, float far )
 {
 	identity();
 	
@@ -184,10 +184,10 @@ SWMatrix4x4& SWMatrix4x4::ortho( float left, float right, float top, float botto
 
 	m11 = 2.0f/w;
 	m22 = 2.0f/h;
-	m33 = 1.0f/d;
+	m33 = 2.0f/d;
 	m41 = -(2*x)/w;
 	m42 = -(2*y)/h;
-	m43 = -(near)/d;
+	m43 = -(2*z)/d;
 
 	return *this;
 }
@@ -203,9 +203,9 @@ SWMatrix4x4& SWMatrix4x4::perspective( float fov, float aspect, float near, floa
 
 	m11 = cotW;
 	m22 = cotH;
-	m33 = far/d;
+	m33 = (far+near)/d;
 	m34 = 1;
-	m43 = -far*near/d;
+	m43 = -(2*far*near)/d;
 	m44 = 0;
 
 	return *this;

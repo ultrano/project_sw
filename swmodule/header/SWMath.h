@@ -45,6 +45,7 @@ public:
 
 	int   randomInt( int kMin, int kMax ) const;
 
+	float clamp( float kMin, float kMax, float val ) const;
 };
 
 #endif //SWMath

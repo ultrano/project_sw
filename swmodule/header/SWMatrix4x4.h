@@ -36,7 +36,7 @@ public:
 	void		transpose(SWMatrix4x4& t) const;
 	
 	SWMatrix4x4& transform(const SWVector3f& scale, const SWQuaternion& rotate, const SWVector3f& translate );
-	SWMatrix4x4& ortho( float left, float right, float top, float bottom, float near, float far );
+	SWMatrix4x4& ortho( float left, float right, float bottom, float top, float near, float far );
 	SWMatrix4x4& perspective( float fov, float aspect, float near, float far );
 	
 	SWQuaternion	row(unsigned char r) const;
