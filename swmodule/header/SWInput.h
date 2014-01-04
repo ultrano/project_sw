@@ -16,6 +16,10 @@ private:
 	int m_touchY;
 	int m_deltaX;
 	int m_deltaY;
+
+	enum { eKeyCount = 256 };
+	bool m_keyFlags[eKeyCount];
+
 	SWList::Value m_listeners;
 
 	__SWInput();
@@ -31,6 +35,8 @@ public:
 
 	int getDeltaX() const;
 	int getDeltaY() const;
+
+	bool getKey( tuint code ) const;
 
 	void addInputDelegate( SWDelegate* del );
 	void removeInputDelegate( SWDelegate* del );

@@ -14,13 +14,19 @@ public:
 	const float pi;
 
 	template<typename T>
-	T abs(T v) const { return (v<0)? -v:v; };
+	T abs( const T& v ) const { return (v<0)? -v:v; };
 	
 	template<typename T>
-	T max(T a, T b) const { return (a<b)? b:a; };
+	const T& max( const T& a, const T& b) const { return (a<b)? b:a; };
 	
 	template<typename T>
-	T min(T a, T b) const { return (a<b)? a:b; };
+	const T& min( const T& a, const T& b) const { return (a<b)? a:b; };
+
+	template<typename T>
+	const T& clamp( const T& kMin, const T& kMax, const T& val ) const
+	{
+		return ( val < kMin )? kMin : ( val > kMax )? kMax : val;
+	};
 
 	inline float repeat( float t, float length ) const
 	{
@@ -44,8 +50,6 @@ public:
 	float angleToRadian( float angle ) const;
 
 	int   randomInt( int kMin, int kMax ) const;
-
-	float clamp( float kMin, float kMax, float val ) const;
 };
 
 #endif //SWMath

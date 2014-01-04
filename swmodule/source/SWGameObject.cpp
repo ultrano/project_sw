@@ -80,7 +80,7 @@ void SWGameObject::udpate()
 		{
 			SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
 			if ( !itorDG || !itorDG->isValid() ) removeUpdateDelegate( itorDG );
-			else itorDG->call();
+			else itorDG->call( this );
 			if ( !vital.isValid() ) return;
 		}
 	}

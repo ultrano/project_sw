@@ -28,7 +28,8 @@ public:
 	void onPause();
 	void onDestroy();
 	void onResize( int width, int height );
-	void onHandleEvent( int type, int param1, int param2 );
+	void onTouch( int type, int param1, int param2 );
+	void onKeyChange( tuint key, bool press );
 
 	void setViewMatrix( const SWMatrix4x4& matrix );
 	void setModelMatrix( const SWMatrix4x4& matrix );

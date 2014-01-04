@@ -35,17 +35,27 @@ void callbackMouse( int button, int state, int x, int y )
 	case GLUT_DOWN: state = SW_TouchPress;   break;
 	case GLUT_UP:   state = SW_TouchRelease; break;
 	}
-	SW_GC.onHandleEvent( state, x, y );
+	SW_GC.onTouch( state, x, y );
 }
 
 void callbackMouseMove( int x, int y )
 {
-	SW_GC.onHandleEvent( SW_TouchMove, x, y );
+	SW_GC.onTouch( SW_TouchMove, x, y );
 }
 
 void callbackReshape( int width, int height )
 {
 	SW_GC.onResize( width, height );
+}
+
+void callbackKeyboard( unsigned char key, int x, int y )
+{
+	SW_GC.onKeyChange( key, true );
+}
+
+void callbackKeyboardUp( unsigned char key, int x, int y )
+{
+	SW_GC.onKeyChange( key, false );
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -64,36 +74,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	float w = 2*SWMath.tan( SWMath.pi/4 )*near;
 	float h = 2*SWMath.tan( SWMath.pi/4 )*near;
 
-	SWMatrix4x4 mat;
-	mat.perspective( SWMath.pi/2,1,1,1000 );
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	mat.identity();
-	//glFrustum(-w/2,w/2, -h/2, h/2, near, far);
-	gluPerspective( 90.0f,1,1,1000 );
-	glGetFloatv(GL_PROJECTION_MATRIX, (float*)&mat); 
-	{
-		SWVector3f vec( 0,0,2 );
-		vec = vec * mat;
-		int a=0;
-	}
-	{
-		SWVector3f vec( 0,0,3 );
-		vec = vec * mat;
-		int a=0;
-	}
-	{
-		SWVector3f vec( 0,0,10 );
-		vec = vec * mat;
-		int a=0;
-	}
-
 	glutMouseFunc(callbackMouse);
 	glutMotionFunc( callbackMouseMove );
 	glutDisplayFunc(callbackDisplay);
 	glutIdleFunc(callbackIdle);
 	glutReshapeFunc( callbackReshape );
 	glutTimerFunc( 1 ,callbackTimer,0);
+	glutKeyboardFunc( callbackKeyboard );
+	glutKeyboardUpFunc( callbackKeyboardUp );
 	glewInit();
 	SW_GC.onStart( new TestScene, "../resource/", width, height );
 

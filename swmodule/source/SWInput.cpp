@@ -42,6 +42,12 @@ int __SWInput::getDeltaY() const
 	return m_deltaY;
 }
 
+bool __SWInput::getKey( tuint code ) const
+{
+	if ( code < eKeyCount ) return m_keyFlags[code];
+	return false;
+}
+
 void __SWInput::addInputDelegate( SWDelegate* del )
 {
 	m_listeners.push_back( del );

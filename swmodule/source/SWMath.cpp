@@ -54,10 +54,3 @@ int __SWMath::randomInt( int kMin, int kMax ) const
 	}
 	return kMin + rand() % ( 1 + kMax - kMin );
 }
-
-float __SWMath::clamp( float kMin, float kMax, float val ) const
-{
-	val = max( kMin, val );
-	val = min( kMax, val );
-	return val;
-}
