@@ -1,6 +1,7 @@
 #include "SWMesh.h"
 #include "SWVector3f.h"
 #include "SWVector2f.h"
+#include "SWTriangle.h"
 #include "SWGameContext.h"
 
 void SWMesh::setVertexStream( size_t count, const SWVector3f* stream )
@@ -29,10 +30,10 @@ void SWMesh::setTexCoordStream( size_t count, const SWVector2f* stream )
 	m_updateMesh = true;
 }
 
-void SWMesh::setIndexStream( size_t countOfShort, unsigned short* stream )
+void SWMesh::setTriangleStream( size_t count, const SWTriangle* stream )
 {
-	m_indeces.resize(countOfShort);
-	memcpy( &m_indeces[0], stream, sizeof(unsigned short)*countOfShort );
+	m_triangles.resize(count);
+	memcpy( &m_triangles[0], stream, sizeof(SWTriangle)*count );
 	m_updateMesh = true;
 }
 
@@ -41,9 +42,9 @@ const tarray<SWVector2f>& SWMesh::getTexCoordStream()
 	return m_texCoords;
 }
 
-const tarray<unsigned short>& SWMesh::getIndexStream()
+const tarray<SWTriangle>& SWMesh::getTriangleStream()
 {
-	return m_indeces;
+	return m_triangles;
 }
 
 const tarray<SWVector3f>& SWMesh::getVertexStream()
@@ -68,6 +69,36 @@ void SWMesh::draw()
 	  SW_GC.setTexCoordBuffer( (float*)&m_texCoords[0] );
 	}
 	lastMeshID = getID();
-	if ( m_indeces.size() == 0 ) return;
-	SW_GC.drawIndexed( m_indeces.size(), &m_indeces[0] );
+	if ( m_triangles.size() == 0 ) return;
+	SW_GC.drawIndexed( m_triangles.size()*3, (tushort*)&m_triangles[0] );
+}
+
+void SWMesh::resizeVertexStream( tuint count )
+{
+	m_vertices.resize( count );
+}
+
+void SWMesh::resizeTexCoordStream( tuint count )
+{
+	m_texCoords.resize( count );
+}
+
+void SWMesh::resizeTriangleStream( tuint count )
+{
+	m_triangles.resize( count );
+}
+
+tuint SWMesh::getVertexCount() const
+{
+	return m_vertices.size();
+}
+
+tuint SWMesh::getTexCoordCount() const
+{
+	return m_texCoords.size();
+}
+
+tuint SWMesh::getTriangleCount() const
+{
+	return m_triangles.size();
 }

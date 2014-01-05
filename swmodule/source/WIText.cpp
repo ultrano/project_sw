@@ -1,6 +1,7 @@
 #include "WIText.h"
 #include "SWMesh.h"
 #include "SWVector3f.h"
+#include "SWTriangle.h"
 #include "WIFontChar.h"
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
@@ -62,11 +63,11 @@ void WIText::updateMesh()
 
 	tarray<SWVector3f> m_pos;
 	tarray<SWVector2f> m_tex;
-	tarray<tushort> m_indices;
+	tarray<SWTriangle> m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );
-	m_indices.resize( m_text.size() * 3 * 2 );
+	m_indices.resize( m_text.size() * 2 );
 
 	int defaultSize = 40;
 	float sizeScale = (float)m_fontSize/(float)defaultSize;
@@ -101,13 +102,13 @@ void WIText::updateMesh()
 			if ( ch == NULL ) break;
 		}
 
-		m_indices[i*6+0] = 0+(i*4);
-		m_indices[i*6+1] = 1+(i*4);
-		m_indices[i*6+2] = 2+(i*4);
+		m_indices[i*2+0].index1 = 0+(i*4);
+		m_indices[i*2+0].index2 = 1+(i*4);
+		m_indices[i*2+0].index3 = 2+(i*4);
 		
-		m_indices[i*6+3] = 3+(i*4);
-		m_indices[i*6+4] = 2+(i*4);
-		m_indices[i*6+5] = 1+(i*4);
+		m_indices[i*2+1].index1 = 3+(i*4);
+		m_indices[i*2+1].index2 = 2+(i*4);
+		m_indices[i*2+1].index3 = 1+(i*4);
 
 		float left   = startOffsetX + ch->offsetX;
 		float top    = startOffsetY - ch->offsetY;
@@ -127,5 +128,5 @@ void WIText::updateMesh()
 
 	m_mesh()->setVertexStream( m_pos.size(), &m_pos[0] );
 	m_mesh()->setTexCoordStream( m_tex.size(), &m_tex[0] );
-	m_mesh()->setIndexStream( m_indices.size(), &m_indices[0] );
+	m_mesh()->setTriangleStream( m_indices.size(), &m_indices[0] );
 }

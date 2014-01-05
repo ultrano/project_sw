@@ -5,6 +5,7 @@
 #include "SWMesh.h"
 #include "SWVector3f.h"
 #include "SWVector2f.h"
+#include "SWTriangle.h"
 #include "SWGameContext.h"
 
 #include "WIDefines.h"
@@ -14,11 +15,11 @@ void WIImage::onAwake()
 	m_updateMesh = false;
 	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(-0.5f, 0.5f,0), SWVector3f(0.5f, 0.5f,0), SWVector3f(0.5f,-0.5f,0) };
 	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
-	unsigned short indices[] = {0,1,2,3,2,1};
+	SWTriangle indices[] = { SWTriangle(0,1,2), SWTriangle(3,2,1) };
 	SWMesh* mesh = new SWMesh();
 	mesh->setVertexStream( 4, &vertices[0] );
 	mesh->setTexCoordStream( 4, &texCoords[0]);
-	mesh->setIndexStream( 6, &indices[0] );
+	mesh->setTriangleStream( 2, &indices[0] );
 	
 	setAlign( UI_Center, UI_Center );
 	gameObject()->addComponent<SWMeshFilter>()->setMesh( mesh );

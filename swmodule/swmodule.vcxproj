@@ -95,6 +95,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
+    <ClInclude Include="header\SWTriangle.h" />
     <ClInclude Include="header\SWType.h" />
     <ClInclude Include="header\WIFontData.h" />
     <ClInclude Include="header\SWGameContext.h" />

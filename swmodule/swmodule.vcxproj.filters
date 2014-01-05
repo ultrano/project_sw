@@ -172,6 +172,9 @@
     <Filter Include="SW\SWFileStream">
       <UniqueIdentifier>{804995eb-f036-452b-8088-052d01e3b454}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWTriangle">
+      <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="header\SWFileStream.h">
       <Filter>SW\SWFileStream</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWTriangle.h">
+      <Filter>SW\SWTriangle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
