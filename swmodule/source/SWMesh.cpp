@@ -11,15 +11,6 @@ void SWMesh::setVertexStream( size_t count, const SWVector3f* stream )
 	m_vertices.resize( newCount );
 	memcpy( &m_vertices[0], stream, byteSize );
 	m_updateMesh = true;
-
-	/*
-	size_t oldCount = m_vertices.size();
-	if ( oldCount > newCount )
-	{
-		size_t spareSize = sizeof(SWVector3f)*(oldCount - newCount);
-		memset( &m_vertices[newCount], 0, spareSize );
-	}
-	*/
 }
 
 void SWMesh::setTexCoordStream( size_t count, const SWVector2f* stream )
