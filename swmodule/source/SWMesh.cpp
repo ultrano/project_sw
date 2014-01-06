@@ -28,19 +28,45 @@ void SWMesh::setTriangleStream( size_t count, const SWTriangle* stream )
 	m_updateMesh = true;
 }
 
-const tarray<SWVector2f>& SWMesh::getTexCoordStream()
+void SWMesh::getVertexStream( tarray<SWVector3f>& stream ) const
 {
-	return m_texCoords;
+	stream = m_vertices;
 }
 
-const tarray<SWTriangle>& SWMesh::getTriangleStream()
+void SWMesh::getTexCoordStream( tarray<SWVector2f>& stream ) const
 {
-	return m_triangles;
+	stream = m_texCoords;
 }
 
-const tarray<SWVector3f>& SWMesh::getVertexStream()
+void SWMesh::getTriangleStream( tarray<SWTriangle>& stream ) const
 {
-	return m_vertices;
+	stream = m_triangles;
+}
+
+void SWMesh::setVertex( tuint index, const SWVector3f& val )
+{
+	if ( index < m_vertices.size() ) m_vertices[index] = val;
+}
+void SWMesh::setTexCoord( tuint index, const SWVector2f& val )
+{
+	if ( index < m_texCoords.size() ) m_texCoords[index] = val;
+}
+void SWMesh::setTriangle( tuint index, const SWTriangle& val )
+{
+	if ( index < m_triangles.size() ) m_triangles[index] = val;
+}
+
+void SWMesh::getVertex( tuint index, SWVector3f& val )
+{
+	if ( index < m_vertices.size() ) val = m_vertices[index];
+}
+void SWMesh::getTexCoord( tuint index, SWVector2f& val )
+{
+	if ( index < m_texCoords.size() ) val = m_texCoords[index];
+}
+void SWMesh::getTriangle( tuint index, SWTriangle& val )
+{
+	if ( index < m_triangles.size() ) val = m_triangles[index];
 }
 
 void SWMesh::updateMesh()

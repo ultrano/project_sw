@@ -28,9 +28,17 @@ public:
 	tuint getTexCoordCount() const;
 	tuint getTriangleCount() const;
 
-	const tarray<SWVector3f>& getVertexStream();
-	const tarray<SWVector2f>& getTexCoordStream();
-	const tarray<SWTriangle>& getTriangleStream();
+	void setVertex( tuint index, const SWVector3f& val );
+	void setTexCoord( tuint index, const SWVector2f& val );
+	void setTriangle( tuint index, const SWTriangle& val );
+	
+	void getVertex( tuint index, SWVector3f& val );
+	void getTexCoord( tuint index, SWVector2f& val );
+	void getTriangle( tuint index, SWTriangle& val );
+
+	void getVertexStream( tarray<SWVector3f>& stream ) const;
+	void getTexCoordStream( tarray<SWVector2f>& stream ) const;
+	void getTriangleStream( tarray<SWTriangle>& stream ) const;
 
 	void updateMesh();
 	void draw();

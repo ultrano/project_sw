@@ -55,9 +55,7 @@ class TestScene : public SWGameScene
 			cam->cameraMatrix.perspective( SWMath.angleToRadian(90), 1, 1, 1000 );
 			SWCamera::mainCamera = cam;
 		}
-		{
-			tstring test = SWUtil.unicodeToUtf8( L"asdf123" );
-		}
+
 		{
 			SWGameObject* go = new SWGameObject;
 			WIImage* image = go->addComponent<WIImage>();
