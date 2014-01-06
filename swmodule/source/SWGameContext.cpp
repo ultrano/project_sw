@@ -25,6 +25,7 @@
 #include "SWFileStream.h"
 #include "SWBuffer.h"
 #include "SWMath.h"
+#include "SWShader.h"
 
 #include "stb_image.h"
 
@@ -212,10 +213,11 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 			"   gl_FragColor = texture2D( s_texture, v_tex );" "\n"
 			"}";
 
+		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
 		pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
 		pimpl->aPosLoc = glGetAttribLocation( pimpl->programID, "a_pos" );
 		pimpl->aTexLoc = glGetAttribLocation( pimpl->programID, "a_tex" );
-		pimpl->sTexLoc = glGetUniformLocation( pimpl->programID, "s_texture" );
+		pimpl->sTexLoc    = glGetUniformLocation( pimpl->programID, "s_texture" );
 		pimpl->uMVPMatLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
 		pimpl->uTexMatLoc = glGetUniformLocation( pimpl->programID, "u_texMat" );
 		
@@ -652,5 +654,38 @@ SWHardRef<SWObject> SWGameContext::loadJsonFromString( const tstring& doc )
 	reader.parse( doc, root );
 
 	return convertJsonValue( root );
+}
+
+SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const tstring& fragment )
+{
+	tuint shaderID = loadProgram( vertex.c_str(), fragment.c_str() );
+	int bufSize = 0;
+	int count = 0;
+
+	glGetProgramiv( shaderID, GL_ACTIVE_UNIFORM_MAX_LENGTH, &bufSize );
+	glGetProgramiv( shaderID, GL_ACTIVE_UNIFORMS, &count );
+
+	tstring name;
+	name.resize( bufSize );
+
+	SWHardRef<SWShader> shader = new SWShader();
+	for ( tuint i = 0 ; i < count ; ++i )
+	{
+		GLint sz = 0;
+		GLenum type = GL_NONE;
+		glGetActiveUniform( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
+		int index = glGetUniformLocation( shaderID, name.c_str() );
+		shader()->setUniformLocation( name, index );
+	}
+
+	glBindAttribLocation( shaderID, SW_Attribute_Position, "a_position" );
+	glBindAttribLocation( shaderID, SW_Attribute_Texture,  "a_texture" );
+
+	return shader();
+}
+
+void SWGameContext::setShaderMatrix( int location, const SWMatrix4x4& val )
+{
+	glUniformMatrix4fv( location, 1, GL_FALSE, (float*)&val );
 }
 

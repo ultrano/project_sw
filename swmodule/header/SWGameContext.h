@@ -11,6 +11,7 @@ class SWGameScene;
 class SWObject;
 class SWOutputStream;
 class SWInputStream;
+class SWShader;
 
 class SWGameContext
 {
@@ -42,6 +43,10 @@ public:
 	void drawRect( float left, float top, float right, float bottom );
 	
 	//! shader
+	
+	SWHardRef<SWShader> compileShader( const tstring& vertex, const tstring& fragment );
+	void useShader( tuint shaderID );
+	void setShaderMatrix( int location, const SWMatrix4x4& val );
 	//
 
 	//! asset

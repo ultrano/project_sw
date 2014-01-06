@@ -46,8 +46,6 @@ class TestScene : public SWGameScene
 	SWMatrix4x4 mat;
 	void onAwake()
 	{
-		SWShader* sh = NULL;
-		int a = sh->foo();
 		//! set default camera
 		{
 			SWGameObject* go = new SWGameObject;

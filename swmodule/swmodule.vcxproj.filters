@@ -178,6 +178,9 @@
     <Filter Include="SW\SWMaterial">
       <UniqueIdentifier>{9c917410-31ed-4c81-9bb1-fa21ffa6aaa9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWShader">
+      <UniqueIdentifier>{e7300de2-fa2a-4ff2-a81f-8c0bbb564b89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -387,6 +390,9 @@
     <ClInclude Include="header\SWMaterial.h">
       <Filter>SW\SWMaterial</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWShader.h">
+      <Filter>SW\SWShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -544,6 +550,9 @@
     </ClCompile>
     <ClCompile Include="source\SWMaterial.cpp">
       <Filter>SW\SWMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWShader.cpp">
+      <Filter>SW\SWShader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

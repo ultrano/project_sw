@@ -55,6 +55,10 @@ enum SWDefines
     SW_Align_Right,
     SW_Align_Center,
     
+	//! shader reserved attribute index
+	SW_Attribute_Position = 0,
+	SW_Attribute_Texture  = 1,
+
 };
 
 
