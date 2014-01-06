@@ -175,6 +175,9 @@
     <Filter Include="SW\SWTriangle">
       <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWMaterial">
+      <UniqueIdentifier>{9c917410-31ed-4c81-9bb1-fa21ffa6aaa9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -381,6 +384,9 @@
     <ClInclude Include="header\SWTriangle.h">
       <Filter>SW\SWTriangle</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWMaterial.h">
+      <Filter>SW\SWMaterial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -535,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="source\SWFileStream.cpp">
       <Filter>SW\SWFileStream</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWMaterial.cpp">
+      <Filter>SW\SWMaterial</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

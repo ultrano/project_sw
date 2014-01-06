@@ -41,6 +41,9 @@ public:
 	void drawIndexed( size_t count, unsigned short* indeces);
 	void drawRect( float left, float top, float right, float bottom );
 	
+	//! shader
+	//
+
 	//! asset
 	SWHardRef<SWObject> loadJson( const tstring& path );
 	SWHardRef<SWObject> loadJsonFromString( const tstring& doc );

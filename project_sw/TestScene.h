@@ -24,6 +24,7 @@
 #include "SWFileStream.h"
 #include "SWUtil.h"
 #include "SWCamera.h"
+#include "SWShader.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -45,6 +46,8 @@ class TestScene : public SWGameScene
 	SWMatrix4x4 mat;
 	void onAwake()
 	{
+		SWShader* sh = NULL;
+		int a = sh->foo();
 		//! set default camera
 		{
 			SWGameObject* go = new SWGameObject;

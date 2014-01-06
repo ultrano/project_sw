@@ -95,6 +95,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
+    <ClInclude Include="header\SWMaterial.h" />
     <ClInclude Include="header\SWTriangle.h" />
     <ClInclude Include="header\SWType.h" />
     <ClInclude Include="header\WIFontData.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWList.cpp" />
     <ClCompile Include="source\SWLog.cpp" />
+    <ClCompile Include="source\SWMaterial.cpp" />
     <ClCompile Include="source\SWMath.cpp" />
     <ClCompile Include="source\SWMatrix4x4.cpp" />
     <ClCompile Include="source\SWMemory.cpp" />

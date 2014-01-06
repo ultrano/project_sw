@@ -653,3 +653,4 @@ SWHardRef<SWObject> SWGameContext::loadJsonFromString( const tstring& doc )
 
 	return convertJsonValue( root );
 }
+
