@@ -12,6 +12,7 @@ class SWObject;
 class SWOutputStream;
 class SWInputStream;
 class SWShader;
+class SWMaterial;
 
 class SWGameContext
 {
@@ -42,6 +43,10 @@ public:
 	void drawIndexed( size_t count, unsigned short* indeces);
 	void drawRect( float left, float top, float right, float bottom );
 	
+	//! test
+	SWMaterial* getDefaultMaterial();
+	//
+
 	//! shader
 	
 	SWHardRef<SWShader> compileShader( const tstring& vertex, const tstring& fragment );

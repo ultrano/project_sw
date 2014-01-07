@@ -31,6 +31,9 @@ class SWMaterial : public SWObject
 
 public:
 
+	void setShader( const SWShader* shader );;
+	SWShader* getShader() const;;
+
 	void setFloat( const tstring& name, float val );
 	void setVector2( const tstring& name, const SWVector2f& val );
 	void setVector3( const tstring& name, const SWVector3f& val );

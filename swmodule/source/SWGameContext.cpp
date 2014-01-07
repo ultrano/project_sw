@@ -26,6 +26,7 @@
 #include "SWBuffer.h"
 #include "SWMath.h"
 #include "SWShader.h"
+#include "SWMaterial.h"
 
 #include "stb_image.h"
 
@@ -65,10 +66,7 @@ public:
 	SWMatrix4x4 projMatrix;
 	SWMatrix4x4 textureMatrix;
 
-	GLuint programID;
-	GLuint sTexLoc;
-	GLuint uMVPMatLoc;
-	GLuint uTexMatLoc;
+	SWHardRef<SWMaterial> material;
 	
 	ttable<tstring,unsigned int> textureCache;
 	ttable<unsigned int,TextureInfo> textureTable;
@@ -212,16 +210,12 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 			"}";
 
 		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
-		pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
-		pimpl->sTexLoc    = glGetUniformLocation( pimpl->programID, "s_texture" );
-		pimpl->uMVPMatLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
-		pimpl->uTexMatLoc = glGetUniformLocation( pimpl->programID, "u_texMat" );
-		
-		glUseProgram( pimpl->programID );
-		glBindAttribLocation( pimpl->programID, SW_Attribute_Position, "a_pos" );
-		glBindAttribLocation( pimpl->programID, SW_Attribute_Texture, "a_tex" );
-		glEnableVertexAttribArray( SW_Attribute_Position );
-		glEnableVertexAttribArray( SW_Attribute_Texture );
+		pimpl->material = new SWMaterial;
+		pimpl->material()->setShader( shader() );
+		//pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
+		//pimpl->sTexLoc    = glGetUniformLocation( pimpl->programID, "s_texture" );
+		//pimpl->uMVPMatLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
+		//pimpl->uTexMatLoc = glGetUniformLocation( pimpl->programID, "u_texMat" );
 
 		// 버퍼 클리어 색상 지정.
 		glClearColor(0,0,1,1);
@@ -411,12 +405,21 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 
 void SWGameContext::drawIndexed( size_t count, unsigned short* indeces)
 {
-	SWMatrix4x4 mvpMat;
-	mvpMat = m_pimpl()->modelMatrix;
-	mvpMat = mvpMat * m_pimpl()->viewMatrix;
-	mvpMat = mvpMat * m_pimpl()->projMatrix;
-	glUniformMatrix4fv( m_pimpl()->uMVPMatLoc, 1, GL_FALSE, (float*)&mvpMat );
-	glUniformMatrix4fv( m_pimpl()->uTexMatLoc, 1, GL_FALSE, (float*)&m_pimpl()->textureMatrix );
+	int mvpLoc = m_pimpl()->material()->getShader()->getUniformLocation( "u_mvpMat" );
+	if ( mvpLoc >= 0 )
+	{
+		SWMatrix4x4 mvpMat;
+		mvpMat = m_pimpl()->modelMatrix;
+		mvpMat = mvpMat * m_pimpl()->viewMatrix;
+		mvpMat = mvpMat * m_pimpl()->projMatrix;
+		setShaderMatrix4x4( mvpLoc, (float*)&mvpMat );
+	}
+	int texLoc = m_pimpl()->material()->getShader()->getUniformLocation( "u_texMat" );
+	if ( texLoc >= 0 )
+	{
+		setShaderMatrix4x4( texLoc, (float*)&m_pimpl()->textureMatrix );
+	}
+	//m_pimpl()->material()->setMatrix4x4( "u_texMat", m_pimpl()->textureMatrix );
 	glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
@@ -483,9 +486,7 @@ bool SWGameContext::getTextureSize( int texID, int& width, int& height )
 void SWGameContext::bindTexture( unsigned int texID )
 {
 	if ( m_pimpl()->lastBindedTexID == texID ) return;
-	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, texID );
-	glUniform1i( m_pimpl()->sTexLoc, 0 );
+	m_pimpl()->material()->setTexture( "s_texture", texID );
 	m_pimpl()->lastBindedTexID = texID;
 }
 
@@ -674,9 +675,10 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 		{
 			GLint sz = 0;
 			GLenum type = GL_NONE;
-			glGetActiveUniform( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
+			GLint len = 0;
+			glGetActiveUniform( shaderID, i, bufSize, &len, &sz, &type, &name[0] );
 			int index = glGetUniformLocation( shaderID, name.c_str() );
-			shader()->m_uniformTable.insert( std::make_pair( name, index ) );
+			shader()->m_uniformTable.insert( std::make_pair( name.substr(0,len), index ) );
 		}
 	}
 
@@ -691,16 +693,17 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 		{
 			GLint sz = 0;
 			GLenum type = GL_NONE;
-			glGetActiveAttrib( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
-			attribs.push_back( name );
+			GLint len = 0;
+			glGetActiveAttrib( shaderID, i, bufSize, &len, &sz, &type, &name[0] );
+			attribs.push_back( name.substr(0,len) );
 		}
 		
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			int index = -1;
 			const tstring attribName = attribs[i];
-			if ( attribName == "a_position" ) index = SW_Attribute_Position;
-			else if ( attribName == "a_texture" ) index = SW_Attribute_Texture;
+			if ( attribName == "a_pos" ) index = SW_Attribute_Position;
+			else if ( attribName == "a_tex" ) index = SW_Attribute_Texture;
 			else continue;
 
 			if ( index < 0 ) continue;
@@ -764,4 +767,9 @@ void SWGameContext::setShaderTexture( int location, const tuint val )
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, val );
 	glUniform1i( location, 0 );
+}
+
+SWMaterial* SWGameContext::getDefaultMaterial()
+{
+	return m_pimpl()->material();
 }

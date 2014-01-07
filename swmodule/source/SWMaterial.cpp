@@ -3,6 +3,16 @@
 #include "SWShader.h"
 #include "SWGameContext.h"
 
+void SWMaterial::setShader( const SWShader* shader )
+{
+	m_shader = shader;
+}
+
+SWShader* SWMaterial::getShader() const
+{
+	return m_shader();
+}
+
 void SWMaterial::setFloat( const tstring& name, float val )
 {
 	int index = m_shader()->getUniformLocation( name );

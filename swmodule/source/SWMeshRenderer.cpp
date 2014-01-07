@@ -1,9 +1,10 @@
-
 #include "SWMeshRenderer.h"
 #include "SWGameContext.h"
 #include "SWMeshFilter.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
+#include "SWMaterial.h"
+#include "SWShader.h"
 
 void SWMeshRenderer::render()
 {
@@ -13,6 +14,7 @@ void SWMeshRenderer::render()
 		SW_GC.setModelMatrix( transform->getFinalMatrix() );
 		SW_GC.bindTexture( m_texID );
 		SW_GC.setTextureMatrix( m_texMat );
+		SW_GC.getDefaultMaterial()->apply();
 		m_filter()->draw();
 	}
 }
