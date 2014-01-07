@@ -661,31 +661,86 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 	tuint shaderID = loadProgram( vertex.c_str(), fragment.c_str() );
 	int bufSize = 0;
 	int count = 0;
-
-	glGetProgramiv( shaderID, GL_ACTIVE_UNIFORM_MAX_LENGTH, &bufSize );
-	glGetProgramiv( shaderID, GL_ACTIVE_UNIFORMS, &count );
-
 	tstring name;
-	name.resize( bufSize );
-
 	SWHardRef<SWShader> shader = new SWShader();
-	for ( tuint i = 0 ; i < count ; ++i )
+
+	//! check uniform
 	{
-		GLint sz = 0;
-		GLenum type = GL_NONE;
-		glGetActiveUniform( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
-		int index = glGetUniformLocation( shaderID, name.c_str() );
-		shader()->setUniformLocation( name, index );
+		glGetProgramiv( shaderID, GL_ACTIVE_UNIFORM_MAX_LENGTH, &bufSize );
+		glGetProgramiv( shaderID, GL_ACTIVE_UNIFORMS, &count );
+		name.resize( bufSize );
+
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			GLint sz = 0;
+			GLenum type = GL_NONE;
+			glGetActiveUniform( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
+			int index = glGetUniformLocation( shaderID, name.c_str() );
+			shader()->setUniformLocation( name, index );
+		}
 	}
 
-	glBindAttribLocation( shaderID, SW_Attribute_Position, "a_position" );
-	glBindAttribLocation( shaderID, SW_Attribute_Texture,  "a_texture" );
+	//! check attribute
+	{
+		glGetProgramiv( shaderID, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &bufSize );
+		glGetProgramiv( shaderID, GL_ACTIVE_ATTRIBUTES, &count );
+		name.resize( bufSize );
+		
+		tarray<tstring> attribs;
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			GLint sz = 0;
+			GLenum type = GL_NONE;
+			glGetActiveAttrib( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
+			attribs.push_back( name );
+		}
+		
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			int index = -1;
+			const tstring attribName = attribs[i];
+			if ( attribName == "a_position" ) index = SW_Attribute_Position;
+			else if ( attribName == "a_texture" ) index = SW_Attribute_Texture;
+			else continue;
+
+			if ( index < 0 ) continue;
+			glBindAttribLocation( shaderID, index, attribName.c_str() );
+		}
+		
+	}
+
 
 	return shader();
 }
 
-void SWGameContext::setShaderMatrix( int location, const SWMatrix4x4& val )
+void SWGameContext::setShaderMatrix4x4( int location, const float* val )
 {
-	glUniformMatrix4fv( location, 1, GL_FALSE, (float*)&val );
+	glUniformMatrix4fv( location, 1, GL_FALSE, val );
 }
 
+void SWGameContext::setShaderFloat( int location, float val )
+{
+	glUniform1f( location, val );
+}
+
+void SWGameContext::setShaderVector2( int location, float x, float y )
+{
+	glUniform2f(location, x, y );
+}
+
+void SWGameContext::setShaderVector3( int location, float x, float y, float z )
+{
+	glUniform3f(location, x, y, z );
+}
+
+void SWGameContext::setShaderVector4( int location, float x, float y, float z, float w )
+{
+	glUniform4f(location, x, y, z, w );
+}
+
+void SWGameContext::setShaderTexture( int location, const tuint val )
+{
+	glActiveTexture( GL_TEXTURE0 );
+	glBindTexture( GL_TEXTURE_2D, val );
+	glUniform1i( location, 0 );
+}

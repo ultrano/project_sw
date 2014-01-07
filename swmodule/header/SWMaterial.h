@@ -6,6 +6,7 @@
 
 class SWQuaternion;
 class SWMatrix4x4;
+class SWShader;
 class SWMaterial : public SWObject
 {
 	SW_RTTI( SWMaterial, SWObject );
@@ -15,7 +16,8 @@ class SWMaterial : public SWObject
 	typedef ttable<tstring,SWQuaternion> Vec4Table;
 	typedef ttable<tstring,SWMatrix4x4> MatTable;
 	typedef ttable<tstring,tuint> TexTable;
-	tuint m_shaderID;
+
+	SWHardRef<SWShader> m_shader;
 
 	IntTable   m_intTable;
 	FloatTable m_floatTable;
@@ -36,6 +38,8 @@ public:
 	bool getVector4( const tstring& name, SWQuaternion& val );
 	bool getMatrix( const tstring& name, SWMatrix4x4& val );
 	bool getTexture( const tstring& name, tuint& texID );
+
+	void apply();
 };
 
 #endif // SWMaterial_h__

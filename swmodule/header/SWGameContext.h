@@ -46,7 +46,13 @@ public:
 	
 	SWHardRef<SWShader> compileShader( const tstring& vertex, const tstring& fragment );
 	void useShader( tuint shaderID );
-	void setShaderMatrix( int location, const SWMatrix4x4& val );
+	void setShaderMatrix4x4( int location, const float* val );
+	void setShaderFloat( int location, float val );
+	void setShaderVector2( int location, float x, float y );
+	void setShaderVector3( int location, float x, float y, float z );
+	void setShaderVector4( int location, float x, float y, float z, float w );
+	void setShaderTexture( int location, tuint val );
+
 	//
 
 	//! asset
