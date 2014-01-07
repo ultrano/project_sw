@@ -4,6 +4,8 @@
 
 #include "SWObject.h"
 
+class SWVector2f;
+class SWVector3f;
 class SWQuaternion;
 class SWMatrix4x4;
 class SWShader;
@@ -11,33 +13,37 @@ class SWMaterial : public SWObject
 {
 	SW_RTTI( SWMaterial, SWObject );
 	
-	typedef ttable<tstring,int> IntTable;
-	typedef ttable<tstring,float> FloatTable;
-	typedef ttable<tstring,SWQuaternion> Vec4Table;
-	typedef ttable<tstring,SWMatrix4x4> MatTable;
-	typedef ttable<tstring,tuint> TexTable;
+	typedef ttable<int,float> FloatTable;
+	typedef ttable<int,SWVector2f> Vec2Table;
+	typedef ttable<int,SWVector3f> Vec3Table;
+	typedef ttable<int,SWQuaternion> Vec4Table;
+	typedef ttable<int,SWMatrix4x4> MatTable;
+	typedef ttable<int,tuint> TexTable;
 
 	SWHardRef<SWShader> m_shader;
 
-	IntTable   m_intTable;
 	FloatTable m_floatTable;
+	Vec2Table  m_vec2Table;
+	Vec3Table  m_vec3Table;
 	Vec4Table  m_vec4Table;
 	MatTable   m_matTable;
 	TexTable   m_texTable;
 
 public:
 
-	void setInt( const tstring& name, int val );
 	void setFloat( const tstring& name, float val );
+	void setVector2( const tstring& name, const SWVector2f& val );
+	void setVector3( const tstring& name, const SWVector3f& val );
 	void setVector4( const tstring& name, const SWQuaternion& val );
-	void setMatrix( const tstring& name, const SWMatrix4x4& val );
+	void setMatrix4x4( const tstring& name, const SWMatrix4x4& val );
 	void setTexture( const tstring& name, tuint texID );
 	
-	bool getInt( const tstring& name, int& val );
-	bool getFloat( const tstring& name, float& val );
-	bool getVector4( const tstring& name, SWQuaternion& val );
-	bool getMatrix( const tstring& name, SWMatrix4x4& val );
-	bool getTexture( const tstring& name, tuint& texID );
+	bool getFloat( const tstring& name, float& val ) const;
+	bool getVector2( const tstring& name, SWVector2f& val ) const;
+	bool getVector3( const tstring& name, SWVector3f& val ) const;
+	bool getVector4( const tstring& name, SWQuaternion& val ) const;
+	bool getMatrix4x4( const tstring& name, SWMatrix4x4& val ) const;
+	bool getTexture( const tstring& name, tuint& texID ) const;
 
 	void apply();
 };

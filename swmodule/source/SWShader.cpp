@@ -1,8 +1,14 @@
 #include "SWShader.h"
+#include "SWGameContext.h"
 
-void SWShader::setUniformLocation( const tstring& name, int index )
+SWShader::SWShader()
 {
-	m_uniformTable.insert( std::make_pair( name, index ) );
+
+}
+
+SWShader::~SWShader()
+{
+	SW_GC.releaseShader( this );
 }
 
 int SWShader::getUniformLocation( const tstring& name ) const
@@ -12,12 +18,31 @@ int SWShader::getUniformLocation( const tstring& name ) const
 	return -1;
 }
 
-void SWShader::setShaderID( tuint shaderID )
+bool SWShader::getUniformName( int index, tstring& name )
 {
-	m_shaderID = shaderID;
+	UniformTable::const_iterator itor = m_uniformTable.begin();
+	for ( ; itor != m_uniformTable.end() ; ++itor )
+	{
+		if ( itor->second == index )
+		{
+			name = itor->first;
+			return true;
+		}
+	}
+	return false;
 }
 
 tuint SWShader::getShaderID() const
 {
 	return m_shaderID;
+}
+
+tuint SWShader::getUniformCount() const
+{
+	return m_uniformTable.size();
+}
+
+void SWShader::use()
+{
+	SW_GC.useShader( this );
 }

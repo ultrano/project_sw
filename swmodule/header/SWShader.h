@@ -6,19 +6,28 @@
 class SWShader : public SWObject
 {
 	SW_RTTI( SWShader, SWObject );
+	
+	friend class SWGameContext;
 
 	typedef ttable<tstring,int> UniformTable;
+	typedef tarray<tuint> AttribArray;
 
 	tuint m_shaderID;
 	UniformTable m_uniformTable;
+	AttribArray m_attributes;
 
 public:
 
-	void setUniformLocation( const tstring& name, int index );
-	int  getUniformLocation( const tstring& name ) const;
+	SWShader();
+	~SWShader();
 
-	void  setShaderID( tuint shaderID );;
+	int  getUniformLocation( const tstring& name ) const;
+	bool getUniformName( int index, tstring& name );
+	tuint getUniformCount() const;
+
 	tuint getShaderID() const;
+
+	void use();
 };
 
 #endif // SWShader_h__

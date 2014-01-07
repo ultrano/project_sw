@@ -66,8 +66,6 @@ public:
 	SWMatrix4x4 textureMatrix;
 
 	GLuint programID;
-	GLuint aPosLoc;
-	GLuint aTexLoc;
 	GLuint sTexLoc;
 	GLuint uMVPMatLoc;
 	GLuint uTexMatLoc;
@@ -215,15 +213,15 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
 		pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
-		pimpl->aPosLoc = glGetAttribLocation( pimpl->programID, "a_pos" );
-		pimpl->aTexLoc = glGetAttribLocation( pimpl->programID, "a_tex" );
 		pimpl->sTexLoc    = glGetUniformLocation( pimpl->programID, "s_texture" );
 		pimpl->uMVPMatLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
 		pimpl->uTexMatLoc = glGetUniformLocation( pimpl->programID, "u_texMat" );
 		
 		glUseProgram( pimpl->programID );
-		glEnableVertexAttribArray( pimpl->aPosLoc );
-		glEnableVertexAttribArray( pimpl->aTexLoc );
+		glBindAttribLocation( pimpl->programID, SW_Attribute_Position, "a_pos" );
+		glBindAttribLocation( pimpl->programID, SW_Attribute_Texture, "a_tex" );
+		glEnableVertexAttribArray( SW_Attribute_Position );
+		glEnableVertexAttribArray( SW_Attribute_Texture );
 
 		// 버퍼 클리어 색상 지정.
 		glClearColor(0,0,1,1);
@@ -392,7 +390,7 @@ void SWGameContext::setTextureMatrix( const SWMatrix4x4& matrix )
 void SWGameContext::setVertexBuffer( const float* buffer )
 {
 	glVertexAttribPointer
-		( m_pimpl()->aPosLoc
+		( SW_Attribute_Position
 		, 3
 		, GL_FLOAT
 		, GL_FALSE
@@ -403,7 +401,7 @@ void SWGameContext::setVertexBuffer( const float* buffer )
 void SWGameContext::setTexCoordBuffer( const float* buffer )
 {
 	glVertexAttribPointer
-		( m_pimpl()->aTexLoc
+		( SW_Attribute_Texture
 		, 2
 		, GL_FLOAT
 		, GL_FALSE
@@ -662,7 +660,9 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 	int bufSize = 0;
 	int count = 0;
 	tstring name;
+
 	SWHardRef<SWShader> shader = new SWShader();
+	shader()->m_shaderID = shaderID;
 
 	//! check uniform
 	{
@@ -676,7 +676,7 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 			GLenum type = GL_NONE;
 			glGetActiveUniform( shaderID, i, bufSize, NULL, &sz, &type, &name[0] );
 			int index = glGetUniformLocation( shaderID, name.c_str() );
-			shader()->setUniformLocation( name, index );
+			shader()->m_uniformTable.insert( std::make_pair( name, index ) );
 		}
 	}
 
@@ -705,12 +705,33 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 
 			if ( index < 0 ) continue;
 			glBindAttribLocation( shaderID, index, attribName.c_str() );
+			shader()->m_attributes.push_back( index );
 		}
 		
 	}
 
-
 	return shader();
+}
+
+void SWGameContext::releaseShader( SWShader* shader )
+{
+	if ( shader == NULL ) return;
+	glDeleteProgram( shader->m_shaderID );
+}
+
+void SWGameContext::useShader( SWShader* shader )
+{
+	if ( shader == NULL ) return;
+
+	glUseProgram( shader->m_shaderID );
+
+	glDisableVertexAttribArray( SW_Attribute_Position );
+	glDisableVertexAttribArray( SW_Attribute_Texture );
+
+	for ( tuint i = 0 ; i < shader->m_attributes.size() ; ++i )
+	{
+		glEnableVertexAttribArray( shader->m_attributes[i] );
+	}
 }
 
 void SWGameContext::setShaderMatrix4x4( int location, const float* val )

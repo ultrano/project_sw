@@ -45,7 +45,9 @@ public:
 	//! shader
 	
 	SWHardRef<SWShader> compileShader( const tstring& vertex, const tstring& fragment );
-	void useShader( tuint shaderID );
+	void releaseShader( SWShader* shader );
+	void useShader( SWShader* shader );
+
 	void setShaderMatrix4x4( int location, const float* val );
 	void setShaderFloat( int location, float val );
 	void setShaderVector2( int location, float x, float y );
