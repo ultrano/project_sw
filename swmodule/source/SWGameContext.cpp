@@ -171,6 +171,8 @@ GLuint loadProgram( const char* vertSource, const char* fragSource )
 	return programID;
 }
 
+#define SHADER_SOURCE( code ) (#code)
+
 void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, int width, int height )
 {
 
@@ -186,28 +188,28 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 	//! opengl initializing
 	{
-		const char vertSrc[] = 
-			"uniform   mat4 u_mvpMat;"           "\n"
-			"uniform   mat4 u_texMat;"           "\n"
-			"attribute vec4 a_pos;"              "\n"
-			"attribute vec2 a_tex;"              "\n"
-			"varying   vec2 v_tex;"              "\n"
-			"void main()"                        "\n"
-			"{"                                  "\n"
-			"   gl_Position = u_mvpMat * a_pos;" "\n"
-			"   vec4 aTex = vec4(a_tex.xy,0,1);" "\n"
-			"   v_tex = ( u_texMat * aTex ).xy;" "\n"
-			"}";
-		const char fragSrc[] =
-#ifndef WIN32
-			"precision mediump float;"                         "\n"
-#endif
-			"uniform sampler2D s_texture;"                     "\n"
-			"varying vec2 v_tex;"                              "\n"
-			"void main()"                                      "\n"
-			"{"                                                "\n"
-			"   gl_FragColor = texture2D( s_texture, v_tex );" "\n"
-			"}";
+		tstring vertSrc = SHADER_SOURCE(
+			uniform   mat4 u_mvpMat;
+		    uniform   mat4 u_texMat;
+			attribute vec4 a_pos;
+			attribute vec2 a_tex;
+			varying   vec2 v_tex;
+			void main()
+			{
+				gl_Position = u_mvpMat * a_pos;
+				vec4 aTex = vec4(a_tex.xy,0,1);
+				v_tex = ( u_texMat * aTex ).xy;
+			}
+			);
+
+			tstring fragSrc = SHADER_SOURCE(
+				uniform sampler2D s_texture;
+			    varying vec2 v_tex;
+			    void main()
+			    {
+                    gl_FragColor = texture2D( s_texture, v_tex );
+			    }
+			);
 
 		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
 		pimpl->material = new SWMaterial( shader() );
