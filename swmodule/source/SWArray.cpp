@@ -8,7 +8,7 @@ SWArray::SWArray()
 
 SWArray::~SWArray()
 {
-
+	m_value.clear();
 }
 
 SWObject* SWArray::get( unsigned int index ) const

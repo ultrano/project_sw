@@ -7,7 +7,7 @@ SWTable::SWTable()
 
 SWTable::~SWTable()
 {
-
+	m_table.clear();
 }
 
 SWObject* SWTable::find( const tstring& key ) const

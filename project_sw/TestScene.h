@@ -74,6 +74,7 @@ class TestScene : public SWGameScene
 			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font/font1.fnt" );
 			WIFontData* fontData = new WIFontData;
 			fontData->load( fontJson() );
+			fontJson()->destroy();
 
 			SWGameObject* go = new SWGameObject;
 			go->setName( "font" );

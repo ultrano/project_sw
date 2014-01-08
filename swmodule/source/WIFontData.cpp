@@ -32,6 +32,8 @@ void WIFontData::setChar( WIFontChar* fontChar )
 
 void WIFontData::load( SWObject* data )
 {
+	if ( data == NULL ) return;
+
 	SWValue* tbl = (SWValue*)( data );
 	SWValue* font = tbl->find( "font" );
 	SWValue* chars = (SWValue*)font->find( "chars" );
