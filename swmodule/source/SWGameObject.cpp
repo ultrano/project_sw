@@ -102,7 +102,7 @@ SWComponent* SWGameObject::addComponent( SWComponent* comp )
 	return comp;
 }
 
-SWComponent* SWGameObject::getComponent( const SWRtti* rtti )
+SWComponent* SWGameObject::getComponent( const SWRtti* rtti ) const
 {
 	if ( !rtti ) return NULL;
 

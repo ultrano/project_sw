@@ -30,8 +30,8 @@ public:
     ~SWComponent();
 
 	template<typename T>
-	T* getComponent() { return (T*)getComponent( T::getRtti() ); };
-	SWComponent* getComponent( const SWRtti* rtti );
+	T* getComponent() const { return (T*)getComponent( T::getRtti() ); };
+	SWComponent* getComponent( const SWRtti* rtti ) const;
 
 	virtual void onAwake() {};
 	virtual void onStart() {};

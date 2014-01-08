@@ -33,11 +33,6 @@ public:
 	void onTouch( int type, int param1, int param2 );
 	void onKeyChange( tuint key, bool press );
 
-	void setViewMatrix( const SWMatrix4x4& matrix );
-	void setModelMatrix( const SWMatrix4x4& matrix );
-	void setProjectionMatrix( const SWMatrix4x4& matrix );
-	void setTextureMatrix( const SWMatrix4x4& matrix );
-
 	void setVertexBuffer( const float* buffer );
 	void setTexCoordBuffer( const float* buffer );
 	void drawIndexed( size_t count, unsigned short* indeces);
@@ -68,7 +63,6 @@ public:
 	unsigned int loadTexture( const tstring& path );
 	unsigned int loadTextureFromMemory( const tbyte* buf, size_t len );
 	bool getTextureSize( int texID, int& width, int& height );
-	void bindTexture( unsigned int texID );
 
 	const tstring& assetFolder() const;
 	const tstring  assetPath( const tstring& assetFile) const;

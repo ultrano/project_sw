@@ -94,12 +94,12 @@ void SWTransform::removeSetParentDelegate( SWObject* object, const SWHandler& ha
 
 const SWMatrix4x4& SWTransform::getWorldMatrix()
 {
-	return m_parent.isValid()? m_parent()->getFinalMatrix() : SWMatrix4x4::unit;
+	return m_worldMat;
 }
 
-const SWMatrix4x4& SWTransform::getFinalMatrix()
+SWMatrix4x4 SWTransform::getLocalMatrix()
 {
-	return m_finalMat;
+	return SWMatrix4x4().transform( m_scale, m_rotate, m_position );
 }
 
 const SWVector3f& SWTransform::getLocalScale()
@@ -175,11 +175,11 @@ void SWTransform::onRemove()
 
 void SWTransform::onUpdate( SWGameObject* )
 {
-	m_finalMat.transform( m_scale, m_rotate, m_position );
+	m_worldMat.transform( m_scale, m_rotate, m_position );
 
 	if ( SWTransform* parent = m_parent() )
 	{
-		m_finalMat = m_finalMat * parent->m_finalMat;
+		m_worldMat = m_worldMat * parent->getWorldMatrix();
 	}
 
 	SWObjectList::iterator itor = m_children.begin();

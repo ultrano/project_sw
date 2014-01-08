@@ -28,7 +28,7 @@ private:
 	SWVector3f    m_scale;    //< 비율.
 	SWQuaternion  m_rotate;   //< 회전.
 	SWVector3f    m_position; //< 위치.
-	SWMatrix4x4   m_finalMat; //< world matrix
+	SWMatrix4x4   m_worldMat; //< world matrix
 
 public:
 
@@ -42,7 +42,7 @@ public:
 	void removeSetParentDelegate( SWObject* object, const SWHandler& handler );
 
 	const SWMatrix4x4& getWorldMatrix();
-	const SWMatrix4x4& getFinalMatrix();
+	SWMatrix4x4        getLocalMatrix();
 
 	const SWVector3f&   getLocalScale();
 	const SWQuaternion& getLocalRotate();

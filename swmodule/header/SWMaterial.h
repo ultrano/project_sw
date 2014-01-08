@@ -31,6 +31,10 @@ class SWMaterial : public SWObject
 
 public:
 
+	SWMaterial();
+	SWMaterial( const SWShader* shader );
+	~SWMaterial();
+
 	void setShader( const SWShader* shader );;
 	SWShader* getShader() const;;
 

@@ -3,6 +3,17 @@
 #include "SWShader.h"
 #include "SWGameContext.h"
 
+SWMaterial::SWMaterial()
+{
+}
+SWMaterial::SWMaterial( const SWShader* shader )
+{
+	setShader( shader );
+}
+SWMaterial::~SWMaterial()
+{
+}
+
 void SWMaterial::setShader( const SWShader* shader )
 {
 	m_shader = shader;

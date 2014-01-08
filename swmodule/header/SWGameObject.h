@@ -50,8 +50,8 @@ public:
 	SWComponent* addComponent( SWComponent* comp );
 
 	template<typename T>
-	T* getComponent() { return (T*)getComponent( T::getRtti() ); };
-	SWComponent* getComponent( const SWRtti* rtti );
+	T* getComponent() const { return (T*)getComponent( T::getRtti() ); };
+	SWComponent* getComponent( const SWRtti* rtti ) const;
 	
 	/*
 	template<typename T>

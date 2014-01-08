@@ -206,16 +206,11 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 			"varying vec2 v_tex;"                              "\n"
 			"void main()"                                      "\n"
 			"{"                                                "\n"
-			"   gl_FragColor = texture2D( s_texture, v_tex );" "\n"
+			"   gl_FragColor = vec4(1,1,1,1);" "\n"
 			"}";
 
 		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
-		pimpl->material = new SWMaterial;
-		pimpl->material()->setShader( shader() );
-		//pimpl->programID = loadProgram( &vertSrc[0], &fragSrc[0] );
-		//pimpl->sTexLoc    = glGetUniformLocation( pimpl->programID, "s_texture" );
-		//pimpl->uMVPMatLoc = glGetUniformLocation( pimpl->programID, "u_mvpMat" );
-		//pimpl->uTexMatLoc = glGetUniformLocation( pimpl->programID, "u_texMat" );
+		pimpl->material = new SWMaterial( shader() );
 
 		// 버퍼 클리어 색상 지정.
 		glClearColor(0,0,1,1);
@@ -361,26 +356,6 @@ int SWGameContext::getScreenHeight()
 	return m_pimpl()->screenHeight;
 }
 
-void SWGameContext::setViewMatrix( const SWMatrix4x4& matrix )
-{
-	matrix.inverse( m_pimpl()->viewMatrix );
-}
-
-void SWGameContext::setModelMatrix( const SWMatrix4x4& matrix )
-{
-	m_pimpl()->modelMatrix = matrix;
-}
-
-void SWGameContext::setProjectionMatrix( const SWMatrix4x4& matrix )
-{
-	m_pimpl()->projMatrix = matrix;
-}
-
-void SWGameContext::setTextureMatrix( const SWMatrix4x4& matrix )
-{
-	m_pimpl()->textureMatrix = matrix;
-}
-
 void SWGameContext::setVertexBuffer( const float* buffer )
 {
 	glVertexAttribPointer
@@ -405,21 +380,6 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 
 void SWGameContext::drawIndexed( size_t count, unsigned short* indeces)
 {
-	int mvpLoc = m_pimpl()->material()->getShader()->getUniformLocation( "u_mvpMat" );
-	if ( mvpLoc >= 0 )
-	{
-		SWMatrix4x4 mvpMat;
-		mvpMat = m_pimpl()->modelMatrix;
-		mvpMat = mvpMat * m_pimpl()->viewMatrix;
-		mvpMat = mvpMat * m_pimpl()->projMatrix;
-		setShaderMatrix4x4( mvpLoc, (float*)&mvpMat );
-	}
-	int texLoc = m_pimpl()->material()->getShader()->getUniformLocation( "u_texMat" );
-	if ( texLoc >= 0 )
-	{
-		setShaderMatrix4x4( texLoc, (float*)&m_pimpl()->textureMatrix );
-	}
-	//m_pimpl()->material()->setMatrix4x4( "u_texMat", m_pimpl()->textureMatrix );
 	glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
@@ -432,7 +392,6 @@ void SWGameContext::drawRect( float left, float top, float right, float bottom )
 	, SWVector3f( right, bottom, 0 )
 	, SWVector3f( right, top, 0) };
 	setVertexBuffer( (float*)&vertex[0] );
-	bindTexture(0);
 	glDrawArrays( GL_LINE_LOOP, 0, 4 );
 }
 
@@ -481,13 +440,6 @@ bool SWGameContext::getTextureSize( int texID, int& width, int& height )
 	width  = itor->second.width;
 	height = itor->second.height;
 	return true;
-}
-
-void SWGameContext::bindTexture( unsigned int texID )
-{
-	if ( m_pimpl()->lastBindedTexID == texID ) return;
-	m_pimpl()->material()->setTexture( "s_texture", texID );
-	m_pimpl()->lastBindedTexID = texID;
 }
 
 const tstring& SWGameContext::assetFolder() const

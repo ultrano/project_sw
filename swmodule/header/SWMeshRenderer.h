@@ -4,6 +4,7 @@
 #include "SWRenderer.h"
 #include "SWMatrix4x4.h"
 class SWMeshFilter;
+class SWMaterial;
 
 class SWMeshRenderer : public SWRenderer
 {
@@ -12,9 +13,13 @@ class SWMeshRenderer : public SWRenderer
 	unsigned int m_texID;
 	SWMatrix4x4  m_texMat;
 	SWWeakRef<SWMeshFilter> m_filter;
+	SWHardRef<SWMaterial> m_material;
 
 public:
 	
+	SWMeshRenderer();
+	~SWMeshRenderer();
+
 	void render();
 
 	void setTexture( unsigned int texID );

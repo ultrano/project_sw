@@ -90,11 +90,6 @@ void SWGameScene::update()
 void SWGameScene::draw()
 {
 	if ( SWCamera::mainCamera.isValid() == false ) return;
-	
-	SWCamera* cam = SWCamera::mainCamera();
-	SWTransform* trans = cam->getComponent<SWTransform>();
-	SW_GC.setViewMatrix( trans->getFinalMatrix() );
-	SW_GC.setProjectionMatrix( cam->cameraMatrix );
 
 	ComponentList::iterator itor = m_renderers.begin();
 	for ( ; itor != m_renderers.end() ; ++itor )

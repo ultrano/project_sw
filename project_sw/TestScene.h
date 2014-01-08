@@ -50,10 +50,8 @@ class TestScene : public SWGameScene
 		{
 			SWGameObject* go = new SWGameObject;
 			SWCamera* cam = go->addComponent<SWCamera>();
-			float halfW = SW_GC.getScreenWidth()/2;
-			float halfH = SW_GC.getScreenHeight()/2;
-			cam->cameraMatrix.ortho( -halfW, halfW, -halfH, halfH, 1,1000);
-			cam->cameraMatrix.perspective( SWMath.angleToRadian(90), 1, 1, 1000 );
+			cam->orthoMode( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 1, 1000 );
+			cam->perspectiveMode( SWMath.angleToRadian(90), 1, 1, 1000 );
 			SWCamera::mainCamera = cam;
 		}
 
@@ -63,7 +61,7 @@ class TestScene : public SWGameScene
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( 0,0,500 ) );
+			transform->setLocalPosition( SWVector3f( 100,100,500 ) );
 			go->setName( "cat" );
 			go->defineProp( "rot" );
 			go->setProp( "rot", new SWNumber( 0 ) );

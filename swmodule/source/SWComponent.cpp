@@ -19,7 +19,7 @@ SWComponent::~SWComponent()
     
 }
 
-SWComponent* SWComponent::getComponent( const SWRtti* rtti )
+SWComponent* SWComponent::getComponent( const SWRtti* rtti ) const
 {
 	if ( !gameObject.isValid() ) return NULL;
 	return gameObject()->getComponent( rtti );

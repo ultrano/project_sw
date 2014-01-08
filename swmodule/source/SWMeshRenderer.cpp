@@ -5,16 +5,30 @@
 #include "SWTransform.h"
 #include "SWMaterial.h"
 #include "SWShader.h"
+#include "SWCamera.h"
+
+SWMeshRenderer::SWMeshRenderer()
+{
+}
+SWMeshRenderer::~SWMeshRenderer()
+{
+}
 
 void SWMeshRenderer::render()
 {
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	if ( m_filter.isValid() )
 	{
-		SW_GC.setModelMatrix( transform->getFinalMatrix() );
-		SW_GC.bindTexture( m_texID );
-		SW_GC.setTextureMatrix( m_texMat );
-		SW_GC.getDefaultMaterial()->apply();
+		const SWMatrix4x4& model = transform->getWorldMatrix();
+		const SWMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
+		const SWMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
+		SWMatrix4x4 mvp = model;
+		mvp *= view;
+		mvp *= proj;
+		m_material()->setMatrix4x4( "u_mvpMat", mvp );
+		m_material()->setMatrix4x4( "u_texMat", SWMatrix4x4() );
+		m_material()->setTexture( "s_texture", m_texID );
+		m_material()->apply();
 		m_filter()->draw();
 	}
 }
@@ -23,6 +37,7 @@ void SWMeshRenderer::onStart()
 {
 	__super::onStart();
 	m_filter = gameObject()->getComponent<SWMeshFilter>();
+	m_material = SW_GC.getDefaultMaterial();
 }
 
 void SWMeshRenderer::setTexture( unsigned int texID )
