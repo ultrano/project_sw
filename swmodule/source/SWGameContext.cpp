@@ -206,7 +206,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 			"varying vec2 v_tex;"                              "\n"
 			"void main()"                                      "\n"
 			"{"                                                "\n"
-			"   gl_FragColor = vec4(1,1,1,1);" "\n"
+			"   gl_FragColor = texture2D( s_texture, v_tex );" "\n"
 			"}";
 
 		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
@@ -662,7 +662,7 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const t
 			glBindAttribLocation( shaderID, index, attribName.c_str() );
 			shader()->m_attributes.push_back( index );
 		}
-		
+		glLinkProgram( shaderID );
 	}
 
 	return shader();

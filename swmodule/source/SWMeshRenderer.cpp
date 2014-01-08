@@ -22,10 +22,7 @@ void SWMeshRenderer::render()
 		const SWMatrix4x4& model = transform->getWorldMatrix();
 		const SWMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
 		const SWMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
-		SWMatrix4x4 mvp = model;
-		mvp *= view;
-		mvp *= proj;
-		m_material()->setMatrix4x4( "u_mvpMat", mvp );
+		m_material()->setMatrix4x4( "u_mvpMat", ( model * view * proj ) );
 		m_material()->setMatrix4x4( "u_texMat", SWMatrix4x4() );
 		m_material()->setTexture( "s_texture", m_texID );
 		m_material()->apply();
