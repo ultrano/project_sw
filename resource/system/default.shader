@@ -6,6 +6,7 @@
 varying   vec2 v_tex;
 uniform   mat4 u_mvpMat;
 uniform   mat4 u_texMat;
+uniform sampler2D s_texture;
 
 #ifdef VERTEX_SHADER
 
@@ -23,7 +24,6 @@ void main()
 
 #ifdef FRAGMENT_SHADER
 
-uniform sampler2D s_texture;
 void main()
 {
    gl_FragColor = texture2D( s_texture, v_tex );
