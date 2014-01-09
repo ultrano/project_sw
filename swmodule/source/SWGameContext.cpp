@@ -97,7 +97,19 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 		return 0;
 	}
 
-	glShaderSource( shaderID, 1, &shaderSource, NULL );
+	tarray<const char*> sources;
+	switch ( type )
+	{
+	case GL_VERTEX_SHADER :
+		sources.push_back( "#define VERTEX_SHADER 1" );
+		break;
+	case GL_FRAGMENT_SHADER :
+		sources.push_back( "#define FRAGMENT_SHADER 1" );
+		break;
+	}
+	sources.push_back( shaderSource );
+
+	glShaderSource( shaderID, sources.size(), &sources[0], NULL );
 	glCompileShader( shaderID );
 	
 	GLint compiled = false;
@@ -111,7 +123,7 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 		{
 			tstring msg;
 			msg.resize( infoLen );
-			glGetProgramInfoLog( shaderID, infoLen, &infoLen, &msg[0] );
+			glGetShaderInfoLog( shaderID, infoLen, &infoLen, &msg[0] );
 
 			SWLog( msg.c_str() );
 		}
@@ -122,18 +134,18 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 	return shaderID;
 }
 
-GLuint loadProgram( const char* vertSource, const char* fragSource )
+GLuint loadProgram( const char* source )
 {
 	GLuint vsID = 0;
 	GLuint fsID = 0;
 	GLuint programID = 0;
 
-	if ( (vsID = loadShader( GL_VERTEX_SHADER, vertSource )) == 0 )
+	if ( (vsID = loadShader( GL_VERTEX_SHADER, source )) == 0 )
 	{
 		SWLog( "failed compile vertex shader" );
 		return 0;
 	}
-	if ( (fsID = loadShader( GL_FRAGMENT_SHADER, fragSource )) == 0 )
+	if ( (fsID = loadShader( GL_FRAGMENT_SHADER, source )) == 0 )
 	{
 		glDeleteShader( vsID );
 		SWLog( "failed compile fragment shader" );
@@ -188,30 +200,13 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 	//! opengl initializing
 	{
-		tstring vertSrc = SHADER_SOURCE(
-			uniform   mat4 u_mvpMat;
-		    uniform   mat4 u_texMat;
-			attribute vec4 a_pos;
-			attribute vec2 a_tex;
-			varying   vec2 v_tex;
-			void main()
-			{
-				gl_Position = u_mvpMat * a_pos;
-				vec4 aTex = vec4(a_tex.xy,0,1);
-				v_tex = ( u_texMat * aTex ).xy;
-			}
-			);
+		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
+		tuint bufSize = fis()->size();
+		tstring source;
+		source.resize( bufSize );
+		fis()->read( (tbyte*)&source[0], bufSize );
 
-			tstring fragSrc = SHADER_SOURCE(
-				uniform sampler2D s_texture;
-			    varying vec2 v_tex;
-			    void main()
-			    {
-                    gl_FragColor = texture2D( s_texture, v_tex );
-			    }
-			);
-
-		SWHardRef<SWShader> shader = compileShader( &vertSrc[0], &fragSrc[0] );
+		SWHardRef<SWShader> shader = compileShader( source );
 		pimpl->material = new SWMaterial( shader() );
 
 		// 버퍼 클리어 색상 지정.
@@ -609,9 +604,9 @@ SWHardRef<SWObject> SWGameContext::loadJsonFromString( const tstring& doc )
 	return convertJsonValue( root );
 }
 
-SWHardRef<SWShader> SWGameContext::compileShader( const tstring& vertex, const tstring& fragment )
+SWHardRef<SWShader> SWGameContext::compileShader( const tstring& source )
 {
-	tuint shaderID = loadProgram( vertex.c_str(), fragment.c_str() );
+	tuint shaderID = loadProgram( source.c_str() );
 	int bufSize = 0;
 	int count = 0;
 	tstring name;

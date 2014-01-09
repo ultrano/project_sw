@@ -44,7 +44,7 @@ public:
 
 	//! shader
 	
-	SWHardRef<SWShader> compileShader( const tstring& vertex, const tstring& fragment );
+	SWHardRef<SWShader> compileShader( const tstring& source );
 	void releaseShader( SWShader* shader );
 	void useShader( SWShader* shader );
 
