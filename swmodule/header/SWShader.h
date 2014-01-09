@@ -28,6 +28,8 @@ public:
 	tuint getShaderID() const;
 
 	void use();
+
+	static SWHardRef<SWShader> loadShader( const tstring& filePath );
 };
 
 #endif // SWShader_h__

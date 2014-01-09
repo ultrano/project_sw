@@ -1,5 +1,6 @@
 #include "SWShader.h"
 #include "SWGameContext.h"
+#include "SWFileStream.h"
 
 SWShader::SWShader()
 {
@@ -45,4 +46,15 @@ tuint SWShader::getUniformCount() const
 void SWShader::use()
 {
 	SW_GC.useShader( this );
+}
+
+SWHardRef<SWShader> SWShader::loadShader( const tstring& filePath )
+{
+	SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetPath( filePath ) );
+	tuint bufSize = fis()->size();
+	tstring source;
+	source.resize( bufSize );
+	fis()->read( (tbyte*)&source[0], bufSize );
+	
+	return SW_GC.compileShader( source );
 }

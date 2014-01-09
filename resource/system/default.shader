@@ -1,8 +1,4 @@
 
-
-
-
-
 varying   vec2 v_tex;
 uniform   mat4 u_mvpMat;
 uniform   mat4 u_texMat;
@@ -16,13 +12,15 @@ attribute vec2 a_tex;
 void main()
 {
    gl_Position = u_mvpMat * a_pos;
-   vec4 aTex = vec4(a_tex.xy,0,1);
-   v_tex = ( u_texMat * aTex ).xy;
+   v_tex = a_tex;
 }
 
 #endif
 
 #ifdef FRAGMENT_SHADER
+#ifdef GL_ES
+precision mediump float;
+#endif
 
 void main()
 {

@@ -98,13 +98,16 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 	}
 
 	tarray<const char*> sources;
+#ifdef WIN32
+	sources.push_back( "#define WIN32 1\n" );
+#endif
 	switch ( type )
 	{
 	case GL_VERTEX_SHADER :
-		sources.push_back( "#define VERTEX_SHADER 1" );
+		sources.push_back( "#define VERTEX_SHADER 1\n" );
 		break;
 	case GL_FRAGMENT_SHADER :
-		sources.push_back( "#define FRAGMENT_SHADER 1" );
+		sources.push_back( "#define FRAGMENT_SHADER 1\n" );
 		break;
 	}
 	sources.push_back( shaderSource );
@@ -200,13 +203,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 	//! opengl initializing
 	{
-		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
-		tuint bufSize = fis()->size();
-		tstring source;
-		source.resize( bufSize );
-		fis()->read( (tbyte*)&source[0], bufSize );
-
-		SWHardRef<SWShader> shader = compileShader( source );
+		SWHardRef<SWShader> shader = SWShader::loadShader( "system/default.shader" );
 		pimpl->material = new SWMaterial( shader() );
 
 		// 버퍼 클리어 색상 지정.
