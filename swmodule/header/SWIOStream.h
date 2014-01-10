@@ -3,20 +3,27 @@
 
 #include "SWRefCounter.h"
 #include "SWType.h"
+#include "SWRtti.h"
 
 class SWOutputStream : public SWRefCountable
 {
+	SW_RTTI_ROOT( SWOutputStream );
 public:
 	virtual void write(tbyte* b, tuint len) = 0;
-	void writeByte(tbyte b) { write(&b,1); };
+	void write(tbyte b) { write(&b,1); };
 };
 
 class SWInputStream : public SWRefCountable
 {
+	SW_RTTI_ROOT( SWInputStream );
 public:
-	/* return : 읽은 바이트 수. 읽을게 없다면 -1 */
+	/* return : read byte count. return -1 if there is no more */
 	virtual int read(tbyte* b, tuint len) = 0;
-	int readByte() { tbyte b; read(&b,1); return (int)b; };
+	virtual tuint available() = 0;
+	virtual tuint skip( tuint len ) = 0;
+	virtual void reset() = 0;
+
+	int read() { tbyte b; read(&b,1); return (int)b; };
 };
 
 class SWOutputStreamWriter

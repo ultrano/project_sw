@@ -28,10 +28,12 @@ public:
 	SWFileInputStream( const tstring& file );
 	~SWFileInputStream();
 	int read(tbyte* b, tuint len) ;
+	tuint available();
+	tuint skip( tuint len );
+	void reset();
 
 	bool open( const tstring& file );
 	void close();
-	tuint size();
 	void setPos( tuint pos );
 	tuint getPos();
 	FILE* getFile();

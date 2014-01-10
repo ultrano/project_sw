@@ -3,43 +3,34 @@
 
 
 SWBuffer::SWBuffer()
-	: m_buf( NULL )
-	, m_size( 0 )
 {
 }
 
 SWBuffer::SWBuffer( tuint size )
-	: m_buf( NULL )
-	, m_size( 0 )
 {
-	allocMem( size );
+	resize( size );
 }
 
 SWBuffer::~SWBuffer()
 {
-	freeMem();
+	clear();
 }
 
-void SWBuffer::allocMem( tuint size )
+void SWBuffer::resize( tuint size )
 {
-	freeMem();
-	
-	if ( size > 0 ) m_buf = SWUtil.alloc( (m_size = size) );
-
+	m_buf.resize( size );
 }
-void SWBuffer::freeMem()
+void SWBuffer::clear()
 {
-	if ( m_size > 0 ) SWUtil.free( m_buf );
-
-	m_buf  = NULL;
-	m_size = 0;
+	m_buf.clear();
+	m_buf.resize( 0 );
 }
 void* SWBuffer::getPtr()
 {
-	return m_buf;
+	return (void*)&m_buf[0];
 }
 
 tuint SWBuffer::size() const
 {
-	return m_size;
+	return m_buf.size();
 }

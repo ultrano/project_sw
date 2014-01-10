@@ -68,7 +68,7 @@ class TestScene : public SWGameScene
 		}
 			tarray<tbyte> buf;
 			SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetPath( "read_test.txt" ) );
-			buf.resize( fis()->size() + 1 );
+			buf.resize( fis()->available() + 1 );
 			fis()->read( (tbyte*)&buf[0], buf.size() );
 			
 			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font/font1.fnt" );

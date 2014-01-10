@@ -6,8 +6,7 @@
 
 class SWBuffer : public SWRefCountable
 {
-	void* m_buf;
-	size_t m_size;
+	tarray<tbyte> m_buf;
 
 public:
 	
@@ -15,8 +14,8 @@ public:
 	SWBuffer( tuint size );
 	~SWBuffer();
 
-	void allocMem( tuint size );
-	void freeMem();
+	void resize( tuint size );
+	void clear();
 	void* getPtr();
 	tuint size() const;
 

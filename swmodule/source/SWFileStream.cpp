@@ -1,4 +1,5 @@
 #include "SWFileStream.h"
+#include "SWMath.h"
 
 SWFileOutputStream::SWFileOutputStream()
 	: m_file(NULL)
@@ -99,6 +100,27 @@ int SWFileInputStream::read( tbyte* b, unsigned len )
 	return -1;
 }
 
+tuint SWFileInputStream::available()
+{
+	fpos_t cur = 0;
+	fgetpos( m_file, &cur );
+	fpos_t sz = fseek(m_file, 0, SEEK_END);
+	fgetpos( m_file, &sz );
+	fsetpos( m_file, &cur );
+	return (tuint)sz;
+}
+tuint SWFileInputStream::skip( tuint len )
+{
+	tuint remain = available() - getPos();
+	len = SWMath.min( remain, len );
+	fseek(m_file, len, SEEK_CUR);
+	return len;
+}
+void  SWFileInputStream::reset()
+{
+	setPos(0);
+}
+
 bool SWFileInputStream::open( const tstring& file )
 {
 	close();
@@ -113,16 +135,6 @@ void SWFileInputStream::close()
 		fclose(m_file);
 		m_file = NULL;
 	}
-}
-
-tuint SWFileInputStream::size()
-{
-	fpos_t cur = 0;
-	fgetpos( m_file, &cur );
-	fpos_t sz = fseek(m_file, 0, SEEK_END);
-	fgetpos( m_file, &sz );
-	fsetpos( m_file, &cur );
-	return (tuint)sz;
 }
 
 void SWFileInputStream::setPos( tuint pos )

@@ -66,6 +66,7 @@ public:
 
 	const tstring& assetFolder() const;
 	const tstring  assetPath( const tstring& assetFile) const;
+	SWHardRef<SWInputStream> assetInputStream( const tstring& assetFile );
 	//! asset
 
 	SWGameScene* getScene();

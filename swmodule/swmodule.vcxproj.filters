@@ -181,6 +181,9 @@
     <Filter Include="SW\SWShader">
       <UniqueIdentifier>{e7300de2-fa2a-4ff2-a81f-8c0bbb564b89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWBufferStream">
+      <UniqueIdentifier>{4dc7f850-9234-435a-81fe-cd024d3b972f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -393,6 +396,9 @@
     <ClInclude Include="header\SWShader.h">
       <Filter>SW\SWShader</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWBufferStream.h">
+      <Filter>SW\SWBufferStream</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -553,6 +559,9 @@
     </ClCompile>
     <ClCompile Include="source\SWShader.cpp">
       <Filter>SW\SWShader</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWBufferStream.cpp">
+      <Filter>SW\SWBufferStream</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

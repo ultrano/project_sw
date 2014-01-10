@@ -98,16 +98,13 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 	}
 
 	tarray<const char*> sources;
-#ifdef WIN32
-	sources.push_back( "#define WIN32 1\n" );
-#endif
 	switch ( type )
 	{
 	case GL_VERTEX_SHADER :
-		sources.push_back( "#define VERTEX_SHADER 1\n" );
+		sources.push_back( "#define VERTEX_SHADER 1" );
 		break;
 	case GL_FRAGMENT_SHADER :
-		sources.push_back( "#define FRAGMENT_SHADER 1\n" );
+		sources.push_back( "#define FRAGMENT_SHADER 1" );
 		break;
 	}
 	sources.push_back( shaderSource );
@@ -203,7 +200,13 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 	//! opengl initializing
 	{
-		SWHardRef<SWShader> shader = SWShader::loadShader( "system/default.shader" );
+		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
+		tuint bufSize = fis()->size();
+		tstring source;
+		source.resize( bufSize );
+		fis()->read( (tbyte*)&source[0], bufSize );
+
+		SWHardRef<SWShader> shader = compileShader( source );
 		pimpl->material = new SWMaterial( shader() );
 
 		// 버퍼 클리어 색상 지정.
@@ -405,7 +408,7 @@ unsigned int SWGameContext::loadTexture( const tstring& path )
 
 	TextureInfo info;
 	info.id = glLoadTextureFromMemory( (const tbyte*)buf()->getPtr(), buf()->size(), info.width, info.height );
-	buf()->freeMem();
+	buf()->clear();
 	if ( info.id != 0 )
 	{
 		m_pimpl()->textureTable.insert( std::make_pair( info.id, info ) );
@@ -444,6 +447,12 @@ const tstring& SWGameContext::assetFolder() const
 const tstring  SWGameContext::assetPath( const tstring& assetFile) const
 {
 	return assetFolder() + assetFile;
+}
+
+SWHardRef<SWInputStream> SWGameContext::assetInputStream( const tstring& assetFile )
+{
+	SWFileInputStream* fis = new SWFileInputStream( assetPath( assetFile ) );
+	return fis;
 }
 
 bool SWGameContext::storeItem( const tstring& key, SWObject* item )
