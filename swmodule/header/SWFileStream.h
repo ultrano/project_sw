@@ -27,6 +27,8 @@ public:
 	SWFileInputStream();
 	SWFileInputStream( const tstring& file );
 	~SWFileInputStream();
+	
+	/* return : read byte count. return -1 if there is no more */
 	int read(tbyte* b, tuint len) ;
 	tuint available();
 	tuint skip( tuint len );

@@ -201,7 +201,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 	//! opengl initializing
 	{
 		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
-		tuint bufSize = fis()->size();
+		tuint bufSize = fis()->available();
 		tstring source;
 		source.resize( bufSize );
 		fis()->read( (tbyte*)&source[0], bufSize );
@@ -403,7 +403,7 @@ unsigned int SWGameContext::loadTexture( const tstring& path )
 	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
 
 	SWHardRef<SWFileInputStream> fis = new SWFileInputStream( solvedPath );
-	SWHardRef<SWBuffer> buf = new SWBuffer( fis()->size() );
+	SWHardRef<SWBuffer> buf = new SWBuffer( fis()->available() );
 	fis()->read( (tbyte*)buf()->getPtr(), buf()->size() );
 
 	TextureInfo info;
