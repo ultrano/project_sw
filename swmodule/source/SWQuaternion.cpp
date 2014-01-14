@@ -21,7 +21,7 @@ SWVector3f operator*( const SWVector3f& a, const SWQuaternion& b )
 	SWQuaternion ret(a,0);
 	SWQuaternion inv;
 	b.inverse(inv);
-	return (b * SWQuaternion(a,0) * inv).vec;
+	return (b * SWQuaternion(a,0) * inv).vec();
 }
 
 void SWQuaternion::identify()
@@ -40,22 +40,27 @@ float SWQuaternion::norm() const
 	return sqrtf( x*x + y*y + z*z + w*w );
 }
 
+SWVector3f  SWQuaternion::vec() const
+{
+	return (SWVector3f&)*this;
+}
+
 void SWQuaternion::conjugate( SWQuaternion& q ) const
 {
-	q.vec = -vec;
+	q.vec() = -vec();
 	q.w   = w;
 }
 
 void SWQuaternion::inverse( SWQuaternion& q ) const
 {
-	q.w = (x*x) + (y*y) + (z*z )+ (w*w);
-	q.vec = (-vec) / q.w;
-	q.w   = w / q.w;
+	q.w     = (x*x) + (y*y) + (z*z )+ (w*w);
+	q.vec() = (-vec()) / q.w;
+	q.w     = w / q.w;
 }
 
 SWQuaternion& SWQuaternion::rotate( const SWVector3f& axis, float radian )
 {
-	vec = SWVector3f(axis).normalize() * sinf(radian/2.0f);
-	w   = cosf(radian/2.0f);
+	vec() = SWVector3f(axis).normalize() * sinf(radian/2.0f);
+	w     = cosf(radian/2.0f);
 	return *this;
 }

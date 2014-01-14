@@ -12,12 +12,8 @@ public:
 	static const SWVector3f zero;
 	static const SWVector3f one;
 public:
-	union
-	{
-		struct { SWVector2f xy; };
-		struct { float x,y,z; };
-		struct { float v1,v2,v3; };
-	};
+	
+	float x,y,z;
 
 	SWVector3f() {};
 	SWVector3f( const SWVector3f& copy ): x(copy.x), y(copy.y), z(copy.z) {};

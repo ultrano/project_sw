@@ -10,7 +10,7 @@ class WIFontData : public SWObject
 {
 	SW_RTTI( WIFontData, SWObject );
 
-	typedef ttable<int,SWHardRef<WIFontChar>> CharTable;
+	typedef ttable< int,SWHardRef<WIFontChar> > CharTable;
 
 	int m_texID;
 	CharTable m_charTable;

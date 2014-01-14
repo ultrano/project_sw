@@ -6,28 +6,26 @@
 class SWQuaternion
 {
 public:
-	union
-	{
-		struct { float x, y, z; };
-		struct { SWVector3f vec; };
-	};
+
+	float x, y, z;
 	float w;
 
 	SWQuaternion() : x(0), y(0), z(0), w(1) {};
 	SWQuaternion( const SWQuaternion& copy ): x(copy.x), y(copy.y), z(copy.z), w(copy.w) {};
-	SWQuaternion( const SWVector3f& v, float fw) : vec(v), w(fw) {};
+	SWQuaternion( const SWVector3f& v, float fw) : x(v.x), y(v.y), z(v.z), w(fw) {};
 	SWQuaternion(float fx, float fy, float fz, float fw) : x(fx), y(fy), z(fz), w(fw) {};
 
-	SWQuaternion& operator  = ( const SWQuaternion& q ) { vec  = q.vec; w  = q.w; return *this; }
-	SWQuaternion& operator += ( const SWQuaternion& q ) { vec += q.vec; w += q.w; return *this; }
-	SWQuaternion& operator -= ( const SWQuaternion& q ) { vec -= q.vec; w -= q.w; return *this; }
-	SWQuaternion& operator /= ( float f ) { vec /= f; w /= f; return *this; }
-	SWQuaternion& operator *= ( float f ) { vec *= f; w *= f; return *this; }
+	SWQuaternion& operator  = ( const SWQuaternion& q ) { vec()  = q.vec(); w  = q.w; return *this; }
+	SWQuaternion& operator += ( const SWQuaternion& q ) { vec() += q.vec(); w += q.w; return *this; }
+	SWQuaternion& operator -= ( const SWQuaternion& q ) { vec() -= q.vec(); w -= q.w; return *this; }
+	SWQuaternion& operator /= ( float f ) { vec() /= f; w /= f; return *this; }
+	SWQuaternion& operator *= ( float f ) { vec() *= f; w *= f; return *this; }
 	SWQuaternion& operator *= ( const SWQuaternion& q );
 
 	void		identify();
 	SWQuaternion&	normalize();
 	float		norm() const;
+	SWVector3f  vec() const;
 	void		conjugate(SWQuaternion& q) const;
 	void		inverse(SWQuaternion& q) const;
 	SWQuaternion& rotate(const SWVector3f& axis, float radian);

@@ -22,7 +22,7 @@ private:
 
 	typedef tarray< SWHardRef<SWComponent> > ComponentArray;
 	typedef tlist< SWHardRef<SWComponent> > ComponentList;
-	typedef ttable<tstring,SWHardRef<SWObject>> ObjectMap;
+	typedef ttable< tstring,SWHardRef<SWObject> > ObjectMap;
 
     tstring    m_name;
 	ComponentArray m_components;

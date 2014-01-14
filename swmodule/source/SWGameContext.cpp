@@ -68,9 +68,9 @@ public:
 
 	SWHardRef<SWMaterial> material;
 	
-	ttable<tstring,unsigned int> textureCache;
-	ttable<unsigned int,TextureInfo> textureTable;
-	ttable<tstring, SWHardRef<SWObject>> storage;
+	ttable< tstring,unsigned int > textureCache;
+	ttable< unsigned int,TextureInfo > textureTable;
+	ttable< tstring, SWHardRef<SWObject> > storage;
 
 	int lastBindedTexID;
 
@@ -458,7 +458,7 @@ SWHardRef<SWInputStream> SWGameContext::assetInputStream( const tstring& assetFi
 bool SWGameContext::storeItem( const tstring& key, SWObject* item )
 {
 	SWHardRef< SWObject > hold( item );
-	ttable<tstring, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
+	ttable< tstring, SWHardRef<SWObject> >::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor != m_pimpl()->storage.end() ) return false;
 	
 	m_pimpl()->storage.insert( std::make_pair(key, item) );
@@ -472,7 +472,7 @@ void SWGameContext::removeItem( const tstring& key )
 
 SWObject* SWGameContext::findItem( const tstring& key )
 {
-	ttable<tstring, SWHardRef<SWObject>>::iterator itor = m_pimpl()->storage.find( key );
+	ttable< tstring, SWHardRef<SWObject> >::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor == m_pimpl()->storage.end() ) return NULL;
 	return itor->second();
 }
