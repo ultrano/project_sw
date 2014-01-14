@@ -7,7 +7,7 @@
 
 class WIFontChar;
 class WIFontData : public SWObject
-{
+{S
 	SW_RTTI( WIFontData, SWObject );
 
 	typedef ttable< int,SWHardRef<WIFontChar> > CharTable;
@@ -17,7 +17,7 @@ class WIFontData : public SWObject
 	int m_lineHeight;
 	int m_scaleW;
 	int m_scaleH;
-
+	
 public:
 
 	void setFontTexture( int texID );

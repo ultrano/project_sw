@@ -64,7 +64,7 @@ void __SWUtil::consoleXY( int x, int y )
 
 twstring __SWUtil::utf8ToUnicode( const tstring& str )
 {
-	std::wstring_convert< std::codecvt_utf8<wchar_t> > conv;
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 	const char* begin = &str[0];
 	const char* end   = &str[str.size()];
 
@@ -83,7 +83,7 @@ twstring __SWUtil::utf8ToUnicode( const tstring& str )
 tstring __SWUtil::unicodeToUtf8( const twstring& str )
 {
 	if ( str.size() == 0 ) return "";
-	std::wstring_convert< std::codecvt_utf8<wchar_t> > conv;
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 	const wchar_t* begin = &str[0];
 	const wchar_t* end   = &str[str.size()];
 	
