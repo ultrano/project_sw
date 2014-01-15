@@ -16,6 +16,8 @@ public:
 	SWSocket();
 	~SWSocket();
 	
+	void connect( const tstring& ip, int port );
+
 	SWHardRef<SWOutputStream> getOutputStream();
 	SWHardRef<SWInputStream>  getInputStream();
 
