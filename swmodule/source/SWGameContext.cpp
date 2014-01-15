@@ -23,7 +23,7 @@
 #include "SWInput.h"
 #include "SWString.h"
 #include "SWFileStream.h"
-#include "SWBuffer.h"
+#include "SWByteBuffer.h"
 #include "SWMath.h"
 #include "SWShader.h"
 #include "SWMaterial.h"
@@ -403,11 +403,11 @@ unsigned int SWGameContext::loadTexture( const tstring& path )
 	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
 
 	SWHardRef<SWFileInputStream> fis = new SWFileInputStream( solvedPath );
-	SWHardRef<SWBuffer> buf = new SWBuffer( fis()->available() );
-	fis()->read( (tbyte*)buf()->getPtr(), buf()->size() );
+	SWHardRef<SWByteBuffer> buf = new SWByteBuffer( fis()->available() );
+	fis()->read( buf()->getBuffer(), buf()->size() );
 
 	TextureInfo info;
-	info.id = glLoadTextureFromMemory( (const tbyte*)buf()->getPtr(), buf()->size(), info.width, info.height );
+	info.id = glLoadTextureFromMemory( buf()->getBuffer(), buf()->size(), info.width, info.height );
 	buf()->clear();
 	if ( info.id != 0 )
 	{

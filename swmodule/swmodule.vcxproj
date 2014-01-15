@@ -89,8 +89,8 @@
     <ClInclude Include="header\SWArray.h" />
     <ClInclude Include="header\SWBehavior.h" />
     <ClInclude Include="header\SWBoolean.h" />
-    <ClInclude Include="header\SWBuffer.h" />
-    <ClInclude Include="header\SWBufferStream.h" />
+    <ClInclude Include="header\SWByteBuffer.h" />
+    <ClInclude Include="header\SWByteBufferStream.h" />
     <ClInclude Include="header\SWCamera.h" />
     <ClInclude Include="header\SWComponent.h" />
     <ClInclude Include="header\SWCriticalSection.h" />
@@ -162,8 +162,8 @@
     <ClCompile Include="source\SWArray.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
     <ClCompile Include="source\SWBoolean.cpp" />
-    <ClCompile Include="source\SWBuffer.cpp" />
-    <ClCompile Include="source\SWBufferStream.cpp" />
+    <ClCompile Include="source\SWByteBuffer.cpp" />
+    <ClCompile Include="source\SWByteBufferStream.cpp" />
     <ClCompile Include="source\SWCamera.cpp" />
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />

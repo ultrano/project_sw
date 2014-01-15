@@ -1,56 +1,56 @@
-#include "SWBufferStream.h"
+#include "SWByteBufferStream.h"
 #include "SWMath.h"
 #include <stdlib.h>
 
 
-SWBufferOutputStream::SWBufferOutputStream()
-	: m_buffer( new SWBuffer() )
+SWByteBufferOutputStream::SWByteBufferOutputStream()
+	: m_buffer( new SWByteBuffer() )
 	, m_cursor(0)
 {
 }
-SWBufferOutputStream::SWBufferOutputStream( SWBuffer* buffer )
+SWByteBufferOutputStream::SWByteBufferOutputStream( SWByteBuffer* buffer )
 	: m_buffer( buffer )
 	, m_cursor(0)
 {
 }
 
-void SWBufferOutputStream::write(tbyte* b, tuint len)
+void SWByteBufferOutputStream::write(tbyte* b, tuint len)
 {
 	tuint capacity = m_cursor + len;
 	if ( m_buffer()->size() < capacity ) m_buffer()->resize( capacity );
 
-	tbyte* dst = &((tbyte*)m_buffer()->getPtr())[m_cursor];
+	tbyte* dst = &(m_buffer()->getBuffer())[m_cursor];
 	memcpy( dst, (void*)b, len );
 	m_cursor = capacity;
 }
 
 ////////////////////////////////////////////////////
 
-SWBufferInputStream::SWBufferInputStream()
-	: m_buffer( new SWBuffer() )
+SWByteBufferInputStream::SWByteBufferInputStream()
+	: m_buffer( new SWByteBuffer() )
 	, m_cursor(0)
 {
 }
-SWBufferInputStream::SWBufferInputStream( SWBuffer* buffer )
+SWByteBufferInputStream::SWByteBufferInputStream( SWByteBuffer* buffer )
 	: m_buffer( buffer )
 	, m_cursor(0)
 {
 }
-SWBufferInputStream::SWBufferInputStream( SWInputStream* is )
-	: m_buffer( new SWBuffer() )
+SWByteBufferInputStream::SWByteBufferInputStream( SWInputStream* is )
+	: m_buffer( new SWByteBuffer() )
 	, m_cursor(0)
 {
 	m_buffer()->resize( is->available() );
-	tbyte* dst = &((tbyte*)m_buffer()->getPtr())[0];
+	tbyte* dst = &(m_buffer()->getBuffer())[0];
 	is->read( dst, m_buffer()->size() );
 }
 
-int SWBufferInputStream::read(tbyte* b, tuint len)
+int SWByteBufferInputStream::read(tbyte* b, tuint len)
 {
 	tuint remain = available() - m_cursor;
 	if ( remain <= 0 ) return -1;
 
-	tbyte* src = &((tbyte*)m_buffer()->getPtr())[m_cursor];
+	tbyte* src = &(m_buffer()->getBuffer())[m_cursor];
 	len = SWMath.min( len, remain );
 
 	memcpy( b, (void*)src[0], len );
@@ -59,12 +59,12 @@ int SWBufferInputStream::read(tbyte* b, tuint len)
 	return len;
 }
 
-tuint SWBufferInputStream::available()
+tuint SWByteBufferInputStream::available()
 {
 	return m_buffer()->size();
 }
 
-tuint SWBufferInputStream::skip( tuint len )
+tuint SWByteBufferInputStream::skip( tuint len )
 {
 	tuint remain = available() - m_cursor;
 	len = SWMath.min<tuint>( remain, len );

@@ -354,9 +354,6 @@
     <ClInclude Include="header\WIText.h">
       <Filter>WI\WIText</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWBuffer.h">
-      <Filter>SW\SWBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="json\reader.h">
       <Filter>json</Filter>
     </ClInclude>
@@ -399,11 +396,14 @@
     <ClInclude Include="header\SWShader.h">
       <Filter>SW\SWShader</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWBufferStream.h">
-      <Filter>SW\SWBufferStream</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWNetworkStream.h">
       <Filter>SW\SWNetworkStream</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWByteBuffer.h">
+      <Filter>SW\SWBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWByteBufferStream.h">
+      <Filter>SW\SWBufferStream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -542,9 +542,6 @@
     <ClCompile Include="source\WIText.cpp">
       <Filter>WI\WIText</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWBuffer.cpp">
-      <Filter>SW\SWBuffer</Filter>
-    </ClCompile>
     <ClCompile Include="source\WIFontData.cpp">
       <Filter>WI\WIFontData</Filter>
     </ClCompile>
@@ -566,7 +563,10 @@
     <ClCompile Include="source\SWShader.cpp">
       <Filter>SW\SWShader</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWBufferStream.cpp">
+    <ClCompile Include="source\SWByteBuffer.cpp">
+      <Filter>SW\SWBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWByteBufferStream.cpp">
       <Filter>SW\SWBufferStream</Filter>
     </ClCompile>
   </ItemGroup>
