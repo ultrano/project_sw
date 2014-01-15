@@ -35,9 +35,9 @@ public:
 	SWByteBufferInputStream( SWInputStream* is );
 	
 	/* return : read byte count. return -1 if there is no more */
-	int   read(tbyte* b, tuint len);
+	int read(tbyte* b, tuint len);
+	int skip( tuint len );
 	tuint available();
-	tuint skip( tuint len );
 	
 	SWByteBuffer* getBuffer() const { return m_buffer(); };
 };

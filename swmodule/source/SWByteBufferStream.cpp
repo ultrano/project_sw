@@ -64,7 +64,7 @@ tuint SWByteBufferInputStream::available()
 	return m_buffer()->size();
 }
 
-tuint SWByteBufferInputStream::skip( tuint len )
+int SWByteBufferInputStream::skip( tuint len )
 {
 	tuint remain = available() - m_cursor;
 	len = SWMath.min<tuint>( remain, len );

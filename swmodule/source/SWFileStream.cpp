@@ -109,7 +109,7 @@ tuint SWFileInputStream::available()
 	fsetpos( m_file, &cur );
 	return (tuint)sz;
 }
-tuint SWFileInputStream::skip( tuint len )
+int SWFileInputStream::skip( tuint len )
 {
 	tuint remain = available() - getPos();
 	len = SWMath.min( remain, len );

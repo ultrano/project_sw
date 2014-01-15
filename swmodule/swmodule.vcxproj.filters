@@ -184,8 +184,11 @@
     <Filter Include="SW\SWBufferStream">
       <UniqueIdentifier>{4dc7f850-9234-435a-81fe-cd024d3b972f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWNetworkStream">
+    <Filter Include="SW\SWSocketStream">
       <UniqueIdentifier>{4425b210-d428-4553-baf3-c0b1b257c291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWSocket">
+      <UniqueIdentifier>{69ba837b-930b-4779-9249-7d7e55b9a488}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -396,14 +399,17 @@
     <ClInclude Include="header\SWShader.h">
       <Filter>SW\SWShader</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWNetworkStream.h">
-      <Filter>SW\SWNetworkStream</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWByteBuffer.h">
       <Filter>SW\SWBuffer</Filter>
     </ClInclude>
     <ClInclude Include="header\SWByteBufferStream.h">
       <Filter>SW\SWBufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWSocketStream.h">
+      <Filter>SW\SWSocketStream</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWSocket.h">
+      <Filter>SW\SWSocket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -568,6 +574,12 @@
     </ClCompile>
     <ClCompile Include="source\SWByteBufferStream.cpp">
       <Filter>SW\SWBufferStream</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSocketStream.cpp">
+      <Filter>SW\SWSocketStream</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSocket.cpp">
+      <Filter>SW\SWSocket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
