@@ -38,7 +38,6 @@ public:
 	int   read(tbyte* b, tuint len);
 	tuint available();
 	tuint skip( tuint len );
-	void  reset();
 	
 	SWBuffer* getBuffer() const { return m_buffer(); };
 };

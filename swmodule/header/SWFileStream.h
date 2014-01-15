@@ -32,7 +32,6 @@ public:
 	int read(tbyte* b, tuint len) ;
 	tuint available();
 	tuint skip( tuint len );
-	void reset();
 
 	bool open( const tstring& file );
 	void close();

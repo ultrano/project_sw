@@ -21,7 +21,6 @@ public:
 	virtual int read(tbyte* b, tuint len) = 0;
 	virtual tuint available() = 0;
 	virtual tuint skip( tuint len ) = 0;
-	virtual void reset() = 0;
 
 	int read() { tbyte b; read(&b,1); return (int)b; };
 };

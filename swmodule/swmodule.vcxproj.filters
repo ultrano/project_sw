@@ -184,6 +184,9 @@
     <Filter Include="SW\SWBufferStream">
       <UniqueIdentifier>{4dc7f850-9234-435a-81fe-cd024d3b972f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWNetworkStream">
+      <UniqueIdentifier>{4425b210-d428-4553-baf3-c0b1b257c291}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -398,6 +401,9 @@
     </ClInclude>
     <ClInclude Include="header\SWBufferStream.h">
       <Filter>SW\SWBufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWNetworkStream.h">
+      <Filter>SW\SWNetworkStream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

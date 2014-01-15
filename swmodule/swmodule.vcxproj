@@ -97,6 +97,7 @@
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
     <ClInclude Include="header\SWMaterial.h" />
+    <ClInclude Include="header\SWNetworkStream.h" />
     <ClInclude Include="header\SWShader.h" />
     <ClInclude Include="header\SWTriangle.h" />
     <ClInclude Include="header\SWType.h" />

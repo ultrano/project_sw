@@ -116,10 +116,6 @@ tuint SWFileInputStream::skip( tuint len )
 	fseek(m_file, len, SEEK_CUR);
 	return len;
 }
-void  SWFileInputStream::reset()
-{
-	setPos(0);
-}
 
 bool SWFileInputStream::open( const tstring& file )
 {

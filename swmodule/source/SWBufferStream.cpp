@@ -73,8 +73,3 @@ tuint SWBufferInputStream::skip( tuint len )
 
 	return len;
 }
-
-void  SWBufferInputStream::reset()
-{
-	m_cursor = 0;
-}
