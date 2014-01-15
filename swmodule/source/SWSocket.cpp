@@ -2,7 +2,9 @@
 #include "SWLog.h"
 
 #ifdef WIN32
+#pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h>
+#include <io.h>
 struct _WinSockHolder
 {
 	_WinSockHolder()
@@ -20,6 +22,17 @@ struct _WinSockHolder
 #define WINSOCKHOLDER 1;
 #endif
 
+class SWSocket::Pimpl : public SWRefCountable
+{
+	friend class SWSocketOutputStream;
+	friend class SWSocketInputStream;
+public:
+	int sock;
+	SWWeakRef<SWOutputStream> os;
+	SWWeakRef<SWInputStream>  is;
+	bool connected;
+};
+
 class SWSocketOutputStream : public SWOutputStream
 {
 	SW_RTTI( SWSocketOutputStream, SWOutputStream );
@@ -34,7 +47,13 @@ public:
 	}
 	void write(tbyte* b, tuint len)
 	{
-		send( m_socket()->pimpl()->sock, b, len, 0);
+		if ( b == NULL ) return;
+		if ( len == 0 ) return;
+		if ( m_socket.isValid() == false ) return;
+		if ( m_socket()->isConnected() == false ) return;
+
+		int ret = send( m_socket()->pimpl()->sock, (const char*)b, len, 0);
+		if ( ret < 0 ) SWLog( "fail to send" );
 	}
 };
 
@@ -51,29 +70,42 @@ public:
 	{
 	}
 	/* return : read byte count. return -1 if there is no more */
-	int read(tbyte* b, tuint len);
-	int skip( tuint len );
-	tuint available();
-};
+	int read(tbyte* b, tuint len)
+	{
+		if ( b == NULL ) return 0;
+		if ( len == 0 ) return 0;
+		if ( m_socket.isValid() == false ) return -1;
+		if ( m_socket()->isConnected() == false ) return -1;
 
-class SWSocket::Pimpl : public SWRefCountable
-{
-	friend class SWSocketOutputStream;
-	friend class SWSocketInputStream;
-public:
-	int sock;
-	SWWeakRef<SWOutputStream> os;
-	SWWeakRef<SWInputStream>  is;
+		int ret = recv( m_socket()->pimpl()->sock, (char*)b, len, 0 );
+		if ( ret < 0 ) SWLog( "fail to recv" );
+		return ret;
+	}
+	int skip( tuint len )
+	{
+		tarray<tbyte> buf;
+		buf.resize( len );
+		return read( &buf[0], len );
+	}
+	tuint available()
+	{
+		return 0;
+	}
 };
 
 SWSocket::SWSocket()
 	: m_pimpl( new SWSocket::Pimpl() )
 {
 	WINSOCKHOLDER;
-	pimpl()->sock = socket( PF_INET, SOCK_STREAM, 0 ); 
+	pimpl()->sock = socket( AF_INET, SOCK_STREAM, 0 ); 
+	pimpl()->os = NULL;
+	pimpl()->is = NULL;
+	pimpl()->connected = false;
 }
 SWSocket::~SWSocket()
 {
+	closesocket( pimpl()->sock );
+	m_pimpl = NULL;
 }
 
 void SWSocket::connect( const tstring& ip, int port )
@@ -83,22 +115,35 @@ void SWSocket::connect( const tstring& ip, int port )
 	serv.sin_port    = htons( port );
 	serv.sin_addr.s_addr = inet_addr( ip.c_str() );
 	
-	if ( ::connect( pimpl()->sock, (sockaddr*)&serv, sizeof( serv ) ) < 0 )
-	{
-		SWLog( "fail to connect" );
-		return;
-	}
+	int ret = ::connect( pimpl()->sock, (sockaddr*)&serv, sizeof( serv ) );
+	pimpl()->connected = ( ret > 0 );
+	if ( pimpl()->connected == false ) SWLog( "fail to connect" );
+}
+
+bool SWSocket::isConnected() const
+{
+	return pimpl()->connected;
 }
 
 SWHardRef<SWOutputStream> SWSocket::getOutputStream()
 {
-	if ( false == pimpl()->os.isValid() ) pimpl()->os = new SWSocketOutputStream( this );
-	return pimpl()->os();
+	SWHardRef<SWOutputStream> os = pimpl()->os();
+	if ( false == os.isValid() )
+	{
+		os = new SWSocketOutputStream( this );
+		pimpl()->os = os();
+	}
+	return os();
 }
 SWHardRef<SWInputStream>  SWSocket::getInputStream()
 {
-	if ( false == pimpl()->is.isValid() ) pimpl()->is = new SWSocketInputStream( this );
-	return pimpl()->is();
+	SWHardRef<SWInputStream> is = pimpl()->is();
+	if ( false == is.isValid() )
+	{
+		is = new SWSocketInputStream( this );
+		pimpl()->is = is();
+	}
+	return is();
 }
 
 SWSocket::Pimpl* SWSocket::pimpl() const

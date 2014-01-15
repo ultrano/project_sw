@@ -25,6 +25,7 @@
 #include "SWUtil.h"
 #include "SWCamera.h"
 #include "SWShader.h"
+#include "SWSocket.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -46,6 +47,23 @@ class TestScene : public SWGameScene
 	SWMatrix4x4 mat;
 	void onAwake()
 	{
+		{
+			SWHardRef<SWSocket> sock = new SWSocket;
+			
+			sock()->connect( "127.0.0.1", 10000 );
+			
+			SWHardRef<SWOutputStream> os = sock()->getOutputStream();
+			SWHardRef<SWInputStream>  is = sock()->getInputStream();
+
+			char buf[] = "are you there?";
+			os()->write( (tbyte*)buf, sizeof(buf) );
+
+			memset( buf, 0, sizeof(buf) );
+
+			is()->read( (tbyte*)buf, sizeof(buf) );
+
+			SWLog( (char*)buf );
+		}
 		//! set default camera
 		{
 			SWGameObject* go = new SWGameObject;
