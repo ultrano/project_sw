@@ -1,4 +1,5 @@
 #include "SWUtil.h"
+#include "SWIOStream.h"
 
 #include <locale>
 #include <codecvt>
@@ -95,3 +96,18 @@ tstring __SWUtil::unicodeToUtf8( const twstring& str )
 
 }
 
+
+void __SWUtil::copyStream( SWOutputStream* os, SWInputStream* is )
+{
+	if ( !os || !is ) return;
+
+	int sz = is->available();
+	if ( sz <= 0 ) return;
+
+	tarray<tbyte> buf;
+	buf.resize( sz );
+	int ret = is->read( &buf[0], sz );
+	if ( ret <= 0 ) return;
+	os->write( &buf[0], sz );
+
+}

@@ -9,6 +9,8 @@
 #define SWUtil (__SWUtil::getInstance())
 
 class SWObject;
+class SWInputStream;
+class SWOutputStream;
 class __SWUtil : public SWMemory
 {
 	__SWUtil();
@@ -28,6 +30,8 @@ public:
 	tstring  unicodeToUtf8( const twstring& str );
 
 	void consoleXY( int x, int y );
+
+	void copyStream( SWOutputStream* os, SWInputStream* is );
 };
 
 #endif // SWUtil_h__
