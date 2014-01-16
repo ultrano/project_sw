@@ -100,8 +100,9 @@ int SWFileInputStream::read( tbyte* b, unsigned len )
 	return -1;
 }
 
-tuint SWFileInputStream::available()
+int SWFileInputStream::available()
 {
+	if ( m_file == NULL ) return -1;
 	fpos_t cur = 0;
 	fgetpos( m_file, &cur );
 	fpos_t sz = fseek(m_file, 0, SEEK_END);

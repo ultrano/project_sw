@@ -31,7 +31,7 @@ public:
 	/* return : read byte count. return -1 if there is no more */
 	int read(tbyte* b, tuint len) ;
 	int skip( tuint len );
-	tuint available();
+	int available();
 
 	bool open( const tstring& file );
 	void close();

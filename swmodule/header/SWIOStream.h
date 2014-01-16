@@ -17,10 +17,14 @@ class SWInputStream : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWInputStream );
 public:
-	/* return : read byte count. return -1 if there is no more */
+	/* 
+	   return    : read byte count. 
+	   return  0 : if there is no more to read.
+	   return -1 : invalid stream.
+	*/
 	virtual int read(tbyte* b, tuint len) = 0;
 	virtual int skip( tuint len ) = 0;
-	virtual tuint available() = 0;
+	virtual int available() = 0;
 
 	int read() { tbyte b; read(&b,1); return (int)b; };
 };

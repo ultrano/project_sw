@@ -87,8 +87,10 @@ public:
 		buf.resize( len );
 		return read( &buf[0], len );
 	}
-	tuint available()
+	int available()
 	{
+		if ( m_socket.isValid() == false ) return -1;
+		if ( m_socket()->isConnected() == false ) return -1;
 		return 0;
 	}
 };

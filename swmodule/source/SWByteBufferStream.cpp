@@ -55,12 +55,13 @@ int SWByteBufferInputStream::read(tbyte* b, tuint len)
 
 	memcpy( b, (void*)src[0], len );
 
-	m_cursor = SWMath.min( m_cursor += len, available() );
+	m_cursor = SWMath.min<tuint>( m_cursor += len, available() );
 	return len;
 }
 
-tuint SWByteBufferInputStream::available()
+int SWByteBufferInputStream::available()
 {
+	if ( m_buffer.isValid() == false ) return -1;
 	return m_buffer()->size();
 }
 
@@ -69,7 +70,7 @@ int SWByteBufferInputStream::skip( tuint len )
 	tuint remain = available() - m_cursor;
 	len = SWMath.min<tuint>( remain, len );
 
-	m_cursor = SWMath.min( m_cursor += len, available() );
+	m_cursor = SWMath.min<tuint>( m_cursor += len, available() );
 
 	return len;
 }
