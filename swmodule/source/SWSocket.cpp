@@ -63,9 +63,6 @@ class SWSocketInputStream : public SWInputStream
 	SW_RTTI( SWSocketInputStream, SWInputStream );
 	
 	SWHardRef<SWSocket> m_socket;
-	tbyte m_buf[512];
-	int   m_begin;
-	int   m_end;
 public:
 	
 	SWSocketInputStream( const SWSocket* socket )
@@ -80,23 +77,8 @@ public:
 		if ( m_socket.isValid() == false ) return -1;
 		if ( m_socket()->isConnected() == false ) return -1;
 		
-		int offset = 0;
-		int bufLen = m_end - m_begin;
-		int remain = len;
-		if ( bufLen > 0 )
-		{
-			offset = SWMath.min<int>( bufLen, remain );
-			memcpy( &b[0], &m_buf[m_begin], offset );
-			m_begin += offset;
-			remain -= offset;
-		}
-		
-		if ( remain > 0 ) remain = recv( m_socket()->pimpl()->sock, (char*)&b[offset], remain, 0 );
-		if ( remain < 0 )
-		{
-			SWLog( "fail to recv" );
-			return -1;
-		}
+		len = recv( m_socket()->pimpl()->sock, (char*)&b[0], len, 0 );
+		if ( len < 0 ) SWLog( "fail to recv" );
 		return len;
 	}
 	int skip( tuint len )
@@ -109,14 +91,7 @@ public:
 	{
 		if ( m_socket.isValid() == false ) return -1;
 		if ( m_socket()->isConnected() == false ) return -1;
-
-		int bufLen = m_end - m_begin;
-		if ( bufLen > 0 ) return bufLen;
-
-		m_begin = 0;
-		m_end   = recv( m_socket()->pimpl()->sock, (char*)&m_buf[0], sizeof(m_buf), 0 );
-
-		return (m_end - m_begin);
+		return 0;
 	}
 };
 

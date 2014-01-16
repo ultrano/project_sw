@@ -59,6 +59,9 @@ enum SWDefines
 	SW_Attribute_Position = 0,
 	SW_Attribute_Texture  = 1,
 
+	//! input stream 
+	SW_Pendding_Stream = -2,
+	SW_Invalid_Stream = -1,
 };
 
 
