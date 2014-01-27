@@ -2,7 +2,7 @@
 #include "SWMath.h"
 
 #include <math.h>
-#include <memory>
+#include <string.h>
 
 const SWMatrix4x4 SWMatrix4x4::unit;
 
