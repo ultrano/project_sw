@@ -31,7 +31,7 @@ private:
 
 /* @brief 타입의 이름과 상위 타입 이름을 기제 */
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #define SW_RTTI(typeName,superType) public:\
 	virtual const SWRtti* queryRtti() const { return getRtti(); }; \
 	static const SWRtti* getRtti() { static SWRtti rtti(#typeName,superType::getRtti()); return &rtti;} \

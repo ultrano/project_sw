@@ -557,13 +557,13 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 {
 	switch ( value.type() )
 	{
-	case Json::ValueType::nullValue : return NULL;
-	case Json::ValueType::booleanValue : return new SWBoolean( value.asBool() );
-	case Json::ValueType::realValue : return new SWNumber( value.asDouble() );
-	case Json::ValueType::intValue  : return new SWNumber( value.asInt() );
-	case Json::ValueType::uintValue : return new SWNumber( value.asUInt() );
-	case Json::ValueType::stringValue : return new SWString( value.asString() );
-	case Json::ValueType::arrayValue :
+	case Json::nullValue : return NULL;
+	case Json::booleanValue : return new SWBoolean( value.asBool() );
+	case Json::realValue : return new SWNumber( value.asDouble() );
+	case Json::intValue  : return new SWNumber( value.asInt() );
+	case Json::uintValue : return new SWNumber( value.asUInt() );
+	case Json::stringValue : return new SWString( value.asString() );
+	case Json::arrayValue :
 		{
 			SWArray* arr = new SWArray;
 			int count = value.size();
@@ -574,7 +574,7 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 			}
 			return arr;
 		}
-	case Json::ValueType::objectValue :
+	case Json::objectValue :
 		{
 			SWTable* tbl = new SWTable;
 			Json::Value::Members members = value.getMemberNames();

@@ -27,7 +27,7 @@ void SWFileOutputStream::write( tbyte* b, tuint len )
 bool SWFileOutputStream::open( const tstring& file )
 {
 	close();
-	fopen_s( &m_file, file.c_str(),"wb");
+	m_file = fopen( file.c_str(),"wb" );
 	return !!m_file;
 }
 
@@ -121,7 +121,7 @@ int SWFileInputStream::skip( tuint len )
 bool SWFileInputStream::open( const tstring& file )
 {
 	close();
-	fopen_s( &m_file, file.c_str(),"rb");
+	m_file = fopen( file.c_str(),"rb" );
 	return !!m_file;
 }
 
