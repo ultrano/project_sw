@@ -14,70 +14,72 @@
 #ifdef _MSC_VER
 #pragma pack(push,1)
 #endif
+
+#define MemBlockSize (5)
 struct MemBlock
 {
 	MemBlock* next;
 	bool isUsing;
 
-	bool isTail()
+	inline bool isTail()
 	{
 		return ( next == NULL );
 	};
 
-	unsigned int capacity()
+	inline unsigned int capacity()
 	{
 		if ( isTail() ) return 0;
-		unsigned int p = (unsigned int)((char*)next - ((char*)this + sizeof(MemBlock)));
+		unsigned int p = (unsigned int)((char*)next - ((char*)this + MemBlockSize));
 		return p;
 	};
 
-	void* memory()
+	inline void* memory()
 	{
-		return (void*)((char*)this + (sizeof(MemBlock)/sizeof(char)));
+		return (void*)((char*)this + MemBlockSize);
 	}
 
-	bool merge()
+	inline void merge()
 	{
-		MemBlock* old = next;
 		while( next != NULL )
 		{
 			if ( next->isTail() ) break;
 			if ( next->isUsing ) break;
 			next = next->next;
 		}
-		return ( old != next );
 	}
 
-	bool divide( unsigned int size )
+	inline void divide( unsigned int size )
 	{
-		if ( capacity() < (size + sizeof(MemBlock)) ) return false;
-		
+		if ( capacity() <= (size + MemBlockSize) ) return ;
+
 		MemBlock* sep = (MemBlock*)((char*)(memory()) + size);
 		sep->isUsing = false;
 		sep->next = next;
 		next = sep;
-		return true;
 	}
 };
 
+#define MemRodSize ()
 struct MemRod
 {
 	MemRod* next;
 	unsigned int maximumCapacity;
+	MemBlock*    cursor;
 	MemBlock     original;
 	
 	static MemRod* createRod( unsigned int size )
 	{
 		if ( size == 0 ) return NULL;
-		unsigned int baseSize = (sizeof(MemRod) + sizeof(MemBlock));
+		unsigned int baseSize = (sizeof(MemRod) + MemBlockSize);
 		unsigned int totalSize = baseSize + size;
 		void* chunk = malloc( totalSize );
 		
 		MemRod*   rod  = (MemRod*)chunk;
 		MemBlock* head = (MemBlock*)&rod->original;
-		MemBlock* tail = (MemBlock*)((char*)(chunk) + totalSize - sizeof(MemBlock));
+		MemBlock* tail = (MemBlock*)((char*)(chunk) + totalSize - MemBlockSize);
 		
 		rod->next = NULL;
+		rod->cursor = head;
 
 		head->next = tail;
 		tail->next = NULL;
@@ -97,24 +99,23 @@ struct MemRod
 
 	MemBlock* request( unsigned int size )
 	{
-		MemBlock* block = &original;
-		while( block != NULL )
+		if ( size > maximumCapacity ) return NULL;
+		MemBlock* anchor = cursor;
+		while( cursor != NULL )
 		{
-			if ( block->isTail() ) return NULL;
-			if ( false == block->isUsing )
+			if ( false == cursor->isUsing )
 			{
-				if ( size <= block->capacity() ) break;
-				 block->merge();
-				if ( size <= block->capacity() ) break;
+				cursor->merge();
+				if ( size <= cursor->capacity() ) break;
 			}
-			block = block->next;
+			cursor = cursor->next;
+			if ( cursor->isTail() ) cursor = &original;
+			if ( cursor <= anchor && anchor < cursor->next ) return NULL;
 		}
-		
-		if ( block->isTail() ) return NULL;
 
-		block->divide( size );
+		cursor->divide( size );
 
-		return block;
+		return cursor;
 	}
 
 	void defragment()
@@ -126,6 +127,7 @@ struct MemRod
 			block->merge();
 			block = block->next;
 		}
+		cursor = &original;
 	}
 };
 #ifdef _MSC_VER
@@ -134,11 +136,13 @@ struct MemRod
 
 class MemCore
 {
-	enum { DEFAULT_MAX_CAPACITY = 512 };
+	enum { DEFAULT_MAX_CAPACITY = 4096 };
 	MemRod* m_fuelRod;
+	MemRod* m_cursor;
 
 	MemCore()
 		: m_fuelRod( MemRod::createRod( DEFAULT_MAX_CAPACITY ) )
+		, m_cursor( m_fuelRod )
 	{
 	};
 	~MemCore()
@@ -155,38 +159,41 @@ public:
 
 	void* alloc( unsigned int size )
 	{
-		MemRod* rod = m_fuelRod;
 		MemBlock* block = NULL;
-
 		do
 		{
-			block = rod->request( size );
+			block = m_cursor->request( size );
 			if ( block != NULL ) break;
-			if ( rod->next == NULL ) rod->next = MemRod::createRod( DEFAULT_MAX_CAPACITY );
-			rod = rod->next;
+			if ( m_cursor->next == NULL )
+			{
+				unsigned int allocSize = (size > DEFAULT_MAX_CAPACITY)? size : DEFAULT_MAX_CAPACITY;
+				MemRod* newRod = MemRod::createRod( allocSize );
+				newRod->next = m_fuelRod;
+				m_cursor = m_fuelRod = newRod;
+			}
+			else m_cursor = m_cursor->next;
 		} while ( true );
 
-		if ( block == NULL ) return NULL;
-		block->divide( size );
 		block->isUsing = true;
+
 		return block->memory();
 	}
 
 	void free( void* mem )
 	{
-		MemBlock* block = (MemBlock*)((char*)mem - (sizeof(MemBlock)/sizeof(char)));
+		MemBlock* block = (MemBlock*)((char*)mem - MemBlockSize);
 		block->isUsing = false;
-		block->merge();
 	}
 	
 	void defragment()
 	{
-		MemRod* rod = m_fuelRod;
-		while ( rod != NULL )
+		m_cursor = m_fuelRod;
+		while ( m_cursor != NULL )
 		{
-			rod->defragment();
-			rod = rod->next;
+			m_cursor->defragment();
+			m_cursor = m_cursor->next;
 		}
+		m_cursor = m_fuelRod;
 	}
 };
 
@@ -220,11 +227,13 @@ unsigned int __SWUtil::getMicroCount()
 void* __SWUtil::alloc( size_t size )
 {
 	return MemCore::instance().alloc( size );
+	//return malloc( size );
 }
 
 void  __SWUtil::free( void* memory )
 {
 	MemCore::instance().free( memory );
+	//::free( memory );
 }
 
 tnumber __SWUtil::strToNum( const tstring& str )
