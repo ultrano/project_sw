@@ -14,6 +14,7 @@
 #include <set>
 #include <vector>
 
+
 typedef std::string    tstring;
 typedef std::wstring   twstring;
 typedef double         tnumber;

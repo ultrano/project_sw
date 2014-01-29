@@ -25,8 +25,8 @@ private:
 	typedef ttable< tstring,SWHardRef<SWObject> > ObjectMap;
 
     tstring    m_name;
-	ComponentArray m_components;
-	ComponentList  m_addedComponents;
+	SWObjectArray m_components;
+	SWObjectList  m_addedComponents;
 
 	SWObjectList   m_updateDelegates;
 	ObjectMap      m_propTable;

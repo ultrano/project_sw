@@ -20,7 +20,8 @@
 class SWObject;
 class SWDelegate;
 class SWHandler;
-typedef tlist< SWHardRef<SWObject> > SWObjectList;
+typedef tlist< SWHardRef<SWObject>, SWAllocator< SWHardRef<SWObject> > > SWObjectList;
+typedef tarray< SWHardRef<SWObject>, SWAllocator< SWHardRef<SWObject> > > SWObjectArray;
 
 
 class SWObject : public SWRefCountable

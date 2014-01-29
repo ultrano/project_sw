@@ -61,12 +61,12 @@ void SWGameObject::udpate()
 {
 	if ( m_addedComponents.size() )
 	{
-		ComponentList copy = m_addedComponents;
+		SWObjectList copy = m_addedComponents;
 		m_addedComponents.clear();
-		ComponentList::iterator itor = copy.begin();
+		SWObjectList::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
-			SWComponent* comp = (*itor)();
+			SWComponent* comp = swrtti_cast<SWComponent>( (*itor)() );
 			comp->onStart();
 		}
 	}
@@ -108,7 +108,7 @@ SWComponent* SWGameObject::getComponent( const SWRtti* rtti ) const
 
 	for ( int i = 0 ; i < m_components.size() ; ++i )
 	{
-		SWComponent* comp = (m_components[i])();
+		SWComponent* comp = swrtti_cast<SWComponent>( (m_components[i])() );
 		if ( comp->queryRtti() == rtti ) return comp; 
 	}
 	return NULL;
@@ -125,14 +125,14 @@ void SWGameObject::removeComponent( const SWRtti* rtti )
 
 void SWGameObject::removeComponentAll()
 {
-	ComponentArray copy = m_components;
-	ComponentArray::iterator itor = copy.end();
+	SWObjectArray copy = m_components;
+	SWObjectArray::iterator itor = copy.end();
 	m_components.clear();
 
 	do
 	{
 		--itor;
-		SWComponent* comp = (*itor)();
+		SWComponent* comp = swrtti_cast<SWComponent>( (*itor)() );
 		comp->onRemove();
 		comp->destroy();
 	} while ( itor != copy.begin() );
@@ -269,8 +269,8 @@ void SWGameObject::cleanPropSetDelegate( const tstring& name )
 
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 {
-	ComponentArray copy = m_components;
-	ComponentArray::iterator itor = copy.end();
+	SWObjectArray copy = m_components;
+	SWObjectArray::iterator itor = copy.end();
 	
 	for ( ; itor != copy.end() ; ++itor )
 	{
