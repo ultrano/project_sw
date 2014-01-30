@@ -7,7 +7,7 @@
 //
 
 #include "SWMemory.h"
-#include <memory>
+#include <stdlib.h>
 #include "SWUtil.h"
 #include "SWLog.h"
 
@@ -187,7 +187,7 @@ public:
 		return block->memory();
 	}
 
-	inline void free( void* mem )
+	inline void dealloc( void* mem )
 	{
 		MemBlock* block = (MemBlock*)((char*)mem - MemBlockSize);
 		block->isUsing = false;
@@ -232,10 +232,12 @@ void SWMemory::operator delete( void* memory )
 
 void* SWAlloc( size_t size )
 {
+	//return malloc( size );
 	return MemCore::instance().alloc( size );
 }
 
 void  SWFree( void* mem )
 {
-	MemCore::instance().free( mem );
+	//free( mem );
+	MemCore::instance().dealloc( mem );
 }
