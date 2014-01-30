@@ -33,7 +33,7 @@
 #include "BallGenerator.h"
 #include "CatGenerator.h"
 
-#include "json.h"
+#include "json/json.h"
 
 #include <stdio.h>
 #include <set>
@@ -143,42 +143,6 @@ class GameMainScene : public SWGameScene
 			}
 		}
 
-		{
-			std::ifstream ifs( "../resource/catAnim.json" );
-
-			Json::Reader reader;
-			Json::Value root;
-			reader.parse( (std::istream&)ifs, root );
-
-			SWTable* spriteData = new SWTable;
-			SWHardRef<SWTable> jsonData = swrtti_cast<SWTable>(convertJsonValue( root )());
-			SWTable::iterator itor = jsonData()->begin();
-			for ( ; itor != jsonData()->end() ; ++itor )
-			{
-				const SWTable::Key& name = itor->first;
-				SWArray* regions = new SWArray;
-
-				SWValue* data = (SWValue*)itor->second();
-				float duration = data->find( "duration" )->asNumber();
-				SWValue* regionsJson = (SWValue*)data->find( "regions" );
-				for ( int i = 0 ; i < regionsJson->count() ; ++i )
-				{
-					SWValue* imgPath = (SWValue*)regionsJson->get( i );
-					SWSpriteData::ImageRegion* region = new SWSpriteData::ImageRegion;
-					region->texID = SW_GC.loadTexture( imgPath->asString() );
-					regions->add( region );
-				}
-
-				SWArray* seqData = new SWArray;
-				seqData->add( new SWNumber(duration) );
-				seqData->add( regions );
-				spriteData->insert( name, seqData );
-			}
-
-			SWGameObject* go = find( "catGenerator" );
-			go->defineProp( "spriteData" );
-			go->setProp( "spriteData", spriteData );
-		}
 
 		{
 			SWGameObject* go = find( "siso_up" );

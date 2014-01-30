@@ -11,9 +11,7 @@
 #include "SWUtil.h"
 #include "SWLog.h"
 
-#ifdef _MSC_VER
 #pragma pack(push,1)
-#endif
 
 #define MemBlockSize (5)
 struct MemBlock
@@ -130,9 +128,7 @@ struct MemRod
 		cursor = &original;
 	}
 };
-#ifdef _MSC_VER
 #pragma pack(pop)
-#endif
 
 class MemCore
 {
@@ -147,6 +143,13 @@ class MemCore
 	};
 	~MemCore()
 	{
+		MemRod* rod = m_fuelRod;
+		while ( rod )
+		{
+			MemRod::deleteRod( rod );
+			rod = rod->next;
+		}
+		m_fuelRod = NULL;
 	}
 
 public:
