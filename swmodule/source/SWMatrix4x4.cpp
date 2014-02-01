@@ -1,8 +1,8 @@
 #include "SWMatrix4x4.h"
 #include "SWMath.h"
+#include "SWType.h"
 
 #include <math.h>
-#include <string.h>
 
 const SWMatrix4x4 SWMatrix4x4::unit;
 

@@ -81,7 +81,7 @@ twstring __SWUtil::utf8ToUnicode( const tstring& str )
 		begin = &str[3];
 	} while ( false );
 
-	return conv.from_bytes( begin, end );
+	return conv.from_bytes( begin, end ).c_str();
 }
 
 tstring __SWUtil::unicodeToUtf8( const twstring& str )
@@ -95,7 +95,7 @@ tstring __SWUtil::unicodeToUtf8( const twstring& str )
 	if ( str[0] == (wchar_t)0xfeff ) begin = &str[1];
 	else if ( str[0] == (wchar_t)0xfffe ) begin = &str[1];
 
-	return conv.to_bytes( begin, end );
+	return conv.to_bytes( begin, end ).c_str();
 
 }
 

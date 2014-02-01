@@ -13,8 +13,10 @@
 #include <map>
 #include <set>
 #include <vector>
+#include "SWMemory.h"
 
-
+typedef std::basic_string<char, std::char_traits<char>, SWAllocator<char> > tstring2;
+typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, SWAllocator<wchar_t> > twstring2;
 typedef std::string    tstring;
 typedef std::wstring   twstring;
 typedef double         tnumber;

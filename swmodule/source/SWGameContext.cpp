@@ -562,7 +562,7 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 	case Json::realValue : return new SWNumber( value.asDouble() );
 	case Json::intValue  : return new SWNumber( value.asInt() );
 	case Json::uintValue : return new SWNumber( value.asUInt() );
-	case Json::stringValue : return new SWString( value.asString() );
+	case Json::stringValue : return new SWString( value.asString().c_str() );
 	case Json::arrayValue :
 		{
 			SWArray* arr = new SWArray;
@@ -580,8 +580,8 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 			Json::Value::Members members = value.getMemberNames();
 			for ( int i = 0 ; i < members.size() ; ++i )
 			{
-				const tstring&  key    = members[i];
-				SWHardRef<SWObject> object = convertJsonValue( value.get( key, Json::Value::null ) );
+				const tstring&  key    = members[i].c_str();
+				SWHardRef<SWObject> object = convertJsonValue( value.get( key.c_str(), Json::Value::null ) );
 				tbl->insert( key, object() );
 			}
 			return tbl;
@@ -605,7 +605,7 @@ SWHardRef<SWObject> SWGameContext::loadJsonFromString( const tstring& doc )
 {
 	Json::Reader reader;
 	Json::Value root;
-	reader.parse( doc, root );
+	reader.parse( doc.c_str(), root );
 
 	return convertJsonValue( root );
 }
