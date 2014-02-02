@@ -9,13 +9,16 @@ class SWList : public SWObject
 
 public:
 
-	typedef tlist< SWObject::Ref > Value;
-	typedef Value::iterator iterator;
-	typedef Value::const_iterator const_iterator;
+	typedef SWHardRef<SWList> Ref;
+	typedef SWWeakRef<SWList> WRef;
+
+	typedef tlist< SWObject::Ref > Type;
+	typedef Type::iterator iterator;
+	typedef Type::const_iterator const_iterator;
 
 private:
 
-	Value m_value;
+	Type m_value;
 
 public:
 
@@ -25,7 +28,7 @@ public:
 	void add( const SWObject* object );
 	void remove( const SWObject* object );
 	void clear();
-	void copy( Value& val );
+	void copy( Type& val );
 	void copy( SWList* val );
 
 	unsigned int count() const;

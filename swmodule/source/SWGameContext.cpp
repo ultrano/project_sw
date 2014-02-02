@@ -296,7 +296,7 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 
 	//////////////////////////////////////////////////////////////////////////
 	{
-		SWList::Value copy = SWInput.m_listeners;
+		SWList::Type copy = SWInput.m_listeners;
 		SWList::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
@@ -316,7 +316,7 @@ void SWGameContext::onKeyChange( tuint key, bool press )
 
 	//////////////////////////////////////////////////////////////////////////
 	{
-		SWList::Value copy = SWInput.m_listeners;
+		SWList::Type copy = SWInput.m_listeners;
 		SWList::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{

@@ -10,13 +10,16 @@ class SWArray : public SWObject
 
 public:
 
-	typedef tarray< SWHardRef<SWObject> > Value;
-	typedef Value::iterator iterator;
-	typedef Value::const_iterator const_iterator;
+	typedef SWHardRef<SWArray> Ref;
+	typedef SWWeakRef<SWArray> WRef;
+
+	typedef tarray< SWObject::Ref, SWAllocator<SWObject::Ref> > Type;
+	typedef Type::iterator iterator;
+	typedef Type::const_iterator const_iterator;
 
 private:
 
-	Value m_value;
+	Type m_value;
 
 public:
 
@@ -29,7 +32,7 @@ public:
 	void add( const SWObject* object );
 	void remove( unsigned int index );
 	void clear();
-	void copy( Value& val );
+	void copy( Type& val );
 	void copy( SWArray* val );
 
 	unsigned int count() const;

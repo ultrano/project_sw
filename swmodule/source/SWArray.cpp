@@ -39,7 +39,7 @@ void SWArray::clear()
 	m_value.clear();
 }
 
-void SWArray::copy( Value& val )
+void SWArray::copy( Type& val )
 {
 	val = m_value;
 }

@@ -38,7 +38,7 @@ void SWRenderer::preRender()
 	if ( m_preRenderDels.size() == 0 ) return;
 
 	SWObject::Ref vital = this;
-	SWList::Value copy = m_preRenderDels;
+	SWList::Type copy = m_preRenderDels;
 	SWList::iterator itor = copy.begin();
 	for ( ; itor != copy.end() ; ++itor )
 	{

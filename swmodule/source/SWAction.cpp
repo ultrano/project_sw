@@ -30,7 +30,7 @@ void SWAction::onRemove()
 void SWAction::onUpdate()
 {
 	SWWeakRef<SWAction> vital = this;
-	SWList::Value itorList;
+	SWList::Type itorList;
 	m_actList()->copy( itorList );
 	SWList::iterator itor = itorList.begin();
 	for ( ; itor != itorList.end() ; ++itor )

@@ -25,7 +25,7 @@ void SWList::clear()
 	m_value.clear();
 }
 
-void SWList::copy( Value& val )
+void SWList::copy( Type& val )
 {
 	val = m_value;
 }

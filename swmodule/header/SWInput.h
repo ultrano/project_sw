@@ -22,7 +22,7 @@ private:
 	tuint m_lastKey;
 	int m_keyDownCount;
 
-	SWList::Value m_listeners;
+	SWList::Type m_listeners;
 
 	__SWInput();
 	~__SWInput();

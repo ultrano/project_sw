@@ -10,8 +10,8 @@ class SWRenderer : public SWComponent
 	
 private:
 
-	SWList::Value m_preRenderDels;
-	SWList::Value m_postRenderDels;
+	SWList::Type m_preRenderDels;
+	SWList::Type m_postRenderDels;
 
 protected:
 
