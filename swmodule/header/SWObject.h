@@ -20,20 +20,25 @@
 class SWObject;
 class SWDelegate;
 class SWHandler;
-typedef tlist< SWHardRef<SWObject>, SWAllocator< SWHardRef<SWObject> > > SWObjectList;
-typedef tarray< SWHardRef<SWObject>, SWAllocator< SWHardRef<SWObject> > > SWObjectArray;
-
 
 class SWObject : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWObject );
-	unsigned     m_id;        //< 객체의 유일성을 위한 ID
-	SWObjectList m_delegates;
 public:
 
 	typedef SWHardRef<SWObject> Ref;
-	typedef SWWeakRef<SWObject> WRef;
+	typedef tlist< Ref, SWAllocator< Ref > > List;
+	typedef tarray< Ref, SWAllocator< Ref > > Array;
 
+	typedef SWWeakRef<SWObject> WRef;
+	typedef tlist< WRef, SWAllocator< WRef > > WList;
+	typedef tarray< WRef, SWAllocator< WRef > > WArray;
+
+private:
+	unsigned     m_id;        //< 객체의 유일성을 위한 ID
+	SWObject::List m_delegates;
+
+public:
 	SWObject();
 	~SWObject();
 	unsigned getID() const { return m_id; };

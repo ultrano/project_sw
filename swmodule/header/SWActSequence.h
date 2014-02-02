@@ -9,7 +9,7 @@ class SWActSequence : public SWAct
 
 	int m_cursor;
 	SWAct* m_current;
-	SWObjectList m_acts;
+	SWObject::List m_acts;
 
 	SWActSequence();
 	~SWActSequence();

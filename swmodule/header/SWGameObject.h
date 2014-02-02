@@ -25,10 +25,10 @@ private:
 	typedef ttable< tstring,SWHardRef<SWObject> > ObjectMap;
 
     tstring    m_name;
-	SWObjectArray m_components;
-	SWObjectList  m_addedComponents;
+	SWObject::Array m_components;
+	SWObject::List  m_addedComponents;
 
-	SWObjectList   m_updateDelegates;
+	SWObject::List   m_updateDelegates;
 	ObjectMap      m_propTable;
 
 public:

@@ -20,7 +20,7 @@ class SWProperty : public SWObject
 {
 public:
 	SWHardRef<SWObject> m_value;
-	SWObjectList m_setDelegates;
+	SWObject::List m_setDelegates;
 };
 
 SWGameObject::SWGameObject()
@@ -61,9 +61,9 @@ void SWGameObject::udpate()
 {
 	if ( m_addedComponents.size() )
 	{
-		SWObjectList copy = m_addedComponents;
+		SWObject::List copy = m_addedComponents;
 		m_addedComponents.clear();
-		SWObjectList::iterator itor = copy.begin();
+		SWObject::List::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
 			SWComponent* comp = swrtti_cast<SWComponent>( (*itor)() );
@@ -74,8 +74,8 @@ void SWGameObject::udpate()
 	if ( m_updateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
-		SWObjectList copy = m_updateDelegates;
-		SWObjectList::iterator itor = copy.begin();
+		SWObject::List copy = m_updateDelegates;
+		SWObject::List::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
 			SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
@@ -125,8 +125,8 @@ void SWGameObject::removeComponent( const SWRtti* rtti )
 
 void SWGameObject::removeComponentAll()
 {
-	SWObjectArray copy = m_components;
-	SWObjectArray::iterator itor = copy.end();
+	SWObject::Array copy = m_components;
+	SWObject::Array::iterator itor = copy.end();
 	m_components.clear();
 
 	do
@@ -142,7 +142,7 @@ void SWGameObject::removeComponentAll()
 void SWGameObject::addUpdateDelegate( SWDelegate* dg )
 {
 	if ( !dg ) return;
-	SWObjectList::iterator itor = m_updateDelegates.begin();
+	SWObject::List::iterator itor = m_updateDelegates.begin();
 	for ( ; itor != m_updateDelegates.end() ; ++itor )
 	{
 		SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
@@ -181,7 +181,7 @@ void SWGameObject::setProp( const tstring& name, SWObject* value )
 	
 	{
 		prop->m_value = value;
-		SWObjectList::iterator itor = prop->m_setDelegates.begin();
+		SWObject::List::iterator itor = prop->m_setDelegates.begin();
 		for ( ; itor != prop->m_setDelegates.end() ; ++itor )
 		{
 			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
@@ -254,7 +254,7 @@ void SWGameObject::cleanPropSetDelegate( const tstring& name )
 	if ( prop == NULL ) return;
 	
 	{
-		SWObjectList::iterator itor = prop->m_setDelegates.begin();
+		SWObject::List::iterator itor = prop->m_setDelegates.begin();
 		while ( itor != prop->m_setDelegates.end() )
 		{
 			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
@@ -269,8 +269,8 @@ void SWGameObject::cleanPropSetDelegate( const tstring& name )
 
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 {
-	SWObjectArray copy = m_components;
-	SWObjectArray::iterator itor = copy.end();
+	SWObject::Array copy = m_components;
+	SWObject::Array::iterator itor = copy.end();
 	
 	for ( ; itor != copy.end() ; ++itor )
 	{

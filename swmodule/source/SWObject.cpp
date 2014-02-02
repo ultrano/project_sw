@@ -37,7 +37,7 @@ SWObject::~SWObject()
 SWDelegate* SWObject::getDelegate( const SWHandler& handler )
 {
 	SWDelegate* dg = NULL;
-	SWObjectList::iterator itor = m_delegates.begin();
+	SWObject::List::iterator itor = m_delegates.begin();
 	for ( ; itor != m_delegates.end() ; ++itor )
 	{
 		dg = swrtti_cast<SWDelegate>( (*itor)() );
@@ -58,7 +58,7 @@ tstring SWObject::toString() const
 
 void SWObject::destroy()
 {
-	SWObjectList::iterator itor = m_delegates.begin();
+	SWObject::List::iterator itor = m_delegates.begin();
 	for ( ; itor != m_delegates.end() ; ++itor )
 	{
 		SWDelegate* dg = swrtti_cast<SWDelegate>( (*itor)() );

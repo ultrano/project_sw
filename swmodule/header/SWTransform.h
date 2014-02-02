@@ -22,8 +22,8 @@ class SWTransform : public SWComponent
 private:
 
 	SWWeakRef<SWTransform> m_parent;
-	SWObjectList           m_children;
-	SWObjectList           m_setParentDelegates;
+	SWObject::List           m_children;
+	SWObject::List           m_setParentDelegates;
 	
 	SWVector3f    m_scale;    //< 비율.
 	SWQuaternion  m_rotate;   //< 회전.
@@ -53,7 +53,7 @@ public:
 	void setLocalPosition( const SWVector3f& position );
 
 	SWTransform* find( const tstring& name );
-	void copyChildren( SWObjectList& transList );
+	void copyChildren( SWObject::List& transList );
 
 	void onStart();
 	void onRemove();

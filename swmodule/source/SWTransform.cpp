@@ -47,8 +47,8 @@ void SWTransform::setParent( SWTransform* parent )
 	arr->add( this );
 	arr->add( parent );
 
-	SWObjectList copy = m_setParentDelegates;
-	SWObjectList::iterator itor = copy.begin();
+	SWObject::List copy = m_setParentDelegates;
+	SWObject::List::iterator itor = copy.begin();
 	for ( ; itor != copy.end() ;++itor )
 	{
 		SWDelegate* dg = swrtti_cast<SWDelegate>( (*itor)() );
@@ -80,7 +80,7 @@ void SWTransform::removeSetParentDelegate( SWObject* object, const SWHandler& ha
 	if ( !object ) return;
 	if ( !handler.m_method ) return;
 	
-	SWObjectList::iterator itor = m_setParentDelegates.begin();
+	SWObject::List::iterator itor = m_setParentDelegates.begin();
 	for ( ; itor != m_setParentDelegates.end() ; ++itor )
 	{
 		SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
@@ -134,7 +134,7 @@ void SWTransform::setLocalPosition( const SWVector3f& position )
 
 SWTransform* SWTransform::find( const tstring& name )
 {
-	SWObjectList::iterator itor = m_children.begin();
+	SWObject::List::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )
 	{
 		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
@@ -143,7 +143,7 @@ SWTransform* SWTransform::find( const tstring& name )
 	return NULL;
 }
 
-void SWTransform::copyChildren( SWObjectList& transList )
+void SWTransform::copyChildren( SWObject::List& transList )
 {
 	transList = m_children;
 }
@@ -158,8 +158,8 @@ void SWTransform::onStart()
 void SWTransform::onRemove()
 {
 	gameObject()->removeUpdateDelegate( GetDelegate( onUpdate ) );
-	SWObjectList copy = m_children;
-	SWObjectList::iterator itor = copy.begin();
+	SWObject::List copy = m_children;
+	SWObject::List::iterator itor = copy.begin();
 	for ( ; itor != copy.end() ; ++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
@@ -182,7 +182,7 @@ void SWTransform::onUpdate( SWGameObject* )
 		m_worldMat = m_worldMat * parent->getWorldMatrix();
 	}
 
-	SWObjectList::iterator itor = m_children.begin();
+	SWObject::List::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
