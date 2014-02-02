@@ -25,14 +25,10 @@ class SWGameScene : public SWObject
 	friend class SWRenderer;
 protected:
 
-	typedef tset< SWHardRef<SWGameObject> >  GameObjectSet;
-    typedef tlist< SWHardRef<SWGameObject> > GameObjectList;
-    typedef tlist< SWHardRef<SWComponent> >  ComponentList;
-    
 	//! root game objects
-	GameObjectList m_roots;
-	GameObjectList m_updates;
-	ComponentList  m_renderers;
+	SWObject::List m_roots;
+	SWObject::List m_updates;
+	SWObject::List m_renderers;
 public:
     
     //! 메소드들

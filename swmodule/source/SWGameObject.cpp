@@ -49,7 +49,7 @@ void SWGameObject::awake()
 
 void SWGameObject::destroy()
 {
-	SWHardRef<SWGameObject> holder = this;
+	SWGameObject::Ref holder = this;
 	removeComponentAll();
 
 	m_propTable.clear();

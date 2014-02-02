@@ -18,12 +18,16 @@ class SWGameObject : public SWObject
 {
     SW_RTTI( SWGameObject, SWObject );
 	friend class SWGameScene;
-private:
+
+public:
+	typedef SWHardRef<SWGameObject> Ref;
+	typedef SWWeakRef<SWGameObject> WRef;
 
 	typedef tarray< SWHardRef<SWComponent> > ComponentArray;
 	typedef tlist< SWHardRef<SWComponent> > ComponentList;
 	typedef ttable< tstring,SWObject::Ref > ObjectMap;
 
+private:
     tstring    m_name;
 	SWObject::Array m_components;
 	SWObject::List  m_addedComponents;

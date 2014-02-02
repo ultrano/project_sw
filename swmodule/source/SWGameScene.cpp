@@ -30,10 +30,10 @@ SWGameScene::~SWGameScene()
 SWGameObject* SWGameScene::find( const char *name )
 {
 
-	GameObjectList::iterator itor = m_roots.begin();
+	SWObject::List::iterator itor = m_roots.begin();
 	for ( ; itor != m_roots.end() ; ++itor )
 	{
-		SWGameObject* object = (*itor)();
+		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
 		if ( object->getName() == name ) return object;
 	}
 	return NULL;
@@ -42,7 +42,7 @@ SWGameObject* SWGameScene::find( const char *name )
 void SWGameScene::awake()
 {
 	SWInput.addInputDelegate( GetDelegate(handleEvent) );
-    onAwake();
+	onAwake();
 }
 
 void SWGameScene::destroy()
@@ -50,10 +50,10 @@ void SWGameScene::destroy()
 	onDestroy();
 
 	m_updates = m_roots;
-	GameObjectList::iterator itor = m_updates.begin();
+	SWObject::List::iterator itor = m_updates.begin();
 	for ( ; itor != m_updates.end() ; ++itor )
 	{
-		SWGameObject* object = (*itor)();
+		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
 		object->destroy();
 	}
 
@@ -79,10 +79,10 @@ void SWGameScene::update()
 	onUpdate();
 
 	m_updates = m_roots;
-	GameObjectList::iterator itor = m_updates.begin();
+	SWObject::List::iterator itor = m_updates.begin();
 	for ( ; itor != m_updates.end() ; ++itor )
 	{
-		SWGameObject* go = (*itor)();
+		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		go->udpate();
 	}
 }
@@ -91,7 +91,7 @@ void SWGameScene::draw()
 {
 	if ( SWCamera::mainCamera.isValid() == false ) return;
 
-	ComponentList::iterator itor = m_renderers.begin();
+	SWObject::List::iterator itor = m_renderers.begin();
 	for ( ; itor != m_renderers.end() ; ++itor )
 	{
 		SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());

@@ -48,7 +48,7 @@ SWObject::Ref convertJsonValue( const Json::Value& value );
 class GameMainScene : public SWGameScene
 {
 	SW_RTTI( GameMainScene, SWGameScene );
-	SWHardRef<SWGameObject> target;
+	SWGameObject::Ref target;
 
 	float m_minAngle;
 	float m_maxAngle;

@@ -30,7 +30,7 @@ void SWTransform::setParent( SWTransform* parent )
 {
 	if ( m_parent() == parent ) return;
 
-	SWHardRef<SWGameObject> object = gameObject();
+	SWGameObject::Ref object = gameObject();
 
 	if ( m_parent() ) m_parent()->m_children.remove( object() );
 	else SW_GC.getScene()->m_roots.remove( object() );
