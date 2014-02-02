@@ -21,16 +21,17 @@ class SWObject;
 class SWDelegate;
 class SWHandler;
 
+#define SW_REFERNCE(name) public: typedef SWHardRef<name> Ref; typedef SWWeakRef<name> WRef; private:
+
 class SWObject : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWObject );
+	SW_REFERNCE( SWObject );
 public:
 
-	typedef SWHardRef<SWObject> Ref;
 	typedef tlist< Ref, SWAllocator< Ref > > List;
 	typedef tarray< Ref, SWAllocator< Ref > > Array;
 
-	typedef SWWeakRef<SWObject> WRef;
 	typedef tlist< WRef, SWAllocator< WRef > > WList;
 	typedef tarray< WRef, SWAllocator< WRef > > WArray;
 

@@ -6,11 +6,9 @@
 class SWList : public SWObject
 {
 	SW_RTTI( SWList, SWObject );
+	SW_REFERNCE( SWList );
 
 public:
-
-	typedef SWHardRef<SWList> Ref;
-	typedef SWWeakRef<SWList> WRef;
 
 	typedef tlist< SWObject::Ref > Type;
 	typedef Type::iterator iterator;
