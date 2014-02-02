@@ -79,7 +79,7 @@ public:
 class SWDelegate : public SWObject
 {
 	SW_RTTI( SWDelegate, SWObject );
-	SWWeakRef<SWObject> m_object;
+	SWObject::WRef m_object;
 	SWHandler m_handler;
 public:
 

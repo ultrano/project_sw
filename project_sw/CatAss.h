@@ -43,7 +43,7 @@
 
 using namespace std;
 
-SWHardRef<SWObject> convertJsonValue( const Json::Value& value );
+SWObject::Ref convertJsonValue( const Json::Value& value );
 
 class GameMainScene : public SWGameScene
 {
@@ -231,7 +231,7 @@ class InitScene : public SWGameScene
 		Json::Value root;
 		reader.parse( (std::istream&)ifs, root );
 
-		SWHardRef<SWObject> rootObj = convertJsonValue( root );
+		SWObject::Ref rootObj = convertJsonValue( root );
 
 		SW_GC.storeItem( "config", rootObj() );
 		

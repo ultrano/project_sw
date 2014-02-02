@@ -19,7 +19,7 @@
 class SWProperty : public SWObject
 {
 public:
-	SWHardRef<SWObject> m_value;
+	SWObject::Ref m_value;
 	SWObject::List m_setDelegates;
 };
 

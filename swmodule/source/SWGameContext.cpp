@@ -70,7 +70,7 @@ public:
 	
 	ttable< tstring,unsigned int > textureCache;
 	ttable< unsigned int,TextureInfo > textureTable;
-	ttable< tstring, SWHardRef<SWObject> > storage;
+	ttable< tstring, SWObject::Ref > storage;
 
 	int lastBindedTexID;
 
@@ -458,7 +458,7 @@ SWHardRef<SWInputStream> SWGameContext::assetInputStream( const tstring& assetFi
 bool SWGameContext::storeItem( const tstring& key, SWObject* item )
 {
 	SWHardRef< SWObject > hold( item );
-	ttable< tstring, SWHardRef<SWObject> >::iterator itor = m_pimpl()->storage.find( key );
+	ttable< tstring, SWObject::Ref >::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor != m_pimpl()->storage.end() ) return false;
 	
 	m_pimpl()->storage.insert( std::make_pair(key, item) );
@@ -472,7 +472,7 @@ void SWGameContext::removeItem( const tstring& key )
 
 SWObject* SWGameContext::findItem( const tstring& key )
 {
-	ttable< tstring, SWHardRef<SWObject> >::iterator itor = m_pimpl()->storage.find( key );
+	ttable< tstring, SWObject::Ref >::iterator itor = m_pimpl()->storage.find( key );
 	if ( itor == m_pimpl()->storage.end() ) return NULL;
 	return itor->second();
 }
@@ -553,7 +553,7 @@ unsigned int glLoadTexture( const char* fileName, int& width, int& height )
 	return texID[0];
 }
 
-SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
+SWObject::Ref convertJsonValue( const Json::Value& value )
 {
 	switch ( value.type() )
 	{
@@ -569,7 +569,7 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 			int count = value.size();
 			for ( Json::Value::UInt i = 0 ; i < count ; ++i )
 			{
-				SWHardRef<SWObject> object = convertJsonValue( value.get(i,Json::Value::null) );
+				SWObject::Ref object = convertJsonValue( value.get(i,Json::Value::null) );
 				arr->add( object() );
 			}
 			return arr;
@@ -581,7 +581,7 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 			for ( int i = 0 ; i < members.size() ; ++i )
 			{
 				const tstring&  key    = members[i].c_str();
-				SWHardRef<SWObject> object = convertJsonValue( value.get( key.c_str(), Json::Value::null ) );
+				SWObject::Ref object = convertJsonValue( value.get( key.c_str(), Json::Value::null ) );
 				tbl->insert( key, object() );
 			}
 			return tbl;
@@ -589,7 +589,7 @@ SWHardRef<SWObject> convertJsonValue( const Json::Value& value )
 	}
 }
 
-SWHardRef<SWObject> SWGameContext::loadJson( const tstring& path )
+SWObject::Ref SWGameContext::loadJson( const tstring& path )
 {
 	tstring solvedPath = m_pimpl()->resFolder + path;
 	std::ifstream ifs( solvedPath.c_str() );
@@ -601,7 +601,7 @@ SWHardRef<SWObject> SWGameContext::loadJson( const tstring& path )
 	return convertJsonValue( root );
 }
 
-SWHardRef<SWObject> SWGameContext::loadJsonFromString( const tstring& doc )
+SWObject::Ref SWGameContext::loadJsonFromString( const tstring& doc )
 {
 	Json::Reader reader;
 	Json::Value root;

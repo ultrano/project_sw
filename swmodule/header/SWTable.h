@@ -10,7 +10,7 @@ class SWTable : public SWObject
 public:
 
 	typedef tstring Key;
-	typedef ttable< Key, SWHardRef<SWObject> > Value;
+	typedef ttable< Key, SWObject::Ref > Value;
 	typedef Value::iterator iterator;
 	typedef Value::const_iterator const_iterator;
 

@@ -89,7 +89,7 @@ class TestScene : public SWGameScene
 			buf.resize( fis()->available() + 1 );
 			fis()->read( (tbyte*)&buf[0], buf.size() );
 			
-			SWHardRef<SWObject> fontJson = SW_GC.loadJson( "font/font1.fnt" );
+			SWObject::Ref fontJson = SW_GC.loadJson( "font/font1.fnt" );
 			WIFontData* fontData = new WIFontData;
 			fontData->load( fontJson() );
 			fontJson()->destroy();

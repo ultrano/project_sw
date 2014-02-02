@@ -15,7 +15,7 @@ class SWTimer : public SWObject
 {
     SW_RTTI( SWTimer, SWObject );
     
-    SWWeakRef<SWObject> m_target;
+    SWObject::WRef m_target;
     SWHandler m_handler;
     
     float m_interval;
