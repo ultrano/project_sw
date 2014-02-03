@@ -580,13 +580,14 @@ SWObject::Ref convertJsonValue( const Json::Value& value )
 			Json::Value::Members members = value.getMemberNames();
 			for ( int i = 0 ; i < members.size() ; ++i )
 			{
-				const tstring&  key    = members[i].c_str();
-				SWObject::Ref object = convertJsonValue( value.get( key.c_str(), Json::Value::null ) );
+				const tstring&  key    = members[i];
+				SWObject::Ref object = convertJsonValue( value.get( key, Json::Value::null ) );
 				tbl->insert( key, object() );
 			}
 			return tbl;
 		}
 	}
+	return NULL;
 }
 
 SWObject::Ref SWGameContext::loadJson( const tstring& path )
