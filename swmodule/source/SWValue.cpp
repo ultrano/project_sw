@@ -33,6 +33,8 @@ bool SWValue::isValue() const
 
 const tnumber& SWValue::asNumber() const
 {
+	static tnumber static_value = 0;
+	static_value = 0;
 	{
 		SWNumber* object = swrtti_cast<SWNumber>(this);
 		if ( object != NULL ) return object->getValue();
@@ -42,11 +44,10 @@ const tnumber& SWValue::asNumber() const
 		SWString* object = swrtti_cast<SWString>(this);
 		if ( object != NULL )
 		{
-			return SWUtil.strToNum( object->getValue() );
+			static_value =  SWUtil.strToNum( object->getValue() );
 		}
 	}
 	
-	static tnumber static_value = 0;
 	return static_value;
 }
 
