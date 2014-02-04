@@ -24,7 +24,7 @@ class SWHandler;
 class SWObject : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWObject );
-	SW_REFERNCE( SWObject );
+	SW_REFERENCE( SWObject );
 public:
 
 	typedef tlist< Ref, SWAllocator< Ref > > List;

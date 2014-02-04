@@ -17,7 +17,7 @@ class SWComponent;
 class SWGameObject : public SWObject
 {
     SW_RTTI( SWGameObject, SWObject );
-	SW_REFERNCE( SWGameObject );
+	SW_REFERENCE( SWGameObject );
 	friend class SWGameScene;
 
 public:

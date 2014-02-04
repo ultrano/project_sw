@@ -8,7 +8,7 @@ class SWHashString : public SWMemory
 {
 	class HashData : public SWRefCountable
 	{
-		SW_REFERNCE( HashData );
+		SW_REFERENCE( HashData );
 	public:
 		thash32 hash;
 		tstring str;

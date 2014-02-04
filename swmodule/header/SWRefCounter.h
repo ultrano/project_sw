@@ -80,7 +80,7 @@ public:
 	SWRefObject* getRefObject() const { return m_ref; };
 };
 
-#define SW_REFERNCE(name) public: typedef SWHardRef<name> Ref; typedef SWWeakRef<name> WRef; private:
+#define SW_REFERENCE(name) public: typedef SWHardRef<name> Ref; typedef SWWeakRef<name> WRef; private:
 
 /**
 @brief 약참조를 하는 참조자

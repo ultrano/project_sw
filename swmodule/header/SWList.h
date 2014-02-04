@@ -6,7 +6,7 @@
 class SWList : public SWObject
 {
 	SW_RTTI( SWList, SWObject );
-	SW_REFERNCE( SWList );
+	SW_REFERENCE( SWList );
 
 public:
 
