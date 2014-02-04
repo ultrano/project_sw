@@ -193,6 +193,9 @@
     <Filter Include="SW\SWHashString">
       <UniqueIdentifier>{07bddf0d-1f58-497c-8b4c-4699385191a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWMatrix2x2">
+      <UniqueIdentifier>{dee33689-be9f-495c-a063-cdf7a0a5f7fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
