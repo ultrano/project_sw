@@ -6,7 +6,7 @@
 
 class SWByteBuffer : public SWRefCountable
 {
-	tarray<tbyte> m_buf;
+	tarray< tbyte, SWAllocator<tbyte> > m_buf;
 
 public:
 	

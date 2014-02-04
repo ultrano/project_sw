@@ -10,9 +10,9 @@ class SWMesh : public SWObject
 {
 	SW_RTTI( SWMesh, SWObject );
 
-	tarray<SWVector3f>  m_vertices;
-	tarray<SWVector2f>  m_texCoords;
-	tarray<SWTriangle>  m_triangles;
+	tarray< SWVector3f >  m_vertices;
+	tarray< SWVector2f >  m_texCoords;
+	tarray< SWTriangle >  m_triangles;
 	bool m_updateMesh;
 public:
 

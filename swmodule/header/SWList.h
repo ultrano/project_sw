@@ -10,7 +10,7 @@ class SWList : public SWObject
 
 public:
 
-	typedef tlist< SWObject::Ref > Type;
+	typedef tlist< SWObject::Ref, SWAllocator<SWObject::Ref> > Type;
 	typedef Type::iterator iterator;
 	typedef Type::const_iterator const_iterator;
 
