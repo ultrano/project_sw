@@ -56,8 +56,7 @@ void WIFontData::load( SWObject* data )
 
 	SWValue* pages = (SWValue*)font->find( "pages" );
 	SWValue* page0 = pages->find( "page" );
-	thashstr str = page0->find( "-file" )->asString();
-	setFontTexture( SW_GC.loadTexture( str.str() ) );
+	setFontTexture( SW_GC.loadTexture( page0->find( "-file" )->asString() ) );
 
 	SWValue* common = (SWValue*)font->find( "common" );
 	m_lineHeight = common->find( "-lineHeight" )->asNumber();

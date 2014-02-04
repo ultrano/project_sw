@@ -51,11 +51,12 @@ const tnumber& SWValue::asNumber() const
 	return static_value;
 }
 
-const thashstr& SWValue::asString() const
+const tstring& SWValue::asString() const
 {
 	SWString* object = swrtti_cast<SWString>(this);
-	if ( object != NULL ) return object->getValue();
-	return thashstr::empty();
+	if ( object != NULL ) return object->getValue().str();
+	static tstring static_empty = "";
+	return static_empty;
 }
 
 const tboolean& SWValue::asBoolean() const
