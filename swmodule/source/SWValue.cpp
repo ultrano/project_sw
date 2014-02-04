@@ -44,19 +44,18 @@ const tnumber& SWValue::asNumber() const
 		SWString* object = swrtti_cast<SWString>(this);
 		if ( object != NULL )
 		{
-			static_value =  SWUtil.strToNum( object->getValue() );
+			static_value =  SWUtil.strToNum( object->getValue().str() );
 		}
 	}
 	
 	return static_value;
 }
 
-const tstring& SWValue::asString() const
+const thashstr& SWValue::asString() const
 {
 	SWString* object = swrtti_cast<SWString>(this);
 	if ( object != NULL ) return object->getValue();
-	static tstring static_value = "";
-	return toString();
+	return thashstr::empty();
 }
 
 const tboolean& SWValue::asBoolean() const

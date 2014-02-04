@@ -24,7 +24,7 @@ public:
 	typedef ttable< tstring,SWObject::Ref > ObjectMap;
 
 private:
-    tstring    m_name;
+    thashstr        m_name;
 	SWObject::Array m_components;
 	SWObject::List  m_addedComponents;
 
@@ -42,8 +42,8 @@ public:
 
 	void udpate();
 
-	void setName( const tstring& name ) { m_name = name; };
-	const tstring&  getName() const { return m_name; };
+	void setName( const thashstr& name ) { m_name = name; };
+	const thashstr&  getName() const { return m_name; };
 
 	template<typename T>
 	T* addComponent() { return (T*)addComponent( new T() ); };

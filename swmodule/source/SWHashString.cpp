@@ -1,114 +1,106 @@
-/*
+#include "SWHashString.h"
+#include "SWUtil.h"
 
-uint RSHash( const string& str )
-{
-	uint b    = 378551;
-	uint a    = 63689;
-	uint hash = 0;
-
-	for(std::size_t i = 0; i < str.length(); i++)
-	{
-		hash = hash * a + str[i];
-		a    = a * b;
-	}
-
-	return (hash & 0x7FFFFFFF);
-}
-
-HashString::HashString()
+SWHashString::SWHashString()
 {
 
 }
 
-HashString::HashString( const char* str )
+SWHashString::SWHashString( const char* str )
 {
 	*this = str;
 }
 
-HashString::HashString( const string& str )
+SWHashString::SWHashString( const tstring& str )
 {
 	*this = str;
 }
 
-HashString::HashString( const HashString& copy )
+SWHashString::SWHashString( const SWHashString& copy )
 {
 	*this = copy;
 }
 
-#pragma optimize("fuck",off)
-HashString::~HashString()
+SWHashString::~SWHashString()
 {
 	m_data = NULL;
 }
-#pragma optimize("fuck",on)
 
-HashString& HashString::operator=( const char* str )
+SWHashString& SWHashString::operator=( const char* str )
 {
-	*this = string(str);
+	*this = tstring(str);
 	return *this;
 }
 
-HashString& HashString::operator=( const HashString& copy )
+SWHashString& SWHashString::operator=( const SWHashString& copy )
 {
 	m_data = copy.m_data;
 	return *this;
 }
 
-HashString& HashString::operator=( const string& str )
+SWHashString& SWHashString::operator=( const tstring& str )
 {
-	uint hash = RSHash(str);
-	map<uint,WeakRef<StringData>>::iterator itor = cacheTable().find(hash);
+	thash32 hash = SWUtil.stringHash(str);
+	CacheTable::iterator itor = cacheTable().find(hash);
 	if ( itor != cacheTable().end() && itor->second.isValid() ) m_data = itor->second();
-	else m_data = new StringData( hash, str );
+	else m_data = new HashData( hash, str );
 
 	return *this;
 }
 
-bool HashString::operator==( const HashString& copy ) const
+bool SWHashString::operator==( const SWHashString& copy ) const
 {
 	return (m_data()&&copy.m_data())? m_data()->hash == copy.m_data()->hash : false;
 }
 
-bool HashString::operator!=( const HashString& copy ) const
+bool SWHashString::operator!=( const SWHashString& copy ) const
 {
 	return !( *this == copy );
 }
 
-const string& HashString::str() const
+const tstring& SWHashString::str() const
 {
-	static string empty;
+	static tstring empty;
 	if (m_data()) return m_data()->str;
 	return empty;
 }
 
-uint HashString::hash() const
+const tchar* SWHashString::c_str() const
+{
+	if (m_data()) return str().c_str();
+	return NULL;
+}
+
+thash32 SWHashString::hash() const
 {
 	if (m_data()) return m_data()->hash; return 0;
 }
 
-HashString::CacheTable& HashString::cacheTable()
+SWHashString::CacheTable& SWHashString::cacheTable()
 {
-	static map<uint,WeakRef<StringData>> gStringTable;
+	static CacheTable gStringTable;
 	return gStringTable;
 }
 
-bool HashString::operator<( const HashString& copy ) const
+bool SWHashString::operator<( const SWHashString& copy ) const
 {
 	return hash() < copy.hash();
 }
 
-HashString::StringData::StringData( uint h, const string& s ) : hash(h), str(s)
+const SWHashString& SWHashString::empty()
 {
-	CacheTable& ct = cacheTable();
-	ct.insert( make_pair( hash, this ) );
+	static SWHashString static_empty( "" );
+	return static_empty;
 }
 
-HashString::StringData::~StringData()
+SWHashString::HashData::HashData( thash32 h, const tstring& s ) : hash(h), str(s)
+{
+	SWHashString::CacheTable& ct = cacheTable();
+	ct.insert( std::make_pair( hash, this ) );
+}
+
+SWHashString::HashData::~HashData()
 {
 	CacheTable& ct = cacheTable();
 	ct.erase(hash);
 }
-
-
-
-*/

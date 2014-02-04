@@ -32,6 +32,8 @@ public:
 	void consoleXY( int x, int y );
 
 	void copyStream( SWOutputStream* os, SWInputStream* is );
+
+	thash32 stringHash( const tstring& str );
 };
 
 #endif // SWUtil_h__

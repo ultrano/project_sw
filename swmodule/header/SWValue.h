@@ -22,7 +22,7 @@ public:
 	bool isValue() const;
 
 	const tnumber&  asNumber() const;
-	const tstring&  asString() const;
+	const thashstr&  asString() const;
 	const tboolean& asBoolean() const;
 
 	SWValue* get( unsigned int index ) const;

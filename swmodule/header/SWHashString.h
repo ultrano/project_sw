@@ -28,6 +28,7 @@ public:
 	~SWHashString();
 
 	const tstring& str() const;
+	const tchar*   c_str() const;
 	thash32        hash() const;
 
 	SWHashString& operator = ( const tchar* str );
@@ -36,6 +37,8 @@ public:
 	bool operator == ( const SWHashString& copy ) const;
 	bool operator != ( const SWHashString& copy ) const;
 	bool operator <  ( const SWHashString& copy ) const;
+
+	static const SWHashString& empty();
 };
 
 

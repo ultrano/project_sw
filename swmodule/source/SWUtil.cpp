@@ -114,3 +114,18 @@ void __SWUtil::copyStream( SWOutputStream* os, SWInputStream* is )
 	os->write( &buf[0], sz );
 
 }
+
+thash32 __SWUtil::stringHash( const tstring& str )
+{
+	thash32 b    = 378551;
+	thash32 a    = 63689;
+	thash32 hash = 0;
+
+	for(std::size_t i = 0; i < str.length(); i++)
+	{
+		hash = hash * a + str[i];
+		a    = a * b;
+	}
+
+	return (hash & 0x7FFFFFFF);
+}

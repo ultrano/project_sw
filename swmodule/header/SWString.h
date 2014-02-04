@@ -9,16 +9,16 @@ class SWString : public SWObject
 
 private:
 
-	tstring m_value;
+	thashstr m_value;
 
 public:
 
 	SWString();
-	SWString( const tstring& value );
+	SWString( const thashstr& value );
 	~SWString();
 
-	const tstring& getValue();
-	void setValue( const tstring& value );
+	const thashstr& getValue();
+	void setValue( const thashstr& value );
 };
 
 #endif // SWString_h__

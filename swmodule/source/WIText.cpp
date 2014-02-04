@@ -61,9 +61,9 @@ void WIText::updateMesh()
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setTexture( m_font()->getFontTexture() );
 
-	tarray<SWVector3f> m_pos;
-	tarray<SWVector2f> m_tex;
-	tarray<SWTriangle> m_indices;
+	tarray<SWVector3f, SWAllocator<SWVector3f> > m_pos;
+	tarray<SWVector2f, SWAllocator<SWVector2f> > m_tex;
+	tarray<SWTriangle, SWAllocator<SWTriangle> > m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );
