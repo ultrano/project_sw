@@ -96,7 +96,9 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
+    <ClInclude Include="header\SWHashString.h" />
     <ClInclude Include="header\SWMaterial.h" />
+    <ClInclude Include="header\SWPrimaryType.h" />
     <ClInclude Include="header\SWSocket.h" />
     <ClInclude Include="header\SWSocketStream.h" />
     <ClInclude Include="header\SWShader.h" />
@@ -172,6 +174,7 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
+    <ClCompile Include="source\SWHashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWList.cpp" />
     <ClCompile Include="source\SWLog.cpp" />

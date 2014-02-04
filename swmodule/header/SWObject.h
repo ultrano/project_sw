@@ -21,8 +21,6 @@ class SWObject;
 class SWDelegate;
 class SWHandler;
 
-#define SW_REFERNCE(name) public: typedef SWHardRef<name> Ref; typedef SWWeakRef<name> WRef; private:
-
 class SWObject : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWObject );

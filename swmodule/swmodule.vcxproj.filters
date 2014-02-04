@@ -190,6 +190,9 @@
     <Filter Include="SW\SWSocket">
       <UniqueIdentifier>{69ba837b-930b-4779-9249-7d7e55b9a488}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWHashString">
+      <UniqueIdentifier>{07bddf0d-1f58-497c-8b4c-4699385191a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -411,6 +414,12 @@
     <ClInclude Include="header\SWSocket.h">
       <Filter>SW\SWSocket</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWHashString.h">
+      <Filter>SW\SWHashString</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWPrimaryType.h">
+      <Filter>SW\SWType</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -580,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="source\SWSocket.cpp">
       <Filter>SW\SWSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWHashString.cpp">
+      <Filter>SW\SWHashString</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

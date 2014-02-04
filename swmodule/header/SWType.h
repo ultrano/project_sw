@@ -8,27 +8,18 @@
 
 #ifndef sw_SWType_h
 #define sw_SWType_h
-#include <string>
-#include <list>
-#include <map>
-#include <set>
-#include <vector>
-#include "SWMemory.h"
 
-typedef std::basic_string<char, std::char_traits<char>, SWAllocator<char> > tstring2;
-typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, SWAllocator<wchar_t> > twstring2;
-typedef std::string    tstring;
-typedef std::wstring   twstring;
-typedef double         tnumber;
-typedef bool           tboolean;
-typedef unsigned int   tuint;
-typedef unsigned short tushort;
-typedef unsigned char  tbyte;
+#include "SWPrimaryType.h"
+#include "SWVector2f.h"
+#include "SWVector3f.h"
+#include "SWQuaternion.h"
+#include "SWMatrix4x4.h"
+#include "SWHashString.h"
 
-#define tlist  std::list
-#define ttable std::map
-#define tset   std::set
-#define tarray std::vector
-#define tpair  std::pair
+typedef SWVector2f   tvec2;
+typedef SWVector3f   tvec3;
+typedef SWQuaternion tquat;
+typedef SWMatrix4x4  tmat44;
+typedef SWHashString thashstr;
 
 #endif //! sw_SWType_h
