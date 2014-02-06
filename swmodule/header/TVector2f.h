@@ -23,16 +23,20 @@ public:
     TVector2f();
     TVector2f( float kx, float ky );
     
-    //! 벡터 길이
+    //! length from origin
     float length() const;
     
-    //! 다른 지점과의 거리
-    float distWith( float kx, float ky ) const;
-    float distWith( const TVector2f& pt ) const;
+    //! distance with other
+    float dist( float kx, float ky ) const;
+    float dist( const TVector2f& pt ) const;
     
-    //! 내적 연산
-    float dotWith( float kx, float ky ) const;
-    float dotWith( const TVector2f& pt ) const;
+    //! dot product
+    float dot( float kx, float ky ) const;
+    float dot( const TVector2f& pt ) const;
+
+	//! cross product
+    float cross( float kx, float ky ) const;
+    float cross( const TVector2f& pt ) const;
     
     //! 단위화 값 (길이가 0인 벡터에 대한 단위화는 보장하지 않는다. (사전에 체크))
     TVector2f    normalize() const;

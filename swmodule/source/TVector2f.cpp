@@ -22,18 +22,6 @@ TVector2f::TVector2f( float kx, float ky )
     
 }
 
-float TVector2f::distWith( float kx, float ky ) const
-{
-    kx = x - kx;
-    ky = y - ky;
-    return sqrtf( ( kx * kx ) + ( ky * ky ) );
-}
-
-float TVector2f::distWith( const TVector2f &pt ) const
-{
-    return distWith( pt.x, pt.y );
-}
-
 float TVector2f::length() const
 {
     return sqrtf( x*x + y*y );
@@ -41,14 +29,36 @@ float TVector2f::length() const
     // return distWith( 0, 0 );
 }
 
-float TVector2f::dotWith( float kx, float ky ) const
+float TVector2f::dist( float kx, float ky ) const
+{
+    kx = x - kx;
+    ky = y - ky;
+    return sqrtf( ( kx * kx ) + ( ky * ky ) );
+}
+
+float TVector2f::dist( const TVector2f &pt ) const
+{
+    return dist( pt.x, pt.y );
+}
+
+float TVector2f::dot( float kx, float ky ) const
 {
     return ( x*kx + y*ky );
 }
 
-float TVector2f::dotWith( const TVector2f &pt ) const
+float TVector2f::dot( const TVector2f &pt ) const
 {
-    return dotWith( pt.x, pt.y );
+    return dot( pt.x, pt.y );
+}
+
+float TVector2f::cross( float kx, float ky ) const
+{
+	return ( x*ky - y*kx );
+}
+
+float TVector2f::cross( const TVector2f &pt ) const
+{
+    return cross( pt.x, pt.y );
 }
 
 TVector2f   TVector2f::normalize() const
