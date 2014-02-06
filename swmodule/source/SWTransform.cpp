@@ -92,42 +92,42 @@ void SWTransform::removeSetParentDelegate( SWObject* object, const SWHandler& ha
 	}
 }
 
-const SWMatrix4x4& SWTransform::getWorldMatrix()
+const TMatrix4x4& SWTransform::getWorldMatrix()
 {
 	return m_worldMat;
 }
 
-SWMatrix4x4 SWTransform::getLocalMatrix()
+TMatrix4x4 SWTransform::getLocalMatrix()
 {
-	return SWMatrix4x4().transform( m_scale, m_rotate, m_position );
+	return TMatrix4x4().transform( m_scale, m_rotate, m_position );
 }
 
-const SWVector3f& SWTransform::getLocalScale()
+const TVector3f& SWTransform::getLocalScale()
 {
 	return m_scale;
 }
 
-const SWQuaternion& SWTransform::getLocalRotate()
+const TQuaternion& SWTransform::getLocalRotate()
 {
 	return m_rotate;
 }
 
-const SWVector3f& SWTransform::getLocalPosition()
+const TVector3f& SWTransform::getLocalPosition()
 {
 	return m_position;
 }
 
-void SWTransform::setLocalScale( const SWVector3f& scale )
+void SWTransform::setLocalScale( const TVector3f& scale )
 {
 	m_scale = scale;
 }
 
-void SWTransform::setLocalRotate( const SWQuaternion& rotate )
+void SWTransform::setLocalRotate( const TQuaternion& rotate )
 {
 	m_rotate = rotate;
 }
 
-void SWTransform::setLocalPosition( const SWVector3f& position )
+void SWTransform::setLocalPosition( const TVector3f& position )
 {
 	m_position = position;
 }

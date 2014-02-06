@@ -19,9 +19,9 @@ void SWMeshRenderer::render()
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	if ( m_filter.isValid() )
 	{
-		const SWMatrix4x4& model = transform->getWorldMatrix();
-		const SWMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
-		const SWMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
+		const TMatrix4x4& model = transform->getWorldMatrix();
+		const TMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
+		const TMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
 		m_material()->setMatrix4x4( "u_mvpMat", ( model * view * proj ) );
 		m_material()->setTexture( "s_texture", m_texID );
 		m_material()->apply();

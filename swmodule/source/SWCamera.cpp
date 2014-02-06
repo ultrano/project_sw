@@ -32,12 +32,12 @@ void SWCamera::perspectiveMode( float fov, float aspect, float near, float far )
 	m_projMatrix.perspective( fov, aspect, near, far );
 }
 
-const SWMatrix4x4& SWCamera::getProjMatrix() const
+const TMatrix4x4& SWCamera::getProjMatrix() const
 {
 	return m_projMatrix;
 }
 
-const SWMatrix4x4& SWCamera::getViewMatrix()
+const TMatrix4x4& SWCamera::getViewMatrix()
 {
 	SWTransform* trans = getComponent<SWTransform>();
 	trans->getWorldMatrix().inverse( m_viewMatrix );

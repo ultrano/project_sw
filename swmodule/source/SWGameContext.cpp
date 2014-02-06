@@ -12,9 +12,9 @@
 
 #include <memory>
 #include "SWGameScene.h"
-#include "SWVector2f.h"
+#include "TVector2f.h"
 #include "SWCriticalSection.h"
-#include "SWMatrix4x4.h"
+#include "TMatrix4x4.h"
 #include "SWDefines.h"
 #include "SWLog.h"
 #include "SWProfiler.h"
@@ -61,10 +61,10 @@ public:
 	
 	SWCriticalSection idleSection;
 
-	SWMatrix4x4 modelMatrix;
-	SWMatrix4x4 viewMatrix;
-	SWMatrix4x4 projMatrix;
-	SWMatrix4x4 textureMatrix;
+	TMatrix4x4 modelMatrix;
+	TMatrix4x4 viewMatrix;
+	TMatrix4x4 projMatrix;
+	TMatrix4x4 textureMatrix;
 
 	SWHardRef<SWMaterial> material;
 	
@@ -383,11 +383,11 @@ void SWGameContext::drawIndexed( size_t count, unsigned short* indeces)
 
 void SWGameContext::drawRect( float left, float top, float right, float bottom )
 {
-	SWVector3f vertex[] = 
-	{ SWVector3f( left, top, 0 )
-	, SWVector3f( left, bottom, 0 )
-	, SWVector3f( right, bottom, 0 )
-	, SWVector3f( right, top, 0) };
+	TVector3f vertex[] = 
+	{ TVector3f( left, top, 0 )
+	, TVector3f( left, bottom, 0 )
+	, TVector3f( right, bottom, 0 )
+	, TVector3f( right, top, 0) };
 	setVertexBuffer( (float*)&vertex[0] );
 	glDrawArrays( GL_LINE_LOOP, 0, 4 );
 }

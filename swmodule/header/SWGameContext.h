@@ -6,7 +6,7 @@
 
 #define SW_GC ( SWGameContext::getInstance() )
 
-class SWMatrix4x4;
+class TMatrix4x4;
 class SWGameScene;
 class SWObject;
 class SWOutputStream;

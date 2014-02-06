@@ -6,7 +6,7 @@
 #include "glut.h"
 #include "SWTime.h"
 #include "SWInput.h"
-#include "SWVector3f.h"
+#include "TVector3f.h"
 
 //#include "CatAss.h"
 #include "TestScene.h"

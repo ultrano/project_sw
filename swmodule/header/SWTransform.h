@@ -10,7 +10,7 @@
 #define prototype_SWTransform_h
 
 #include "SWComponent.h"
-#include "SWMatrix4x4.h"
+#include "TMatrix4x4.h"
 
 /**
  @brief 객체가 공간 개념을 갖게 한다.
@@ -25,10 +25,10 @@ private:
 	SWObject::List           m_children;
 	SWObject::List           m_setParentDelegates;
 	
-	SWVector3f    m_scale;    //< 비율.
-	SWQuaternion  m_rotate;   //< 회전.
-	SWVector3f    m_position; //< 위치.
-	SWMatrix4x4   m_worldMat; //< world matrix
+	TVector3f    m_scale;    //< 비율.
+	TQuaternion  m_rotate;   //< 회전.
+	TVector3f    m_position; //< 위치.
+	TMatrix4x4   m_worldMat; //< world matrix
 
 public:
 
@@ -41,16 +41,16 @@ public:
 	void removeSetParentDelegate( SWDelegate* callBack );
 	void removeSetParentDelegate( SWObject* object, const SWHandler& handler );
 
-	const SWMatrix4x4& getWorldMatrix();
-	SWMatrix4x4        getLocalMatrix();
+	const TMatrix4x4& getWorldMatrix();
+	TMatrix4x4        getLocalMatrix();
 
-	const SWVector3f&   getLocalScale();
-	const SWQuaternion& getLocalRotate();
-	const SWVector3f&   getLocalPosition();
+	const TVector3f&   getLocalScale();
+	const TQuaternion& getLocalRotate();
+	const TVector3f&   getLocalPosition();
 
-	void setLocalScale( const SWVector3f& scale );
-	void setLocalRotate( const SWQuaternion& rotate );
-	void setLocalPosition( const SWVector3f& position );
+	void setLocalScale( const TVector3f& scale );
+	void setLocalRotate( const TQuaternion& rotate );
+	void setLocalPosition( const TVector3f& position );
 
 	SWTransform* find( const tstring& name );
 	void copyChildren( SWObject::List& transList );

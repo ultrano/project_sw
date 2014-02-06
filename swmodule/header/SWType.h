@@ -10,16 +10,16 @@
 #define sw_SWType_h
 
 #include "SWPrimaryType.h"
-#include "SWVector2f.h"
-#include "SWVector3f.h"
-#include "SWQuaternion.h"
-#include "SWMatrix4x4.h"
-#include "SWHashString.h"
+#include "TVector2f.h"
+#include "TVector3f.h"
+#include "TQuaternion.h"
+#include "TMatrix4x4.h"
+#include "THashString.h"
 
-typedef SWVector2f   tvec2;
-typedef SWVector3f   tvec3;
-typedef SWQuaternion tquat;
-typedef SWMatrix4x4  tmat44;
-typedef SWHashString thashstr;
+typedef TVector2f   tvec2;
+typedef TVector3f   tvec3;
+typedef TQuaternion tquat;
+typedef TMatrix4x4  tmat44;
+typedef THashString thashstr;
 
 #endif //! sw_SWType_h

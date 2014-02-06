@@ -1,6 +1,6 @@
 #include "WIText.h"
 #include "SWMesh.h"
-#include "SWVector3f.h"
+#include "TVector3f.h"
 #include "SWTriangle.h"
 #include "WIFontChar.h"
 #include "SWGameObject.h"
@@ -61,8 +61,8 @@ void WIText::updateMesh()
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setTexture( m_font()->getFontTexture() );
 
-	tarray<SWVector3f, SWAllocator<SWVector3f> > m_pos;
-	tarray<SWVector2f, SWAllocator<SWVector2f> > m_tex;
+	tarray<TVector3f, SWAllocator<TVector3f> > m_pos;
+	tarray<TVector2f, SWAllocator<TVector2f> > m_tex;
 	tarray<SWTriangle, SWAllocator<SWTriangle> > m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
@@ -114,16 +114,16 @@ void WIText::updateMesh()
 		float top    = startOffsetY - ch->offsetY;
 		float right  = left + ch->w;
 		float bottom = top  - ch->h;
-		m_pos[(i*4)+0] = sizeScale*SWVector3f(  left, top, 0 );
-		m_pos[(i*4)+1] = sizeScale*SWVector3f( right, top, 0 );
-		m_pos[(i*4)+2] = sizeScale*SWVector3f(  left, bottom, 0 );
-		m_pos[(i*4)+3] = sizeScale*SWVector3f( right, bottom, 0 );
+		m_pos[(i*4)+0] = sizeScale*TVector3f(  left, top, 0 );
+		m_pos[(i*4)+1] = sizeScale*TVector3f( right, top, 0 );
+		m_pos[(i*4)+2] = sizeScale*TVector3f(  left, bottom, 0 );
+		m_pos[(i*4)+3] = sizeScale*TVector3f( right, bottom, 0 );
 		startOffsetX = startOffsetX + ch->advanceX;
 
-		m_tex[(i*4)+0] = SWVector2f(           ch->x/width, (ch->y)/height );
-		m_tex[(i*4)+1] = SWVector2f( (ch->x + ch->w)/width, (ch->y)/height );
-		m_tex[(i*4)+2] = SWVector2f(           ch->x/width, (ch->y + ch->h)/height );
-		m_tex[(i*4)+3] = SWVector2f( (ch->x + ch->w)/width, (ch->y + ch->h)/height );
+		m_tex[(i*4)+0] = TVector2f(           ch->x/width, (ch->y)/height );
+		m_tex[(i*4)+1] = TVector2f( (ch->x + ch->w)/width, (ch->y)/height );
+		m_tex[(i*4)+2] = TVector2f(           ch->x/width, (ch->y + ch->h)/height );
+		m_tex[(i*4)+3] = TVector2f( (ch->x + ch->w)/width, (ch->y + ch->h)/height );
 	}
 
 	m_mesh()->setVertexStream( m_pos.size(), &m_pos[0] );

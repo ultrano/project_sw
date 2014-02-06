@@ -44,9 +44,9 @@ float SWRect::height()
     return ( bottom - top );
 }
 
-SWVector2f SWRect::size()
+TVector2f SWRect::size()
 {
-    return SWVector2f( width(), height() );
+    return TVector2f( width(), height() );
 }
 
 float SWRect::centerX()
@@ -59,7 +59,7 @@ float SWRect::centerY()
     return ( bottom + top ) / 2.0f;
 }
 
-SWVector2f SWRect::center()
+TVector2f SWRect::center()
 {
-    return SWVector2f( centerX(), centerY() );
+    return TVector2f( centerX(), centerY() );
 }

@@ -11,7 +11,7 @@
 
 #include "SWComponent.h"
 
-class SWVector2f;
+class TVector2f;
 class SWCollisionInfo;
 class SWGameObject;
 class SWNotifyMessage;

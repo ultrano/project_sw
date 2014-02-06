@@ -1,5 +1,5 @@
 #include "BallGenerator.h"
-#include "SWVector3f.h"
+#include "TVector3f.h"
 #include "SWTriangle.h"
 #include "SWGameObject.h"
 #include "Ball.h"
@@ -14,8 +14,8 @@ void BallGenerator::onAwake()
 	accum = 0;
 	turnOn = false;
 
-	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(0.5f,-0.5f,0), SWVector3f(-0.5f,0.5f,0), SWVector3f(0.5f,0.5f,0) };
-	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
+	TVector3f vertices[] = { TVector3f(-0.5f,-0.5f,0), TVector3f(0.5f,-0.5f,0), TVector3f(-0.5f,0.5f,0), TVector3f(0.5f,0.5f,0) };
+	TVector2f texCoords[] = { TVector2f(0,0), TVector2f(1,0), TVector2f(0,1), TVector2f(1,1) };
 	SWTriangle indices[] = { SWTriangle(0,1,2), SWTriangle(3,2,1) };
 	SWMesh* mesh = new SWMesh();
 	mesh->setVertexStream( 4, &vertices[0] );
@@ -42,7 +42,7 @@ void BallGenerator::onUpdate()
 		SWTransform* ballTrans = ballGO->getComponent<SWTransform>();
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 
-		ball->velocity = SWVector3f( force.x, force.y, 0 ) * (float)SWMath.randomInt(100,100)/100.0f;
+		ball->velocity = TVector3f( force.x, force.y, 0 ) * (float)SWMath.randomInt(100,100)/100.0f;
 
 		ballTrans->setLocalPosition( transform->getLocalPosition() * transform->getWorldMatrix() );
 	}

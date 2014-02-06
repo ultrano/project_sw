@@ -4,8 +4,8 @@
 #include "SWMeshRenderer.h"
 #include "SWMeshFilter.h"
 #include "SWMesh.h"
-#include "SWVector2f.h"
-#include "SWVector3f.h"
+#include "TVector2f.h"
+#include "TVector3f.h"
 #include "SWTransform.h"
 #include "SWMath.h"
 #include "SWTime.h"
@@ -61,7 +61,7 @@ void Cat::onAwake()
 	image->setAlignV( anchoX );
 	image->setAlignH( anchoY );
 
-	transform->setLocalPosition( SWVector3f( posX->getValue(), posY->getValue(), 0 ) );
+	transform->setLocalPosition( TVector3f( posX->getValue(), posY->getValue(), 0 ) );
 
 	
 	SWNumber* catLife = swrtti_cast<SWNumber>(config->find("catLife"));
@@ -75,7 +75,7 @@ void Cat::onUpdate()
 {
 	float deltaTime = SWTime.getDeltaTime();
 	SWTransform* transform = gameObject()->getComponent<SWTransform>();
-	SWVector3f pos = transform->getLocalPosition();
+	TVector3f pos = transform->getLocalPosition();
 	pos.x -= deltaTime * m_speed;
 	transform->setLocalPosition( pos );
 }

@@ -96,7 +96,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
-    <ClInclude Include="header\SWHashString.h" />
+    <ClInclude Include="header\THashString.h" />
     <ClInclude Include="header\SWMaterial.h" />
     <ClInclude Include="header\SWPrimaryType.h" />
     <ClInclude Include="header\SWSocket.h" />
@@ -113,7 +113,7 @@
     <ClInclude Include="header\SWList.h" />
     <ClInclude Include="header\SWLog.h" />
     <ClInclude Include="header\SWMath.h" />
-    <ClInclude Include="header\SWMatrix4x4.h" />
+    <ClInclude Include="header\TMatrix4x4.h" />
     <ClInclude Include="header\SWMemory.h" />
     <ClInclude Include="header\SWMesh.h" />
     <ClInclude Include="header\SWMeshFilter.h" />
@@ -122,7 +122,7 @@
     <ClInclude Include="header\SWObject.h" />
     <ClInclude Include="header\SWParam.h" />
     <ClInclude Include="header\SWProfiler.h" />
-    <ClInclude Include="header\SWQuaternion.h" />
+    <ClInclude Include="header\TQuaternion.h" />
     <ClInclude Include="header\SWRect.h" />
     <ClInclude Include="header\SWRefCounter.h" />
     <ClInclude Include="header\SWRenderer.h" />
@@ -135,8 +135,8 @@
     <ClInclude Include="header\SWTransform.h" />
     <ClInclude Include="header\SWUtil.h" />
     <ClInclude Include="header\SWValue.h" />
-    <ClInclude Include="header\SWVector2f.h" />
-    <ClInclude Include="header\SWVector3f.h" />
+    <ClInclude Include="header\TVector2f.h" />
+    <ClInclude Include="header\TVector3f.h" />
     <ClInclude Include="header\WIDefines.h" />
     <ClInclude Include="header\WIFontChar.h" />
     <ClInclude Include="header\WIImage.h" />
@@ -174,13 +174,13 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
-    <ClCompile Include="source\SWHashString.cpp" />
+    <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWList.cpp" />
     <ClCompile Include="source\SWLog.cpp" />
     <ClCompile Include="source\SWMaterial.cpp" />
     <ClCompile Include="source\SWMath.cpp" />
-    <ClCompile Include="source\SWMatrix4x4.cpp" />
+    <ClCompile Include="source\TMatrix4x4.cpp" />
     <ClCompile Include="source\SWMemory.cpp" />
     <ClCompile Include="source\SWMesh.cpp" />
     <ClCompile Include="source\SWMeshFilter.cpp" />
@@ -189,7 +189,7 @@
     <ClCompile Include="source\SWObject.cpp" />
     <ClCompile Include="source\SWParam.cpp" />
     <ClCompile Include="source\SWProfiler.cpp" />
-    <ClCompile Include="source\SWQuaternion.cpp" />
+    <ClCompile Include="source\TQuaternion.cpp" />
     <ClCompile Include="source\SWRect.cpp" />
     <ClCompile Include="source\SWRefCounter.cpp" />
     <ClCompile Include="source\SWRenderer.cpp" />
@@ -204,8 +204,8 @@
     <ClCompile Include="source\SWTransform.cpp" />
     <ClCompile Include="source\SWUtil.cpp" />
     <ClCompile Include="source\SWValue.cpp" />
-    <ClCompile Include="source\SWVector2f.cpp" />
-    <ClCompile Include="source\SWVector3f.cpp" />
+    <ClCompile Include="source\TVector2f.cpp" />
+    <ClCompile Include="source\TVector3f.cpp" />
     <ClCompile Include="source\WIFontData.cpp" />
     <ClCompile Include="source\WIImage.cpp" />
     <ClCompile Include="source\WIText.cpp" />

@@ -3,8 +3,8 @@
 #include "SWMeshRenderer.h"
 #include "SWMeshFilter.h"
 #include "SWMesh.h"
-#include "SWVector3f.h"
-#include "SWVector2f.h"
+#include "TVector3f.h"
+#include "TVector2f.h"
 #include "SWTriangle.h"
 #include "SWGameContext.h"
 
@@ -13,8 +13,8 @@
 void WIImage::onAwake()
 {
 	m_updateMesh = false;
-	SWVector3f vertices[] = { SWVector3f(-0.5f,-0.5f,0), SWVector3f(-0.5f, 0.5f,0), SWVector3f(0.5f, 0.5f,0), SWVector3f(0.5f,-0.5f,0) };
-	SWVector2f texCoords[] = { SWVector2f(0,0), SWVector2f(1,0), SWVector2f(0,1), SWVector2f(1,1) };
+	TVector3f vertices[] = { TVector3f(-0.5f,-0.5f,0), TVector3f(-0.5f, 0.5f,0), TVector3f(0.5f, 0.5f,0), TVector3f(0.5f,-0.5f,0) };
+	TVector2f texCoords[] = { TVector2f(0,0), TVector2f(1,0), TVector2f(0,1), TVector2f(1,1) };
 	SWTriangle indices[] = { SWTriangle(0,1,2), SWTriangle(3,2,1) };
 	SWMesh* mesh = new SWMesh();
 	mesh->setVertexStream( 4, &vertices[0] );
@@ -39,7 +39,7 @@ void WIImage::onUpdate()
 
 	SWMesh* mesh = gameObject()->getComponent<SWMeshFilter>()->getMesh();
 	
-	SWVector2f anchor;
+	TVector2f anchor;
 	switch ( m_alignV )
 	{
 	case UI_Center : anchor.x = 0; break;
@@ -53,11 +53,11 @@ void WIImage::onUpdate()
 	case UI_Bottom : anchor.y = -0.5f; break;
 	}
 	
-	SWVector3f vertices[] = 
-	{ SWVector3f((anchor.x-0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
-	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
-	, SWVector3f((anchor.x-0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
-	, SWVector3f((anchor.x+0.5f)*m_width, (anchor.y-0.5f)*m_height, 0) };
+	TVector3f vertices[] = 
+	{ TVector3f((anchor.x-0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
+	, TVector3f((anchor.x+0.5f)*m_width, (anchor.y+0.5f)*m_height, 0)
+	, TVector3f((anchor.x-0.5f)*m_width, (anchor.y-0.5f)*m_height, 0)
+	, TVector3f((anchor.x+0.5f)*m_width, (anchor.y-0.5f)*m_height, 0) };
 	mesh->setVertexStream( 4, &vertices[0] );
 }
 

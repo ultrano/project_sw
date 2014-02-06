@@ -19,9 +19,6 @@
     <Filter Include="SW\SWAct\SWActContinue">
       <UniqueIdentifier>{2cac3cec-e5e1-48fa-a808-32614db3711d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWVector3f">
-      <UniqueIdentifier>{88baf7f4-dea7-42c2-b96e-0311fe3dae8c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWAction">
       <UniqueIdentifier>{e41b9024-b74b-47e0-af33-0143bce82e9d}</UniqueIdentifier>
     </Filter>
@@ -58,9 +55,6 @@
     <Filter Include="SW\SWMath">
       <UniqueIdentifier>{0de77374-fdde-4d3b-9004-de400efbbff3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWMatrix4x4">
-      <UniqueIdentifier>{2237634c-92c8-4cb7-bcb1-305f382a4997}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWMemory">
       <UniqueIdentifier>{d25ed78e-ffa9-4090-8791-6a5dba290151}</UniqueIdentifier>
     </Filter>
@@ -78,9 +72,6 @@
     </Filter>
     <Filter Include="SW\SWProfiler">
       <UniqueIdentifier>{b83749cc-953a-41aa-8af0-d3a3b8baecca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SW\SWQuaternion">
-      <UniqueIdentifier>{c30eac92-36a6-48fe-b625-d7404cec215d}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWRect">
       <UniqueIdentifier>{bb9397ac-d2bd-4981-a75b-5afb6cdac16b}</UniqueIdentifier>
@@ -105,9 +96,6 @@
     </Filter>
     <Filter Include="SW\SWUtil">
       <UniqueIdentifier>{aab63eee-bbe6-413c-8b26-8d88cc3c7795}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SW\SWVector2f">
-      <UniqueIdentifier>{dd8122f6-a6d8-40ea-a2c3-c61631c01b91}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWArray">
       <UniqueIdentifier>{2f44961f-a74f-4f70-9789-776dce7878d8}</UniqueIdentifier>
@@ -190,10 +178,22 @@
     <Filter Include="SW\SWSocket">
       <UniqueIdentifier>{69ba837b-930b-4779-9249-7d7e55b9a488}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWHashString">
+    <Filter Include="SW\SWType\TVector2f">
+      <UniqueIdentifier>{dd8122f6-a6d8-40ea-a2c3-c61631c01b91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TVector3f">
+      <UniqueIdentifier>{88baf7f4-dea7-42c2-b96e-0311fe3dae8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TQuaternion">
+      <UniqueIdentifier>{c30eac92-36a6-48fe-b625-d7404cec215d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TMatrix4x4">
+      <UniqueIdentifier>{2237634c-92c8-4cb7-bcb1-305f382a4997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\THashString">
       <UniqueIdentifier>{07bddf0d-1f58-497c-8b4c-4699385191a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWMatrix2x2">
+    <Filter Include="SW\SWType\TMatrix2x2">
       <UniqueIdentifier>{dee33689-be9f-495c-a063-cdf7a0a5f7fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -270,9 +270,6 @@
     <ClInclude Include="header\SWMath.h">
       <Filter>SW\SWMath</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWMatrix4x4.h">
-      <Filter>SW\SWMatrix4x4</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWMemory.h">
       <Filter>SW\SWMemory</Filter>
     </ClInclude>
@@ -296,9 +293,6 @@
     </ClInclude>
     <ClInclude Include="header\SWProfiler.h">
       <Filter>SW\SWProfiler</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWQuaternion.h">
-      <Filter>SW\SWQuaternion</Filter>
     </ClInclude>
     <ClInclude Include="header\SWRect.h">
       <Filter>SW\SWRect</Filter>
@@ -335,12 +329,6 @@
     </ClInclude>
     <ClInclude Include="header\SWValue.h">
       <Filter>SW\SWValue</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWVector2f.h">
-      <Filter>SW\SWVector2f</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWVector3f.h">
-      <Filter>SW\SWVector3f</Filter>
     </ClInclude>
     <ClInclude Include="header\WIImage.h">
       <Filter>WI\WIImage</Filter>
@@ -417,11 +405,23 @@
     <ClInclude Include="header\SWSocket.h">
       <Filter>SW\SWSocket</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWHashString.h">
-      <Filter>SW\SWHashString</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWPrimaryType.h">
       <Filter>SW\SWType</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TVector2f.h">
+      <Filter>SW\SWType\TVector2f</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TVector3f.h">
+      <Filter>SW\SWType\TVector3f</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TQuaternion.h">
+      <Filter>SW\SWType\TQuaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TMatrix4x4.h">
+      <Filter>SW\SWType\TMatrix4x4</Filter>
+    </ClInclude>
+    <ClInclude Include="header\THashString.h">
+      <Filter>SW\SWType\THashString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -479,9 +479,6 @@
     <ClCompile Include="source\SWMath.cpp">
       <Filter>SW\SWMath</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWMatrix4x4.cpp">
-      <Filter>SW\SWMatrix4x4</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWMemory.cpp">
       <Filter>SW\SWMemory</Filter>
     </ClCompile>
@@ -505,9 +502,6 @@
     </ClCompile>
     <ClCompile Include="source\SWProfiler.cpp">
       <Filter>SW\SWProfiler</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWQuaternion.cpp">
-      <Filter>SW\SWQuaternion</Filter>
     </ClCompile>
     <ClCompile Include="source\SWRect.cpp">
       <Filter>SW\SWRect</Filter>
@@ -541,12 +535,6 @@
     </ClCompile>
     <ClCompile Include="source\SWValue.cpp">
       <Filter>SW\SWValue</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWVector2f.cpp">
-      <Filter>SW\SWVector2f</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWVector3f.cpp">
-      <Filter>SW\SWVector3f</Filter>
     </ClCompile>
     <ClCompile Include="source\WIImage.cpp">
       <Filter>WI\WIImage</Filter>
@@ -593,8 +581,20 @@
     <ClCompile Include="source\SWSocket.cpp">
       <Filter>SW\SWSocket</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWHashString.cpp">
-      <Filter>SW\SWHashString</Filter>
+    <ClCompile Include="source\TVector2f.cpp">
+      <Filter>SW\SWType\TVector2f</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TVector3f.cpp">
+      <Filter>SW\SWType\TVector3f</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TQuaternion.cpp">
+      <Filter>SW\SWType\TQuaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TMatrix4x4.cpp">
+      <Filter>SW\SWType\TMatrix4x4</Filter>
+    </ClCompile>
+    <ClCompile Include="source\THashString.cpp">
+      <Filter>SW\SWType\THashString</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

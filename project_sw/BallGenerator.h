@@ -2,7 +2,7 @@
 #define BallGenerator_h__
 
 #include "SWBehavior.h"
-#include "SWVector2f.h"
+#include "TVector2f.h"
 
 class BallGenerator : public SWBehavior
 {
@@ -10,7 +10,7 @@ class BallGenerator : public SWBehavior
 
 public:
 	float accum;
-	SWVector2f force;
+	TVector2f force;
 	bool turnOn;
 
 	void onAwake();

@@ -2,7 +2,7 @@
 #define SWCamera_h__
 
 #include "SWComponent.h"
-#include "SWMatrix4x4.h"
+#include "TMatrix4x4.h"
 
 class SWCamera : public SWComponent
 {
@@ -13,8 +13,8 @@ class SWCamera : public SWComponent
 
 	void onUpdate();
 	
-	SWMatrix4x4 m_viewMatrix;
-	SWMatrix4x4 m_projMatrix;
+	TMatrix4x4 m_viewMatrix;
+	TMatrix4x4 m_projMatrix;
 
 public:
 
@@ -23,8 +23,8 @@ public:
 	void orthoMode( float width, float height, float near, float far );
 	void perspectiveMode( float fov, float aspect, float near, float far );
 
-	const SWMatrix4x4& getProjMatrix() const;
-	const SWMatrix4x4& getViewMatrix();
+	const TMatrix4x4& getProjMatrix() const;
+	const TMatrix4x4& getViewMatrix();
 };
 
 #endif // SWCamera_h__

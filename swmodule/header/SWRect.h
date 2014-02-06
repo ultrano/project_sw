@@ -10,7 +10,7 @@
 #define prototype_SWRect_h
 
 #include "SWMemory.h"
-#include "SWVector2f.h"
+#include "TVector2f.h"
 
 class SWRect : public SWMemory
 {
@@ -28,12 +28,12 @@ public:
     //! @return Rect 크리
     float width();
     float height();
-    SWVector2f size();
+    TVector2f size();
     
     //! 가로, 세로 중앙값
     float centerX();
     float centerY();
-    SWVector2f center();
+    TVector2f center();
 };
 
 #endif

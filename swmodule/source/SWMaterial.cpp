@@ -1,5 +1,5 @@
 #include "SWMaterial.h"
-#include "SWMatrix4x4.h"
+#include "TMatrix4x4.h"
 #include "SWShader.h"
 #include "SWGameContext.h"
 
@@ -30,25 +30,25 @@ void SWMaterial::setFloat( const tstring& name, float val )
 	if ( index < 0 ) return;
 	m_floatTable[ index ] = val;
 }
-void SWMaterial::setVector2( const tstring& name, const SWVector2f& val )
+void SWMaterial::setVector2( const tstring& name, const TVector2f& val )
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_vec2Table[ index ] = val;
 }
-void SWMaterial::setVector3( const tstring& name, const SWVector3f& val )
+void SWMaterial::setVector3( const tstring& name, const TVector3f& val )
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_vec3Table[ index ] = val;
 }
-void SWMaterial::setVector4( const tstring& name, const SWQuaternion& val )
+void SWMaterial::setVector4( const tstring& name, const TQuaternion& val )
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_vec4Table[ index ] = val;
 }
-void SWMaterial::setMatrix4x4( const tstring& name, const SWMatrix4x4& val )
+void SWMaterial::setMatrix4x4( const tstring& name, const TMatrix4x4& val )
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
@@ -68,28 +68,28 @@ bool SWMaterial::getFloat( const tstring& name, float& val ) const
 	val = m_floatTable.at( index );
 	return true;
 }
-bool SWMaterial::getVector2( const tstring& name, SWVector2f& val ) const
+bool SWMaterial::getVector2( const tstring& name, TVector2f& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 	val = m_vec2Table.at( index );
 	return true;
 }
-bool SWMaterial::getVector3( const tstring& name, SWVector3f& val ) const
+bool SWMaterial::getVector3( const tstring& name, TVector3f& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 	val = m_vec3Table.at( index );
 	return true;
 }
-bool SWMaterial::getVector4( const tstring& name, SWQuaternion& val ) const
+bool SWMaterial::getVector4( const tstring& name, TQuaternion& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 	val = m_vec4Table.at( index );
 	return true;
 }
-bool SWMaterial::getMatrix4x4( const tstring& name, SWMatrix4x4& val ) const
+bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
@@ -116,7 +116,7 @@ void SWMaterial::apply()
 		Vec2Table::iterator itor = m_vec2Table.begin();
 		for ( ; itor != m_vec2Table.end() ; ++itor )
 		{
-			SWVector2f& v = itor->second;
+			TVector2f& v = itor->second;
 			SW_GC.setShaderVector2( itor->first, v.x, v.y );
 		}
 	}
@@ -124,7 +124,7 @@ void SWMaterial::apply()
 		Vec3Table::iterator itor = m_vec3Table.begin();
 		for ( ; itor != m_vec3Table.end() ; ++itor )
 		{
-			SWVector3f& v = itor->second;
+			TVector3f& v = itor->second;
 			SW_GC.setShaderVector3( itor->first, v.x, v.y, v.z );
 		}
 	}
@@ -132,7 +132,7 @@ void SWMaterial::apply()
 		Vec4Table::iterator itor = m_vec4Table.begin();
 		for ( ; itor != m_vec4Table.end() ; ++itor )
 		{
-			SWQuaternion& v = itor->second;
+			TQuaternion& v = itor->second;
 			SW_GC.setShaderVector4( itor->first, v.x, v.y, v.z, v.w );
 		}
 	}

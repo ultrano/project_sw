@@ -2,7 +2,7 @@
 #define Ball_h__
 
 #include "SWBehavior.h"
-#include "SWVector3f.h"
+#include "TVector3f.h"
 
 class Ball : public SWBehavior
 {
@@ -10,7 +10,7 @@ class Ball : public SWBehavior
 
 public:
 	
-	SWVector3f velocity;
+	TVector3f velocity;
 
 	void onAwake();
 	void onUpdate();

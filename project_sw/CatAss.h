@@ -2,14 +2,14 @@
 #define CatAss_h__
 
 #include "SWGameContext.h"
-#include "SWMatrix4x4.h"
-#include "SWQuaternion.h"
+#include "TMatrix4x4.h"
+#include "TQuaternion.h"
 #include "SWGameScene.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWMeshFilter.h"
 #include "SWMesh.h"
-#include "SWVector2f.h"
+#include "TVector2f.h"
 #include "SWMeshRenderer.h"
 #include "SWLog.h"
 #include "SWDefines.h"
@@ -71,8 +71,8 @@ class GameMainScene : public SWGameScene
 			SWGameObject* go = new SWGameObject;
 			go->setName( name->asString() );
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( pos->get(0)->asNumber(), pos->get(1)->asNumber(), 0 ) );
-			transform->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, SWMath.angleToRadian( rotate->asNumber() ) ) );
+			transform->setLocalPosition( TVector3f( pos->get(0)->asNumber(), pos->get(1)->asNumber(), 0 ) );
+			transform->setLocalRotate( TQuaternion().rotate( TVector3f::axisZ, SWMath.angleToRadian( rotate->asNumber() ) ) );
 
 			WIImage* uiImage = go->addComponent<WIImage>();
 			uiImage->setTexture( image->asString() );
@@ -119,8 +119,8 @@ class GameMainScene : public SWGameScene
 			{
 				ratGO->setName( "rat" );
 				SWTransform* transform = ratGO->getComponent<SWTransform>();
-				transform->setLocalPosition( SWVector3f( ratX->getValue(), ratY->getValue(),0 ) );
-				transform->setLocalScale( SWVector3f( ratScaleX->getValue(), ratScaleY->getValue(), 1 ) );
+				transform->setLocalPosition( TVector3f( ratX->getValue(), ratY->getValue(),0 ) );
+				transform->setLocalScale( TVector3f( ratScaleX->getValue(), ratScaleY->getValue(), 1 ) );
 			}
 
 			{
@@ -139,7 +139,7 @@ class GameMainScene : public SWGameScene
 				go->setName( "generator" );
 				SWTransform* transform = go->getComponent<SWTransform>();
 				transform->setParent( ratGO->getComponent<SWTransform>() );
-				transform->setLocalPosition( SWVector3f( fireHoleX->getValue(), fireHoleY->getValue(),0 ) );
+				transform->setLocalPosition( TVector3f( fireHoleX->getValue(), fireHoleY->getValue(),0 ) );
 			}
 		}
 
@@ -169,9 +169,9 @@ class GameMainScene : public SWGameScene
 		case SW_TouchPress :   gen->turnOn = true;
 		case SW_TouchMove :
 			{
-				SWVector3f worldPos = ratTrans->getLocalPosition() * ratTrans->getWorldMatrix();
-				SWVector3f touchPos( SWInput.getTouchX(), SWInput.getTouchY(), 0 );
-				SWVector2f delta = (worldPos - touchPos).xy;
+				TVector3f worldPos = ratTrans->getLocalPosition() * ratTrans->getWorldMatrix();
+				TVector3f touchPos( SWInput.getTouchX(), SWInput.getTouchY(), 0 );
+				TVector2f delta = (worldPos - touchPos).xy;
 				float power = delta.length();
 				gen->force = delta;
 				delta = delta.normalize();
@@ -181,8 +181,8 @@ class GameMainScene : public SWGameScene
 				SWLog( "angle : %f", SWMath.radianToAngle( radian ) );
 
 				radian = ( radian > maxRadian )? maxRadian : ( radian < minRadian )? minRadian : radian;
-				gen->force = SWVector2f( SWMath.cos(radian), SWMath.sin(radian) ) * power;
-				ratTrans->setLocalRotate( SWQuaternion().rotate( SWVector3f::axisZ, radian ) );
+				gen->force = TVector2f( SWMath.cos(radian), SWMath.sin(radian) ) * power;
+				ratTrans->setLocalRotate( TQuaternion().rotate( TVector3f::axisZ, radian ) );
 			}
 			break;
 		}
@@ -208,7 +208,7 @@ class TitleScene : public SWGameScene
 			image->setTexture( "background/title_01.png" );
 			image->setAlign( UI_Left, UI_Top );
 
-			//transform->setLocalPosition( SWVector3f( 480,320,0 ) );
+			//transform->setLocalPosition( TVector3f( 480,320,0 ) );
 		}
 	}
 

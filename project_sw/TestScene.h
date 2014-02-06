@@ -2,14 +2,14 @@
 #define TestScene_h__
 
 #include "SWGameContext.h"
-#include "SWMatrix4x4.h"
-#include "SWQuaternion.h"
+#include "TMatrix4x4.h"
+#include "TQuaternion.h"
 #include "SWGameScene.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWMeshFilter.h"
 #include "SWMesh.h"
-#include "SWVector2f.h"
+#include "TVector2f.h"
 #include "SWMeshRenderer.h"
 #include "SWLog.h"
 #include "SWDefines.h"
@@ -44,7 +44,7 @@ class TestScene : public SWGameScene
 {
 	SW_RTTI( TestScene, SWGameScene );
 
-	SWMatrix4x4 mat;
+	TMatrix4x4 mat;
 	void onAwake()
 	{
 		{
@@ -79,7 +79,7 @@ class TestScene : public SWGameScene
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( 100,100,500 ) );
+			transform->setLocalPosition( TVector3f( 100,100,500 ) );
 			go->setName( "cat" );
 			go->defineProp( "rot" );
 			go->setProp( "rot", new SWNumber( 0 ) );
@@ -102,7 +102,7 @@ class TestScene : public SWGameScene
 			text->setFontSize( 40 );
 
 			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( SWVector3f( 0,0,500 ) );
+			transform->setLocalPosition( TVector3f( 0,0,500 ) );
 	}
 
 	void onHandleTouch()
@@ -120,8 +120,8 @@ class TestScene : public SWGameScene
 		SWGameObject* go = find( "cat" );
 		SWNumber* num = swrtti_cast<SWNumber>( go->getProp( "rot" ) );
 		SWTransform* transform = go->getComponent<SWTransform>();
-		SWQuaternion quat;
-		quat.rotate( SWVector3f::axisY, num->getValue() );
+		TQuaternion quat;
+		quat.rotate( TVector3f::axisY, num->getValue() );
 		transform->setLocalRotate( quat );
 
 		if ( SWInput.getKey('a') )
