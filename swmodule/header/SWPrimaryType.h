@@ -35,4 +35,14 @@ typedef tuint32        thash32;
 #define tarray std::vector
 #define tpair  std::pair
 
+//! argument usage definitions, using with function argument, 
+//! such as pointer or reference value (ex. int* a; int& b )
+#define _in_    //! function don't set a value to argument, only use.
+#define _out_   //! function don't use argument, only for output.
+#define _inout_ //! function do both using and setting.
+//! [example]
+//! void inputFunc( _in_ int& value );
+//! void outputFunc( _out_ int& value );
+//! void bothFunc( _inout_ int& value );
+
 #endif //! sw_SWPrimaryType_h
