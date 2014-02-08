@@ -199,6 +199,9 @@
     <Filter Include="SW\SWIndex3">
       <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType\TTriangle">
+      <UniqueIdentifier>{a6266bbe-1414-4c87-97f9-46403e5c6c9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -429,6 +432,9 @@
     <ClInclude Include="header\SWIndex3.h">
       <Filter>SW\SWIndex3</Filter>
     </ClInclude>
+    <ClInclude Include="header\TTriangle.h">
+      <Filter>SW\SWType\TTriangle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -601,6 +607,9 @@
     </ClCompile>
     <ClCompile Include="source\THashString.cpp">
       <Filter>SW\SWType\THashString</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TTriangle.cpp">
+      <Filter>SW\SWType\TTriangle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

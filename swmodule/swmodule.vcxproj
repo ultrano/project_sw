@@ -97,6 +97,7 @@
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
     <ClInclude Include="header\SWShape2D.h" />
+    <ClInclude Include="header\TTriangle.h" />
     <ClInclude Include="header\THashString.h" />
     <ClInclude Include="header\SWMaterial.h" />
     <ClInclude Include="header\SWPrimaryType.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="source\SWTransform.cpp" />
     <ClCompile Include="source\SWUtil.cpp" />
     <ClCompile Include="source\SWValue.cpp" />
+    <ClCompile Include="source\TTriangle.cpp" />
     <ClCompile Include="source\TVector2f.cpp" />
     <ClCompile Include="source\TVector3f.cpp" />
     <ClCompile Include="source\WIFontData.cpp" />

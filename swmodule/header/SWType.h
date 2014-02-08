@@ -15,11 +15,13 @@
 #include "TQuaternion.h"
 #include "TMatrix4x4.h"
 #include "THashString.h"
+#include "TTriangle.h"
 
 typedef TVector2f   tvec2;
 typedef TVector3f   tvec3;
 typedef TQuaternion tquat;
 typedef TMatrix4x4  tmat44;
 typedef THashString thashstr;
+typedef TTriangle   ttriangle;
 
 #endif //! sw_SWType_h
