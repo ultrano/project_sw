@@ -96,13 +96,14 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
+    <ClInclude Include="header\SWShape2D.h" />
     <ClInclude Include="header\THashString.h" />
     <ClInclude Include="header\SWMaterial.h" />
     <ClInclude Include="header\SWPrimaryType.h" />
     <ClInclude Include="header\SWSocket.h" />
     <ClInclude Include="header\SWSocketStream.h" />
     <ClInclude Include="header\SWShader.h" />
-    <ClInclude Include="header\SWTriangle.h" />
+    <ClInclude Include="header\SWIndex3.h" />
     <ClInclude Include="header\SWType.h" />
     <ClInclude Include="header\WIFontData.h" />
     <ClInclude Include="header\SWGameContext.h" />

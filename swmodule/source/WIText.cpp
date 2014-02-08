@@ -1,7 +1,7 @@
 #include "WIText.h"
 #include "SWMesh.h"
 #include "TVector3f.h"
-#include "SWTriangle.h"
+#include "SWIndex3.h"
 #include "WIFontChar.h"
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
@@ -63,7 +63,7 @@ void WIText::updateMesh()
 
 	tarray<TVector3f, SWAllocator<TVector3f> > m_pos;
 	tarray<TVector2f, SWAllocator<TVector2f> > m_tex;
-	tarray<SWTriangle, SWAllocator<SWTriangle> > m_indices;
+	tarray<SWIndex3, SWAllocator<SWIndex3> > m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );
