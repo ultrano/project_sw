@@ -196,11 +196,11 @@
     <Filter Include="SW\SWShape2D">
       <UniqueIdentifier>{43074a94-f8bb-44e0-ae5b-dd5eea05943e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWIndex3">
-      <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWType\TTriangle">
       <UniqueIdentifier>{a6266bbe-1414-4c87-97f9-46403e5c6c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TIndex3">
+      <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -429,11 +429,11 @@
     <ClInclude Include="header\SWShape2D.h">
       <Filter>SW\SWShape2D</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWIndex3.h">
-      <Filter>SW\SWIndex3</Filter>
-    </ClInclude>
     <ClInclude Include="header\TTriangle.h">
       <Filter>SW\SWType\TTriangle</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TIndex3.h">
+      <Filter>SW\SWType\TIndex3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include "BallGenerator.h"
 #include "TVector3f.h"
-#include "SWIndex3.h"
+#include "TIndex3.h"
 #include "SWGameObject.h"
 #include "Ball.h"
 #include "SWGameContext.h"
@@ -16,7 +16,7 @@ void BallGenerator::onAwake()
 
 	TVector3f vertices[] = { TVector3f(-0.5f,-0.5f,0), TVector3f(0.5f,-0.5f,0), TVector3f(-0.5f,0.5f,0), TVector3f(0.5f,0.5f,0) };
 	TVector2f texCoords[] = { TVector2f(0,0), TVector2f(1,0), TVector2f(0,1), TVector2f(1,1) };
-	SWIndex3 indices[] = { SWIndex3(0,1,2), SWIndex3(3,2,1) };
+	TIndex3 indices[] = { TIndex3(0,1,2), TIndex3(3,2,1) };
 	SWMesh* mesh = new SWMesh();
 	mesh->setVertexStream( 4, &vertices[0] );
 	mesh->setTexCoordStream( 4, &texCoords[0]);
