@@ -71,8 +71,8 @@ void WIText::updateMesh()
 
 	int defaultSize = 40;
 	float sizeScale = (float)m_fontSize/(float)defaultSize;
-	float width = m_font()->getScaleW();
-	float height = m_font()->getScaleH();
+	float width  = (float)m_font()->getScaleW();
+	float height = (float)m_font()->getScaleH();
 	int spaceWidth = 5;
 	float lineHeight = m_font()->getLineHeight()*sizeScale;
 	float startOffsetX = 0;

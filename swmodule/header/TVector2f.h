@@ -42,16 +42,24 @@ public:
     TVector2f    normalize() const;
     
     //! 사칙 & 논리 연산 오버로드.
-	TVector2f    operator +( const TVector2f& pt ) const;
-	TVector2f    operator -( const TVector2f& pt ) const;
-	TVector2f    operator -() const;
-	TVector2f    operator *( float scalar ) const;
-	TVector2f    operator /( float scalar ) const;
+	TVector2f  operator -() const { return TVector2f( -x, -y ); }
+	TVector2f  operator +( const TVector2f& pt ) const { return TVector2f( x + pt.x, y + pt.y ); }
+	TVector2f  operator -( const TVector2f& pt ) const {return TVector2f( x - pt.x, y - pt.y ); }
+	TVector2f  operator *( float scalar ) const { return TVector2f( x * scalar, y * scalar ); }
+	TVector2f  operator /( float scalar ) const { return TVector2f( x / scalar, y / scalar ); }
     
-	TVector2f&   operator +=( const TVector2f& pt ) ;
-	TVector2f&   operator -=( const TVector2f& pt ) ;
-	bool        operator ==( const TVector2f& pt ) const;
-	bool        operator !=( const TVector2f& pt ) const;
+	TVector2f& operator +=( const TVector2f& pt ) { x += pt.x; y += pt.y; return *this; }
+	TVector2f& operator -=( const TVector2f& pt ) { x -= pt.x; y -= pt.y; return *this; }
+	TVector2f& operator *= ( float f ) { x *= f; y *= f; return *this; }
+	TVector2f& operator /= ( float f ) { x /= f; y /= f; return *this; }
+
+	bool        operator ==( const TVector2f& pt ) const { return ( ( x == pt.x ) && ( y == pt.y ) ); }
+	bool        operator !=( const TVector2f& pt ) const { return ( ( x != pt.x ) && ( y != pt.y ) ); }
+
+	TVector2f& operator = ( const TVector2f& a ) { x = a.x; y = a.y; return *this; }
+	
 };
+
+inline TVector2f operator * ( float f, const TVector2f& a ) { return TVector2f( a.x * f, a.y * f ); }
 
 #endif

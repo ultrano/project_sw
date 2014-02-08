@@ -35,4 +35,8 @@ typedef tuint32        thash32;
 #define tarray std::vector
 #define tpair  std::pair
 
+#define _in_
+#define _out_
+#define _inout_
+
 #endif //! sw_SWPrimaryType_h
