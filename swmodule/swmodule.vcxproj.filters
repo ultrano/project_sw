@@ -611,5 +611,8 @@
     <ClCompile Include="source\TTriangle.cpp">
       <Filter>SW\SWType\TTriangle</Filter>
     </ClCompile>
+    <ClCompile Include="source\SWShape2D.cpp">
+      <Filter>SW\SWShape2D</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

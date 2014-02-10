@@ -29,10 +29,11 @@ void TQuaternion::identify()
 	x = 0; y = 0; z = 0; w = 1;
 }
 
-TQuaternion& TQuaternion::normalize()
+TQuaternion TQuaternion::normal()
 {
-	if ( float n = norm() ) *this /= n;
-	return *this;
+	TQuaternion ret( *this );
+	if ( float n = norm() ) ret /= n;
+	return ret;
 }
 
 float TQuaternion::norm() const
@@ -60,7 +61,7 @@ void TQuaternion::inverse( TQuaternion& q ) const
 
 TQuaternion& TQuaternion::rotate( const TVector3f& axis, float radian )
 {
-	vec() = TVector3f(axis).normalize() * sinf(radian/2.0f);
+	vec() = axis.normal() * sinf(radian/2.0f);
 	w     = cosf(radian/2.0f);
 	return *this;
 }

@@ -1,5 +1,6 @@
 
 #include "TVector3f.h"
+#include "SWMath.h"
 #include <math.h>
 
 const TVector3f TVector3f::axisX(1,0,0);
@@ -27,7 +28,7 @@ TVector3f TVector3f::cross( const TVector3f& v ) const
 	return out;
 }
 
-TVector3f TVector3f::normalize() const
+TVector3f TVector3f::normal() const
 {
     TVector3f out( 0, 0, 0 );
     float len = length();
@@ -44,4 +45,34 @@ TVector3f TVector3f::normalize() const
         //SWLog( "zero length vector" );
     }
 	return out;
+}
+
+void        TVector3f::rotateX( float radian )
+{
+	float cosR = SWMath.cos( radian );
+	float sinR = SWMath.sin( radian );
+	float ay = (y * cosR) - (z * sinR);
+	float az = (y * sinR) + (z * cosR);
+	y = ay;
+	z = az;
+}
+
+void        TVector3f::rotateY( float radian )
+{
+	float cosR = SWMath.cos( radian );
+	float sinR = SWMath.sin( radian );
+	float ax = (z * sinR) + (x * cosR);
+	float az = (z * cosR) - (x * sinR);
+	x = ax;
+	z = az;
+}
+
+void        TVector3f::rotateZ( float radian )
+{
+	float cosR = SWMath.cos( radian );
+	float sinR = SWMath.sin( radian );
+	float ax = (x * cosR) - (y * sinR);
+	float ay = (x * sinR) + (y * cosR);
+	x = ax;
+	y = ay;
 }

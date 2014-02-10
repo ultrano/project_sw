@@ -23,7 +23,11 @@ public:
 	float		length() const;
 	float		dot( const TVector3f& v ) const;
 	TVector3f   cross( const TVector3f& v ) const;
-	TVector3f	normalize() const;
+	TVector3f	normal() const;
+
+	void        rotateX( float radian );
+	void        rotateY( float radian );
+	void        rotateZ( float radian );
 
 	TVector3f  operator - () const { return TVector3f(-x, -y, -z); }
 	TVector3f  operator +( const TVector3f& pt ) const { return TVector3f( x + pt.x, y + pt.y, z + pt.z ); }

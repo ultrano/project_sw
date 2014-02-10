@@ -37,9 +37,12 @@ public:
 	//! cross product
     float cross( float kx, float ky ) const;
     float cross( const TVector2f& pt ) const;
-    
+
     //! 단위화 값 (길이가 0인 벡터에 대한 단위화는 보장하지 않는다. (사전에 체크))
-    TVector2f    normalize() const;
+    TVector2f normal() const;
+    
+	//! z-axis rotate
+	void rotateZ( float radian );
     
     //! 사칙 & 논리 연산 오버로드.
 	TVector2f  operator -() const { return TVector2f( -x, -y ); }

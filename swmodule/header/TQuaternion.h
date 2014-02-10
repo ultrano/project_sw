@@ -23,9 +23,9 @@ public:
 	TQuaternion& operator *= ( const TQuaternion& q );
 
 	void		identify();
-	TQuaternion&	normalize();
+	TQuaternion normal();
 	float		norm() const;
-	TVector3f  vec() const;
+	TVector3f   vec() const;
 	void		conjugate(TQuaternion& q) const;
 	void		inverse(TQuaternion& q) const;
 	TQuaternion& rotate(const TVector3f& axis, float radian);

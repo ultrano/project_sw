@@ -176,6 +176,7 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
+    <ClCompile Include="source\SWShape2D.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWList.cpp" />

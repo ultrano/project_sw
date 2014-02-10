@@ -8,6 +8,7 @@
 
 #include "TVector2f.h"
 #include "SWLog.h"
+#include "SWMath.h"
 #include <math.h>
 
 TVector2f::TVector2f()
@@ -61,7 +62,7 @@ float TVector2f::cross( const TVector2f &pt ) const
     return cross( pt.x, pt.y );
 }
 
-TVector2f   TVector2f::normalize() const
+TVector2f   TVector2f::normal() const
 {
     TVector2f pt( 0, 0 );
     float len = length();
@@ -77,4 +78,14 @@ TVector2f   TVector2f::normalize() const
         //SWLog( "zero length vector" );
     }
     return pt;
+}
+
+void TVector2f::rotateZ( float radian )
+{
+	float cosR = SWMath.cos( radian );
+	float sinR = SWMath.sin( radian );
+	float ax = (x * cosR) - (y * sinR);
+	float ay = (x * sinR) + (y * cosR);
+	x = ax;
+	y = ay;
 }
