@@ -35,7 +35,7 @@ typedef tuint32        thash32;
 #define tarray std::vector
 #define tpair  std::pair
 
-//! argument usage definitions, using with function argument, 
+//! argument usage definitions, using with function argument.
 //! such as pointer or reference value (ex. int* a; int& b )
 #define _in_    //! function don't set a value to argument, only use.
 #define _out_   //! function don't use argument, only for output.
