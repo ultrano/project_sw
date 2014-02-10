@@ -160,9 +160,6 @@
     <Filter Include="SW\SWFileStream">
       <UniqueIdentifier>{804995eb-f036-452b-8088-052d01e3b454}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWTriangle">
-      <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWMaterial">
       <UniqueIdentifier>{9c917410-31ed-4c81-9bb1-fa21ffa6aaa9}</UniqueIdentifier>
     </Filter>
@@ -195,6 +192,15 @@
     </Filter>
     <Filter Include="SW\SWType\TMatrix2x2">
       <UniqueIdentifier>{dee33689-be9f-495c-a063-cdf7a0a5f7fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWShape2D">
+      <UniqueIdentifier>{43074a94-f8bb-44e0-ae5b-dd5eea05943e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TTriangle">
+      <UniqueIdentifier>{a6266bbe-1414-4c87-97f9-46403e5c6c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TIndex3">
+      <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -384,9 +390,6 @@
     <ClInclude Include="header\SWFileStream.h">
       <Filter>SW\SWFileStream</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWTriangle.h">
-      <Filter>SW\SWTriangle</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWMaterial.h">
       <Filter>SW\SWMaterial</Filter>
     </ClInclude>
@@ -422,6 +425,15 @@
     </ClInclude>
     <ClInclude Include="header\THashString.h">
       <Filter>SW\SWType\THashString</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWShape2D.h">
+      <Filter>SW\SWShape2D</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TTriangle.h">
+      <Filter>SW\SWType\TTriangle</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TIndex3.h">
+      <Filter>SW\SWType\TIndex3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -595,6 +607,9 @@
     </ClCompile>
     <ClCompile Include="source\THashString.cpp">
       <Filter>SW\SWType\THashString</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TTriangle.cpp">
+      <Filter>SW\SWType\TTriangle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

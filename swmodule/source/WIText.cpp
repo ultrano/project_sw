@@ -1,7 +1,7 @@
 #include "WIText.h"
 #include "SWMesh.h"
 #include "TVector3f.h"
-#include "SWTriangle.h"
+#include "TIndex3.h"
 #include "WIFontChar.h"
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
@@ -63,7 +63,7 @@ void WIText::updateMesh()
 
 	tarray<TVector3f, SWAllocator<TVector3f> > m_pos;
 	tarray<TVector2f, SWAllocator<TVector2f> > m_tex;
-	tarray<SWTriangle, SWAllocator<SWTriangle> > m_indices;
+	tarray<TIndex3, SWAllocator<TIndex3> > m_indices;
 
 	m_pos.resize( m_text.size() * 4 );
 	m_tex.resize( m_text.size() * 4 );
@@ -71,8 +71,8 @@ void WIText::updateMesh()
 
 	int defaultSize = 40;
 	float sizeScale = (float)m_fontSize/(float)defaultSize;
-	float width = m_font()->getScaleW();
-	float height = m_font()->getScaleH();
+	float width  = (float)m_font()->getScaleW();
+	float height = (float)m_font()->getScaleH();
 	int spaceWidth = 5;
 	float lineHeight = m_font()->getLineHeight()*sizeScale;
 	float startOffsetX = 0;

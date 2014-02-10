@@ -1,7 +1,7 @@
 #include "SWMesh.h"
 #include "TVector3f.h"
 #include "TVector2f.h"
-#include "SWTriangle.h"
+#include "TIndex3.h"
 #include "SWGameContext.h"
 
 void SWMesh::setVertexStream( size_t count, const TVector3f* stream )
@@ -21,10 +21,10 @@ void SWMesh::setTexCoordStream( size_t count, const TVector2f* stream )
 	m_updateMesh = true;
 }
 
-void SWMesh::setTriangleStream( size_t count, const SWTriangle* stream )
+void SWMesh::setTriangleStream( size_t count, const TIndex3* stream )
 {
 	m_triangles.resize(count);
-	memcpy( &m_triangles[0], stream, sizeof(SWTriangle)*count );
+	memcpy( &m_triangles[0], stream, sizeof(TIndex3)*count );
 	m_updateMesh = true;
 }
 
@@ -38,7 +38,7 @@ void SWMesh::getTexCoordStream( tarray<TVector2f>& stream ) const
 	stream = m_texCoords;
 }
 
-void SWMesh::getTriangleStream( tarray<SWTriangle>& stream ) const
+void SWMesh::getTriangleStream( tarray<TIndex3>& stream ) const
 {
 	stream = m_triangles;
 }
@@ -51,7 +51,7 @@ void SWMesh::setTexCoord( tuint index, const TVector2f& val )
 {
 	if ( index < m_texCoords.size() ) m_texCoords[index] = val;
 }
-void SWMesh::setTriangle( tuint index, const SWTriangle& val )
+void SWMesh::setTriangle( tuint index, const TIndex3& val )
 {
 	if ( index < m_triangles.size() ) m_triangles[index] = val;
 }
@@ -64,7 +64,7 @@ void SWMesh::getTexCoord( tuint index, TVector2f& val )
 {
 	if ( index < m_texCoords.size() ) val = m_texCoords[index];
 }
-void SWMesh::getTriangle( tuint index, SWTriangle& val )
+void SWMesh::getTriangle( tuint index, TIndex3& val )
 {
 	if ( index < m_triangles.size() ) val = m_triangles[index];
 }
