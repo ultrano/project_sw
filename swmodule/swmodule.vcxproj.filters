@@ -205,13 +205,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="json\json_internalarray.inl">
+    <None Include="header\json_internalarray.inl">
       <Filter>json</Filter>
     </None>
-    <None Include="json\json_internalmap.inl">
+    <None Include="header\json_internalmap.inl">
       <Filter>json</Filter>
     </None>
-    <None Include="json\json_valueiterator.inl">
+    <None Include="header\json_valueiterator.inl">
       <Filter>json</Filter>
     </None>
   </ItemGroup>
@@ -357,33 +357,6 @@
     <ClInclude Include="header\WIText.h">
       <Filter>WI\WIText</Filter>
     </ClInclude>
-    <ClInclude Include="json\reader.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\value.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\writer.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\autolink.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\config.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\features.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\forwards.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\json.h">
-      <Filter>json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\json_batchallocator.h">
-      <Filter>json</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWType.h">
       <Filter>SW\SWType</Filter>
     </ClInclude>
@@ -434,6 +407,27 @@
     </ClInclude>
     <ClInclude Include="header\TIndex3.h">
       <Filter>SW\SWType\TIndex3</Filter>
+    </ClInclude>
+    <ClInclude Include="header\reader.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\autolink.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\config.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\features.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\forwards.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\json.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="header\json_batchallocator.h">
+      <Filter>json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -563,15 +557,6 @@
     <ClCompile Include="source\WIFontData.cpp">
       <Filter>WI\WIFontData</Filter>
     </ClCompile>
-    <ClCompile Include="json\json_reader.cpp">
-      <Filter>json</Filter>
-    </ClCompile>
-    <ClCompile Include="json\json_value.cpp">
-      <Filter>json</Filter>
-    </ClCompile>
-    <ClCompile Include="json\json_writer.cpp">
-      <Filter>json</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWFileStream.cpp">
       <Filter>SW\SWFileStream</Filter>
     </ClCompile>
@@ -613,6 +598,15 @@
     </ClCompile>
     <ClCompile Include="source\SWShape2D.cpp">
       <Filter>SW\SWShape2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\json_value.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="source\json_writer.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="source\json_reader.cpp">
+      <Filter>json</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
