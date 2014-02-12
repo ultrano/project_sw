@@ -11,6 +11,8 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <limits>
+#include <string>
 
 void* SWAlloc( size_t size );
 void  SWFree( void* mem );
