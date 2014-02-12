@@ -1,7 +1,7 @@
 
 #include "SWGameContext.h"
 
-#ifdef _MSC_VER
+#ifdef WIN32
 #include "glew.h"
 #else
 #include <OpenGLES/ES1/gl.h>
