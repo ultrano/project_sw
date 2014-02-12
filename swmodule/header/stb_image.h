@@ -1,4 +1,4 @@
-#define STBI_HEADER_FILE_ONLY
+//#define STBI_HEADER_FILE_ONLY
 /* stbi-1.33 - public domain JPEG/PNG reader - http://nothings.org/stb_image.c
    when you control the images you're loading
                                      no warranty implied; use at your own risk
