@@ -2,13 +2,14 @@
 #include "SWIOStream.h"
 
 #include <locale>
-#include <codecvt>
 #include <stdlib.h>
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #include <Windows.h>
+#include <codecvt>
 #else
 #include <sys/time.h>
+#include <iconv.h>
 #endif
 
 
@@ -28,7 +29,7 @@ __SWUtil& __SWUtil::getInstance()
 
 unsigned int __SWUtil::getMicroCount()
 {
-#ifdef WIN32
+#ifdef _MSC_VER
     return GetTickCount()*1000;
 #else
     struct timeval tick;
@@ -60,7 +61,7 @@ tnumber __SWUtil::strToNum( const tstring& str )
 
 void __SWUtil::consoleXY( int x, int y )
 {
-#ifdef WIN32
+#ifdef _MSC_VER
 	COORD pos = {x, y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 #endif
@@ -68,6 +69,7 @@ void __SWUtil::consoleXY( int x, int y )
 
 twstring __SWUtil::utf8ToUnicode( const tstring& str )
 {
+#ifdef _MSC_VER
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 	const char* begin = &str[0];
 	const char* end   = &str[str.size()];
@@ -82,10 +84,14 @@ twstring __SWUtil::utf8ToUnicode( const tstring& str )
 	} while ( false );
 
 	return conv.from_bytes( begin, end ).c_str();
+#else
+	return L"";
+#endif
 }
 
 tstring __SWUtil::unicodeToUtf8( const twstring& str )
 {
+#ifdef _MSC_VER
 	if ( str.size() == 0 ) return "";
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 	const wchar_t* begin = &str[0];
@@ -96,7 +102,9 @@ tstring __SWUtil::unicodeToUtf8( const twstring& str )
 	else if ( str[0] == (wchar_t)0xfffe ) begin = &str[1];
 
 	return conv.to_bytes( begin, end ).c_str();
-
+#else
+	return "";
+#endif
 }
 
 
