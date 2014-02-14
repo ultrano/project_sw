@@ -20,6 +20,10 @@ struct _WinSockHolder
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdlib.h>
+#include <sys/uio.h>
+#include <unistd.h>
 #define WINSOCKHOLDER 1;
 #endif
 
@@ -106,7 +110,11 @@ SWSocket::SWSocket()
 }
 SWSocket::~SWSocket()
 {
+#ifdef WIN32
 	closesocket( pimpl()->sock );
+#else
+    close( pimpl()->sock );
+#endif
 	m_pimpl = NULL;
 }
 
