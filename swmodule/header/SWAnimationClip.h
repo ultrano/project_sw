@@ -3,12 +3,16 @@
 
 #include "SWRefCounter.h"
 
+class SWAnimationLine;
 class SWAnimationClip : SWRefCountable
 {
 
 private:
 
-	
+	struct AnimInfo
+	{
+
+	};
 
 public:
 

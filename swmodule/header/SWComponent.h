@@ -36,6 +36,7 @@ public:
 	virtual void onAwake() {};
 	virtual void onStart() {};
 	virtual void onRemove() {};
+	virtual void onAnimate( const thashstr& key, float value ) {};
 };
 
 #endif
