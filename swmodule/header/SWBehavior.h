@@ -47,10 +47,10 @@ public:
     
     //! SWCollider 컴포넌트에 의해 호출
     virtual void onCollision( const SWCollisionInfo& info ) {};
-    
-	void setMessageDelegate( const tstring& msgName, const SWDelegator* del );
-	const SWDelegator* getMessageDelegate( const tstring& msgName );
-	void receiveMessage( const tstring& msgName, SWObject* param );
+
+	void delegateMessage( const tstring& msgName, SWObject* param );
+	void setMessageDelegator( const tstring& msgName, const SWDelegator* del );
+	const SWDelegator* getMessageDelegator( const tstring& msgName );
 
 private:
 

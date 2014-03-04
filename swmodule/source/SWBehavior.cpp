@@ -37,21 +37,21 @@ void SWBehavior::onRemove()
 	__super::onRemove();
 }
 
-void SWBehavior::setMessageDelegate( const tstring& msgName, const SWDelegator* del )
+void SWBehavior::setMessageDelegator( const tstring& msgName, const SWDelegator* del )
 {
 	m_recvTable.insert( std::make_pair( msgName, del ) );
 }
 
-const SWDelegator* SWBehavior::getMessageDelegate( const tstring& msgName )
+const SWDelegator* SWBehavior::getMessageDelegator( const tstring& msgName )
 {
 	ReceiverTable::iterator itor = m_recvTable.find( msgName );
 	if ( itor != m_recvTable.end() ) return itor->second();
 	return NULL;
 }
 
-void SWBehavior::receiveMessage( const tstring& msgName, SWObject* param )
+void SWBehavior::delegateMessage( const tstring& msgName, SWObject* param )
 {
-	const SWDelegator* del = getMessageDelegate( msgName );
+	const SWDelegator* del = getMessageDelegator( msgName );
 	if ( del == NULL ) return;
 	del->call( param );
 }

@@ -276,6 +276,6 @@ void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 	{
 		SWBehavior* comp = swrtti_cast<SWBehavior>( (*itor)() );
 		if ( comp == NULL ) continue;
-		comp->receiveMessage( msgName, param );
+		comp->delegateMessage( msgName, param );
 	}
 }
