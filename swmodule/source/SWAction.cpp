@@ -18,12 +18,12 @@ SWAction::~SWAction()
 void SWAction::onStart()
 {
 	__super::onStart();
-	gameObject()->addUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 }
 
 void SWAction::onRemove()
 {
-	gameObject()->removeUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
 

@@ -146,7 +146,7 @@ class GameMainScene : public SWGameScene
 
 		{
 			SWGameObject* go = find( "siso_up" );
-			go->addUpdateDelegate( GetDelegate( onSisoUpUpdate ) );
+			go->addUpdateDelegator( GetDelegator( onSisoUpUpdate ) );
 		}
 	}
 

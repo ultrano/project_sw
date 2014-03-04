@@ -24,12 +24,12 @@ void WIImage::onAwake()
 	setAlign( UI_Center, UI_Center );
 	gameObject()->addComponent<SWMeshFilter>()->setMesh( mesh );
 	gameObject()->addComponent<SWMeshRenderer>();
-	gameObject()->addUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 }
 
 void WIImage::onRemove()
 {
-	gameObject()->removeUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 }
 
 void WIImage::onUpdate()

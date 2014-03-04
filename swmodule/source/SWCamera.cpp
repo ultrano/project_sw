@@ -7,12 +7,12 @@ SWHardRef<SWCamera> SWCamera::mainCamera = NULL;
 void SWCamera::onAwake()
 {
 	__super::onAwake();
-	gameObject()->addUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 }
 
 void SWCamera::onRemove()
 {
-	gameObject()->removeUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
 

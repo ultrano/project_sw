@@ -65,18 +65,18 @@ public:
 
 	void removeComponentAll();
 
-	void addUpdateDelegate( SWDelegator* dg );
-	void removeUpdateDelegate( SWDelegator* dg );
+	void addUpdateDelegator( SWDelegator* dg );
+	void removeUpdateDelegator( SWDelegator* dg );
 
 	void defineProp( const tstring& name );
 	bool isDefinedProp( const tstring& name );
 	void setProp( const tstring& name, SWObject* value );
 	SWObject* getProp( const tstring& name );
 
-	void addPropSetDelegate( const tstring& name, SWDelegator* del );
-	void removePropSetDelegate( const tstring& name, SWDelegator* del );
-	void removeAllPropSetDelegate( const tstring& name );
-	void cleanPropSetDelegate( const tstring& name );
+	void addPropSetDelegator( const tstring& name, SWDelegator* del );
+	void removePropSetDelegator( const tstring& name, SWDelegator* del );
+	void removeAllPropSetDelegator( const tstring& name );
+	void cleanPropSetDelegator( const tstring& name );
 
 	void sendMessage( const tstring& msgName, SWObject* param );
 

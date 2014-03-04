@@ -34,7 +34,7 @@ SWObject::~SWObject()
     //SW_OutputLog( "object", "deleted, remains: %d", getObjectCount() );
 }
 
-SWDelegator* SWObject::getDelegate( const SWHandler& handler )
+SWDelegator* SWObject::getDelegator( const SWHandler& handler )
 {
 	SWDelegator* dg = NULL;
 	SWObject::List::iterator itor = m_delegates.begin();

@@ -152,12 +152,12 @@ void SWTransform::onStart()
 {
 	__super::onStart();
 	SW_GC.getScene()->m_roots.push_back( gameObject.getRaw() );
-	gameObject()->addUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 }
 
 void SWTransform::onRemove()
 {
-	gameObject()->removeUpdateDelegate( GetDelegate( onUpdate ) );
+	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	SWObject::List copy = m_children;
 	SWObject::List::iterator itor = copy.begin();
 	for ( ; itor != copy.end() ; ++itor )

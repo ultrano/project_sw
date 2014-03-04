@@ -41,7 +41,7 @@ SWGameObject* SWGameScene::find( const char *name )
 
 void SWGameScene::awake()
 {
-	SWInput.addInputDelegate( GetDelegate(handleEvent) );
+	SWInput.addInputDelegate( GetDelegator(handleEvent) );
 	onAwake();
 }
 
@@ -60,7 +60,7 @@ void SWGameScene::destroy()
 	m_updates.clear();
 	m_renderers.clear();
 
-	SWInput.removeInputDelegate( GetDelegate(handleEvent) );
+	SWInput.removeInputDelegate( GetDelegator(handleEvent) );
 	__super::destroy();
 }
 

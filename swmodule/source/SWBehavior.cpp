@@ -28,12 +28,12 @@ void SWBehavior::update( SWGameObject* )
 void SWBehavior::onStart()
 {
 	__super::onStart();
-	gameObject()->addUpdateDelegate( GetDelegate( update ) );
+	gameObject()->addUpdateDelegator( GetDelegator( update ) );
 }
 
 void SWBehavior::onRemove()
 {
-	gameObject()->removeUpdateDelegate( GetDelegate( update ) );
+	gameObject()->removeUpdateDelegator( GetDelegator( update ) );
 	__super::onRemove();
 }
 

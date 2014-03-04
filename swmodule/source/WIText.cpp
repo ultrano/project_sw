@@ -16,12 +16,12 @@ void WIText::onAwake()
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
 	filter->setMesh( new SWMesh );
 	m_mesh = filter->getMesh();
-	gameObject()->addUpdateDelegate( GetDelegate(updateMesh) );
+	gameObject()->addUpdateDelegator( GetDelegator(updateMesh) );
 }
 
 void WIText::onRemove()
 {
-	gameObject()->removeUpdateDelegate( GetDelegate(updateMesh) );
+	gameObject()->removeUpdateDelegator( GetDelegator(updateMesh) );
 }
 
 void WIText::setFont( WIFontData* font )

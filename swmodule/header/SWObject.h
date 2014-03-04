@@ -41,12 +41,12 @@ public:
 	SWObject();
 	~SWObject();
 	unsigned getID() const { return m_id; };
-	SWDelegator* getDelegate( const SWHandler& handler );
+	SWDelegator* getDelegator( const SWHandler& handler );
 	virtual tstring toString() const;
 	virtual void destroy();
 };
 
-#define GetDelegate( method ) ( getDelegate( SWHandler::delimit(&__this::method) ) )
+#define GetDelegator( method ) ( getDelegator( SWHandler::delimit(&__this::method) ) )
 
 //! SWHandler는 호출자와 피호출자간, 대화의 창구가 된다.
 class SWHandler
