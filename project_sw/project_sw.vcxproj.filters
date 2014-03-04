@@ -20,21 +20,6 @@
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Cat.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ball.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BallGenerator.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CatGenerator.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CatAss.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
@@ -44,18 +29,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="project_sw.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Cat.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BallGenerator.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CatGenerator.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

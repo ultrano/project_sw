@@ -86,20 +86,11 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="Cat.h" />
-    <ClInclude Include="CatAss.h" />
-    <ClInclude Include="CatGenerator.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="BallGenerator.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="BallGenerator.cpp" />
-    <ClCompile Include="Cat.cpp" />
-    <ClCompile Include="CatGenerator.cpp" />
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

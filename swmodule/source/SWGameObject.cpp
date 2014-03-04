@@ -20,7 +20,6 @@ class SWProperty : public SWObject
 {
 public:
 	SWObject::Ref m_value;
-	SWObject::List m_setDelegates;
 };
 
 SWGameObject::SWGameObject()
@@ -177,17 +176,6 @@ void SWGameObject::setProp( const tstring& name, SWObject* value )
 
 		prop = swrtti_cast<SWProperty>( (itor->second)() );
 	}
-	if ( prop == NULL ) return;
-	
-	{
-		prop->m_value = value;
-		SWObject::List::iterator itor = prop->m_setDelegates.begin();
-		for ( ; itor != prop->m_setDelegates.end() ; ++itor )
-		{
-			SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
-			del->call( value );
-		}
-	}
 }
 
 SWObject* SWGameObject::getProp( const tstring& name )
@@ -196,75 +184,6 @@ SWObject* SWGameObject::getProp( const tstring& name )
 	if ( itor == m_propTable.end() ) return NULL;
 	SWProperty* prop = swrtti_cast<SWProperty>( (itor->second)() );
 	return prop->m_value();
-}
-
-void SWGameObject::addPropSetDelegator( const tstring& name, SWDelegator* del )
-{
-	if ( del == NULL ) return;
-	SWProperty* prop = NULL;
-	{
-		ObjectMap::iterator itor = m_propTable.find( name );
-		if ( itor == m_propTable.end() ) return;
-
-		prop = swrtti_cast<SWProperty>( (itor->second)() );
-	}
-	if ( prop == NULL ) return;
-
-	prop->m_setDelegates.push_back( del );
-}
-
-void SWGameObject::removePropSetDelegator( const tstring& name, SWDelegator* del )
-{
-	if ( del == NULL ) return;
-	SWProperty* prop = NULL;
-	{
-		ObjectMap::iterator itor = m_propTable.find( name );
-		if ( itor == m_propTable.end() ) return;
-
-		prop = swrtti_cast<SWProperty>( (itor->second)() );
-	}
-	if ( prop == NULL ) return;
-
-	prop->m_setDelegates.remove( del );
-}
-
-void SWGameObject::removeAllPropSetDelegator( const tstring& name )
-{
-	SWProperty* prop = NULL;
-	{
-		ObjectMap::iterator itor = m_propTable.find( name );
-		if ( itor == m_propTable.end() ) return;
-
-		prop = swrtti_cast<SWProperty>( (itor->second)() );
-	}
-	if ( prop == NULL ) return;
-
-	prop->m_setDelegates.clear();
-}
-
-void SWGameObject::cleanPropSetDelegator( const tstring& name )
-{
-	SWProperty* prop = NULL;
-	{
-		ObjectMap::iterator itor = m_propTable.find( name );
-		if ( itor == m_propTable.end() ) return;
-
-		prop = swrtti_cast<SWProperty>( (itor->second)() );
-	}
-	if ( prop == NULL ) return;
-	
-	{
-		SWObject::List::iterator itor = prop->m_setDelegates.begin();
-		while ( itor != prop->m_setDelegates.end() )
-		{
-			SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
-			if ( del == NULL || !del->isValid() )
-			{
-				itor = prop->m_setDelegates.erase( itor );
-			}
-			else ++itor;
-		}
-	}
 }
 
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )

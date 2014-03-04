@@ -73,11 +73,6 @@ public:
 	void setProp( const tstring& name, SWObject* value );
 	SWObject* getProp( const tstring& name );
 
-	void addPropSetDelegator( const tstring& name, SWDelegator* del );
-	void removePropSetDelegator( const tstring& name, SWDelegator* del );
-	void removeAllPropSetDelegator( const tstring& name );
-	void cleanPropSetDelegator( const tstring& name );
-
 	void sendMessage( const tstring& msgName, SWObject* param );
 
 };
