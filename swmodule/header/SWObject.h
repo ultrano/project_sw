@@ -18,7 +18,7 @@
 //! 객체간 상호작용은 SWHandler 라고 지정한 포맷의
 //! 메소드 포인터를 이용.
 class SWObject;
-class SWDelegate;
+class SWDelegator;
 class SWHandler;
 
 class SWObject : public SWRefCountable
@@ -41,7 +41,7 @@ public:
 	SWObject();
 	~SWObject();
 	unsigned getID() const { return m_id; };
-	SWDelegate* getDelegate( const SWHandler& handler );
+	SWDelegator* getDelegate( const SWHandler& handler );
 	virtual tstring toString() const;
 	virtual void destroy();
 };
@@ -75,21 +75,21 @@ public:
 	}
 };
 
-class SWDelegate : public SWObject
+class SWDelegator : public SWObject
 {
-	SW_RTTI( SWDelegate, SWObject );
+	SW_RTTI( SWDelegator, SWObject );
 	SWObject::WRef m_object;
 	SWHandler m_handler;
 public:
 
-	SWDelegate( SWObject* object, const SWHandler& handler );
-	SWDelegate( const SWDelegate& copy );
+	SWDelegator( SWObject* object, const SWHandler& handler );
+	SWDelegator( const SWDelegator& copy );
 	
 	void call() const;
 	void call(SWObject* param) const;
 
 	bool isValid() const;
-	bool isEqual( const SWDelegate* dg ) const;
+	bool isEqual( const SWDelegator* dg ) const;
 	bool isEqual( SWObject* object, const SWHandler& handler ) const;
 	SWObject* getObject() const { return m_object(); };
 	const SWHandler& getHandler() const { return m_handler; };

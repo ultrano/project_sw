@@ -15,19 +15,19 @@ void SWRenderer::onRemove()
 	scene->m_renderers.remove( this );
 }
 
-void SWRenderer::addPreRenderDelegate( const SWDelegate* del )
+void SWRenderer::addPreRenderDelegate( const SWDelegator* del )
 {
 	if ( !del ) return;
 	SWList::iterator itor = m_preRenderDels.begin();
 	for ( ; itor != m_preRenderDels.end() ; ++itor )
 	{
-		SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
+		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( itorDG->isEqual( del ) ) return;
 	}
 	m_preRenderDels.push_back( del );
 }
 
-void SWRenderer::removePreRenderDelegate( const SWDelegate* del )
+void SWRenderer::removePreRenderDelegate( const SWDelegator* del )
 {
 	if ( !del ) return;
 	m_preRenderDels.remove( del );
@@ -42,7 +42,7 @@ void SWRenderer::preRender()
 	SWList::iterator itor = copy.begin();
 	for ( ; itor != copy.end() ; ++itor )
 	{
-		SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+		SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( del ) del->call( this );
 		else removePreRenderDelegate( del );
 		if ( !vital.isValid() ) return;

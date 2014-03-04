@@ -20,8 +20,8 @@ protected:
 
 public:
 
-	void addPreRenderDelegate( const SWDelegate* del );
-	void removePreRenderDelegate( const SWDelegate* del );
+	void addPreRenderDelegate( const SWDelegator* del );
+	void removePreRenderDelegate( const SWDelegator* del );
 
 	void preRender();
 	virtual void render() = 0;

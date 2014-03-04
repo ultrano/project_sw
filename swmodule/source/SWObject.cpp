@@ -34,17 +34,17 @@ SWObject::~SWObject()
     //SW_OutputLog( "object", "deleted, remains: %d", getObjectCount() );
 }
 
-SWDelegate* SWObject::getDelegate( const SWHandler& handler )
+SWDelegator* SWObject::getDelegate( const SWHandler& handler )
 {
-	SWDelegate* dg = NULL;
+	SWDelegator* dg = NULL;
 	SWObject::List::iterator itor = m_delegates.begin();
 	for ( ; itor != m_delegates.end() ; ++itor )
 	{
-		dg = swrtti_cast<SWDelegate>( (*itor)() );
+		dg = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( dg->getHandler().m_method == handler.m_method ) return dg;
 	}
 	
-	dg = new SWDelegate( this, handler );
+	dg = new SWDelegator( this, handler );
 	m_delegates.push_back( dg );
 	return dg;
 }
@@ -61,25 +61,25 @@ void SWObject::destroy()
 	SWObject::List::iterator itor = m_delegates.begin();
 	for ( ; itor != m_delegates.end() ; ++itor )
 	{
-		SWDelegate* dg = swrtti_cast<SWDelegate>( (*itor)() );
+		SWDelegator* dg = swrtti_cast<SWDelegator>( (*itor)() );
 		dg->destroy();
 	}
 	_make_zero_ref();
 }
 
-SWDelegate::SWDelegate( SWObject* object, const SWHandler& handler )
+SWDelegator::SWDelegator( SWObject* object, const SWHandler& handler )
 	: m_object(object), m_handler(handler)
 {
 
 }
 
-SWDelegate::SWDelegate( const SWDelegate& copy )
+SWDelegator::SWDelegator( const SWDelegator& copy )
 	: m_object( copy.m_object), m_handler( copy.m_handler )
 {
 
 }
 
-void SWDelegate::call() const
+void SWDelegator::call() const
 {
 	if ( !isValid() ) return;
 	if ( m_handler.m_needParam ) (m_object()->*m_handler.m_method)(NULL);
@@ -90,7 +90,7 @@ void SWDelegate::call() const
 	}
 }
 
-void SWDelegate::call( SWObject* object ) const
+void SWDelegator::call( SWObject* object ) const
 {
 	if ( !isValid() ) return;
 	if ( m_handler.m_needParam ) (m_object()->*m_handler.m_method)(object);
@@ -101,18 +101,18 @@ void SWDelegate::call( SWObject* object ) const
 	}
 }
 
-bool SWDelegate::isValid() const
+bool SWDelegator::isValid() const
 {
 	return m_object() && m_handler.m_method;
 }
-bool SWDelegate::isEqual( const SWDelegate* dg ) const
+bool SWDelegator::isEqual( const SWDelegator* dg ) const
 {
 	bool check1 = ( dg->getHandler().m_method == m_handler.m_method );
 	bool check2 = ( dg->getObject() == m_object() );
 	return ( check1 && check2 );
 }
 
-bool SWDelegate::isEqual( SWObject* object, const SWHandler& handler ) const
+bool SWDelegator::isEqual( SWObject* object, const SWHandler& handler ) const
 {
 	bool check1 = ( handler.m_method == m_handler.m_method );
 	bool check2 = ( object == m_object() );

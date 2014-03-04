@@ -25,7 +25,7 @@ class SWBehavior : public SWComponent
     SW_RTTI( SWBehavior, SWComponent );
 private:
 
-	typedef ttable< tstring,SWHardRef<SWDelegate> > ReceiverTable;
+	typedef ttable< tstring,SWHardRef<SWDelegator> > ReceiverTable;
 
 	ReceiverTable m_recvTable;
 
@@ -48,8 +48,8 @@ public:
     //! SWCollider 컴포넌트에 의해 호출
     virtual void onCollision( const SWCollisionInfo& info ) {};
     
-	void setMessageDelegate( const tstring& msgName, const SWDelegate* del );
-	const SWDelegate* getMessageDelegate( const tstring& msgName );
+	void setMessageDelegate( const tstring& msgName, const SWDelegator* del );
+	const SWDelegator* getMessageDelegate( const tstring& msgName );
 	void receiveMessage( const tstring& msgName, SWObject* param );
 
 private:

@@ -42,8 +42,8 @@ public:
 	tuint getLastKey() const;
 	//bool anyKeyDown() const;
 
-	void addInputDelegate( SWDelegate* del );
-	void removeInputDelegate( SWDelegate* del );
+	void addInputDelegate( SWDelegator* del );
+	void removeInputDelegate( SWDelegator* del );
 };
 
 #endif // SWInput_h__

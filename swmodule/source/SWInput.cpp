@@ -55,12 +55,12 @@ tuint __SWInput::getLastKey() const
 	return m_lastKey;
 }
 
-void __SWInput::addInputDelegate( SWDelegate* del )
+void __SWInput::addInputDelegate( SWDelegator* del )
 {
 	m_listeners.push_back( del );
 }
 
-void __SWInput::removeInputDelegate( SWDelegate* del )
+void __SWInput::removeInputDelegate( SWDelegator* del )
 {
 	m_listeners.remove( del );
 }

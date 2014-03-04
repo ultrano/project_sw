@@ -51,7 +51,7 @@ void SWTransform::setParent( SWTransform* parent )
 	SWObject::List::iterator itor = copy.begin();
 	for ( ; itor != copy.end() ;++itor )
 	{
-		SWDelegate* dg = swrtti_cast<SWDelegate>( (*itor)() );
+		SWDelegator* dg = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( dg == NULL ) m_setParentDelegates.remove( *itor );
 		dg->call( param() );
 	}
@@ -64,12 +64,12 @@ SWTransform* SWTransform::getParent()
 	return m_parent();
 }
 
-void SWTransform::addSetParentDelegate( SWDelegate* dg )
+void SWTransform::addSetParentDelegate( SWDelegator* dg )
 {
 	m_setParentDelegates.push_back( dg );
 }
 
-void SWTransform::removeSetParentDelegate( SWDelegate* dg )
+void SWTransform::removeSetParentDelegate( SWDelegator* dg )
 {
 	if ( !dg ) return;
 	removeSetParentDelegate( dg->getObject(), dg->getHandler() );
@@ -83,7 +83,7 @@ void SWTransform::removeSetParentDelegate( SWObject* object, const SWHandler& ha
 	SWObject::List::iterator itor = m_setParentDelegates.begin();
 	for ( ; itor != m_setParentDelegates.end() ; ++itor )
 	{
-		SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
+		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( itorDG->isEqual( object, handler ) )
 		{
 			m_setParentDelegates.remove( *itor );

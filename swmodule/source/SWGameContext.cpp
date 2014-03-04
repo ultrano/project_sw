@@ -308,7 +308,7 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 		SWList::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
-			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+			SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
 			if ( del ) del->call();
 			else SWInput.m_listeners.remove( del );
 		}
@@ -328,7 +328,7 @@ void SWGameContext::onKeyChange( tuint key, bool press )
 		SWList::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
-			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+			SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
 			if ( del ) del->call();
 			else SWInput.m_listeners.remove( del );
 		}

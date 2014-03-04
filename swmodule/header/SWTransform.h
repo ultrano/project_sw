@@ -37,8 +37,8 @@ public:
 
 	void setParent( SWTransform* parent );
 	SWTransform* getParent();
-	void addSetParentDelegate( SWDelegate* callBack );
-	void removeSetParentDelegate( SWDelegate* callBack );
+	void addSetParentDelegate( SWDelegator* callBack );
+	void removeSetParentDelegate( SWDelegator* callBack );
 	void removeSetParentDelegate( SWObject* object, const SWHandler& handler );
 
 	const TMatrix4x4& getWorldMatrix();

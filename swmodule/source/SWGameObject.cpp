@@ -78,7 +78,7 @@ void SWGameObject::udpate()
 		SWObject::List::iterator itor = copy.begin();
 		for ( ; itor != copy.end() ; ++itor )
 		{
-			SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
+			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 			if ( !itorDG || !itorDG->isValid() ) removeUpdateDelegate( itorDG );
 			else itorDG->call( this );
 			if ( !vital.isValid() ) return;
@@ -139,19 +139,19 @@ void SWGameObject::removeComponentAll()
 
 }
 
-void SWGameObject::addUpdateDelegate( SWDelegate* dg )
+void SWGameObject::addUpdateDelegate( SWDelegator* dg )
 {
 	if ( !dg ) return;
 	SWObject::List::iterator itor = m_updateDelegates.begin();
 	for ( ; itor != m_updateDelegates.end() ; ++itor )
 	{
-		SWDelegate* itorDG = swrtti_cast<SWDelegate>( (*itor)() );
+		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( itorDG->isEqual( dg ) ) return;
 	}
 	m_updateDelegates.push_back( dg );
 }
 
-void SWGameObject::removeUpdateDelegate( SWDelegate* dg )
+void SWGameObject::removeUpdateDelegate( SWDelegator* dg )
 {
 	if ( !dg ) return;
 	m_updateDelegates.remove( dg );
@@ -184,7 +184,7 @@ void SWGameObject::setProp( const tstring& name, SWObject* value )
 		SWObject::List::iterator itor = prop->m_setDelegates.begin();
 		for ( ; itor != prop->m_setDelegates.end() ; ++itor )
 		{
-			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+			SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
 			del->call( value );
 		}
 	}
@@ -198,7 +198,7 @@ SWObject* SWGameObject::getProp( const tstring& name )
 	return prop->m_value();
 }
 
-void SWGameObject::addPropSetDelegate( const tstring& name, SWDelegate* del )
+void SWGameObject::addPropSetDelegate( const tstring& name, SWDelegator* del )
 {
 	if ( del == NULL ) return;
 	SWProperty* prop = NULL;
@@ -213,7 +213,7 @@ void SWGameObject::addPropSetDelegate( const tstring& name, SWDelegate* del )
 	prop->m_setDelegates.push_back( del );
 }
 
-void SWGameObject::removePropSetDelegate( const tstring& name, SWDelegate* del )
+void SWGameObject::removePropSetDelegate( const tstring& name, SWDelegator* del )
 {
 	if ( del == NULL ) return;
 	SWProperty* prop = NULL;
@@ -257,7 +257,7 @@ void SWGameObject::cleanPropSetDelegate( const tstring& name )
 		SWObject::List::iterator itor = prop->m_setDelegates.begin();
 		while ( itor != prop->m_setDelegates.end() )
 		{
-			SWDelegate* del = swrtti_cast<SWDelegate>( (*itor)() );
+			SWDelegator* del = swrtti_cast<SWDelegator>( (*itor)() );
 			if ( del == NULL || !del->isValid() )
 			{
 				itor = prop->m_setDelegates.erase( itor );
