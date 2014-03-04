@@ -5,16 +5,16 @@
   #include "glew.h"
 #elif __APPLE__
   #include "TargetConditionals.h"
-  #ifdef TARGET_OS_MAC
-    #include <OpenGL/gl.h>
-    #include <OpenGL/glu.h>
-    #include <OpenGL/glext.h>
-    #include <GLUT/glut.h>
-  #elif TARGET_OS_IPHONE
+  #ifdef TARGET_OS_IPHONE
     #include <OpenGLES/ES1/gl.h>
     #include <OpenGLES/ES1/glext.h>
     #include <OpenGLES/ES2/gl.h>
     #include <OpenGLES/ES2/glext.h>
+  #elif TARGET_OS_MAC
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glu.h>
+    #include <OpenGL/glext.h>
+    #include <GLUT/glut.h>
   #endif
 #endif
 
@@ -209,7 +209,8 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 	//! opengl initializing
 	{
 		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
-		tuint bufSize = fis()->available();
+		tint bufSize = fis()->available();
+		if ( bufSize <= 0 ) return;
 		tstring source;
 		source.resize( bufSize );
 		fis()->read( (tbyte*)&source[0], bufSize );
