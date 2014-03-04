@@ -205,6 +205,9 @@
     <Filter Include="SW\SWAnimationLine">
       <UniqueIdentifier>{9f142a63-8280-45fd-904c-fa2ad7174f9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAnimationClip">
+      <UniqueIdentifier>{95b09ccd-132f-47f4-98a3-d7cf548a18da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -434,6 +437,9 @@
     </ClInclude>
     <ClInclude Include="header\SWAnimationLine.h">
       <Filter>SW\SWAnimationLine</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWAnimationClip.h">
+      <Filter>SW\SWAnimationClip</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

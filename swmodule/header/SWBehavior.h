@@ -50,7 +50,7 @@ public:
     
 	void setMessageReceiver( const tstring& msgName, const SWDelegate* del );
 	const SWDelegate* getMessageReceiver( const tstring& msgName );
-	void callMessageReceiver( const tstring& msgName, SWObject* param );
+	void receiveMessage( const tstring& msgName, SWObject* param );
 
 private:
 

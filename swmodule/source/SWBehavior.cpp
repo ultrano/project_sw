@@ -49,7 +49,7 @@ const SWDelegate* SWBehavior::getMessageReceiver( const tstring& msgName )
 	return NULL;
 }
 
-void SWBehavior::callMessageReceiver( const tstring& msgName, SWObject* param )
+void SWBehavior::receiveMessage( const tstring& msgName, SWObject* param )
 {
 	const SWDelegate* del = getMessageReceiver( msgName );
 	if ( del == NULL ) return;
