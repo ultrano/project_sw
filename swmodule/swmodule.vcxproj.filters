@@ -202,6 +202,9 @@
     <Filter Include="SW\SWType\TIndex3">
       <UniqueIdentifier>{731ff1e8-e974-414e-8d3c-4898e9374226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAnimationLine">
+      <UniqueIdentifier>{9f142a63-8280-45fd-904c-fa2ad7174f9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -429,6 +432,9 @@
     <ClInclude Include="header\json_batchallocator.h">
       <Filter>json</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWAnimationLine.h">
+      <Filter>SW\SWAnimationLine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -607,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="source\json_reader.cpp">
       <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAnimationLine.cpp">
+      <Filter>SW\SWAnimationLine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
