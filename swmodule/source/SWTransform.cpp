@@ -189,3 +189,14 @@ void SWTransform::onUpdate( SWGameObject* )
 		go->udpate();
 	}
 }
+
+void SWTransform::onAnimate( const thashstr& key, float value )
+{
+	static const thashstr posX = "pos.x";
+	static const thashstr posY = "pos.y";
+	static const thashstr posZ = "pos.z";
+	if ( posX == key ) m_position.x = value;
+	else if ( posY == key ) m_position.y = value;
+	else if ( posZ == key ) m_position.z = value;
+
+}

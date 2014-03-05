@@ -24,17 +24,13 @@ int SWAnimationLine::addKey( float time, float value )
 	m_keyFrames.push_back( KeyFrame( time, value ) );
 
 	//! align key by time
-	for ( AlignedIndices::iterator itor = m_aligned.begin()
-		; itor != m_aligned.end() 
-		; ++itor )
+	AlignedIndices::iterator itor = m_aligned.begin();
+	for ( ; itor != m_aligned.end() ; ++itor )
 	{
 		const KeyFrame& key = m_keyFrames[ *itor ];
-		if ( time < key.time )
-		{
-			m_aligned.insert( itor, index );
-			break;
-		}
+		if ( time < key.time ) break;
 	}
+	m_aligned.insert( itor, index );
 
 	return index;
 }
@@ -73,4 +69,13 @@ float SWAnimationLine::evaluate( float time )
 		last = &key;
 	}
 	return last->value;
+}
+
+
+SWAnimationLine::Ref SWAnimationLine::Linear( float beginTime, float endTime, float beginVal, float endVal )
+{
+	SWAnimationLine::Ref ret = new SWAnimationLine;
+	ret()->addKey( beginTime, beginVal );
+	ret()->addKey( endTime, endVal );
+	return ret;
 }

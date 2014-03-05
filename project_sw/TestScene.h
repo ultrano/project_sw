@@ -26,6 +26,8 @@
 #include "SWCamera.h"
 #include "SWShader.h"
 #include "SWSocket.h"
+#include "SWAnimation.h"
+#include "SWAnimationClip.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -80,58 +82,21 @@ class TestScene : public SWGameScene
 			image->setSizeToTexture();
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( TVector3f( 100,100,500 ) );
-			go->setName( "cat" );
-			go->defineProp( "rot" );
-			go->setProp( "rot", new SWNumber( 0 ) );
+		
+			SWAnimationClip* clip = new SWAnimationClip;
+			clip->addLine( SWTransform::getRtti(), "pos.x", SWAnimationLine::Linear( 0,15,0,100 ) );
+			SWAnimation* anim = go->addComponent<SWAnimation>();
+			anim->addClip( "test", clip );
+			anim->play( "test" );
 		}
-			tarray<tbyte> buf;
-			SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetPath( "read_test.txt" ) );
-			buf.resize( fis()->available() + 1 );
-			fis()->read( (tbyte*)&buf[0], buf.size() );
-			
-			SWObject::Ref fontJson = SW_GC.loadJson( "font/font1.fnt" );
-			WIFontData* fontData = new WIFontData;
-			fontData->load( fontJson() );
-			fontJson()->destroy();
-
-			SWGameObject* go = new SWGameObject;
-			go->setName( "font" );
-			WIText* text = go->addComponent<WIText>();
-			text->setFont( fontData );
-			//text->setText( SWUtil.utf8ToUnicode( (char*)&buf[0] ) );
-			text->setFontSize( 40 );
-
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( TVector3f( 0,0,500 ) );
 	}
 
 	void onHandleTouch()
 	{
-		if ( !SWInput.getKey( SWInput.getLastKey() ) ) return;
-		SWGameObject* go = find( "font" );
-		WIText* text = go->getComponent<WIText>();
-		tstring str = SWUtil.unicodeToUtf8( text->getText() );
-		str += (char)SWInput.getLastKey();
-		text->setText( SWUtil.utf8ToUnicode( str ) );
 	}
 
 	void onUpdate()
 	{
-		SWGameObject* go = find( "cat" );
-		SWNumber* num = swrtti_cast<SWNumber>( go->getProp( "rot" ) );
-		SWTransform* transform = go->getComponent<SWTransform>();
-		TQuaternion quat;
-		quat.rotate( TVector3f::axisY, num->getValue() );
-		transform->setLocalRotate( quat );
-
-		if ( SWInput.getKey('a') )
-		{
-			num->setValue( num->getValue() + (SWMath.pi/900) );
-		}
-		else if ( SWInput.getKey('d') )
-		{
-			num->setValue( num->getValue() - (SWMath.pi/900) );
-		}
 	}
 
 	void onPostDraw()

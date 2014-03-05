@@ -93,6 +93,7 @@
     <ClInclude Include="header\SWAction.h" />
     <ClInclude Include="header\SWActPlay.h" />
     <ClInclude Include="header\SWActSequence.h" />
+    <ClInclude Include="header\SWAnimation.h" />
     <ClInclude Include="header\SWAnimationClip.h" />
     <ClInclude Include="header\SWAnimationLine.h" />
     <ClInclude Include="header\SWArray.h" />
@@ -164,6 +165,8 @@
     <ClCompile Include="source\SWAction.cpp" />
     <ClCompile Include="source\SWActPlay.cpp" />
     <ClCompile Include="source\SWActSequence.cpp" />
+    <ClCompile Include="source\SWAnimation.cpp" />
+    <ClCompile Include="source\SWAnimationClip.cpp" />
     <ClCompile Include="source\SWAnimationLine.cpp" />
     <ClCompile Include="source\SWArray.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />

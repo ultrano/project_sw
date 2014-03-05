@@ -208,6 +208,9 @@
     <Filter Include="SW\SWAnimationClip">
       <UniqueIdentifier>{95b09ccd-132f-47f4-98a3-d7cf548a18da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAnimation">
+      <UniqueIdentifier>{8942ad1d-dc46-4076-a355-f3de48c18635}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -441,6 +444,9 @@
     <ClInclude Include="header\SWAnimationClip.h">
       <Filter>SW\SWAnimationClip</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWAnimation.h">
+      <Filter>SW\SWAnimation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -622,6 +628,12 @@
     </ClCompile>
     <ClCompile Include="source\SWAnimationLine.cpp">
       <Filter>SW\SWAnimationLine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAnimationClip.cpp">
+      <Filter>SW\SWAnimationClip</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAnimation.cpp">
+      <Filter>SW\SWAnimation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

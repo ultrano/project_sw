@@ -6,6 +6,7 @@
 
 class SWAnimationLine : public SWRefCountable
 {
+	SW_REFERENCE( SWAnimationLine );
 public:
 	
 	struct KeyFrame : SWMemory
@@ -32,6 +33,8 @@ public:
 	int  addKey( float time, float value );
 	void removeKey( int index );
 	float evaluate( float time );
+
+	static SWAnimationLine::Ref Linear( float beginTime, float endTime, float beginVal, float endVal );
 };
 
 #endif // SWAnimationLine_h__

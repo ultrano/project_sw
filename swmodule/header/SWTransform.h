@@ -58,6 +58,7 @@ public:
 	void onStart();
 	void onRemove();
 	void onUpdate( SWGameObject* );
+	void onAnimate( const thashstr& key, float value );
 };
 
 #endif
