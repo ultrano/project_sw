@@ -2,7 +2,6 @@
 #include "SWGameObject.h"
 #include "SWComponent.h"
 
-
 SWAnimationClip::AnimInfo::AnimInfo( const SWRtti* _type, const thashstr& _key, SWAnimationLine* _line )
 	: type( _type ), key( _key ), line( _line ) {};
 

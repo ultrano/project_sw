@@ -25,10 +25,13 @@ public:
 	void		identify();
 	TQuaternion normal();
 	float		norm() const;
-	TVector3f   vec() const;
+	TVector3f&  vec() const;
 	void		conjugate(TQuaternion& q) const;
 	void		inverse(TQuaternion& q) const;
 	TQuaternion& rotate(const TVector3f& axis, float radian);
+	TVector3f   toEulerAngle() const;
+	void        fromEulerAngle( float radianX, float radianY, float radianZ );
+	void        fromEulerAngle( const TVector3f& angle );
 };
 
 inline TQuaternion operator + ( const TQuaternion& a, const TQuaternion& b ) { return TQuaternion(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w); }

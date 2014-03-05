@@ -33,6 +33,8 @@ public:
 	int  addKey( float time, float value );
 	void removeKey( int index );
 	float evaluate( float time );
+	float beginTime();
+	float endTime();
 
 	static SWAnimationLine::Ref Linear( float beginTime, float endTime, float beginVal, float endVal );
 };

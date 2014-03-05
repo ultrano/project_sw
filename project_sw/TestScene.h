@@ -84,7 +84,11 @@ class TestScene : public SWGameScene
 			transform->setLocalPosition( TVector3f( 100,100,500 ) );
 		
 			SWAnimationClip* clip = new SWAnimationClip;
-			clip->addLine( SWTransform::getRtti(), "pos.x", SWAnimationLine::Linear( 0,15,0,100 ) );
+			//clip->addLine( SWTransform::getRtti(), "position.x", SWAnimationLine::Linear( 0,5,0,100 ) );
+			//clip->addLine( SWTransform::getRtti(), "position.y", SWAnimationLine::Linear( 0,3,0,100 ) );
+			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,1,0,45 ) );
+			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,6,0,360 ) );
+			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,10,0,360 ) );
 			SWAnimation* anim = go->addComponent<SWAnimation>();
 			anim->addClip( "test", clip );
 			anim->play( "test" );

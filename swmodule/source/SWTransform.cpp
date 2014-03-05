@@ -12,6 +12,7 @@
 #include "SWGameObject.h"
 #include "SWLog.h"
 #include "SWParam.h"
+#include "SWMath.h"
 #include <algorithm>
 
 SWTransform::SWTransform()
@@ -192,11 +193,38 @@ void SWTransform::onUpdate( SWGameObject* )
 
 void SWTransform::onAnimate( const thashstr& key, float value )
 {
-	static const thashstr posX = "pos.x";
-	static const thashstr posY = "pos.y";
-	static const thashstr posZ = "pos.z";
+	static const thashstr posX = "position.x";
+	static const thashstr posY = "position.y";
+	static const thashstr posZ = "position.z";
+	static const thashstr scaleX = "scale.x";
+	static const thashstr scaleY = "scale.y";
+	static const thashstr scaleZ = "scale.z";
+	static const thashstr rotationX = "rotation.x";
+	static const thashstr rotationY = "rotation.y";
+	static const thashstr rotationZ = "rotation.z";
+
 	if ( posX == key ) m_position.x = value;
 	else if ( posY == key ) m_position.y = value;
 	else if ( posZ == key ) m_position.z = value;
-
+	else if ( scaleX == key ) m_scale.x = value;
+	else if ( scaleY == key ) m_scale.y = value;
+	else if ( scaleZ == key ) m_scale.z = value;
+	else if ( rotationX == key )
+	{
+		tvec3 euler = m_rotate.toEulerAngle();
+		euler.x = SWMath.angleToRadian( value );
+		m_rotate.fromEulerAngle( euler );
+	}
+	else if ( rotationY == key )
+	{
+		tvec3 euler = m_rotate.toEulerAngle();
+		euler.y = SWMath.angleToRadian( value );
+		m_rotate.fromEulerAngle( euler );
+	}
+	else if ( rotationZ == key )
+	{
+		tvec3 euler = m_rotate.toEulerAngle();
+		euler.z = SWMath.angleToRadian( value );
+		m_rotate.fromEulerAngle( euler );
+	}
 }

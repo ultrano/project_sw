@@ -79,3 +79,17 @@ SWAnimationLine::Ref SWAnimationLine::Linear( float beginTime, float endTime, fl
 	ret()->addKey( endTime, endVal );
 	return ret;
 }
+
+float SWAnimationLine::beginTime()
+{
+	if ( m_aligned.size() == 0 ) return 0;
+	const KeyFrame* key = &(m_keyFrames[ m_aligned[0] ]);
+	return key->time;
+}
+
+float SWAnimationLine::endTime()
+{
+	if ( m_aligned.size() == 0 ) return 0;
+	const KeyFrame* key = &(m_keyFrames[ m_aligned[ m_aligned.size()-1 ] ]);
+	return key->time;
+}

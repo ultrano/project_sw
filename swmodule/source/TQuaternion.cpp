@@ -41,7 +41,7 @@ float TQuaternion::norm() const
 	return sqrtf( x*x + y*y + z*z + w*w );
 }
 
-TVector3f  TQuaternion::vec() const
+TVector3f&  TQuaternion::vec() const
 {
 	return (TVector3f&)*this;
 }
@@ -64,4 +64,36 @@ TQuaternion& TQuaternion::rotate( const TVector3f& axis, float radian )
 	vec() = axis.normal() * sinf(radian/2.0f);
 	w     = cosf(radian/2.0f);
 	return *this;
+}
+
+TVector3f   TQuaternion::toEulerAngle() const
+{
+	TVector3f angle;
+	angle.y = asin( -2*(x*z - y*w) );
+	
+	{
+		angle.x = atan2( -2*(y*z - w*x), -(1- 2*(x*x + y*y)) );
+		angle.z = atan2( -2*(x*y - w*z), -(1- 2*(y*y + z*z)) );
+	}
+
+	return angle;
+}
+
+void       TQuaternion::fromEulerAngle( float radianX, float radianY, float radianZ )
+{
+	float cosX = cosf( radianX/2 );
+	float cosY = cosf( radianY/2 );
+	float cosZ = cosf( radianZ/2 );
+	float sinX = sinf( radianX/2 );
+	float sinY = sinf( radianY/2 );
+	float sinZ = sinf( radianZ/2 );
+	x = -sinX*cosY*cosZ - sinX*sinY*sinZ;
+	y = -cosX*sinY*cosZ + cosX*sinY*sinZ;
+	z = -cosX*cosY*sinZ - sinX*cosY*sinZ;
+	w = cosX*cosY*cosZ - sinX*sinY*cosZ;
+}
+
+void       TQuaternion::fromEulerAngle( const TVector3f& angle )
+{
+	fromEulerAngle( angle.x, angle.y, angle.z );
 }
