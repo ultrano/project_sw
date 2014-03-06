@@ -75,6 +75,18 @@ class TestScene : public SWGameScene
 			SWCamera::mainCamera = cam;
 		}
 
+		//! euler test
+		
+			tquat a;
+			a.rotate( tvec3::axisY, SWMath.angleToRadian( 180 ) );
+			tvec3 euler = a.toEulerAngle();
+			tvec3 angle;
+			angle.x = SWMath.radianToAngle( euler.x );
+			angle.y = SWMath.radianToAngle( euler.y );
+			angle.z = SWMath.radianToAngle( euler.z );
+			tquat b;
+			b.fromEulerAngle( euler );
+
 		{
 			SWGameObject* go = new SWGameObject;
 			WIImage* image = go->addComponent<WIImage>();
@@ -88,7 +100,7 @@ class TestScene : public SWGameScene
 			//clip->addLine( SWTransform::getRtti(), "position.y", SWAnimationLine::Linear( 0,3,0,100 ) );
 			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,1,0,45 ) );
 			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,6,0,360 ) );
-			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,10,0,360 ) );
+			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,4,0,91 ) );
 			SWAnimation* anim = go->addComponent<SWAnimation>();
 			anim->addClip( "test", clip );
 			anim->play( "test" );

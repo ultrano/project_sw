@@ -68,13 +68,21 @@ TQuaternion& TQuaternion::rotate( const TVector3f& axis, float radian )
 
 TVector3f   TQuaternion::toEulerAngle() const
 {
+	float sinY = 2*(x*z + y*w);
 	TVector3f angle;
-	angle.y = asin( -2*(x*z - y*w) );
-	
+	if ( sinY >= 0 )
 	{
-		angle.x = atan2( -2*(y*z - w*x), -(1- 2*(x*x + y*y)) );
-		angle.z = atan2( -2*(x*y - w*z), -(1- 2*(y*y + z*z)) );
+		angle.x = atan2( 2*(y*z - w*x), (1- 2*(x*x + y*y)) );
+		angle.y = asin( sinY );
+		angle.z = atan2( 2*(x*y - w*z), (1- 2*(y*y + z*z)) );
 	}
+	else
+	{
+		angle.x = atan2( 2*(y*z - w*x), (1- 2*(x*x + y*y)) );
+		angle.y = asin( sinY );
+		angle.z = atan2( 2*(x*y - w*z), (1- 2*(y*y + z*z)) );
+	}
+	printf( "x: %10f,y: %10f,z: %10f\n", angle.x, angle.y, angle.z );
 
 	return angle;
 }
@@ -87,10 +95,10 @@ void       TQuaternion::fromEulerAngle( float radianX, float radianY, float radi
 	float sinX = sinf( radianX/2 );
 	float sinY = sinf( radianY/2 );
 	float sinZ = sinf( radianZ/2 );
-	x = -sinX*cosY*cosZ - sinX*sinY*sinZ;
-	y = -cosX*sinY*cosZ + cosX*sinY*sinZ;
-	z = -cosX*cosY*sinZ - sinX*cosY*sinZ;
-	w = cosX*cosY*cosZ - sinX*sinY*cosZ;
+	x = sinX*cosY*cosZ + cosX*sinY*sinZ;
+	y = cosX*sinY*cosZ - sinX*cosY*sinZ;
+	z = cosX*cosY*sinZ + sinX*sinY*cosZ;
+	w = cosX*cosY*cosZ - sinX*sinY*sinZ;
 }
 
 void       TQuaternion::fromEulerAngle( const TVector3f& angle )
