@@ -27,6 +27,7 @@ private:
 	
 	TVector3f    m_scale;    //< 비율.
 	TQuaternion  m_rotate;   //< 회전.
+	TVector3f    m_euler;
 	TVector3f    m_position; //< 위치.
 	TMatrix4x4   m_worldMat; //< world matrix
 

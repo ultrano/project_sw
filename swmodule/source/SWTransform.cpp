@@ -18,6 +18,7 @@
 SWTransform::SWTransform()
 : m_position( 0, 0, 0 )
 , m_rotate()
+, m_euler( 0, 0, 0 )
 , m_scale( 1, 1, 1 )
 {
 }
@@ -126,6 +127,7 @@ void SWTransform::setLocalScale( const TVector3f& scale )
 void SWTransform::setLocalRotate( const TQuaternion& rotate )
 {
 	m_rotate = rotate;
+	m_rotate.toEuler( m_euler );
 }
 
 void SWTransform::setLocalPosition( const TVector3f& position )
@@ -211,20 +213,17 @@ void SWTransform::onAnimate( const thashstr& key, float value )
 	else if ( scaleZ == key ) m_scale.z = value;
 	else if ( rotationX == key )
 	{
-		tvec3 euler = m_rotate.toEulerAngle();
-		euler.x = SWMath.angleToRadian( value );
-		m_rotate.fromEulerAngle( euler );
+		m_euler.x = SWMath.angleToRadian( value );
+		m_rotate.rotate( m_euler );
 	}
 	else if ( rotationY == key )
 	{
-		tvec3 euler = m_rotate.toEulerAngle();
-		euler.y = SWMath.angleToRadian( value );
-		m_rotate.fromEulerAngle( euler );
+		m_euler.y = SWMath.angleToRadian( value );
+		m_rotate.rotate( m_euler );
 	}
 	else if ( rotationZ == key )
 	{
-		tvec3 euler = m_rotate.toEulerAngle();
-		euler.z = SWMath.angleToRadian( value );
-		m_rotate.fromEulerAngle( euler );
+		m_euler.z = SWMath.angleToRadian( value );
+		m_rotate.rotate( m_euler );
 	}
 }

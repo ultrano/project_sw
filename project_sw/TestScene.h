@@ -79,13 +79,14 @@ class TestScene : public SWGameScene
 		
 			tquat a;
 			a *= tquat().rotate( tvec3::axisY, SWMath.angleToRadian( 100 ) );
-			tvec3 euler = a.toEulerAngle();
+			tvec3 euler;
+			a.toEuler( euler );
 			tvec3 angle;
 			angle.x = SWMath.radianToAngle( euler.x );
 			angle.y = SWMath.radianToAngle( euler.y );
 			angle.z = SWMath.radianToAngle( euler.z );
 			tquat b;
-			b.fromEulerAngle( euler );
+			b.rotate( euler );
 
 		{
 			SWGameObject* go = new SWGameObject;
@@ -96,13 +97,13 @@ class TestScene : public SWGameScene
 			transform->setLocalPosition( TVector3f( 100,100,500 ) );
 		
 			SWAnimationClip* clip = new SWAnimationClip;
-			//clip->addLine( SWTransform::getRtti(), "position.x", SWAnimationLine::Linear( 0,5,0,100 ) );
-			//clip->addLine( SWTransform::getRtti(), "position.y", SWAnimationLine::Linear( 0,3,0,100 ) );
+			clip->addLine( SWTransform::getRtti(), "position.x", SWAnimationLine::Linear( 0,5,0,100 ) );
+			clip->addLine( SWTransform::getRtti(), "position.y", SWAnimationLine::Linear( 0,3,0,100 ) );
 			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,1,0,45 ) );
 			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,6,0,360 ) );
-			clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,4,0,180 ) );
-			clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,4,0,180 ) );
-			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,4,0,180 ) );
+			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,4,0,180 ) );
+			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,4,0,1800 ) );
+			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,4,0,180 ) );
 			SWAnimation* anim = go->addComponent<SWAnimation>();
 			anim->addClip( "test", clip );
 			anim->play( "test" );
