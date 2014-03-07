@@ -78,7 +78,7 @@ class TestScene : public SWGameScene
 		//! euler test
 		
 			tquat a;
-			a.rotate( tvec3::axisY, SWMath.angleToRadian( 180 ) );
+			a *= tquat().rotate( tvec3::axisY, SWMath.angleToRadian( 100 ) );
 			tvec3 euler = a.toEulerAngle();
 			tvec3 angle;
 			angle.x = SWMath.radianToAngle( euler.x );
@@ -100,7 +100,9 @@ class TestScene : public SWGameScene
 			//clip->addLine( SWTransform::getRtti(), "position.y", SWAnimationLine::Linear( 0,3,0,100 ) );
 			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,1,0,45 ) );
 			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,6,0,360 ) );
-			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,4,0,91 ) );
+			clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,4,0,180 ) );
+			clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,4,0,180 ) );
+			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,4,0,180 ) );
 			SWAnimation* anim = go->addComponent<SWAnimation>();
 			anim->addClip( "test", clip );
 			anim->play( "test" );

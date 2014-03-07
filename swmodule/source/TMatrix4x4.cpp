@@ -155,7 +155,7 @@ void TMatrix4x4::transpose(TMatrix4x4& t) const
 }
 
 TMatrix4x4& TMatrix4x4::transform( const TVector3f& scale, const TQuaternion& rot, const TVector3f& trans )
-{
+{ 
 	m11 = (1- 2*(rot.y*rot.y + rot.z*rot.z))*scale.x;	m12 = (2*(rot.x*rot.y + rot.w*rot.z))*scale.x;		m13 = (2*(rot.x*rot.z - rot.w*rot.y))*scale.x;
 	m21 = (2*(rot.x*rot.y - rot.w*rot.z))*scale.y;		m22 = (1- 2*(rot.z*rot.z + rot.x*rot.x))*scale.y;	m23 = (2*(rot.y*rot.z + rot.w*rot.x))*scale.y;
 	m31 = (2*(rot.x*rot.z + rot.w*rot.y))*scale.z;		m32 = (2*(rot.y*rot.z - rot.w*rot.x))*scale.z;		m33 = (1- 2*(rot.x*rot.x + rot.y*rot.y))*scale.z;

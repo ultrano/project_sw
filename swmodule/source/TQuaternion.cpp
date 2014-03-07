@@ -70,17 +70,23 @@ TVector3f   TQuaternion::toEulerAngle() const
 {
 	float sinY = 2*(x*z + y*w);
 	TVector3f angle;
-	if ( sinY >= 0 )
+	if ( sinY > 0.9999f )
 	{
-		angle.x = atan2( 2*(y*z - w*x), (1- 2*(x*x + y*y)) );
-		angle.y = asin( sinY );
-		angle.z = atan2( 2*(x*y - w*z), (1- 2*(y*y + z*z)) );
+		angle.x = 2*atan2( x, w );
+		angle.y = asin( 1.0f );
+		angle.z = 0;
+	}
+	else if ( sinY < -0.9999f )
+	{
+		angle.x = -2*atan2( x, w );
+		angle.y = asin( -1.0f );
+		angle.z = 0;
 	}
 	else
 	{
-		angle.x = atan2( 2*(y*z - w*x), (1- 2*(x*x + y*y)) );
+		angle.x = atan2( -2*(y*z - w*x), (1- 2*(x*x + y*y)) );
 		angle.y = asin( sinY );
-		angle.z = atan2( 2*(x*y - w*z), (1- 2*(y*y + z*z)) );
+		angle.z = atan2( -2*(x*y - w*z), (1- 2*(y*y + z*z)) );
 	}
 	printf( "x: %10f,y: %10f,z: %10f\n", angle.x, angle.y, angle.z );
 
