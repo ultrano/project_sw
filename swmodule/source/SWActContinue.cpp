@@ -20,11 +20,12 @@ bool SWActContinue::isDone()
 bool SWActContinue::onStart()
 {
 	if ( !m_act.isValid() ) return false;
-	getAction()->runAct( m_act() );
+	m_act()->onStart();
 	return true;
 }
 
 void SWActContinue::onUpdate()
 {
-	if ( m_act()->isDone() ) getAction()->runAct( m_act() );
+	if ( m_act()->isDone() ) m_act()->onStart();
+	m_act()->onUpdate();
 }

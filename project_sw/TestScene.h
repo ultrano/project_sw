@@ -93,6 +93,7 @@ class TestScene : public SWGameScene
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
+			image->setUVRect( 128,128,256,256 );
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( TVector3f( 100,100,500 ) );
 		

@@ -5,7 +5,6 @@
 #include "SWAct.h"
 
 SWAction::SWAction()
-	: m_actList( new SWList )
 {
 
 }
@@ -29,6 +28,7 @@ void SWAction::onRemove()
 
 void SWAction::onUpdate()
 {
+	/*
 	SWWeakRef<SWAction> vital = this;
 	SWList::Type itorList;
 	m_actList()->copy( itorList );
@@ -46,21 +46,29 @@ void SWAction::onUpdate()
 		}
 		act->onUpdate();
 	}
+	*/
 }
 
-void SWAction::runAct( SWAct* act )
+void SWAction::setAct( const tstring& name, SWAct* act )
 {
 	if ( act == NULL ) return;
 
-	SWHardRef<SWAct> hold = act;
-
-	if ( act ) act->m_action = this;
-	if ( !act->onStart() ) return;
-	m_actList()->add( act );
+	m_actTable[ name ] = act;
 }
 
-void SWAction::stopAct( SWAct* act )
+SWAct* SWAction::getAct( const tstring& name )
 {
-	if ( act == NULL ) return;
-	m_actList()->remove( act );
+	ActTable::iterator itor = m_actTable.find( name );
+	if ( itor != m_actTable.end() ) return itor->second();
+	return NULL;
+}
+
+void SWAction::play( const tstring& name )
+{
+	m_next = getAct( name );
+}
+
+void SWAction::stop()
+{
+	m_act = NULL;
 }

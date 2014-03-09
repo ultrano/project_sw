@@ -107,6 +107,7 @@
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
     <ClInclude Include="header\SWShape2D.h" />
+    <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />
     <ClInclude Include="header\THashString.h" />
     <ClInclude Include="header\SWMaterial.h" />

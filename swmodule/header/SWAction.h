@@ -9,16 +9,21 @@ class SWAction : public SWComponent
 {
 	SW_RTTI( SWAction, SWComponent );
 
-	SWHardRef<SWList> m_actList;
-	float m_spendTime;
+	typedef ttable< thashstr, SWHardRef<SWAct> > ActTable;
+
+	ActTable m_actTable;
+	SWAct* m_next;
+	SWAct* m_act;
 
 public:
 
 	SWAction();
 	~SWAction();
 
-	void runAct( SWAct* act );
-	void stopAct( SWAct* act );
+	void setAct( const tstring& name, SWAct* act );
+	SWAct* getAct( const tstring& name );
+	void play( const tstring& name );
+	void stop();
 
 	void onStart();
 	void onRemove();

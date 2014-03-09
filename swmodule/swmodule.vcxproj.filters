@@ -211,6 +211,9 @@
     <Filter Include="SW\SWAnimation">
       <UniqueIdentifier>{8942ad1d-dc46-4076-a355-f3de48c18635}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType\TRect">
+      <UniqueIdentifier>{9a0b7f25-aa95-49ef-b08e-21fa42334917}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -446,6 +449,9 @@
     </ClInclude>
     <ClInclude Include="header\SWAnimation.h">
       <Filter>SW\SWAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TRect.h">
+      <Filter>SW\SWType\TRect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

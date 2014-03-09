@@ -8,13 +8,15 @@ class WIImage : public SWComponent
 
 	float m_width;
 	float m_height;
+	trect m_uvRect;
 
 	int m_texID;
 	
 	int m_alignV;
 	int m_alignH;
 
-	bool m_updateMesh;
+	bool m_updateVert;
+	bool m_updateTex;
 
 	virtual void onAwake();
 	virtual void onRemove();
@@ -31,9 +33,9 @@ public:
 	void setAlignV( int align );
 	void setAlignH( int align );
 	void setAlign( int alignV, int alignH );
+	void setUVRect( float left, float top, float right, float bottom );
 
 	void setTexture( const tstring& filePath );
-
 };
 
 #endif // __UIImage_h_

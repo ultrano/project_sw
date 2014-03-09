@@ -3,7 +3,6 @@
 
 
 SWAct::SWAct()
-	: m_isPaused( false )
 {
 
 }
