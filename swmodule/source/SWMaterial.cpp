@@ -108,10 +108,13 @@ void SWMaterial::apply()
 {
 	m_shader()->use();
 	
+	//! float
 	{
 		FloatTable::iterator itor = m_floatTable.begin();
 		for ( ; itor != m_floatTable.end() ; ++itor ) SW_GC.setShaderFloat( itor->first, itor->second );
 	}
+
+	//! vector2
 	{
 		Vec2Table::iterator itor = m_vec2Table.begin();
 		for ( ; itor != m_vec2Table.end() ; ++itor )
@@ -120,6 +123,8 @@ void SWMaterial::apply()
 			SW_GC.setShaderVector2( itor->first, v.x, v.y );
 		}
 	}
+
+	//! vector3
 	{
 		Vec3Table::iterator itor = m_vec3Table.begin();
 		for ( ; itor != m_vec3Table.end() ; ++itor )
@@ -128,6 +133,8 @@ void SWMaterial::apply()
 			SW_GC.setShaderVector3( itor->first, v.x, v.y, v.z );
 		}
 	}
+
+	//! vector4
 	{
 		Vec4Table::iterator itor = m_vec4Table.begin();
 		for ( ; itor != m_vec4Table.end() ; ++itor )
@@ -136,10 +143,14 @@ void SWMaterial::apply()
 			SW_GC.setShaderVector4( itor->first, v.x, v.y, v.z, v.w );
 		}
 	}
+
+	//! matrix4x4
 	{
 		MatTable::iterator itor = m_matTable.begin();
 		for ( ; itor != m_matTable.end() ; ++itor ) SW_GC.setShaderMatrix4x4( itor->first, (float*)&itor->second );
 	}
+
+	//! texture
 	{
 		TexTable::iterator itor = m_texTable.begin();
 		for ( ; itor != m_texTable.end() ; ++itor ) SW_GC.setShaderTexture( itor->first, itor->second );

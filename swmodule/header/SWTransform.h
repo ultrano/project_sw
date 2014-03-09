@@ -53,6 +53,11 @@ public:
 	void setLocalRotate( const TQuaternion& rotate );
 	void setLocalPosition( const TVector3f& position );
 
+	void move( float stepX, float stepY, float stepZ );
+	void move( const tvec3& step );
+	void rotate( float radianX, float radianY, float radianZ );
+	void rotate( const tvec3& euler );
+
 	SWTransform* find( const tstring& name );
 	void copyChildren( SWObject::List& transList );
 
