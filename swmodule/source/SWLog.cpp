@@ -56,7 +56,6 @@ void SWLogCenter::write( const char* file, unsigned int line, const char* format
 
 void SWLogCenter::present()
 {
-	return;
 	int line = 0;
 	LogTable::iterator itor = m_logTable.begin();
 	for ( ; itor != m_logTable.end() ; ++itor )

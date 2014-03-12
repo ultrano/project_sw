@@ -19,7 +19,6 @@
 #include "SWValue.h"
 #include "SWActPlay.h"
 #include "SWSpriteData.h"
-#include "SWAction.h"
 #include "SWActContinue.h"
 #include "SWFileStream.h"
 #include "SWUtil.h"
@@ -28,6 +27,11 @@
 #include "SWSocket.h"
 #include "SWAnimation.h"
 #include "SWAnimationClip.h"
+
+#include "SWAction.h"
+#include "SWActMoveBy.h"
+#include "SWActRepeat.h"
+#include "SWActSequence.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -75,39 +79,22 @@ class TestScene : public SWGameScene
 			SWCamera::mainCamera = cam;
 		}
 
-		//! euler test
-		
-			tquat a;
-			a *= tquat().rotate( tvec3::axisY, SWMath.angleToRadian( 100 ) );
-			tvec3 euler;
-			a.toEuler( euler );
-			tvec3 angle;
-			angle.x = SWMath.radianToAngle( euler.x );
-			angle.y = SWMath.radianToAngle( euler.y );
-			angle.z = SWMath.radianToAngle( euler.z );
-			tquat b;
-			b.rotate( euler );
-
 		{
 			SWGameObject* go = new SWGameObject;
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
-			image->setUVRect( 128,128,256,256 );
+			//image->setUVRect( 128,128,256,256 );
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( TVector3f( 100,100,500 ) );
 		
-			SWAnimationClip* clip = new SWAnimationClip;
-			clip->addLine( SWTransform::getRtti(), "position.x", SWAnimationLine::Linear( 0,5,0,100 ) );
-			clip->addLine( SWTransform::getRtti(), "position.y", SWAnimationLine::Linear( 0,3,0,100 ) );
-			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,1,0,45 ) );
-			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,6,0,360 ) );
-			//clip->addLine( SWTransform::getRtti(), "rotation.x", SWAnimationLine::Linear( 0,4,0,180 ) );
-			clip->addLine( SWTransform::getRtti(), "rotation.y", SWAnimationLine::Linear( 0,4,0,1800 ) );
-			//clip->addLine( SWTransform::getRtti(), "rotation.z", SWAnimationLine::Linear( 0,4,0,180 ) );
-			SWAnimation* anim = go->addComponent<SWAnimation>();
-			anim->addClip( "test", clip );
-			anim->play( "test" );
+			SWActSequence* seq = new SWActSequence();
+			SWObject::Ref hold = seq;
+			seq->addAct( new SWActMoveBy( 1, tvec3( 0,100,0 ) ) );
+			seq->addAct( new SWActMoveBy( 1, tvec3( 0,-100,0 ) ) );
+			SWAction* action = go->addComponent<SWAction>();
+			action->setAct( "move", new SWActRepeat( seq ) );
+			action->play( "move" );
 		}
 	}
 

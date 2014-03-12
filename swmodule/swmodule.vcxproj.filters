@@ -214,6 +214,12 @@
     <Filter Include="SW\SWType\TRect">
       <UniqueIdentifier>{9a0b7f25-aa95-49ef-b08e-21fa42334917}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActRepeat">
+      <UniqueIdentifier>{f15cc2a2-739e-41c6-be04-f34b54ea20ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActMoveBy">
+      <UniqueIdentifier>{58556477-4d80-4e24-a9bc-1deb9abb8654}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -453,6 +459,12 @@
     <ClInclude Include="header\TRect.h">
       <Filter>SW\SWType\TRect</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActRepeat.h">
+      <Filter>SW\SWAct\SWActRepeat</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActMoveBy.h">
+      <Filter>SW\SWAct\SWActMoveBy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -640,6 +652,12 @@
     </ClCompile>
     <ClCompile Include="source\SWAnimation.cpp">
       <Filter>SW\SWAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActRepeat.cpp">
+      <Filter>SW\SWAct\SWActRepeat</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActMoveBy.cpp">
+      <Filter>SW\SWAct\SWActMoveBy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

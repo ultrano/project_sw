@@ -26,7 +26,7 @@ public:
 
 	virtual bool isDone();
 	virtual bool onStart();
-	virtual void onUpdate();
+	virtual void onUpdate( float delta );
 };
 
 #endif // SWActPlay_h__

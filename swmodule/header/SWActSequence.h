@@ -6,10 +6,14 @@
 class SWActSequence : public SWAct
 {
 	SW_RTTI( SWActSequence, SWAct );
+	
+	tuint m_cursor;
+	float m_startTime;
+	float m_accumTime;
+	SWWeakRef<SWAct> m_current;
+	tarray< SWHardRef<SWAct> > m_acts;
 
-	int m_cursor;
-	SWAct* m_current;
-	SWObject::List m_acts;
+public:
 
 	SWActSequence();
 	~SWActSequence();
@@ -18,7 +22,7 @@ class SWActSequence : public SWAct
 
 	virtual bool isDone();
 	virtual bool onStart();
-	virtual void onUpdate();
+	virtual void onUpdate( float delta );
 };
 
 #endif // SWActSequence_h__

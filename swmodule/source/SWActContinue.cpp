@@ -24,8 +24,8 @@ bool SWActContinue::onStart()
 	return true;
 }
 
-void SWActContinue::onUpdate()
+void SWActContinue::onUpdate( float delta )
 {
 	if ( m_act()->isDone() ) m_act()->onStart();
-	m_act()->onUpdate();
+	m_act()->onUpdate( delta );
 }

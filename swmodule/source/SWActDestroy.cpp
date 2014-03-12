@@ -28,7 +28,7 @@ bool SWActDestroy::onStart()
 	return true;
 }
 
-void SWActDestroy::onUpdate()
+void SWActDestroy::onUpdate( float delta )
 {
 	if ( ( m_accum -= SWTime.getDeltaTime() ) > 0 ) return;
 

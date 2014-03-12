@@ -36,7 +36,7 @@ bool SWActPlay::onStart()
 	return true;
 }
 
-void SWActPlay::onUpdate()
+void SWActPlay::onUpdate( float delta )
 {
 	if ( !m_renderer.isValid() ) return ;
 	m_accumulation += SWTime.getDeltaTime();

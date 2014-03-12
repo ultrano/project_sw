@@ -22,7 +22,7 @@ public:
 
 	virtual bool isDone() = 0;
 	virtual bool onStart() = 0;
-	virtual void onUpdate() = 0;
+	virtual void onUpdate( float delta ) = 0;
 
 };
 

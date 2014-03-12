@@ -6,7 +6,6 @@
 
 SWAction::SWAction()
 {
-
 }
 
 SWAction::~SWAction()
@@ -28,6 +27,17 @@ void SWAction::onRemove()
 
 void SWAction::onUpdate()
 {
+	if ( m_next() != NULL )
+	{
+		m_act = m_next;
+		m_act()->onStart();
+		m_next = NULL;
+	}
+	if ( m_act() != NULL )
+	{
+		m_act()->onUpdate( SWTime.getDeltaTime() );
+		if ( m_act()->isDone() ) stop();
+	}
 	/*
 	SWWeakRef<SWAction> vital = this;
 	SWList::Type itorList;
@@ -53,6 +63,7 @@ void SWAction::setAct( const tstring& name, SWAct* act )
 {
 	if ( act == NULL ) return;
 
+	act->setAction( this );
 	m_actTable[ name ] = act;
 }
 

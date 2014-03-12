@@ -12,8 +12,8 @@ class SWAction : public SWComponent
 	typedef ttable< thashstr, SWHardRef<SWAct> > ActTable;
 
 	ActTable m_actTable;
-	SWAct* m_next;
-	SWAct* m_act;
+	SWWeakRef<SWAct> m_next;
+	SWWeakRef<SWAct> m_act;
 
 public:
 
