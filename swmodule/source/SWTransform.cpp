@@ -149,15 +149,15 @@ void SWTransform::move( const tvec3& step )
 
 void SWTransform::rotate( float radianX, float radianY, float radianZ )
 {
-	m_euler.x = radianX;
-	m_euler.y = radianY;
-	m_euler.z = radianZ;
+	m_euler.x += radianX;
+	m_euler.y += radianY;
+	m_euler.z += radianZ;
 	m_rotate.rotate( m_euler );
 }
 
 void SWTransform::rotate( const tvec3& euler )
 {
-	m_euler = euler;
+	m_euler += euler;
 	m_rotate.rotate( m_euler );
 }
 

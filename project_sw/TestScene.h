@@ -33,6 +33,8 @@
 #include "SWActRepeat.h"
 #include "SWActSequence.h"
 #include "SWActDelay.h"
+#include "SWActDelegate.h"
+#include "SWActRotateBy.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -54,23 +56,6 @@ class TestScene : public SWGameScene
 	TMatrix4x4 mat;
 	void onAwake()
 	{
-		{
-			SWHardRef<SWSocket> sock = new SWSocket;
-			
-			sock()->connect( "127.0.0.1", 10000 );
-			
-			SWHardRef<SWOutputStream> os = sock()->getOutputStream();
-			SWHardRef<SWInputStream>  is = sock()->getInputStream();
-
-			char buf[] = "are you there?";
-			os()->write( (tbyte*)buf, sizeof(buf) );
-
-			memset( buf, 0, sizeof(buf) );
-
-			is()->read( (tbyte*)buf, sizeof(buf) );
-
-			SWLog( (char*)buf );
-		}
 		//! set default camera
 		{
 			SWGameObject* go = new SWGameObject;
@@ -82,31 +67,42 @@ class TestScene : public SWGameScene
 
 		{
 			SWGameObject* go = new SWGameObject;
+			go->addUpdateDelegator( GetDelegator( onUpdate ) );
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
-			//image->setUVRect( 128,128,256,256 );
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( TVector3f( 100,100,500 ) );
-		
-			SWActSequence* seq = new SWActSequence();
-			SWObject::Ref hold = seq;
-			seq->addAct( new SWActMoveBy( 0.0f, tvec3( 0,100,0 ) ) );
-			seq->addAct( new SWActDelay( 1.0f ) );
-			seq->addAct( new SWActMoveBy( 0.0f, tvec3( 0,-100,0 ) ) );
-			seq->addAct( new SWActDelay( 1.0f ) );
+
+			SWAct* act = new SWActRepeat( new SWActRotateBy( 3, tvec3( 0, 0, SWMath.angleToRadian(360) ) ) );
 			SWAction* action = go->addComponent<SWAction>();
-			action->setAct( "move", new SWActRepeat( seq ) );
-			action->play( "move" );
+			action->setAct( "rotation", act );
 		}
+		m_speed = 0;
 	}
 
 	void onHandleTouch()
 	{
 	}
+	
+	float m_speed;
 
-	void onUpdate()
+	void onUpdate( SWGameObject* go )
 	{
+		m_speed -= 100*SWTime.getDeltaTime();
+		SWTransform* transform = go->getComponent<SWTransform>();
+		transform->move( tvec3( 0, m_speed, 0 ) * SWTime.getDeltaTime() );
+
+		SWAction* action = go->getComponent<SWAction>();
+		if ( SWInput.getTouchState() == SW_TouchPress )
+		{
+			m_speed += 500 * SWTime.getDeltaTime() ;
+			action->stop();
+		}
+		else if ( action->isPlaying() == false )
+		{
+			action->play( "rotation" );
+		}
 	}
 
 	void onPostDraw()

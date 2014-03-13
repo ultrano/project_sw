@@ -47,6 +47,7 @@ public:
 };
 
 #define GetDelegator( method ) ( getDelegator( SWHandler::delimit(&__this::method) ) )
+#define FindDelegator( obj, type_name, method ) ( swrtti_cast<type_name>( obj )? obj->getDelegator( SWHandler::delimit(&type_name::method) ) : NULL )
 
 //! SWHandler는 호출자와 피호출자간, 대화의 창구가 된다.
 class SWHandler

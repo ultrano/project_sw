@@ -24,6 +24,7 @@ public:
 	SWAct* getAct( const tstring& name );
 	void play( const tstring& name );
 	void stop();
+	bool isPlaying() const;
 
 	void onStart();
 	void onRemove();

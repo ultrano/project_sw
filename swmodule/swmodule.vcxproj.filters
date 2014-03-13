@@ -223,6 +223,12 @@
     <Filter Include="SW\SWAct\SWActDelay">
       <UniqueIdentifier>{28feca58-60a5-4c1e-a36e-673ec42ad756}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActDelegate">
+      <UniqueIdentifier>{bed4819b-b00b-44bc-a05c-7ccf6bd4b75b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActRotateBy">
+      <UniqueIdentifier>{ca45f4ae-f479-47b6-9453-3a6c652d9e49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -471,6 +477,12 @@
     <ClInclude Include="header\SWActDelay.h">
       <Filter>SW\SWAct\SWActDelay</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActDelegate.h">
+      <Filter>SW\SWAct\SWActDelegate</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActRotateBy.h">
+      <Filter>SW\SWAct\SWActRotateBy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -667,6 +679,12 @@
     </ClCompile>
     <ClCompile Include="source\SWActDelay.cpp">
       <Filter>SW\SWAct\SWActDelay</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActDelegate.cpp">
+      <Filter>SW\SWAct\SWActDelegate</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActRotateBy.cpp">
+      <Filter>SW\SWAct\SWActRotateBy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

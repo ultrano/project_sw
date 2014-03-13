@@ -83,3 +83,8 @@ void SWAction::stop()
 {
 	m_act = NULL;
 }
+
+bool SWAction::isPlaying() const
+{
+	return ((m_act() != NULL) && ( !m_act()->isDone() ));
+}
