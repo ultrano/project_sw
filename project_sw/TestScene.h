@@ -32,6 +32,7 @@
 #include "SWActMoveBy.h"
 #include "SWActRepeat.h"
 #include "SWActSequence.h"
+#include "SWActDelay.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -90,8 +91,10 @@ class TestScene : public SWGameScene
 		
 			SWActSequence* seq = new SWActSequence();
 			SWObject::Ref hold = seq;
-			seq->addAct( new SWActMoveBy( 1, tvec3( 0,100,0 ) ) );
-			seq->addAct( new SWActMoveBy( 1, tvec3( 0,-100,0 ) ) );
+			seq->addAct( new SWActMoveBy( 0.0f, tvec3( 0,100,0 ) ) );
+			seq->addAct( new SWActDelay( 1.0f ) );
+			seq->addAct( new SWActMoveBy( 0.0f, tvec3( 0,-100,0 ) ) );
+			seq->addAct( new SWActDelay( 1.0f ) );
 			SWAction* action = go->addComponent<SWAction>();
 			action->setAct( "move", new SWActRepeat( seq ) );
 			action->play( "move" );

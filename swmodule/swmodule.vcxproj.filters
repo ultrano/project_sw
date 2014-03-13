@@ -220,6 +220,9 @@
     <Filter Include="SW\SWAct\SWActMoveBy">
       <UniqueIdentifier>{58556477-4d80-4e24-a9bc-1deb9abb8654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActDelay">
+      <UniqueIdentifier>{28feca58-60a5-4c1e-a36e-673ec42ad756}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -465,6 +468,9 @@
     <ClInclude Include="header\SWActMoveBy.h">
       <Filter>SW\SWAct\SWActMoveBy</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActDelay.h">
+      <Filter>SW\SWAct\SWActDelay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -658,6 +664,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActMoveBy.cpp">
       <Filter>SW\SWAct\SWActMoveBy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActDelay.cpp">
+      <Filter>SW\SWAct\SWActDelay</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

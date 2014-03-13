@@ -89,6 +89,7 @@
     <ClInclude Include="header\stb_image.h" />
     <ClInclude Include="header\SWAct.h" />
     <ClInclude Include="header\SWActContinue.h" />
+    <ClInclude Include="header\SWActDelay.h" />
     <ClInclude Include="header\SWActDestroy.h" />
     <ClInclude Include="header\SWAction.h" />
     <ClInclude Include="header\SWActMoveBy.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="source\stb_image.c" />
     <ClCompile Include="source\SWAct.cpp" />
     <ClCompile Include="source\SWActContinue.cpp" />
+    <ClCompile Include="source\SWActDelay.cpp" />
     <ClCompile Include="source\SWActDestroy.cpp" />
     <ClCompile Include="source\SWAction.cpp" />
     <ClCompile Include="source\SWActMoveBy.cpp" />

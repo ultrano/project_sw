@@ -22,14 +22,26 @@ bool SWActMoveBy::isDone()
 bool SWActMoveBy::onStart()
 {
 	m_spendTime = 0;
+	if ( m_duration == 0 )
+	{
+		SWTransform* transform = getAction()->getComponent<SWTransform>();
+		transform->move( m_value );
+	}
 	return true;
 }
 
 void SWActMoveBy::onUpdate( float delta )
 {
-	m_spendTime += delta;
-	if ( m_spendTime > m_duration ) delta = (m_spendTime - m_duration);
-
+	if ( isDone() ) return;
+	if ( (m_spendTime + delta) > m_duration )
+	{
+		delta = (m_duration - m_spendTime);
+		m_spendTime = m_duration;
+	}
+	else
+	{
+		m_spendTime += delta;
+	}
 	SWTransform* transform = getAction()->getComponent<SWTransform>();
 	transform->move( m_value * (delta / m_duration) );
 }

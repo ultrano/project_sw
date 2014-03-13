@@ -47,14 +47,26 @@ void SWActSequence::onUpdate( float delta )
 		}
 	}
 	
-	if ( isDone() ) return;
 
 	if ( m_current() == NULL )
 	{
-		m_current = m_acts[ m_cursor ]();
-		m_current()->setAction( getAction() );
-		m_current()->onStart();
-		m_current()->onUpdate( delta );
+		do
+		{
+			if ( isDone() ) return;
+			m_current = m_acts[ m_cursor ]();
+			m_current()->setAction( getAction() );
+			m_current()->onStart();
+			if ( m_current()->isDone() )
+			{
+				m_cursor += 1;
+				continue;
+			}
+			else
+			{
+				m_current()->onUpdate( delta );
+				break;
+			}
+		} while ( true );
 	}
 
 }

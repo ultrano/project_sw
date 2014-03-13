@@ -1,8 +1,6 @@
 #include "SWActRepeat.h"
 #include "SWTime.h"
 #include "SWMath.h"
-#include "SWLog.h"
-
 
 SWActRepeat::SWActRepeat( SWAct* act, tuint count )
 	: m_act( act )
@@ -39,6 +37,4 @@ void SWActRepeat::onUpdate( float delta )
 		m_act()->onStart();
 		m_act()->onUpdate( delta );
 	}
-
-	SWLog( "repeat:%d", m_repeatCount );
 }
