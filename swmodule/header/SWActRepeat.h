@@ -8,8 +8,6 @@ class SWActRepeat : public SWAct
 	SW_RTTI( SWActRepeat, SWAct );
 
 	SWHardRef<SWAct> m_act;
-	float m_startTime;
-	float m_accumTime;
 	tuint m_limitCount;
 	tuint m_repeatCount;
 

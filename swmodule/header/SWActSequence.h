@@ -8,8 +8,6 @@ class SWActSequence : public SWAct
 	SW_RTTI( SWActSequence, SWAct );
 	
 	tuint m_cursor;
-	float m_startTime;
-	float m_accumTime;
 	SWWeakRef<SWAct> m_current;
 	tarray< SWHardRef<SWAct> > m_acts;
 
