@@ -229,6 +229,9 @@
     <Filter Include="SW\SWAct\SWActRotateBy">
       <UniqueIdentifier>{ca45f4ae-f479-47b6-9453-3a6c652d9e49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWRigidBody">
+      <UniqueIdentifier>{8308971f-904e-42c0-a3e9-46a6928e541c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -483,6 +486,9 @@
     <ClInclude Include="header\SWActRotateBy.h">
       <Filter>SW\SWAct\SWActRotateBy</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWRigidBody.h">
+      <Filter>SW\SWRigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -685,6 +691,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActRotateBy.cpp">
       <Filter>SW\SWAct\SWActRotateBy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWRigidBody.cpp">
+      <Filter>SW\SWRigidBody</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

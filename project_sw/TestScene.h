@@ -36,6 +36,8 @@
 #include "SWActDelegate.h"
 #include "SWActRotateBy.h"
 
+#include "SWRigidBody.h"
+
 #include "WIDefines.h"
 #include "WIImage.h"
 #include "WIFontChar.h"
@@ -77,26 +79,24 @@ class TestScene : public SWGameScene
 			SWAct* act = new SWActRepeat( new SWActRotateBy( 3, tvec3( 0, 0, SWMath.angleToRadian(360) ) ) );
 			SWAction* action = go->addComponent<SWAction>();
 			action->setAct( "rotation", act );
+
+			go->addComponent<SWRigidBody>();
 		}
-		m_speed = 0;
 	}
 
 	void onHandleTouch()
 	{
 	}
-	
-	float m_speed;
 
 	void onUpdate( SWGameObject* go )
 	{
-		m_speed -= 100*SWTime.getDeltaTime();
-		SWTransform* transform = go->getComponent<SWTransform>();
-		transform->move( tvec3( 0, m_speed, 0 ) * SWTime.getDeltaTime() );
+		SWRigidBody* rigid = go->getComponent<SWRigidBody>();
+		rigid->addForce( tvec3( 0, -100*SWTime.getDeltaTime(), 0 ) );
 
 		SWAction* action = go->getComponent<SWAction>();
 		if ( SWInput.getTouchState() == SW_TouchPress )
 		{
-			m_speed += 500 * SWTime.getDeltaTime() ;
+			rigid->addForce( tvec3( 0, 500*SWTime.getDeltaTime(), 0 ) );
 			action->stop();
 		}
 		else if ( action->isPlaying() == false )
