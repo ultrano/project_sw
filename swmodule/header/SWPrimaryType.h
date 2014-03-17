@@ -18,6 +18,7 @@ typedef int            tint;
 typedef short          tshort;
 typedef char           tchar;
 typedef float          tfloat;
+typedef unsigned float tufloat;
 typedef unsigned int   tuint;
 typedef unsigned short tushort;
 typedef unsigned char  tbyte;

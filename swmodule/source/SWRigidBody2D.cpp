@@ -24,12 +24,11 @@ void SWRigidBody2D::onUpdate()
 	tvec2 step = m_velocity * SWTime.getDeltaTime();
 	transform->move( tvec3( step.x, step.y, 0 ) );
 	m_velocity -= m_velocity * m_drag * SWTime.getDeltaTime();
-	
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )
 {
-	if ( m_mass <= 0 ) return;
+	if ( m_mass == 0 ) return;
 
 	m_velocity += force/m_mass;
 }
