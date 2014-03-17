@@ -6,7 +6,7 @@
 void SWRigidBody2D::onStart()
 {
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
-	m_velocity = tvec3::zero;
+	m_velocity = tvec2::zero;
 	m_elastic  = 0;
 	m_mass = 1;
 	m_drag = 0.1f;
@@ -21,12 +21,13 @@ void SWRigidBody2D::onUpdate()
 {
 	SWTransform* transform = getComponent<SWTransform>();
 
-	transform->move( m_velocity * SWTime.getDeltaTime() );
+	tvec2 step = m_velocity * SWTime.getDeltaTime();
+	transform->move( tvec3( step.x, step.y, 0 ) );
 	m_velocity -= m_velocity * m_drag * SWTime.getDeltaTime();
 	
 }
 
-void SWRigidBody2D::addForce( const tvec3& force )
+void SWRigidBody2D::addForce( const tvec2& force )
 {
 	if ( m_mass <= 0 ) return;
 

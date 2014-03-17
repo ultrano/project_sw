@@ -91,12 +91,12 @@ class TestScene : public SWGameScene
 	void onUpdate( SWGameObject* go )
 	{
 		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
-		rigid->addForce( tvec3( 0, -100*SWTime.getDeltaTime(), 0 ) );
+		rigid->addForce( tvec2( 0, -100*SWTime.getDeltaTime() ) );
 
 		SWAction* action = go->getComponent<SWAction>();
 		if ( SWInput.getTouchState() == SW_TouchPress )
 		{
-			rigid->addForce( tvec3( 0, 500*SWTime.getDeltaTime(), 0 ) );
+			rigid->addForce( tvec2( 0, 500*SWTime.getDeltaTime() ) );
 			action->stop();
 		}
 		else if ( action->isPlaying() == false )

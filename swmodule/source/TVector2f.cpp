@@ -11,6 +11,11 @@
 #include "SWMath.h"
 #include <math.h>
 
+const TVector2f TVector2f::axisX(1,0);
+const TVector2f TVector2f::axisY(0,1);
+const TVector2f TVector2f::zero(0,0);
+const TVector2f TVector2f::one(1,1);
+
 TVector2f::TVector2f()
 {
     

@@ -15,6 +15,11 @@
 class TVector2f : public SWMemory
 {
 public:
+	static const TVector2f axisX;
+	static const TVector2f axisY;
+	static const TVector2f zero;
+	static const TVector2f one;
+public:
     
     //! 2D 공간 좌표
     float x, y;

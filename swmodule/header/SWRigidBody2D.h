@@ -10,7 +10,7 @@ class SWRigidBody2D : public SWComponent
 private:
 
 	float m_mass;
-	tvec3 m_velocity;
+	tvec2 m_velocity;
 	float m_drag;
 	float m_elastic;
 
@@ -20,7 +20,7 @@ private:
 
 public:
 
-	void addForce( const tvec3& force );
+	void addForce( const tvec2& force );
 
 };
 
