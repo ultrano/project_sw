@@ -111,7 +111,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
-    <ClInclude Include="header\SWRigidBody.h" />
+    <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
     <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />
@@ -192,7 +192,7 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
-    <ClCompile Include="source\SWRigidBody.cpp" />
+    <ClCompile Include="source\SWRigidBody2D.cpp" />
     <ClCompile Include="source\SWShape2D.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />

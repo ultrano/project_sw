@@ -1,11 +1,11 @@
-#ifndef SWRigidBody_h__
-#define SWRigidBody_h__
+#ifndef SWRigidBody2D_h__
+#define SWRigidBody2D_h__
 
 #include "SWComponent.h"
 
-class SWRigidBody : public SWComponent
+class SWRigidBody2D : public SWComponent
 {
-	SW_RTTI( SWRigidBody, SWComponent );
+	SW_RTTI( SWRigidBody2D, SWComponent );
 
 private:
 
@@ -24,4 +24,4 @@ public:
 
 };
 
-#endif // SWRigidBody_h__
+#endif // SWRigidBody2D_h__

@@ -1,9 +1,9 @@
-#include "SWRigidBody.h"
+#include "SWRigidBody2D.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWTime.h"
 
-void SWRigidBody::onStart()
+void SWRigidBody2D::onStart()
 {
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 	m_velocity = tvec3::zero;
@@ -12,12 +12,12 @@ void SWRigidBody::onStart()
 	m_drag = 0.1f;
 }
 
-void SWRigidBody::onRemove()
+void SWRigidBody2D::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 }
 
-void SWRigidBody::onUpdate()
+void SWRigidBody2D::onUpdate()
 {
 	SWTransform* transform = getComponent<SWTransform>();
 
@@ -26,7 +26,7 @@ void SWRigidBody::onUpdate()
 	
 }
 
-void SWRigidBody::addForce( const tvec3& force )
+void SWRigidBody2D::addForce( const tvec3& force )
 {
 	if ( m_mass <= 0 ) return;
 

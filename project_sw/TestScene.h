@@ -36,7 +36,7 @@
 #include "SWActDelegate.h"
 #include "SWActRotateBy.h"
 
-#include "SWRigidBody.h"
+#include "SWRigidBody2D.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -80,7 +80,7 @@ class TestScene : public SWGameScene
 			SWAction* action = go->addComponent<SWAction>();
 			action->setAct( "rotation", act );
 
-			go->addComponent<SWRigidBody>();
+			go->addComponent<SWRigidBody2D>();
 		}
 	}
 
@@ -90,7 +90,7 @@ class TestScene : public SWGameScene
 
 	void onUpdate( SWGameObject* go )
 	{
-		SWRigidBody* rigid = go->getComponent<SWRigidBody>();
+		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
 		rigid->addForce( tvec3( 0, -100*SWTime.getDeltaTime(), 0 ) );
 
 		SWAction* action = go->getComponent<SWAction>();
