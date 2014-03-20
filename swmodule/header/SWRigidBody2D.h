@@ -13,6 +13,7 @@ private:
 	tvec2   m_velocity;
 	tfloat  m_drag;
 	tfloat  m_elastic;
+	tvec2   m_gravityFactor;
 
 	void onStart();
 	void onRemove();
@@ -21,6 +22,11 @@ private:
 public:
 
 	void addForce( const tvec2& force );
+	void addAccel( const tvec2& accel );
+	void setDrag( float drag );
+	void setGravityFactor( const tvec2& factor );
+	void setElastic( float elastic );
+	void setMass( tufloat mass );
 
 };
 
