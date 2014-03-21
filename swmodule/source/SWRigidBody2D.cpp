@@ -55,7 +55,7 @@ void SWRigidBody2D::setElastic( float elastic )
 	m_elastic = elastic;
 }
 
-void SWRigidBody2D::setMass( float mass )
+void SWRigidBody2D::setMass( tufloat mass )
 {
 	if ( mass > 0 ) m_mass = mass;
 	else m_mass = FLT_EPSILON;
