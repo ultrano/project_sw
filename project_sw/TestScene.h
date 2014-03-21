@@ -82,6 +82,9 @@ class TestScene : public SWGameScene
 
 			go->addComponent<SWRigidBody2D>();
 		}
+
+		int a = 9e2;
+		a = 1;
 	}
 
 	void onHandleTouch()
@@ -91,7 +94,6 @@ class TestScene : public SWGameScene
 	void onUpdate( SWGameObject* go )
 	{
 		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
-		rigid->addForce( tvec2( 0, -100*SWTime.getDeltaTime() ) );
 
 		SWAction* action = go->getComponent<SWAction>();
 		if ( SWInput.getTouchState() == SW_TouchPress )

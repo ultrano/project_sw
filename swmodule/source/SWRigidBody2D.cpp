@@ -10,7 +10,7 @@ void SWRigidBody2D::onStart()
 	m_elastic  = 0;
 	m_mass = 1;
 	m_drag = 0.1f;
-	m_gravityFactor = tvec2::axisY;
+	m_gravityScale = tvec2::axisY;
 }
 
 void SWRigidBody2D::onRemove()
@@ -21,9 +21,10 @@ void SWRigidBody2D::onRemove()
 void SWRigidBody2D::onUpdate()
 {
 	SWTransform* transform = getComponent<SWTransform>();
-
-	addAccel( m_gravityFactor * (-9.85f) );
-	tvec2 step = m_velocity * SWTime.getDeltaTime();
+	
+	float deltaTime = SWTime.getDeltaTime();
+	addAccel( m_gravityScale * (-9.85f) * deltaTime );
+	tvec2 step = m_velocity * deltaTime;
 	transform->move( tvec3( step.x, step.y, 0 ) );
 	m_velocity -= step * m_drag;
 }
@@ -45,9 +46,9 @@ void SWRigidBody2D::setDrag( float drag )
 	m_drag = drag;
 }
 
-void SWRigidBody2D::setGravityFactor( const tvec2& factor )
+void SWRigidBody2D::setGravityScale( const tvec2& scale )
 {
-	m_gravityFactor = factor;
+	m_gravityScale = scale;
 }
 
 void SWRigidBody2D::setElastic( float elastic )
