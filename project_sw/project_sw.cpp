@@ -6,7 +6,8 @@
 #include "glut.h"
 #include "SWTime.h"
 #include "SWInput.h"
-#include "TVector3f.h"
+#include "SWType.h"
+#include "SWMath.h"
 
 //#include "CatAss.h"
 #include "TestScene.h"
@@ -69,10 +70,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutInitWindowSize( (int)width, (int)height);
 	glutCreateWindow("TSP");
 
-	float near = 1;
-	float far = 1000;
-	float w = 2*SWMath.tan( SWMath.pi/4 )*near;
-	float h = 2*SWMath.tan( SWMath.pi/4 )*near;
+	float nearPlane = 1;
+	float farPlane = 1000;
+	float w = 2*SWMath.tan( SWMath.pi/4 )*nearPlane;
+	float h = 2*SWMath.tan( SWMath.pi/4 )*nearPlane;
 
 	glutMouseFunc(callbackMouse);
 	glutMotionFunc( callbackMouseMove );

@@ -232,6 +232,9 @@
     <Filter Include="SW\SWRigidBody2D">
       <UniqueIdentifier>{8308971f-904e-42c0-a3e9-46a6928e541c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWPhysics">
+      <UniqueIdentifier>{ab6569dd-9490-487a-af96-1f4a8f7159f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -489,6 +492,9 @@
     <ClInclude Include="header\SWRigidBody2D.h">
       <Filter>SW\SWRigidBody2D</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWPhysics.h">
+      <Filter>SW\SWPhysics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -694,6 +700,9 @@
     </ClCompile>
     <ClCompile Include="source\SWRigidBody2D.cpp">
       <Filter>SW\SWRigidBody2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWPhysics.cpp">
+      <Filter>SW\SWPhysics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

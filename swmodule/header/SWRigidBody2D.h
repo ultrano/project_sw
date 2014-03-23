@@ -20,7 +20,9 @@ private:
 	void onUpdate();
 
 public:
-
+	
+	SWRigidBody2D();
+	~SWRigidBody2D();
 	void addForce( const tvec2& force );
 	void addAccel( const tvec2& accel );
 	void setDrag( float drag );

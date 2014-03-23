@@ -69,7 +69,7 @@ class TestScene : public SWGameScene
 
 		{
 			SWGameObject* go = new SWGameObject;
-			go->addUpdateDelegator( GetDelegator( onUpdate ) );
+			go->addUpdateDelegator( GetDelegator( onUpdateGO ) );
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture();
@@ -80,18 +80,13 @@ class TestScene : public SWGameScene
 			SWAction* action = go->addComponent<SWAction>();
 			action->setAct( "rotation", act );
 
-			go->addComponent<SWRigidBody2D>();
+			SWRigidBody2D* rigid = go->addComponent<SWRigidBody2D>();
+			rigid->setGravityScale( tvec2::axisY*-10 );
 		}
 
-		int a = 9e2;
-		a = 1;
 	}
 
-	void onHandleTouch()
-	{
-	}
-
-	void onUpdate( SWGameObject* go )
+	void onUpdateGO( SWGameObject* go )
 	{
 		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
 
@@ -104,6 +99,14 @@ class TestScene : public SWGameScene
 		else if ( action->isPlaying() == false )
 		{
 			action->play( "rotation" );
+		}
+	}
+
+	void onUpdate()
+	{
+		if ( SWInput.getKey( 'p' ) )
+		{
+			SW_GC.setNextScene( NULL );
 		}
 	}
 

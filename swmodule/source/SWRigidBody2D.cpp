@@ -1,16 +1,26 @@
 #include "SWRigidBody2D.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
+#include "SWPhysics.h"
 #include "SWTime.h"
+
+
+SWRigidBody2D::SWRigidBody2D()
+	: m_velocity( tvec2::zero )
+	, m_elastic( 0 )
+	, m_mass( 1 )
+	, m_drag( 0.1f )
+	, m_gravityScale( -tvec2::axisY )
+{
+}
+
+SWRigidBody2D::~SWRigidBody2D()
+{
+}
 
 void SWRigidBody2D::onStart()
 {
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
-	m_velocity = tvec2::zero;
-	m_elastic  = 0;
-	m_mass = 1;
-	m_drag = 0.1f;
-	m_gravityScale = tvec2::axisY;
 }
 
 void SWRigidBody2D::onRemove()
@@ -23,7 +33,7 @@ void SWRigidBody2D::onUpdate()
 	SWTransform* transform = getComponent<SWTransform>();
 	
 	float deltaTime = SWTime.getDeltaTime();
-	addAccel( m_gravityScale * (-9.85f) * deltaTime );
+	addAccel( m_gravityScale * ( SWPhysics.getGravityForce() ) * deltaTime );
 	tvec2 step = m_velocity * deltaTime;
 	transform->move( tvec3( step.x, step.y, 0 ) );
 	m_velocity -= step * m_drag;

@@ -2,6 +2,8 @@
 #ifndef __SWMath_h
 #define __SWMath_h
 
+#include "SWType.h"
+
 #define SWMath (__SWMath::getInstance())
 
 class __SWMath

@@ -61,6 +61,7 @@ public:
 
 	SWHardRef<SWGameScene> currentScene;
 	SWHardRef<SWGameScene> nextScene;
+	bool nextSceneReserved;
 	
 	tstring resFolder;
 
@@ -199,6 +200,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 	Pimpl* pimpl = new Pimpl;
 	m_pimpl = pimpl;
 	pimpl->nextScene = firstScene;
+	pimpl->nextSceneReserved = true;
 	pimpl->resFolder = resFolder;
 	pimpl->screenWidth  = width;
 	pimpl->screenHeight = height;
@@ -261,8 +263,9 @@ void SWGameContext::onFrameMove()
 		SWTime.m_accumTime  /= SWTime.m_accumTime;
 	}
 
-	if ( pimpl->nextScene.isValid() )
+	if ( pimpl->nextSceneReserved )
 	{
+		pimpl->nextSceneReserved = false;
 		if ( pimpl->currentScene.isValid() ) pimpl->currentScene()->destroy();
 		pimpl->currentScene = pimpl->nextScene();
 		pimpl->nextScene = NULL;
@@ -279,9 +282,9 @@ void SWGameContext::onFrameMove()
 
 void SWGameContext::onRender()
 {
+	glClear( GL_COLOR_BUFFER_BIT );
 	if ( SWGameScene* scene = m_pimpl()->currentScene() )
 	{
-		glClear( GL_COLOR_BUFFER_BIT );
 		scene->draw();
 	}
 	SWTime.m_accumDraw += 1;
@@ -350,6 +353,7 @@ SWGameScene* SWGameContext::getScene()
 void SWGameContext::setNextScene( SWGameScene* scene )
 {
 	m_pimpl()->nextScene = scene;
+	m_pimpl()->nextSceneReserved = true;
 }
 
 int SWGameContext::getScreenWidth()
