@@ -93,12 +93,13 @@ class TestScene : public SWGameScene
 		SWAction* action = go->getComponent<SWAction>();
 		if ( SWInput.getTouchState() == SW_TouchPress )
 		{
-			rigid->addForce( tvec2( 0, 500*SWTime.getDeltaTime() ) );
-			action->stop();
+			//tvec2 touchXY = tvec2( SWInput.getTouchX(), SWInput.getTouchY() );
+			tvec2 touchXY = rigid->getComponent<SWTransform>()->getPosition().xy();
+			touchXY += tvec2::one/10;
+			rigid->addForce( tvec2( 0, 500*SWTime.getDeltaTime() ), touchXY );
 		}
 		else if ( action->isPlaying() == false )
 		{
-			action->play( "rotation" );
 		}
 	}
 

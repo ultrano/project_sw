@@ -59,7 +59,7 @@ void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
 	if ( m_mass == 0 ) return;
 	SWTransform* transform = getComponent<SWTransform>();
 	m_velocity += force/m_mass;
-	m_torque   +=(pos - transform->getPosition().xy()).cross( force ) ;
+	m_torque   += (pos - transform->getPosition().xy()).cross( force ) ;
 	
 }
 

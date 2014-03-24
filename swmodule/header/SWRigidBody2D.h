@@ -10,6 +10,7 @@ class SWRigidBody2D : public SWComponent
 private:
 
 	tufloat m_mass;
+	tufloat m_inertia;
 	tvec2   m_velocity;
 	tfloat  m_linearDrag;
 	tfloat  m_angularDrag;
