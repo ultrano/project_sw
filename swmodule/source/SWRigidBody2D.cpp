@@ -9,7 +9,8 @@ SWRigidBody2D::SWRigidBody2D()
 	: m_velocity( tvec2::zero )
 	, m_elastic( 0 )
 	, m_mass( 1 )
-	, m_drag( 0.1f )
+	, m_linearDrag( 0.1f )
+	, m_angularDrag( 0.1f )
 	, m_gravityScale( -tvec2::axisY )
 {
 }
@@ -33,10 +34,17 @@ void SWRigidBody2D::onUpdate()
 	SWTransform* transform = getComponent<SWTransform>();
 	
 	float deltaTime = SWTime.getDeltaTime();
+	
 	addAccel( m_gravityScale * ( SWPhysics.getGravityForce() ) * deltaTime );
-	tvec2 step = m_velocity * deltaTime;
-	transform->move( tvec3( step.x, step.y, 0 ) );
-	m_velocity -= step * m_drag;
+	
+	tvec2  linearStep  = m_velocity * deltaTime;
+	tfloat angularStep = m_torque * deltaTime;
+	
+	transform->move( tvec3( linearStep.x, linearStep.y, 0 ) );
+	transform->rotate( 0, 0, angularStep );
+
+	m_velocity -= linearStep * m_linearDrag;
+	m_torque   -= angularStep * m_angularDrag;
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )
@@ -60,9 +68,9 @@ void SWRigidBody2D::addAccel( const tvec2& accel )
 	m_velocity += accel;
 }
 
-void SWRigidBody2D::setDrag( float drag )
+void SWRigidBody2D::setLinearDrag( float drag )
 {
-	m_drag = drag;
+	m_linearDrag = drag;
 }
 
 void SWRigidBody2D::setGravityScale( const tvec2& scale )
