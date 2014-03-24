@@ -29,6 +29,8 @@ typedef tushort        tuint16;
 typedef tchar          tint8;
 typedef tbyte          tuint8;
 typedef tuint32        thash32;
+typedef tfloat         tfloat32;
+typedef tufloat        tufloat32;
 
 #define tlist  std::list
 #define ttable std::map

@@ -37,17 +37,20 @@ public:
     ~SWTransform();
 
 	void setParent( SWTransform* parent );
-	SWTransform* getParent();
+	SWTransform* getParent() const;
+
 	void addSetParentDelegate( SWDelegator* callBack );
 	void removeSetParentDelegate( SWDelegator* callBack );
 	void removeSetParentDelegate( SWObject* object, const SWHandler& handler );
 
-	const TMatrix4x4& getWorldMatrix();
-	TMatrix4x4        getLocalMatrix();
+	const TMatrix4x4& getWorldMatrix() const;
+	TMatrix4x4        getLocalMatrix() const;
 
-	const TVector3f&   getLocalScale();
-	const TQuaternion& getLocalRotate();
-	const TVector3f&   getLocalPosition();
+	const TVector3f&   getLocalScale() const;
+	const TQuaternion& getLocalRotate() const;
+	const TVector3f&   getLocalPosition() const;
+
+	TVector3f getPosition() const;
 
 	void setLocalScale( const TVector3f& scale );
 	void setLocalRotate( const TQuaternion& rotate );

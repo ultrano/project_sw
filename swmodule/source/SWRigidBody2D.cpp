@@ -3,7 +3,7 @@
 #include "SWTransform.h"
 #include "SWPhysics.h"
 #include "SWTime.h"
-
+#include "SWMath.h"
 
 SWRigidBody2D::SWRigidBody2D()
 	: m_velocity( tvec2::zero )
@@ -44,6 +44,15 @@ void SWRigidBody2D::addForce( const tvec2& force )
 	if ( m_mass == 0 ) return;
 
 	m_velocity += force/m_mass;
+}
+
+void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
+{
+	if ( m_mass == 0 ) return;
+	SWTransform* transform = getComponent<SWTransform>();
+	m_velocity += force/m_mass;
+	m_torque   +=(pos - transform->getPosition().xy()).cross( force ) ;
+	
 }
 
 void SWRigidBody2D::addAccel( const tvec2& accel )

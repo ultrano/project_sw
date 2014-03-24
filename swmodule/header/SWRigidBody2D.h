@@ -14,6 +14,7 @@ private:
 	tfloat  m_drag;
 	tfloat  m_elastic;
 	tvec2   m_gravityScale;
+	tfloat  m_torque;
 
 	void onStart();
 	void onRemove();
@@ -24,6 +25,7 @@ public:
 	SWRigidBody2D();
 	~SWRigidBody2D();
 	void addForce( const tvec2& force );
+	void addForce( const tvec2& force, const tvec2& pos );
 	void addAccel( const tvec2& accel );
 	void setDrag( float drag );
 	void setGravityScale( const tvec2& scale );
