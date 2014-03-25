@@ -9,6 +9,7 @@ SWRigidBody2D::SWRigidBody2D()
 	: m_velocity( tvec2::zero )
 	, m_elastic( 0 )
 	, m_mass( 1 )
+	, m_inertia( 10 )
 	, m_linearDrag( 0.1f )
 	, m_angularDrag( 0.1f )
 	, m_gravityScale( -tvec2::axisY )
@@ -58,9 +59,11 @@ void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
 {
 	if ( m_mass == 0 ) return;
 	SWTransform* transform = getComponent<SWTransform>();
+	tvec2 radius = (pos - transform->getPosition().xy());
+	float torque = radius.cross( force );
+
 	m_velocity += force/m_mass;
-	m_torque   += (pos - transform->getPosition().xy()).cross( force ) ;
-	
+	m_torque   += torque/m_inertia;
 }
 
 void SWRigidBody2D::addAccel( const tvec2& accel )

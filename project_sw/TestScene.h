@@ -60,9 +60,11 @@ class TestScene : public SWGameScene
 	{
 		//! set default camera
 		{
+			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
 			SWGameObject* go = new SWGameObject;
 			SWCamera* cam = go->addComponent<SWCamera>();
-			cam->orthoMode( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 1, 1000 );
+			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
+			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( -100, -100, 0 ) );
 			cam->perspectiveMode( SWMath.angleToRadian(90), 1, 1, 1000 );
 			SWCamera::mainCamera = cam;
 		}
@@ -81,7 +83,7 @@ class TestScene : public SWGameScene
 			action->setAct( "rotation", act );
 
 			SWRigidBody2D* rigid = go->addComponent<SWRigidBody2D>();
-			rigid->setGravityScale( tvec2::axisY*-10 );
+			rigid->setGravityScale( tvec2::zero );
 		}
 
 	}
@@ -91,12 +93,19 @@ class TestScene : public SWGameScene
 		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
 
 		SWAction* action = go->getComponent<SWAction>();
-		if ( SWInput.getTouchState() == SW_TouchPress )
+		if ( SWInput.getTouchState() == SW_TouchRelease )
 		{
+			tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 1 );
+			pos = SWCamera::mainCamera()->screenToWorld( pos );
+			SWLog( "%f, %f", pos.x, pos.y );
+			SWTransform* transform = rigid->getComponent<SWTransform>();
+			transform->setLocalPosition( pos );
 			//tvec2 touchXY = tvec2( SWInput.getTouchX(), SWInput.getTouchY() );
+			/*
 			tvec2 touchXY = rigid->getComponent<SWTransform>()->getPosition().xy();
-			touchXY += tvec2::one/10;
+			touchXY += tvec2::one/100;
 			rigid->addForce( tvec2( 0, 500*SWTime.getDeltaTime() ), touchXY );
+			*/
 		}
 		else if ( action->isPlaying() == false )
 		{

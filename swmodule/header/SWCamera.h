@@ -15,13 +15,22 @@ class SWCamera : public SWComponent
 	
 	TMatrix4x4 m_viewMatrix;
 	TMatrix4x4 m_projMatrix;
+	TMatrix4x4 m_invProjMatrix;
+
+	float m_near;
+	float m_far;
 
 public:
 
 	static SWHardRef<SWCamera> mainCamera;
 
+	SWCamera();
+	~SWCamera();
+
 	void orthoMode( float width, float height, float near, float far );
 	void perspectiveMode( float fov, float aspect, float near, float far );
+
+	tvec3 screenToWorld( const tvec3& screenPt ) const;
 
 	const TMatrix4x4& getProjMatrix() const;
 	const TMatrix4x4& getViewMatrix();

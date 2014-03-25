@@ -61,7 +61,7 @@ const TMatrix4x4 operator*( const TMatrix4x4& a, const TMatrix4x4& b )
 
 const TVector3f operator*( const TVector3f& v, const TMatrix4x4& m )
 {
-	float w = v.x*m.m14 + v.y*m.m24 + v.z*m.m34 + m.m44;
+	float w = (v.x*m.m14 + v.y*m.m24 + v.z*m.m34) + m.m44;
 	if ( w == 0 ) w = 1;
 	return TVector3f
 		( (v.x*m.m11 + v.y*m.m21 + v.z*m.m31 + m.m41)/w
