@@ -91,3 +91,9 @@ void SWRigidBody2D::setMass( tufloat mass )
 	if ( mass > 0 ) m_mass = mass;
 	else m_mass = FLT_EPSILON;
 }
+
+void SWRigidBody2D::setInertia( tufloat inertia )
+{
+	if ( inertia > 0 ) m_inertia = inertia;
+	else m_inertia = FLT_EPSILON;
+}

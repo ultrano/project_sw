@@ -32,7 +32,7 @@ public:
 
 	TVector3f  operator - () const { return TVector3f(-x, -y, -z); }
 	TVector3f  operator +( const TVector3f& pt ) const { return TVector3f( x + pt.x, y + pt.y, z + pt.z ); }
-	TVector3f  operator -( const TVector3f& pt ) const {return TVector3f( x - pt.x, y - pt.y, z + pt.z ); }
+	TVector3f  operator -( const TVector3f& pt ) const {return TVector3f( x - pt.x, y - pt.y, z - pt.z ); }
 	TVector3f  operator *( float scalar ) const { return TVector3f( x * scalar, y * scalar, z * scalar ); }
 	TVector3f  operator /( float scalar ) const { return TVector3f( x / scalar, y / scalar, z / scalar ); }
 

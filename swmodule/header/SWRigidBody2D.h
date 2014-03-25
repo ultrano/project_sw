@@ -33,6 +33,7 @@ public:
 	void setGravityScale( const tvec2& scale );
 	void setElastic( float elastic );
 	void setMass( tufloat mass );
+	void setInertia( tufloat inertia );
 
 };
 

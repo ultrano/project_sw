@@ -122,6 +122,7 @@ float TMatrix4x4::minorDet( unsigned char row, unsigned char col ) const
 
 void TMatrix4x4::inverse( TMatrix4x4& m ) const
 {
+	m.identity();
 	adjoint(m);
 	m.transpose(m);
 	float det = determinant();

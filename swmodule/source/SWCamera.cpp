@@ -51,17 +51,14 @@ void SWCamera::perspectiveMode( float fov, float aspect, float near, float far )
 
 tvec3 SWCamera::screenToWorld( const tvec3& screenPt ) const
 {
-	tvec3 ret( screenPt );
-	ret.x = ret.x / SW_GC.getScreenWidth();
-	ret.y = ret.y / SW_GC.getScreenHeight();
-	ret.z = (ret.z - m_near) / ( m_far - m_near );
-
-	ret.x = (+ret.x*2.0f) - 1.0f;
-	ret.y = (-ret.y*2.0f) + 1.0f;
-	ret.z = (+ret.z*2.0f) - 1.0f;
+	tvec3 ret( 0, 0, screenPt.z );
+	ret = ret* m_projMatrix;
+	ret.x = (+(screenPt.x/ SW_GC.getScreenWidth())* 2.0f)- 1.0f;
+	ret.y = (-(screenPt.y/ SW_GC.getScreenHeight())* 2.0f)+ 1.0f;
 	
 	SWTransform* trans = getComponent<SWTransform>();
-	ret = ret * m_invProjMatrix * trans->getWorldMatrix();
+	ret = ret* m_invProjMatrix;
+	ret = ret* trans->getWorldMatrix();
 	return ret;
 }
 
