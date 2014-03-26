@@ -18,6 +18,7 @@
 #include "TTriangle.h"
 #include "TIndex3.h"
 #include "TRect.h"
+#include "TRay.h"
 
 typedef TVector2f   tvec2;
 typedef TVector3f   tvec3;
@@ -27,5 +28,6 @@ typedef THashString thashstr;
 typedef TTriangle   ttriangle;
 typedef TIndex3     tindex3;
 typedef TRect       trect;
+typedef TRay        tray;
 
 #endif //! sw_SWType_h

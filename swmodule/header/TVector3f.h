@@ -19,6 +19,7 @@ public:
 	TVector3f() {};
 	TVector3f( const TVector3f& copy ): x(copy.x), y(copy.y), z(copy.z) {};
 	TVector3f(float fx, float fy, float fz) : x(fx), y(fy), z(fz) {};
+	TVector3f( const TVector2f& fxy, float fz ) : x(fxy.x), y(fxy.y), z(fz) {};
 
 	float		length() const;
 	float		dot( const TVector3f& v ) const;

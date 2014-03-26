@@ -55,11 +55,28 @@ tvec3 SWCamera::screenToWorld( const tvec3& screenPt ) const
 	ret = ret* m_projMatrix;
 	ret.x = (+(screenPt.x/ SW_GC.getScreenWidth())* 2.0f)- 1.0f;
 	ret.y = (-(screenPt.y/ SW_GC.getScreenHeight())* 2.0f)+ 1.0f;
-	
+
 	SWTransform* trans = getComponent<SWTransform>();
 	ret = ret* m_invProjMatrix;
 	ret = ret* trans->getWorldMatrix();
 	return ret;
+}
+
+tray SWCamera::screenToRay( const tvec2& screenPt ) const
+{
+	tvec3 ret( 0, 0, m_near );
+	ret = ret* m_projMatrix;
+	ret.x = (+(screenPt.x/ SW_GC.getScreenWidth())* 2.0f)- 1.0f;
+	ret.y = (-(screenPt.y/ SW_GC.getScreenHeight())* 2.0f)+ 1.0f;
+
+	SWTransform* trans = getComponent<SWTransform>();
+	ret = ret* m_invProjMatrix;
+	ret = ret* trans->getWorldMatrix();
+
+	tray ray;
+	ray.origin = ret;
+	ray.direction = (ret- trans->getPosition()).normal();
+	return ray;
 }
 
 const TMatrix4x4& SWCamera::getProjMatrix() const

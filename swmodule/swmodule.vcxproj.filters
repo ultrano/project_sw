@@ -235,6 +235,9 @@
     <Filter Include="SW\SWPhysics">
       <UniqueIdentifier>{ab6569dd-9490-487a-af96-1f4a8f7159f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType\TRay">
+      <UniqueIdentifier>{526fb56a-38c1-43e5-905f-a9eb887d93e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -494,6 +497,9 @@
     </ClInclude>
     <ClInclude Include="header\SWPhysics.h">
       <Filter>SW\SWPhysics</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TRay.h">
+      <Filter>SW\SWType\TRay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
