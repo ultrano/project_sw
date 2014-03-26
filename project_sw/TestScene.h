@@ -126,7 +126,7 @@ class TestScene : public SWGameScene
 	{
 		if ( SWInput.getKey( 'p' ) )
 		{
-			SW_GC.setNextScene( NULL );
+			SW_GC.setNextScene( new TestScene );
 		}
 	}
 

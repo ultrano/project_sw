@@ -238,6 +238,9 @@
     <Filter Include="SW\SWType\TRay">
       <UniqueIdentifier>{526fb56a-38c1-43e5-905f-a9eb887d93e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWCollider2D">
+      <UniqueIdentifier>{209c2c90-b219-4b45-8235-8f8b645dcf4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -501,6 +504,9 @@
     <ClInclude Include="header\TRay.h">
       <Filter>SW\SWType\TRay</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWCollider2D.h">
+      <Filter>SW\SWCollider2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -709,6 +715,9 @@
     </ClCompile>
     <ClCompile Include="source\SWPhysics.cpp">
       <Filter>SW\SWPhysics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWCollider2D.cpp">
+      <Filter>SW\SWCollider2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

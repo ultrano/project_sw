@@ -107,6 +107,7 @@
     <ClInclude Include="header\SWByteBuffer.h" />
     <ClInclude Include="header\SWByteBufferStream.h" />
     <ClInclude Include="header\SWCamera.h" />
+    <ClInclude Include="header\SWCollider2D.h" />
     <ClInclude Include="header\SWComponent.h" />
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="source\SWByteBuffer.cpp" />
     <ClCompile Include="source\SWByteBufferStream.cpp" />
     <ClCompile Include="source\SWCamera.cpp" />
+    <ClCompile Include="source\SWCollider2D.cpp" />
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
     <ClCompile Include="source\SWFileStream.cpp" />
