@@ -25,13 +25,13 @@ unsigned& uniqueObjectID()
 SWObject::SWObject()
 	: m_id( ++uniqueObjectID() )
 {
-    //++getObjectCount();
+    ++getObjectCount();
 }
 
 SWObject::~SWObject()
 {
-    //--getObjectCount();
-    //SW_OutputLog( "object", "deleted, remains: %d", getObjectCount() );
+    --getObjectCount();
+    SWLog( "SWObject deleted, remains: %d", getObjectCount() );
 }
 
 SWDelegator* SWObject::getDelegator( const SWHandler& handler )

@@ -112,7 +112,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
-    <ClInclude Include="header\SWPhysics.h" />
+    <ClInclude Include="header\SWPhysics2D.h" />
     <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
     <ClInclude Include="header\TRay.h" />
@@ -196,7 +196,7 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
-    <ClCompile Include="source\SWPhysics.cpp" />
+    <ClCompile Include="source\SWPhysics2D.cpp" />
     <ClCompile Include="source\SWRigidBody2D.cpp" />
     <ClCompile Include="source\SWShape2D.cpp" />
     <ClCompile Include="source\THashString.cpp" />

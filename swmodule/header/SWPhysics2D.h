@@ -4,9 +4,9 @@
 #include "SWType.h"
 #include "SWMemory.h"
 
-#define SWPhysics (__SWPhysics::instance())
+#define SWPhysics (__SWPhysics2D::instance())
 
-class __SWPhysics : public SWMemory
+class __SWPhysics2D : public SWMemory
 {
 
 private:
@@ -18,9 +18,9 @@ public:
 	float getGravityForce() const { return m_gravityForce; }
 	float setGravityForce( float force ) { m_gravityForce = force; }
 
-	__SWPhysics();
-	~__SWPhysics();
-	static __SWPhysics& instance();
+	__SWPhysics2D();
+	~__SWPhysics2D();
+	static __SWPhysics2D& instance();
 
 };
 

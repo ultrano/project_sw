@@ -1,7 +1,7 @@
 #include "SWRigidBody2D.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
-#include "SWPhysics.h"
+#include "SWPhysics2D.h"
 #include "SWTime.h"
 #include "SWMath.h"
 

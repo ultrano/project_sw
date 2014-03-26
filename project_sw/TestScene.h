@@ -81,19 +81,21 @@ class TestScene : public SWGameScene
 			SWCamera::mainCamera = cam;
 		}
 
+		for ( int i = 0 ; i < 10 ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
 			go->addUpdateDelegator( GetDelegator( onUpdateGO ) );
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( "cat3.png" );
 			image->setSizeToTexture( 0.5f, 0.5f );
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( TVector3f( 100,100,500 ) );
 
-			SWAct* act = new SWActRepeat( new SWActRotateBy( 3, tvec3( 0, 0, SWMath.angleToRadian(360) ) ) );
-			SWAction* action = go->addComponent<SWAction>();
-			action->setAct( "rotation", act );
-			//action->play( "rotation" );
+			tvec3 pos( SWMath.randomInt(0, SW_GC.getScreenWidth())
+				     , SWMath.randomInt(0, SW_GC.getScreenHeight())
+					 , 500 );
+			pos = SWCamera::mainCamera()->screenToWorld( pos );
+
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( pos );
 
 			SWRigidBody2D* rigid = go->addComponent<SWRigidBody2D>();
 			rigid->setGravityScale( tvec2::zero );
@@ -106,7 +108,6 @@ class TestScene : public SWGameScene
 	{
 		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
 
-		SWAction* action = go->getComponent<SWAction>();
 		if ( SWInput.getTouchState() == SW_TouchMove )
 		{
 			SWTransform* transform = rigid->getComponent<SWTransform>();
@@ -116,9 +117,6 @@ class TestScene : public SWGameScene
 			force = force.normal()/10;
 			
 			rigid->addForce( force, pos.xy() );
-		}
-		else if ( action->isPlaying() == false )
-		{
 		}
 	}
 
