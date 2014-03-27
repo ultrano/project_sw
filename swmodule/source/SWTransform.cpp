@@ -20,6 +20,8 @@ SWTransform::SWTransform()
 , m_rotate()
 , m_euler( 0, 0, 0 )
 , m_scale( 1, 1, 1 )
+, m_needLocalUpdate( true )
+, m_needWorldUpdate( true )
 {
 }
 
@@ -94,14 +96,24 @@ void SWTransform::removeSetParentDelegate( SWObject* object, const SWHandler& ha
 	}
 }
 
-const TMatrix4x4& SWTransform::getWorldMatrix() const
+const TMatrix4x4& SWTransform::getWorldMatrix()
 {
+	if ( m_needWorldUpdate )
+	{
+		m_needWorldUpdate = false;
+		updateMatrix();
+	}
 	return m_worldMat;
 }
 
-TMatrix4x4 SWTransform::getLocalMatrix() const
+const TMatrix4x4& SWTransform::getLocalMatrix()
 {
-	return TMatrix4x4().transform( m_scale, m_rotate, m_position );
+	if ( m_needLocalUpdate )
+	{
+		m_needLocalUpdate = false;
+		m_localMat.transform( m_scale, m_rotate, m_position );
+	}
+	return m_localMat;
 }
 
 const TVector3f& SWTransform::getLocalScale() const
@@ -119,55 +131,70 @@ const TVector3f& SWTransform::getLocalPosition() const
 	return m_position;
 }
 
-TVector3f SWTransform::getPosition() const
+TVector3f SWTransform::getPosition()
 {
-	return tvec3( m_worldMat.m41, m_worldMat.m42, m_worldMat.m43 );
+	const tmat44& worldMat = getWorldMatrix();
+	return tvec3( worldMat.m41, worldMat.m42, worldMat.m43 );
 }
 
 void SWTransform::setPosition( const tvec3& pos )
 {
+	setLocalPosition( worldToLocalPoint( pos ) );
+}
+
+tvec3 SWTransform::worldToLocalPoint( const tvec3& point ) const
+{
+	if ( SWTransform* parent = getParent() )
+	{
+		return point* parent->m_invWorldMat;
+	}
+	return point;
 }
 
 void SWTransform::setLocalScale( const TVector3f& scale )
 {
 	m_scale = scale;
+	needUpdateMatrix();
 }
 
 void SWTransform::setLocalRotate( const TQuaternion& rotate )
 {
 	m_rotate = rotate;
 	m_rotate.toEuler( m_euler );
+	needUpdateMatrix();
+}
+
+void SWTransform::setLocalRotate( const tvec3& euler )
+{
+	m_euler = euler;
+	m_rotate.rotate( m_euler );
+	needUpdateMatrix();
 }
 
 void SWTransform::setLocalPosition( const TVector3f& position )
 {
 	m_position = position;
+	needUpdateMatrix();
 }
 
 void SWTransform::move( float stepX, float stepY, float stepZ )
 {
-	m_position.x += stepX;
-	m_position.y += stepY;
-	m_position.z += stepZ;
+	move( tvec3( stepX, stepY, stepZ ) );
 }
 
 void SWTransform::move( const tvec3& step )
 {
-	m_position += step;
+	setLocalPosition( m_position + step );
 }
 
 void SWTransform::rotate( float radianX, float radianY, float radianZ )
 {
-	m_euler.x += radianX;
-	m_euler.y += radianY;
-	m_euler.z += radianZ;
-	m_rotate.rotate( m_euler );
+	rotate( tvec3( radianX, radianY, radianZ ) );
 }
 
 void SWTransform::rotate( const tvec3& euler )
 {
-	m_euler += euler;
-	m_rotate.rotate( m_euler );
+	setLocalRotate( m_euler + euler );
 }
 
 SWTransform* SWTransform::find( const tstring& name )
@@ -211,14 +238,9 @@ void SWTransform::onRemove()
 	else SW_GC.getScene()->m_roots.remove( object );
 }
 
-void SWTransform::onUpdate( SWGameObject* )
+void SWTransform::onUpdate()
 {
-	m_worldMat.transform( m_scale, m_rotate, m_position );
-
-	if ( SWTransform* parent = m_parent() )
-	{
-		m_worldMat = m_worldMat * parent->getWorldMatrix();
-	}
+	updateMatrix();
 
 	SWObject::List::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )
@@ -239,7 +261,7 @@ void SWTransform::onAnimate( const thashstr& key, float value )
 	static const thashstr rotationX = "rotation.x";
 	static const thashstr rotationY = "rotation.y";
 	static const thashstr rotationZ = "rotation.z";
-
+	/*
 	if ( posX == key ) m_position.x = value;
 	else if ( posY == key ) m_position.y = value;
 	else if ( posZ == key ) m_position.z = value;
@@ -261,4 +283,24 @@ void SWTransform::onAnimate( const thashstr& key, float value )
 		m_euler.z = SWMath.angleToRadian( value );
 		m_rotate.rotate( m_euler );
 	}
+	*/
+}
+
+void SWTransform::needUpdateMatrix()
+{
+	m_needLocalUpdate = true;
+	m_needWorldUpdate = true;
+}
+
+void SWTransform::updateMatrix()
+{
+	if ( SWTransform* parent = m_parent() )
+	{
+		m_worldMat = getLocalMatrix()* parent->getWorldMatrix();
+	}
+	else
+	{
+		m_worldMat = getLocalMatrix();
+	}
+	m_worldMat.inverse( m_invWorldMat );
 }

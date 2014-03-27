@@ -81,43 +81,43 @@ class TestScene : public SWGameScene
 			SWCamera::mainCamera = cam;
 		}
 
-		for ( int i = 0 ; i < 10 ; ++i )
 		{
-			SWGameObject* go = new SWGameObject;
-			go->addUpdateDelegator( GetDelegator( onUpdateGO ) );
-			WIImage* image = go->addComponent<WIImage>();
-			image->setTexture( "cat3.png" );
-			image->setSizeToTexture( 0.5f, 0.5f );
+			WIImage* parent = makeCatImg();
+			SWTransform* trans = parent->getComponent<SWTransform>();
+			trans->setLocalPosition( tvec3( 0, 0, 500 ) );
+			SWAction* action = parent->gameObject()->addComponent<SWAction>();
+			SWAct* act = new SWActRepeat( new SWActRotateBy(5, tvec3( 0,0, SWMath.angleToRadian(720) ) ) );
+			action->setAct( "gg", act );
+			action->play( "gg" );
 
-			tvec3 pos( SWMath.randomInt(0, SW_GC.getScreenWidth())
-				     , SWMath.randomInt(0, SW_GC.getScreenHeight())
-					 , 500 );
-			pos = SWCamera::mainCamera()->screenToWorld( pos );
-
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( pos );
-
-			SWRigidBody2D* rigid = go->addComponent<SWRigidBody2D>();
-			rigid->setGravityScale( tvec2::zero );
-			rigid->setInertia( 1000 );
+			WIImage* child = makeCatImg();
+			child->gameObject()->setName( "child" );
+			trans = child->getComponent<SWTransform>();
+			trans->setParent( parent->getComponent<SWTransform>() );
+			trans->setLocalPosition( tvec3( 100, 100, 0 ) );
 		}
-
 	}
 
-	void onUpdateGO( SWGameObject* go )
+	WIImage* makeCatImg()
 	{
-		SWRigidBody2D* rigid = go->getComponent<SWRigidBody2D>();
+		SWGameObject* go = new SWGameObject;
+		go->addUpdateDelegator( GetDelegator( onUpdateCat ) );
+		WIImage* image = go->addComponent<WIImage>();
+		image->setTexture( "cat3.png" );
+		image->setSizeToTexture( 0.5f, 0.5f );
+		return image;
+	}
 
-		if ( SWInput.getTouchState() == SW_TouchMove )
-		{
-			SWTransform* transform = rigid->getComponent<SWTransform>();
-			tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 500 );
-			pos = SWCamera::mainCamera()->screenToWorld( pos );
-			tvec2 force = tvec2( SWInput.getDeltaX(), -SWInput.getDeltaY() );
-			force = force.normal()/10;
-			
-			rigid->addForce( force, pos.xy() );
-		}
+	void onUpdateCat( SWGameObject* go )
+	{
+		if ( go->getName() != "child" ) return;
+		if ( SWInput.getTouchState() != SW_TouchMove ) return;
+
+		tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 500 );
+		pos = SWCamera::mainCamera()->screenToWorld( pos );
+
+		SWTransform* trans = go->getComponent<SWTransform>();
+		trans->setPosition( pos );
 	}
 
 	void onUpdate()

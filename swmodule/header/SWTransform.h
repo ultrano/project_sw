@@ -29,6 +29,14 @@ private:
 	TVector3f    m_euler;
 	TVector3f    m_position; //< 위치.
 	TMatrix4x4   m_worldMat; //< world matrix
+	TMatrix4x4   m_localMat; //< local matrix
+	TMatrix4x4   m_invWorldMat;
+
+	bool m_needLocalUpdate;
+	bool m_needWorldUpdate;
+
+	void needUpdateMatrix();
+	void updateMatrix();
 
 public:
 
@@ -42,19 +50,22 @@ public:
 	void removeSetParentDelegate( SWDelegator* callBack );
 	void removeSetParentDelegate( SWObject* object, const SWHandler& handler );
 
-	const TMatrix4x4& getWorldMatrix() const;
-	TMatrix4x4        getLocalMatrix() const;
+	const TMatrix4x4& getWorldMatrix();
+	const TMatrix4x4& getLocalMatrix();
 
 	const TVector3f&   getLocalScale() const;
 	const TQuaternion& getLocalRotate() const;
 	const TVector3f&   getLocalPosition() const;
 
-	TVector3f getPosition() const;
-	void      setPosition( const tvec3& pos );
+	void setLocalScale( const tvec3& scale );
+	void setLocalRotate( const tquat& rotate );
+	void setLocalRotate( const tvec3& euler );
+	void setLocalPosition( const tvec3& position );
 
-	void setLocalScale( const TVector3f& scale );
-	void setLocalRotate( const TQuaternion& rotate );
-	void setLocalPosition( const TVector3f& position );
+	tvec3 getPosition();
+	void  setPosition( const tvec3& pos );
+
+	tvec3 worldToLocalPoint( const tvec3& point ) const;
 
 	void move( float stepX, float stepY, float stepZ );
 	void move( const tvec3& step );
@@ -66,8 +77,9 @@ public:
 
 	void onStart();
 	void onRemove();
-	void onUpdate( SWGameObject* );
+	void onUpdate();
 	void onAnimate( const thashstr& key, float value );
+
 };
 
 #endif
