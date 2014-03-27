@@ -124,6 +124,10 @@ TVector3f SWTransform::getPosition() const
 	return tvec3( m_worldMat.m41, m_worldMat.m42, m_worldMat.m43 );
 }
 
+void SWTransform::setPosition( const tvec3& pos )
+{
+}
+
 void SWTransform::setLocalScale( const TVector3f& scale )
 {
 	m_scale = scale;

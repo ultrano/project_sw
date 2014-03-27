@@ -18,6 +18,7 @@
  */
 
 #define SWLog( ... ) do{SWLogCenter::getInstance().write( (__FILE__), (__LINE__), __VA_ARGS__ );}while(0)
+#define SWNullLog( var ) do{ if( var == NULL ) SWLog( "null variable : "#var ) }while(false)
 
 class SWLogCenter
 {

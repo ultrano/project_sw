@@ -9,14 +9,20 @@ class SWRigidBody2D : public SWComponent
 
 private:
 
+	tvec2   m_center;
+	float   m_angle;
+	
+	tvec2   m_velocity;
+	tfloat  m_torque;
+
 	tufloat m_mass;
 	tufloat m_inertia;
-	tvec2   m_velocity;
+
 	tfloat  m_linearDrag;
 	tfloat  m_angularDrag;
+
 	tfloat  m_elastic;
 	tvec2   m_gravityScale;
-	tfloat  m_torque;
 
 	void onStart();
 	void onRemove();

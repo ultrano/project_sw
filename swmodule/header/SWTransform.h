@@ -10,7 +10,6 @@
 #define prototype_SWTransform_h
 
 #include "SWComponent.h"
-#include "TMatrix4x4.h"
 
 /**
  @brief 객체가 공간 개념을 갖게 한다.
@@ -51,6 +50,7 @@ public:
 	const TVector3f&   getLocalPosition() const;
 
 	TVector3f getPosition() const;
+	void      setPosition( const tvec3& pos );
 
 	void setLocalScale( const TVector3f& scale );
 	void setLocalRotate( const TQuaternion& rotate );

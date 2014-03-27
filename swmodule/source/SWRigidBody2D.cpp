@@ -6,7 +6,8 @@
 #include "SWMath.h"
 
 SWRigidBody2D::SWRigidBody2D()
-	: m_velocity( tvec2::zero )
+	: m_center( tvec2::zero )
+	, m_velocity( tvec2::zero )
 	, m_elastic( 0 )
 	, m_mass( 1 )
 	, m_inertia( 10 )
