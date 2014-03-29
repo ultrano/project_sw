@@ -7,7 +7,9 @@
 
 SWRigidBody2D::SWRigidBody2D()
 	: m_center( tvec2::zero )
+	, m_angle( 0 )
 	, m_velocity( tvec2::zero )
+	, m_torque( 0 )
 	, m_elastic( 0 )
 	, m_mass( 1 )
 	, m_inertia( 10 )
@@ -24,6 +26,8 @@ SWRigidBody2D::~SWRigidBody2D()
 void SWRigidBody2D::onStart()
 {
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
+	SWTransform* transform = getComponent<SWTransform>();
+	m_center = transform->getPosition().xy();
 }
 
 void SWRigidBody2D::onRemove()
@@ -39,14 +43,17 @@ void SWRigidBody2D::onUpdate()
 	
 	addAccel( m_gravityScale * ( SWPhysics.getGravityForce() ) * deltaTime );
 	
-	tvec2  linearStep  = m_velocity * deltaTime;
-	tfloat angularStep = m_torque * deltaTime;
+	tvec2  linearStep  = m_velocity* deltaTime;
+	tfloat angularStep = m_torque* deltaTime;
 	
-	transform->move( tvec3( linearStep.x, linearStep.y, 0 ) );
-	transform->rotate( 0, 0, angularStep );
+	m_center += linearStep;
+	m_angle  += angularStep;
 
-	m_velocity -= linearStep * m_linearDrag;
-	m_torque   -= angularStep * m_angularDrag;
+	transform->setPosition( tvec3( m_center, 0 ) );
+	transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
+
+	m_velocity -= linearStep* m_linearDrag;
+	m_torque   -= angularStep* m_angularDrag;
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )
@@ -59,8 +66,7 @@ void SWRigidBody2D::addForce( const tvec2& force )
 void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
 {
 	if ( m_mass == 0 ) return;
-	SWTransform* transform = getComponent<SWTransform>();
-	tvec2 radius = (pos - transform->getPosition().xy());
+	tvec2 radius = (pos - m_center);
 	float torque = radius.cross( force );
 
 	m_velocity += force/m_mass;

@@ -11,6 +11,7 @@ private:
 
 	tvec2   m_center;
 	float   m_angle;
+
 	
 	tvec2   m_velocity;
 	tfloat  m_torque;

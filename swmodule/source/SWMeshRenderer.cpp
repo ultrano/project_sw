@@ -16,9 +16,9 @@ SWMeshRenderer::~SWMeshRenderer()
 
 void SWMeshRenderer::render()
 {
-	SWTransform* transform = gameObject()->getComponent<SWTransform>();
 	if ( m_filter.isValid() )
 	{
+		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 		const TMatrix4x4& model = transform->getWorldMatrix();
 		const TMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
 		const TMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();

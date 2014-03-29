@@ -36,10 +36,10 @@ private:
 	bool m_needWorldUpdate;
 
 	void needUpdateMatrix();
-	void updateMatrix();
 
 public:
-
+	
+	void updateMatrix();
     SWTransform();
     ~SWTransform();
 
@@ -64,8 +64,10 @@ public:
 
 	tvec3 getPosition();
 	void  setPosition( const tvec3& pos );
+	void  setRotate( const tquat& rotate );
 
 	tvec3 worldToLocalPoint( const tvec3& point ) const;
+	tquat worldToLocalRotate( const tquat& rotate ) const;
 
 	void move( float stepX, float stepY, float stepZ );
 	void move( const tvec3& step );
@@ -78,7 +80,6 @@ public:
 	void onStart();
 	void onRemove();
 	void onUpdate();
-	void onAnimate( const thashstr& key, float value );
 
 };
 

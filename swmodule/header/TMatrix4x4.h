@@ -47,6 +47,7 @@ public:
 
 const TMatrix4x4 operator * ( const TMatrix4x4& a, const TMatrix4x4& b );
 const TVector3f  operator * ( const TVector3f& v, const TMatrix4x4& m );
+const TQuaternion operator * ( const TQuaternion& v, const TMatrix4x4& m );
 
 
 #endif // TMatrix4x4_h__

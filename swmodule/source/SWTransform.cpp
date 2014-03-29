@@ -142,6 +142,11 @@ void SWTransform::setPosition( const tvec3& pos )
 	setLocalPosition( worldToLocalPoint( pos ) );
 }
 
+void  SWTransform::setRotate( const tquat& rotate )
+{
+	setLocalRotate( worldToLocalRotate( rotate ) );
+}
+
 tvec3 SWTransform::worldToLocalPoint( const tvec3& point ) const
 {
 	if ( SWTransform* parent = getParent() )
@@ -149,6 +154,35 @@ tvec3 SWTransform::worldToLocalPoint( const tvec3& point ) const
 		return point* parent->m_invWorldMat;
 	}
 	return point;
+}
+
+tquat SWTransform::worldToLocalRotate( const tquat& rotate ) const
+{
+	tquat ret = rotate;
+	if ( SWTransform* parent = getParent() )
+	{
+		const tmat44& m = parent->getWorldMatrix();
+		float scaleX = tvec3( m.m11, m.m12, m.m13 ).length();
+		float scaleY = tvec3( m.m21, m.m22, m.m23 ).length();
+		float scaleZ = tvec3( m.m31, m.m32, m.m33 ).length();
+		float m11 = m.m11/scaleX;
+		float m12 = m.m12/scaleX;
+		float m13 = m.m13/scaleX;
+		float m21 = m.m21/scaleY;
+		float m22 = m.m22/scaleY;
+		float m23 = m.m23/scaleY;
+		float m31 = m.m31/scaleZ;
+		float m32 = m.m32/scaleZ;
+		float m33 = m.m33/scaleZ;
+		ret.w = sqrt(1.0 + m11 + m22 + m33) / 2.0;
+		float w4 = (4.0 * ret.w);
+		ret.x = (m32 - m23) / w4 ;
+		ret.y = (m13 - m31) / w4 ;
+		ret.z = (m21 - m12) / w4 ;
+		
+		ret = rotate* ret;
+	}
+	return ret;
 }
 
 void SWTransform::setLocalScale( const TVector3f& scale )
@@ -241,49 +275,12 @@ void SWTransform::onRemove()
 void SWTransform::onUpdate()
 {
 	updateMatrix();
-
 	SWObject::List::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		go->udpate();
 	}
-}
-
-void SWTransform::onAnimate( const thashstr& key, float value )
-{
-	static const thashstr posX = "position.x";
-	static const thashstr posY = "position.y";
-	static const thashstr posZ = "position.z";
-	static const thashstr scaleX = "scale.x";
-	static const thashstr scaleY = "scale.y";
-	static const thashstr scaleZ = "scale.z";
-	static const thashstr rotationX = "rotation.x";
-	static const thashstr rotationY = "rotation.y";
-	static const thashstr rotationZ = "rotation.z";
-	/*
-	if ( posX == key ) m_position.x = value;
-	else if ( posY == key ) m_position.y = value;
-	else if ( posZ == key ) m_position.z = value;
-	else if ( scaleX == key ) m_scale.x = value;
-	else if ( scaleY == key ) m_scale.y = value;
-	else if ( scaleZ == key ) m_scale.z = value;
-	else if ( rotationX == key )
-	{
-		m_euler.x = SWMath.angleToRadian( value );
-		m_rotate.rotate( m_euler );
-	}
-	else if ( rotationY == key )
-	{
-		m_euler.y = SWMath.angleToRadian( value );
-		m_rotate.rotate( m_euler );
-	}
-	else if ( rotationZ == key )
-	{
-		m_euler.z = SWMath.angleToRadian( value );
-		m_rotate.rotate( m_euler );
-	}
-	*/
 }
 
 void SWTransform::needUpdateMatrix()
