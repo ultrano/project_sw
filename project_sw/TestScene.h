@@ -126,10 +126,6 @@ class TestScene : public SWGameScene
 		tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 500 );
 		pos = SWCamera::mainCamera()->screenToWorld( pos );
 
-		SWTransform* trans = go->getComponent<SWTransform>();
-		trans->setPosition( pos );
-		trans->setRotate( tquat().rotate( tvec3::axisZ, SWMath.angleToRadian(-45) ) );
-
 		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
 		tvec3 delta(SWInput.getDeltaX(), -SWInput.getDeltaY(), 500);
 		//delta = SWCamera::mainCamera()->screenToWorld( delta );
