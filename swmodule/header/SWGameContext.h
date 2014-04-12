@@ -3,6 +3,7 @@
 
 #include "SWRefCounter.h"
 #include "SWType.h"
+#include "SWOpenGL.h"
 
 #define SW_GC ( SWGameContext::getInstance() )
 

@@ -241,6 +241,9 @@
     <Filter Include="SW\SWPhysics2D">
       <UniqueIdentifier>{ab6569dd-9490-487a-af96-1f4a8f7159f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWOpenGL">
+      <UniqueIdentifier>{f58f03c2-3692-4597-a2c2-464f0722d21c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -506,6 +509,9 @@
     </ClInclude>
     <ClInclude Include="header\SWPhysics2D.h">
       <Filter>SW\SWPhysics2D</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWOpenGL.h">
+      <Filter>SW\SWOpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

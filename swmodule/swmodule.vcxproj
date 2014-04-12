@@ -112,6 +112,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
+    <ClInclude Include="header\SWOpenGL.h" />
     <ClInclude Include="header\SWPhysics2D.h" />
     <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
