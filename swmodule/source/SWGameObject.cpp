@@ -74,9 +74,10 @@ void SWGameObject::udpate()
 	{
 		SWWeakRef<SWGameObject> vital = this;
 		SWObject::List copy = m_updateDelegates;
-		SWObject::List::iterator itor = copy.begin();
-		for ( ; itor != copy.end() ; ++itor )
+		SWObject::List::iterator itor = copy.end();
+		while ( itor != copy.begin() )
 		{
+			--itor;
 			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 			if ( !itorDG || !itorDG->isValid() ) removeUpdateDelegator( itorDG );
 			else itorDG->call( this );

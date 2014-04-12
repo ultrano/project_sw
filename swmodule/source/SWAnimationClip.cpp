@@ -23,6 +23,6 @@ void SWAnimationClip::updatePlay( SWGameObject* go, float time )
 		SWComponent* comp = go->getComponent( info.type );
 		if ( comp == NULL ) continue;
 
-		comp->onAnimate( info.key, info.line()->evaluate( time ) );
+		//comp->onAnimate( info.key, info.line()->evaluate( time ) );
 	}
 }

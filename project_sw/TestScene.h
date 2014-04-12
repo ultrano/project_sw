@@ -76,7 +76,7 @@ class TestScene : public SWGameScene
 			SWGameObject* go = new SWGameObject;
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
-			//cam->getComponent<SWTransform>()->setLocalPosition( tvec3( -100, -100, 0 ) );
+			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
 			SWCamera::mainCamera = cam;
 		}
@@ -84,11 +84,18 @@ class TestScene : public SWGameScene
 		{
 			WIImage* parent = makeCatImg();
 			SWTransform* trans = parent->getComponent<SWTransform>();
-			trans->setLocalPosition( tvec3( 0, 0, 500 ) );
+			trans->setLocalPosition( tvec3( 0, 0, 0 ) );
+			//trans->setLocalRotate( tquat().rotate( 0, 0, SWMath.angleToRadian(45) ) );
+			//trans->setLocalScale( tvec3( 2,0.5,1 ) );
 			SWAction* action = parent->gameObject()->addComponent<SWAction>();
-			SWAct* act = new SWActRepeat( new SWActRotateBy(5, tvec3( 0,0, SWMath.angleToRadian(720) ) ) );
+			SWAct* act1 = new SWActRotateBy( 5, tvec3( 0, 0, SWMath.angleToRadian(720) ) );//new SWActMoveBy( 1, tvec3( 0,100,0 ) );
+			//SWAct* act2 = new SWActMoveBy( 1, tvec3( 0,-100,0 ) );
+			SWActSequence* act3 = new SWActSequence();
+			act3->addAct( act1 );
+			//act3->addAct( act2 );
+			SWAct* act = new SWActRepeat( act3 ) ;
 			action->setAct( "gg", act );
-			action->play( "gg" );
+			//action->play( "gg" );
 
 			WIImage* child = makeCatImg();
 			child->gameObject()->setName( "child" );
@@ -105,19 +112,24 @@ class TestScene : public SWGameScene
 		WIImage* image = go->addComponent<WIImage>();
 		image->setTexture( "cat3.png" );
 		image->setSizeToTexture( 0.5f, 0.5f );
+		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+		body->setGravityScale( tvec2::zero );
+		body->setInertia( 100 );
 		return image;
 	}
 
 	void onUpdateCat( SWGameObject* go )
 	{
-		if ( go->getName() != "child" ) return;
+		//if ( go->getName() != "child" ) return;
 		if ( SWInput.getTouchState() != SW_TouchMove ) return;
 
 		tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 500 );
 		pos = SWCamera::mainCamera()->screenToWorld( pos );
 
-		SWTransform* trans = go->getComponent<SWTransform>();
-		trans->setPosition( pos );
+		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
+		tvec3 delta(SWInput.getDeltaX(), -SWInput.getDeltaY(), 500);
+		//delta = SWCamera::mainCamera()->screenToWorld( delta );
+		body->addForce( delta.xy() / 10, pos.xy() );
 	}
 
 	void onUpdate()
