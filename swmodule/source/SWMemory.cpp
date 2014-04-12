@@ -7,9 +7,6 @@
 //
 
 #include "SWMemory.h"
-#include <stdlib.h>
-#include "SWUtil.h"
-#include "SWLog.h"
 
 #pragma pack(push,1)
 
@@ -64,18 +61,18 @@ struct MemRod
 	unsigned int maximumCapacity;
 	MemBlock*    cursor;
 	MemBlock     original;
-	
+
 	static MemRod* createRod( unsigned int size )
 	{
 		if ( size == 0 ) return NULL;
 		unsigned int baseSize = (sizeof(MemRod) + MemBlockSize);
 		unsigned int totalSize = baseSize + size;
 		void* chunk = malloc( totalSize );
-		
+
 		MemRod*   rod  = (MemRod*)chunk;
 		MemBlock* head = (MemBlock*)&rod->original;
 		MemBlock* tail = (MemBlock*)((char*)(chunk) + totalSize - MemBlockSize);
-		
+
 		rod->next = NULL;
 		rod->cursor = head;
 
@@ -195,7 +192,7 @@ public:
 		MemBlock* block = (MemBlock*)((char*)mem - MemBlockSize);
 		block->isUsing = false;
 	}
-	
+
 	void defragment()
 	{
 		m_cursor = m_fuelRod;
@@ -210,27 +207,25 @@ public:
 
 int& getMemCount()
 {
-    static int count = 0;
-    return count;
+	static int count = 0;
+	return count;
 }
 
 void* SWMemory::operator new( size_t size )
 {
-    ++getMemCount();
-    SWLog( "allocated, maintain: %d", getMemCount() );
-    return SWAlloc( size );
+	++getMemCount();
+	return SWAlloc( size );
 }
 
 void*   SWMemory::operator new( size_t size, void* memory )
 {
-    return memory;
+	return memory;
 }
 
 void SWMemory::operator delete( void* memory )
 {
 	SWFree( memory );
-    --getMemCount();
-    SWLog( "freed, remains: %d", getMemCount() );
+	--getMemCount();
 }
 
 void* SWAlloc( size_t size )
