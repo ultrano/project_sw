@@ -65,42 +65,54 @@ bool SWMaterial::getFloat( const tstring& name, float& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
-	val = m_floatTable.at( index );
+	
+	FloatTable::const_iterator itor = m_floatTable.find( index );
+	val = itor->second;
 	return true;
 }
 bool SWMaterial::getVector2( const tstring& name, TVector2f& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
-	val = m_vec2Table.at( index );
+
+	Vec2Table::const_iterator itor = m_vec2Table.find( index );
+	val = itor->second;
 	return true;
 }
 bool SWMaterial::getVector3( const tstring& name, TVector3f& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
-	val = m_vec3Table.at( index );
+
+	Vec3Table::const_iterator itor = m_vec3Table.find( index );
+	val = itor->second;
 	return true;
 }
 bool SWMaterial::getVector4( const tstring& name, TQuaternion& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
-	val = m_vec4Table.at( index );
+
+	Vec4Table::const_iterator itor = m_vec4Table.find( index );
+	val = itor->second;
 	return true;
 }
 bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
-	val = m_matTable.at( index );
+
+	MatTable::const_iterator itor = m_matTable.find( index );
+	val = itor->second;
 	return true;
 }
 bool SWMaterial::getTexture( const tstring& name, tuint& texID ) const
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
-	texID = m_texTable.at( index );
+
+	TexTable::const_iterator itor = m_texTable.find( index );
+	texID = itor->second;
 	return true;
 }
 

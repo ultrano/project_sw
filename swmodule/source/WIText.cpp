@@ -1,4 +1,5 @@
 #include "WIText.h"
+#include <ctype.h>
 #include "SWMesh.h"
 #include "TVector3f.h"
 #include "TIndex3.h"

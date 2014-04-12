@@ -4,6 +4,7 @@
 # include "features.h"
 # include "value.h"
 # include <deque>
+#include <vector>
 # include <stack>
 # include <string>
 # include <iostream>

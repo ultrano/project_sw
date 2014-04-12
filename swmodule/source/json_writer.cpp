@@ -156,9 +156,9 @@ std::string valueToQuotedString( const char *value )
          default:
             if ( isControlCharacter( *c ) )
             {
-               std::ostringstream oss;
-               oss << "\\u" << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << static_cast<int>(*c);
-               result += oss.str();
+            	static char buf[64] = {0};
+            	sprintf( buf, "\\u%X%04d", static_cast<int>(*c) );
+            	result += buf;
             }
             else
             {
