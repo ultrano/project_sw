@@ -18,7 +18,6 @@ typedef int            tint;
 typedef short          tshort;
 typedef char           tchar;
 typedef float          tfloat;
-typedef unsigned float tufloat;
 typedef unsigned int   tuint;
 typedef unsigned short tushort;
 typedef unsigned char  tbyte;
@@ -30,7 +29,6 @@ typedef tchar          tint8;
 typedef tbyte          tuint8;
 typedef tuint32        thash32;
 typedef tfloat         tfloat32;
-typedef tufloat        tufloat32;
 
 #define tlist  std::list
 #define ttable std::map
