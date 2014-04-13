@@ -16,8 +16,8 @@ private:
 	tvec2   m_velocity;
 	tfloat  m_torque;
 
-	tufloat m_mass;
-	tufloat m_inertia;
+	tfloat m_mass;
+	tfloat m_inertia;
 
 	tfloat  m_linearDrag;
 	tfloat  m_angularDrag;
@@ -39,8 +39,8 @@ public:
 	void setLinearDrag( float drag );
 	void setGravityScale( const tvec2& scale );
 	void setElastic( float elastic );
-	void setMass( tufloat mass );
-	void setInertia( tufloat inertia );
+	void setMass( tfloat mass );
+	void setInertia( tfloat inertia );
 
 };
 

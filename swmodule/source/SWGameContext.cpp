@@ -193,6 +193,27 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 	//! opengl initializing
 	{
+
+		// 踰꾪띁 �겢由ъ뼱 �깋�긽 吏��젙.
+		glClearColor(0,0,1,1);
+		
+		// 踰꾪뀓�뒪 踰꾪띁 �궗�슜
+		glEnable(GL_TEXTURE_2D);
+
+		glEnable(GL_BLEND);
+		glEnable(GL_ALPHA_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glAlphaFunc(GL_GREATER, 0);
+
+		//! 쨩횘�닆징 첩횕쨘짹쨘짱쩔횩
+
+		// �닽�겸늽�쒋늽횈 징�녌≤�.
+		glViewport(0,0,width,height);
+
+	}
+
+	//! setting default shader and material
+	{
 		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
 		tint bufSize = fis()->available();
 		if ( bufSize <= 0 ) return;
@@ -202,24 +223,6 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 		SWHardRef<SWShader> shader = compileShader( source );
 		pimpl->material = new SWMaterial( shader() );
-
-		// 버퍼 클리어 색상 지정.
-		glClearColor(0,0,1,1);
-		
-		// 버텍스 버퍼 사용
-		glEnable(GL_TEXTURE_2D);
-
-		glEnable(GL_BLEND);
-		glEnable(GL_ALPHA_TEST);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glAlphaFunc(GL_GREATER, 0);
-
-
-		//! »Ò∏¡ øÏº±º¯¿ß
-
-		// ∫‰∆˜∆Æ ¡ˆ¡§.
-		glViewport(0,0,width,height);
-
 	}
 
 }
@@ -275,6 +278,8 @@ void SWGameContext::onRender()
 
 void SWGameContext::onTouch( int type, int param1, int param2 )
 {
+	SWLog( "touch type:%d, x:%d, y:%d", type, param1, param2 );
+
 	SWInput.m_touchState = type;
 	if ( type == SW_TouchPress )
 	{
@@ -475,7 +480,7 @@ SWObject* SWGameContext::findItem( const tstring& key )
 
 void SWGameContext::onResize( int width, int height )
 {
-	// ∫‰∆˜∆Æ ¡ˆ¡§.
+	// �닽�겸늽�쒋늽횈 징�녌≤�.
 	glViewport(0,0,width,height);
 }
 

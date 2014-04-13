@@ -1,4 +1,5 @@
 #include "SWRigidBody2D.h"
+#include <float.h>
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWPhysics2D.h"
@@ -93,13 +94,13 @@ void SWRigidBody2D::setElastic( float elastic )
 	m_elastic = elastic;
 }
 
-void SWRigidBody2D::setMass( tufloat mass )
+void SWRigidBody2D::setMass( tfloat mass )
 {
 	if ( mass > 0 ) m_mass = mass;
 	else m_mass = FLT_EPSILON;
 }
 
-void SWRigidBody2D::setInertia( tufloat inertia )
+void SWRigidBody2D::setInertia( tfloat inertia )
 {
 	if ( inertia > 0 ) m_inertia = inertia;
 	else m_inertia = FLT_EPSILON;

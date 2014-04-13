@@ -14,6 +14,7 @@
 #include "SWParam.h"
 #include "SWMath.h"
 #include <algorithm>
+#include <math.h>
 
 SWTransform::SWTransform()
 : m_position( 0, 0, 0 )

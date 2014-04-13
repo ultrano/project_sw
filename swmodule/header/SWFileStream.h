@@ -25,6 +25,7 @@ class SWFileInputStream : public SWInputStream
 	FILE* m_file;
 public:
 	SWFileInputStream();
+	SWFileInputStream( FILE* file ) : m_file( file ) {};
 	SWFileInputStream( const tstring& file );
 	~SWFileInputStream();
 	
