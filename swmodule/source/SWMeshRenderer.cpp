@@ -16,7 +16,7 @@ SWMeshRenderer::~SWMeshRenderer()
 
 void SWMeshRenderer::render()
 {
-	if ( m_filter.isValid() )
+	if ( m_material.isValid() )
 	{
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 		const TMatrix4x4& model = transform->getWorldMatrix();
@@ -25,6 +25,9 @@ void SWMeshRenderer::render()
 		m_material()->setMatrix4x4( "u_mvpMat", ( model * view * proj ) );
 		m_material()->setTexture( "s_texture", m_texID );
 		m_material()->apply();
+	}
+	if ( m_filter.isValid() )
+	{
 		m_filter()->draw();
 	}
 }
