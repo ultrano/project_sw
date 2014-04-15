@@ -201,9 +201,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 		glEnable(GL_TEXTURE_2D);
 
 		glEnable(GL_BLEND);
-		glEnable(GL_ALPHA_TEST);
+		//glEnable(GL_ALPHA_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glAlphaFunc(GL_GREATER, 0);
+		//glAlphaFunc(GL_GREATER, 0);
 
 		//! 쨩횘�닆징 첩횕쨘짹쨘짱쩔횩
 
@@ -214,12 +214,41 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 	//! setting default shader and material
 	{
-		SWHardRef<SWFileInputStream> fis = new SWFileInputStream( assetPath( "system/default.shader" ) );
-		tint bufSize = fis()->available();
-		if ( bufSize <= 0 ) return;
-		tstring source;
-		source.resize( bufSize );
-		fis()->read( (tbyte*)&source[0], bufSize );
+
+		tstring source =
+		"///////////////////////////\n"
+		"#ifdef FRAGMENT_SHADER\n"
+		"#ifdef GL_ES\n"
+		"precision mediump float;\n"
+		"#endif\n"
+		"#endif\n"
+
+		"uniform   mat4 u_texMat;\n"
+		"uniform   mat4 u_mvpMat;\n"
+		"uniform sampler2D s_texture;\n"
+		"varying   vec2 v_tex;\n"
+
+		"#ifdef VERTEX_SHADER\n"
+
+		"attribute vec4 a_pos;\n"
+		"attribute vec2 a_tex;\n"
+
+		"void main()\n"
+		"{\n"
+		"   gl_Position = u_mvpMat * a_pos;\n"
+		"   v_tex = a_tex;\n"
+		"}\n"
+
+		"#endif\n"
+
+		"#ifdef FRAGMENT_SHADER\n"
+
+		"void main()\n"
+		"{\n"
+		"   gl_FragColor = vec4(0,0,0,1);\n"
+		"}\n"
+
+		"#endif\n";
 
 		SWHardRef<SWShader> shader = compileShader( source );
 		pimpl->material = new SWMaterial( shader() );
@@ -378,7 +407,7 @@ void SWGameContext::setTexCoordBuffer( const float* buffer )
 
 void SWGameContext::drawIndexed( size_t count, unsigned short* indeces)
 {
-	glColor4f( 1, 1, 1, 1 );
+	//glColor4f( 1, 1, 1, 1 );
 	glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, indeces );
 }
 
