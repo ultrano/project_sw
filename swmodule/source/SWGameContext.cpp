@@ -245,7 +245,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 
 		"void main()\n"
 		"{\n"
-		"   gl_FragColor = vec4(0,0,0,1);\n"
+		"   gl_FragColor = texture2D( s_texture, v_tex );\n"
 		"}\n"
 
 		"#endif\n";
