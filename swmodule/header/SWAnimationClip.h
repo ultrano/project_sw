@@ -12,7 +12,7 @@ private:
 	struct AnimInfo
 	{
 		const SWRtti*  type;
-		const thashstr key;
+		thashstr key;
 		SWAnimationLine::Ref line;
 
 		AnimInfo( const SWRtti* _type, const thashstr& _key, SWAnimationLine* _line );
