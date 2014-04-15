@@ -82,7 +82,7 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 	}
 
 	GLuint shaderID = glCreateShader( type );
-	
+
 	if ( shaderID == 0 )
 	{
 		SWLog( "create shader failed" );
@@ -197,10 +197,10 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 	//! opengl initializing
 	{
 
-		// 踰꾪띁 �겢由ъ뼱 �깋�긽 吏��젙.
+		// 甕곌쑵�쓠 占쎄깻�뵳�딅선 占쎄퉳占쎄맒 筌욑옙占쎌젟.
 		glClearColor(0,0,1,1);
 		
-		// 踰꾪뀓�뒪 踰꾪띁 �궗�슜
+		// 甕곌쑵�볩옙�뮞 甕곌쑵�쓠 占쎄텢占쎌뒠
 		glEnable(GL_TEXTURE_2D);
 
 		glEnable(GL_BLEND);
@@ -208,9 +208,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		//glAlphaFunc(GL_GREATER, 0);
 
-		//! 쨩횘�닆징 첩횕쨘짹쨘짱쩔횩
+		//! 夷⑺슆占쎈땰吏� 泥⑺슃夷섏㏏夷섏㎟姨뷀슜
 
-		// �닽�겸늽�쒋늽횈 징�녌≤�.
+		// 占쎈떭占쎄껴�듊占쎌뭼�듊�쉱 吏뺧옙�뀒�돞占�.
 		glViewport(0,0,width,height);
 
 	}
@@ -264,8 +264,8 @@ void SWGameContext::onFrameMove()
 
 	SWTime.m_DPS = ( SWTime.m_accumDraw / SWTime.m_accumTime );
 	SWTime.m_FPS = ( SWTime.m_accumFrame / SWTime.m_accumTime );
-	SWLog( "FPS : %.1f", SWTime.getFPS() );
-	SWLog( "DPS : %.1f", SWTime.getDPS() );
+	//SWLog( "FPS : %.1f", SWTime.getFPS() );
+	//SWLog( "DPS : %.1f", SWTime.getDPS() );
 	if ( SWTime.m_accumTime > 10 )
 	{
 		SWTime.m_accumDraw  /= SWTime.m_accumTime;
@@ -287,6 +287,9 @@ void SWGameContext::onFrameMove()
 		scene->update();
 	}
 
+	SWInput.m_deltaX = 0;
+	SWInput.m_deltaY = 0;
+
 	SWLogCenter::getInstance().present();
 }
 
@@ -307,7 +310,7 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 	SWInput.m_touchState = type;
 	if ( type == SW_TouchPress )
 	{
-		SWInput.m_deltaY = param1;
+		SWInput.m_deltaX = param1;
 		SWInput.m_deltaY = param2;
 	}
 	else if ( type == SW_TouchMove )
@@ -504,7 +507,7 @@ SWObject* SWGameContext::findItem( const tstring& key )
 
 void SWGameContext::onResize( int width, int height )
 {
-	// �닽�겸늽�쒋늽횈 징�녌≤�.
+	// 占쎈떭占쎄껴�듊占쎌뭼�듊�쉱 吏뺧옙�뀒�돞占�.
 	glViewport(0,0,width,height);
 }
 
@@ -638,13 +641,16 @@ SWObject::Ref SWGameContext::loadJsonFromString( const tstring& doc )
 
 SWHardRef<SWShader> SWGameContext::compileShader( const tstring& source )
 {
+	SWLog( "%d", __LINE__ );
 	tuint shaderID = loadProgram( source.c_str() );
 	int bufSize = 0;
 	int count = 0;
 	tstring name;
 
+	SWLog( "%d", __LINE__ );
 	SWHardRef<SWShader> shader = new SWShader();
 	shader()->m_shaderID = shaderID;
+	SWLog( "%d", __LINE__ );
 
 	//! check uniform
 	{
@@ -662,12 +668,14 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& source )
 			shader()->m_uniformTable.insert( std::make_pair( name.substr(0,len), index ) );
 		}
 	}
+	SWLog( "%d", __LINE__ );
 
 	//! check attribute
 	{
 		glGetProgramiv( shaderID, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &bufSize );
 		glGetProgramiv( shaderID, GL_ACTIVE_ATTRIBUTES, &count );
 		name.resize( bufSize );
+		SWLog( "%d", __LINE__ );
 		
 		tarray<tstring> attribs;
 		for ( tuint i = 0 ; i < count ; ++i )
@@ -678,6 +686,7 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& source )
 			glGetActiveAttrib( shaderID, i, bufSize, &len, &sz, &type, &name[0] );
 			attribs.push_back( name.substr(0,len) );
 		}
+		SWLog( "%d", __LINE__ );
 		
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
@@ -688,11 +697,18 @@ SWHardRef<SWShader> SWGameContext::compileShader( const tstring& source )
 			else continue;
 
 			if ( index < 0 ) continue;
+			SWLog( attribName.c_str() );
 			glBindAttribLocation( shaderID, index, attribName.c_str() );
-			shader()->m_attributes.push_back( index );
+			SWLog( "%d", __LINE__ );
+			SWLog( shader.isValid()? "safe":"null" );
+			SWLog( "shader()->m_attributes : %d", shader()->m_attributes.size() );
+			shader()->m_attributes.push_back( (tuint)index );
+			SWLog( "%d", __LINE__ );
 		}
+		SWLog( "%d", __LINE__ );
 		glLinkProgram( shaderID );
 	}
+	SWLog( "%d", __LINE__ );
 
 	return shader();
 }
