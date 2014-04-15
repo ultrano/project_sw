@@ -7,10 +7,11 @@
 //
 
 #include "SWMemory.h"
+#include <android/log.h>
+
 
 #pragma pack(push,1)
-
-#define MemBlockSize (5)
+#define MemBlockSize (sizeof(MemBlock))
 struct MemBlock
 {
 	MemBlock* next;
@@ -54,7 +55,6 @@ struct MemBlock
 	}
 };
 
-#define MemRodSize ()
 struct MemRod
 {
 	MemRod* next;
@@ -129,7 +129,7 @@ struct MemRod
 
 class MemCore
 {
-	enum { DEFAULT_MAX_CAPACITY = 4096 };
+	enum { DEFAULT_MAX_CAPACITY = 512 };
 	MemRod* m_fuelRod;
 	MemRod* m_cursor;
 
