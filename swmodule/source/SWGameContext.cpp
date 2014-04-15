@@ -93,10 +93,13 @@ GLuint loadShader( GLenum type, const char* shaderSource )
 	switch ( type )
 	{
 	case GL_VERTEX_SHADER :
-		sources.push_back( "#define VERTEX_SHADER 1" );
+		sources.push_back( "#define VERTEX_SHADER 1\n" );
 		break;
 	case GL_FRAGMENT_SHADER :
-		sources.push_back( "#define FRAGMENT_SHADER 1" );
+		sources.push_back( "#define FRAGMENT_SHADER 1\n" );
+		sources.push_back( "#ifdef GL_ES\n" );
+		sources.push_back( "precision mediump float;\n" );
+		sources.push_back( "#endif\n" );
 		break;
 	}
 	sources.push_back( shaderSource );
@@ -216,14 +219,6 @@ void SWGameContext::onStart( SWGameScene* firstScene, const tstring& resFolder, 
 	{
 
 		tstring source =
-		"///////////////////////////\n"
-		"#ifdef FRAGMENT_SHADER\n"
-		"#ifdef GL_ES\n"
-		"precision mediump float;\n"
-		"#endif\n"
-		"#endif\n"
-
-		"uniform   mat4 u_texMat;\n"
 		"uniform   mat4 u_mvpMat;\n"
 		"uniform sampler2D s_texture;\n"
 		"varying   vec2 v_tex;\n"
