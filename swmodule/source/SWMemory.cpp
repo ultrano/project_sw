@@ -7,7 +7,6 @@
 //
 
 #include "SWMemory.h"
-#include <android/log.h>
 
 
 #pragma pack(push,1)
