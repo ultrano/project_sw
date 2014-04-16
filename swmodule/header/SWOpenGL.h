@@ -1,6 +1,8 @@
 #ifndef SWOpenGL_h__
 #define SWOpenGL_h__
 
+#define WINDOWS 1
+
 #ifdef WINDOWS
 # include "glew.h"
 #elif IOS
