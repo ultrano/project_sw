@@ -4,6 +4,7 @@
 #include "SWMemory.h"
 #include "SWObject.h"
 #include "SWTable.h"
+#include "SWTexture.h"
 
 class WIFontChar;
 class WIFontData : public SWObject
@@ -12,7 +13,7 @@ class WIFontData : public SWObject
 
 	typedef ttable< int,SWHardRef<WIFontChar> > CharTable;
 
-	int m_texID;
+	SWHardRef<SWTexture> m_texture;
 	CharTable m_charTable;
 	int m_lineHeight;
 	int m_scaleW;
@@ -20,8 +21,8 @@ class WIFontData : public SWObject
 	
 public:
 
-	void setFontTexture( int texID );
-	int getFontTexture() const;
+	void setFontTexture( SWTexture* texture );
+	SWTexture* getFontTexture() const;
 
 	WIFontChar* getChar( int id );
 	void setChar( WIFontChar* fontChar );

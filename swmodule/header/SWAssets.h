@@ -2,36 +2,34 @@
 #ifndef __SWAssets_h_
 #define __SWAssets_h_
 
-#include "SWType.h"
-#include "SWIOStream.h"
 #define SWAssets (__SWAssets::getInstance())
+#include "SWPlatformAssetsAccessor.h"
+#include "SWByteBuffer.h"
+#include "SWTexture.h"
 
 class __SWAssets
 {
 public:
 
-#ifdef WINDOWS
-
-#elif OSX
-
-#elif ANDROID
-	void init( void* javaAssetMgr );
-#endif
-
 	static __SWAssets& getInstance();
 
-	SWInputStream* load( const tstring& filePath );
-
+	SWHardRef<SWInputStream> load( const tstring& filePath );
+	SWHardRef<SWTexture> loadTexture( const tstring& filePath );
 private:
 
 	__SWAssets();
 	~__SWAssets();
 
 private:
+	
+	friend class SWGameContext;
+	typedef ttable< thashstr, SWHardRef<SWByteBuffer> > AssetTable;
+	typedef ttable< thashstr, SWHardRef<SWTexture> > TextureTable;
 
-	class Pimpl;
-	SWHardRef<Pimpl> m_pimpl;
-
+	SWHardRef<SWPlatformAssetsAccessor> m_accessor;
+	AssetTable m_cache;
+	TextureTable m_texCache;
 };
+
 
 #endif //!__SWAssets_h_

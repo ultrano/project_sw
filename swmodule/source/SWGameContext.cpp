@@ -19,7 +19,7 @@
 #include "SWShader.h"
 #include "SWMaterial.h"
 
-#include "stb_image.h"
+#include "SWAssets.h"
 
 #include "SWTable.h"
 #include "SWString.h"
@@ -30,13 +30,6 @@
 
 #include <stdio.h>
 #include <fstream>
-
-struct TextureInfo
-{
-	unsigned int id;
-	int width;
-	int height;
-};
 
 class SWGameContext::Pimpl : public SWRefCountable
 {
@@ -61,7 +54,6 @@ public:
 	SWHardRef<SWMaterial> material;
 	
 	ttable< tstring,unsigned int > textureCache;
-	ttable< unsigned int,TextureInfo > textureTable;
 	ttable< tstring, SWObject::Ref > storage;
 
 	int lastBindedTexID;
@@ -420,69 +412,6 @@ void SWGameContext::drawRect( float left, float top, float right, float bottom )
 	glDrawArrays( GL_LINE_LOOP, 0, 4 );
 }
 
-unsigned int glLoadTexture( const char* fileName, int& width, int& height );
-unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& width, int& height );
-
-unsigned int SWGameContext::loadTexture( const tstring& path )
-{
-	tstring solvedPath = m_pimpl()->resFolder + path;
-	ttable<tstring,unsigned int>::iterator itor = m_pimpl()->textureCache.find( solvedPath );
-
-	if ( m_pimpl()->textureCache.end() != itor ) return itor->second;
-
-	SWHardRef<SWFileInputStream> fis = new SWFileInputStream( solvedPath );
-	SWHardRef<SWByteBuffer> buf = new SWByteBuffer( fis()->available() );
-	fis()->read( buf()->getBuffer(), buf()->size() );
-
-	TextureInfo info;
-	info.id = glLoadTextureFromMemory( buf()->getBuffer(), buf()->size(), info.width, info.height );
-	buf()->clear();
-	if ( info.id != 0 )
-	{
-		m_pimpl()->textureTable.insert( std::make_pair( info.id, info ) );
-		m_pimpl()->textureCache.insert( std::make_pair( solvedPath, info.id ) );
-	}
-	else
-	{
-		SWLog( "failed to load texture : %s", path.c_str() );
-	}
-
-	return info.id;
-}
-
-unsigned int SWGameContext::loadTextureFromMemory( const tbyte* buf, size_t len )
-{
-	TextureInfo info;
-	info.id = glLoadTextureFromMemory(  buf, len, info.width, info.height );
-
-	return info.id;
-}
-
-bool SWGameContext::getTextureSize( int texID, int& width, int& height )
-{
-	ttable<unsigned int,TextureInfo>::iterator itor = m_pimpl()->textureTable.find( texID );
-	if ( itor == m_pimpl()->textureTable.end() ) return false;
-	width  = itor->second.width;
-	height = itor->second.height;
-	return true;
-}
-
-const tstring& SWGameContext::assetFolder() const
-{
-	return m_pimpl()->resFolder;
-}
-
-const tstring  SWGameContext::assetPath( const tstring& assetFile) const
-{
-	return assetFolder() + assetFile;
-}
-
-SWHardRef<SWInputStream> SWGameContext::assetInputStream( const tstring& assetFile )
-{
-	SWFileInputStream* fis = new SWFileInputStream( assetPath( assetFile ) );
-	return fis;
-}
-
 bool SWGameContext::storeItem( const tstring& key, SWObject* item )
 {
 	SWHardRef< SWObject > hold( item );
@@ -509,134 +438,6 @@ void SWGameContext::onResize( int width, int height )
 {
 	// 占쎈떭占쎄껴�듊占쎌뭼�듊�쉱 吏뺧옙�뀒�돞占�.
 	glViewport(0,0,width,height);
-}
-
-unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& width, int& height )
-{
-	if ( !buf || !len ) return 0;
-
-	int comp;
-
-	unsigned char* data = stbi_load_from_memory( buf, len, &width, &height, &comp, 0 );
-
-	if ( !data ) return 0;
-
-	unsigned int texID[1];
-
-	glGenTextures(1,&texID[0]);
-	glBindTexture(GL_TEXTURE_2D,texID[0]);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-	glTexImage2D(GL_TEXTURE_2D, 0
-	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
-	, width, height, 0
-	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
-                 , GL_UNSIGNED_BYTE, data);
-    
-	GLenum err = glGetError();
-
-	stbi_image_free(data);
-	if ( err ) return 0;
-
-	return texID[0];
-}
-
-unsigned int glLoadTexture( const char* fileName, int& width, int& height )
-{
-	if ( !fileName ) return 0;
-
-	int comp;
-
-	unsigned char* data = stbi_load( fileName, &width, &height, &comp, 0 );
-
-	if ( !data ) return 0;
-
-	unsigned int texID[1];
-
-	glGenTextures(1,&texID[0]);
-	glBindTexture(GL_TEXTURE_2D,texID[0]);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-	glTexImage2D(GL_TEXTURE_2D, 0
-	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
-	, width, height, 0
-	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
-                 , GL_UNSIGNED_BYTE, data);
-    
-	GLenum err = glGetError();
-
-	stbi_image_free(data);
-	if ( err ) return 0;
-
-	return texID[0];
-}
-
-SWObject::Ref convertJsonValue( const Json::Value& value )
-{
-	switch ( value.type() )
-	{
-	case Json::nullValue : return NULL;
-	case Json::booleanValue : return new SWBoolean( value.asBool() );
-	case Json::realValue : return new SWNumber( value.asDouble() );
-	case Json::intValue  : return new SWNumber( value.asInt() );
-	case Json::uintValue : return new SWNumber( value.asUInt() );
-	case Json::stringValue : return new SWString( value.asString().c_str() );
-	case Json::arrayValue :
-		{
-			SWArray* arr = new SWArray;
-			int count = value.size();
-			for ( Json::Value::UInt i = 0 ; i < count ; ++i )
-			{
-				SWObject::Ref object = convertJsonValue( value.get(i,Json::Value::null) );
-				arr->add( object() );
-			}
-			return arr;
-		}
-	case Json::objectValue :
-		{
-			SWTable* tbl = new SWTable;
-			Json::Value::Members members = value.getMemberNames();
-			for ( int i = 0 ; i < members.size() ; ++i )
-			{
-				const tstring&  key    = members[i];
-				SWObject::Ref object = convertJsonValue( value.get( key, Json::Value::null ) );
-				tbl->insert( key, object() );
-			}
-			return tbl;
-		}
-	}
-	return NULL;
-}
-
-SWObject::Ref SWGameContext::loadJson( const tstring& path )
-{
-	tstring solvedPath = m_pimpl()->resFolder + path;
-	std::ifstream ifs( solvedPath.c_str() );
-
-	Json::Reader reader;
-	Json::Value root;
-	reader.parse( (std::istream&)ifs, root );
-
-	return convertJsonValue( root );
-}
-
-SWObject::Ref SWGameContext::loadJsonFromString( const tstring& doc )
-{
-	Json::Reader reader;
-	Json::Value root;
-	reader.parse( doc.c_str(), root );
-
-	return convertJsonValue( root );
 }
 
 SWHardRef<SWShader> SWGameContext::compileShader( const tstring& source )

@@ -6,6 +6,7 @@
 #include "SWMaterial.h"
 #include "SWShader.h"
 #include "SWCamera.h"
+#include "SWTexture.h"
 
 SWMeshRenderer::SWMeshRenderer()
 {
@@ -23,7 +24,8 @@ void SWMeshRenderer::render()
 		const TMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
 		const TMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
 		m_material()->setMatrix4x4( "u_mvpMat", ( model * view * proj ) );
-		m_material()->setTexture( "s_texture", m_texID );
+		int texID = m_texture.isValid()? m_texture()->getTextureID() : 0;
+		m_material()->setTexture( "s_texture", texID );
 		m_material()->apply();
 	}
 	if ( m_filter.isValid() )
@@ -39,14 +41,14 @@ void SWMeshRenderer::onStart()
 	m_material = SW_GC.getDefaultMaterial();
 }
 
-void SWMeshRenderer::setTexture( unsigned int texID )
+void SWMeshRenderer::setTexture( SWTexture* texture )
 {
-	m_texID = texID;
+	m_texture = texture;
 }
 
-unsigned int SWMeshRenderer::getTexture()
+SWTexture* SWMeshRenderer::getTexture()
 {
-	return m_texID;
+	return m_texture();
 }
 
 void SWMeshRenderer::setMeshFilter( SWMeshFilter* filter )

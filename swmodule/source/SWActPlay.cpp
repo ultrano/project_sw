@@ -46,5 +46,5 @@ void SWActPlay::onUpdate( float delta )
 	int index = m_sequence()->count() * rate;
 	SWSpriteData::ImageRegion* region = NULL;
 	region = swrtti_cast<SWSpriteData::ImageRegion>( m_sequence()->get( index ) );
-	m_renderer()->setTexture( region->texID );
+	//m_renderer()->setTexture( region->texID );
 }

@@ -148,9 +148,6 @@
     <Filter Include="WI\WIText">
       <UniqueIdentifier>{58d126f7-022d-476c-baa1-00f8f9394648}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWBuffer">
-      <UniqueIdentifier>{2f177e30-5006-4485-93ed-70ff22f27613}</UniqueIdentifier>
-    </Filter>
     <Filter Include="json">
       <UniqueIdentifier>{83a83fd1-34b2-4adc-8d2a-d7604cba7b39}</UniqueIdentifier>
     </Filter>
@@ -165,9 +162,6 @@
     </Filter>
     <Filter Include="SW\SWShader">
       <UniqueIdentifier>{e7300de2-fa2a-4ff2-a81f-8c0bbb564b89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SW\SWBufferStream">
-      <UniqueIdentifier>{4dc7f850-9234-435a-81fe-cd024d3b972f}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWSocketStream">
       <UniqueIdentifier>{4425b210-d428-4553-baf3-c0b1b257c291}</UniqueIdentifier>
@@ -243,6 +237,21 @@
     </Filter>
     <Filter Include="SW\SWOpenGL">
       <UniqueIdentifier>{f58f03c2-3692-4597-a2c2-464f0722d21c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWPlatformAssetsAccessor">
+      <UniqueIdentifier>{92651c82-0ea6-48e8-975c-48fb70ad4929}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAssets">
+      <UniqueIdentifier>{63214d42-7211-4e93-8e2b-f645a4cddd17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWByteBuffer">
+      <UniqueIdentifier>{2f177e30-5006-4485-93ed-70ff22f27613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWByteBufferStream">
+      <UniqueIdentifier>{4dc7f850-9234-435a-81fe-cd024d3b972f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWTexture">
+      <UniqueIdentifier>{563b965a-780e-466a-a391-c2db17260b2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -412,10 +421,10 @@
       <Filter>SW\SWShader</Filter>
     </ClInclude>
     <ClInclude Include="header\SWByteBuffer.h">
-      <Filter>SW\SWBuffer</Filter>
+      <Filter>SW\SWByteBuffer</Filter>
     </ClInclude>
     <ClInclude Include="header\SWByteBufferStream.h">
-      <Filter>SW\SWBufferStream</Filter>
+      <Filter>SW\SWByteBufferStream</Filter>
     </ClInclude>
     <ClInclude Include="header\SWSocketStream.h">
       <Filter>SW\SWSocketStream</Filter>
@@ -512,6 +521,15 @@
     </ClInclude>
     <ClInclude Include="header\SWOpenGL.h">
       <Filter>SW\SWOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWPlatformAssetsAccessor.h">
+      <Filter>SW\SWPlatformAssetsAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWAssets.h">
+      <Filter>SW\SWAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWTexture.h">
+      <Filter>SW\SWTexture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -651,10 +669,10 @@
       <Filter>SW\SWShader</Filter>
     </ClCompile>
     <ClCompile Include="source\SWByteBuffer.cpp">
-      <Filter>SW\SWBuffer</Filter>
+      <Filter>SW\SWByteBuffer</Filter>
     </ClCompile>
     <ClCompile Include="source\SWByteBufferStream.cpp">
-      <Filter>SW\SWBufferStream</Filter>
+      <Filter>SW\SWByteBufferStream</Filter>
     </ClCompile>
     <ClCompile Include="source\SWSocketStream.cpp">
       <Filter>SW\SWSocketStream</Filter>
@@ -724,6 +742,18 @@
     </ClCompile>
     <ClCompile Include="source\SWPhysics2D.cpp">
       <Filter>SW\SWPhysics2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWPlatformAssetsAccessor.cpp">
+      <Filter>SW\SWPlatformAssetsAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAssets.cpp">
+      <Filter>SW\SWAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWOpenGL.cpp">
+      <Filter>SW\SWOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWTexture.cpp">
+      <Filter>SW\SWTexture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -102,6 +102,7 @@
     <ClInclude Include="header\SWAnimationClip.h" />
     <ClInclude Include="header\SWAnimationLine.h" />
     <ClInclude Include="header\SWArray.h" />
+    <ClInclude Include="header\SWAssets.h" />
     <ClInclude Include="header\SWBehavior.h" />
     <ClInclude Include="header\SWBoolean.h" />
     <ClInclude Include="header\SWByteBuffer.h" />
@@ -114,8 +115,10 @@
     <ClInclude Include="header\SWFileStream.h" />
     <ClInclude Include="header\SWOpenGL.h" />
     <ClInclude Include="header\SWPhysics2D.h" />
+    <ClInclude Include="header\SWPlatformAssetsAccessor.h" />
     <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
+    <ClInclude Include="header\SWTexture.h" />
     <ClInclude Include="header\TRay.h" />
     <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />
@@ -185,6 +188,7 @@
     <ClCompile Include="source\SWAnimationClip.cpp" />
     <ClCompile Include="source\SWAnimationLine.cpp" />
     <ClCompile Include="source\SWArray.cpp" />
+    <ClCompile Include="source\SWAssets.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
     <ClCompile Include="source\SWBoolean.cpp" />
     <ClCompile Include="source\SWByteBuffer.cpp" />
@@ -197,9 +201,12 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
+    <ClCompile Include="source\SWOpenGL.cpp" />
     <ClCompile Include="source\SWPhysics2D.cpp" />
+    <ClCompile Include="source\SWPlatformAssetsAccessor.cpp" />
     <ClCompile Include="source\SWRigidBody2D.cpp" />
     <ClCompile Include="source\SWShape2D.cpp" />
+    <ClCompile Include="source\SWTexture.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWList.cpp" />

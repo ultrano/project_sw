@@ -34,6 +34,8 @@ public:
 	void onTouch( int type, int param1, int param2 );
 	void onKeyChange( tuint key, bool press );
 
+	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 	void setVertexBuffer( const float* buffer );
 	void setTexCoordBuffer( const float* buffer );
 	void drawIndexed( size_t count, unsigned short* indeces);
@@ -55,21 +57,10 @@ public:
 	void setShaderVector3( int location, float x, float y, float z );
 	void setShaderVector4( int location, float x, float y, float z, float w );
 	void setShaderTexture( int location, tuint val );
-
-	//
-
-	//! asset
-	SWHardRef<SWObject> loadJson( const tstring& path );
-	SWHardRef<SWObject> loadJsonFromString( const tstring& doc );
-	unsigned int loadTexture( const tstring& path );
-	unsigned int loadTextureFromMemory( const tbyte* buf, size_t len );
-	bool getTextureSize( int texID, int& width, int& height );
-
-	const tstring& assetFolder() const;
-	const tstring  assetPath( const tstring& assetFile) const;
-	SWHardRef<SWInputStream> assetInputStream( const tstring& assetFile );
-	//! asset
-
+	
+	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 	SWGameScene* getScene();
 	void setNextScene( SWGameScene* scene );
 

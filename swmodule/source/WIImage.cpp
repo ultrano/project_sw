@@ -6,7 +6,8 @@
 #include "TVector3f.h"
 #include "TVector2f.h"
 #include "TIndex3.h"
-#include "SWGameContext.h"
+#include "SWAssets.h"
+#include "SWTexture.h"
 
 #include "WIDefines.h"
 
@@ -84,13 +85,11 @@ void WIImage::onUpdate()
 
 void WIImage::setSizeToTexture( float scaleW, float scaleH )
 {
-	unsigned int texID = gameObject()->getComponent<SWMeshRenderer>()->getTexture();
-	if ( texID == 0 ) return;
-	int width, height;
-	SW_GC.getTextureSize( texID, width, height );
+	SWTexture* texture = gameObject()->getComponent<SWMeshRenderer>()->getTexture();
+	if ( texture == NULL ) return;
 	scaleW = (scaleW == 0)? 1:scaleW;
 	scaleH = (scaleH == 0)? 1:scaleH;
-	setSize( width*scaleW, height*scaleH );
+	setSize( texture->getWidth()*scaleW, texture->getHeight()*scaleH );
 }
 
 void WIImage::setSize( float width, float height )
@@ -101,7 +100,8 @@ void WIImage::setSize( float width, float height )
 }
 void WIImage::setTexture( const tstring& filePath )
 {
-	gameObject()->getComponent<SWMeshRenderer>()->setTexture( SW_GC.loadTexture( filePath ) );
+	SWHardRef<SWTexture> texture = SWAssets.loadTexture( filePath );
+	gameObject()->getComponent<SWMeshRenderer>()->setTexture( texture() );
 }
 
 void WIImage::setAlignV( int align )

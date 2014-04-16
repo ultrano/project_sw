@@ -5,12 +5,13 @@
 #include "TMatrix4x4.h"
 class SWMeshFilter;
 class SWMaterial;
+class SWTexture;
 
 class SWMeshRenderer : public SWRenderer
 {
 	SW_RTTI( SWMeshRenderer, SWRenderer );
 
-	unsigned int m_texID;
+	SWHardRef<SWTexture> m_texture;
 	TMatrix4x4  m_texMat;
 	SWWeakRef<SWMeshFilter> m_filter;
 	SWHardRef<SWMaterial> m_material;
@@ -22,8 +23,8 @@ public:
 
 	void render();
 
-	void setTexture( unsigned int texID );
-	unsigned int getTexture();
+	void setTexture( SWTexture* texture );
+	SWTexture* getTexture();
 
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();

@@ -6,15 +6,16 @@
 #include "SWNumber.h"
 #include "SWArray.h"
 #include "SWValue.h"
+#include "SWAssets.h"
 
-void WIFontData::setFontTexture( int texID )
+void WIFontData::setFontTexture( SWTexture* texture )
 {
-	m_texID = texID;
+	m_texture = texture;
 }
 
-int WIFontData::getFontTexture() const
+SWTexture* WIFontData::getFontTexture() const
 {
-	return m_texID;
+	return m_texture();
 }
 
 WIFontChar* WIFontData::getChar( int id )
@@ -56,7 +57,8 @@ void WIFontData::load( SWObject* data )
 
 	SWValue* pages = (SWValue*)font->find( "pages" );
 	SWValue* page0 = pages->find( "page" );
-	setFontTexture( SW_GC.loadTexture( page0->find( "-file" )->asString() ) );
+	SWHardRef<SWTexture> texture = SWAssets.loadTexture( page0->find( "-file" )->asString() );
+	setFontTexture( texture() );
 
 	SWValue* common = (SWValue*)font->find( "common" );
 	m_lineHeight = common->find( "-lineHeight" )->asNumber();
