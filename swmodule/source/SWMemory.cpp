@@ -8,8 +8,10 @@
 
 #include "SWMemory.h"
 
-
+#ifdef WIN32
 #pragma pack(push,1)
+#endif
+
 #define MemBlockSize (sizeof(MemBlock))
 struct MemBlock
 {
@@ -124,7 +126,9 @@ struct MemRod
 		cursor = &original;
 	}
 };
+#ifdef WIN32
 #pragma pack(pop)
+#endif
 
 class MemCore
 {
