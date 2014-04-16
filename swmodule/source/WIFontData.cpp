@@ -1,6 +1,5 @@
 #include "WIFontData.h"
 #include "WIFontChar.h"
-#include "SWGameContext.h"
 #include "SWTable.h"
 #include "SWString.h"
 #include "SWNumber.h"

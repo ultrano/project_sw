@@ -1,5 +1,4 @@
 #include "SWMeshRenderer.h"
-#include "SWGameContext.h"
 #include "SWMeshFilter.h"
 #include "SWGameObject.h"
 #include "SWTransform.h"
@@ -24,8 +23,7 @@ void SWMeshRenderer::render()
 		const TMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
 		const TMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
 		m_material()->setMatrix4x4( "u_mvpMat", ( model * view * proj ) );
-		int texID = m_texture.isValid()? m_texture()->getTextureID() : 0;
-		m_material()->setTexture( "s_texture", texID );
+		m_material()->setTexture( "s_texture", m_texture() );
 		m_material()->apply();
 	}
 	if ( m_filter.isValid() )
@@ -38,7 +36,7 @@ void SWMeshRenderer::onStart()
 {
 	__super::onStart();
 	m_filter = gameObject()->getComponent<SWMeshFilter>();
-	m_material = SW_GC.getDefaultMaterial();
+	m_material = new SWMaterial();
 }
 
 void SWMeshRenderer::setTexture( SWTexture* texture )

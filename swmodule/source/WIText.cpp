@@ -7,7 +7,6 @@
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
 #include "SWMeshFilter.h"
-#include "SWGameContext.h"
 
 void WIText::onAwake()
 {

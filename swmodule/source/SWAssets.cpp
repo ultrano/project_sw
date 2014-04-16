@@ -1,6 +1,6 @@
 #include "SWAssets.h"
+#include "SWLog.h"
 #include "SWByteBufferStream.h"
-#include "SWOpenGL.h"
 
 __SWAssets::__SWAssets()
 {
@@ -18,39 +18,82 @@ __SWAssets& __SWAssets::getInstance()
 	return instance;
 }
 
-SWHardRef<SWInputStream> __SWAssets::load( const tstring& filePath )
+SWHardRef<SWInputStream> __SWAssets::loadBuffer( const tstring& filePath )
 {
 	if ( !m_accessor.isValid() ) return NULL;
 
-	AssetTable::iterator itor = m_cache.find( filePath );
-	if ( itor != m_cache.end() ) return new SWByteBufferInputStream( itor->second() );
+	BufferTable::iterator itor = m_bufferCache.find( filePath );
+	if ( itor != m_bufferCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			return new SWByteBufferInputStream( itor->second() );
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
+	}
 
 	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
 
 	SWByteBufferInputStream* bbis = new SWByteBufferInputStream( ais() );
 
-	m_cache.insert( std::make_pair( filePath, bbis->getBuffer() ) );
+	m_bufferCache.insert( std::make_pair( filePath, bbis->getBuffer() ) );
 
 	return bbis;
 }
 
 SWHardRef<SWTexture> __SWAssets::loadTexture( const tstring& filePath )
 {
-	if ( !m_accessor.isValid() ) return 0;
+	if ( !m_accessor.isValid() ) return NULL;
 
 	TextureTable::iterator itor = m_texCache.find( filePath );
-	if ( itor != m_texCache.end() ) return itor->second;
-	
-	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
-	SWHardRef<SWByteBuffer> bb = new SWByteBuffer( ais()->available() );
-	
-	ais()->read( bb()->getBuffer(), bb()->size() );
-	
-	tint id, w, h;
-	id = glLoadTextureFromMemory( bb()->getBuffer(), bb()->size(), w, h );
-	SWHardRef<SWTexture> texture = new SWTexture( id, w, h );
+	if ( itor != m_texCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			return itor->second();
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
+	}
 
-	m_texCache.insert( std::make_pair( filePath, texture ) );
+	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+
+	tarray<tbyte> buffer;
+	buffer.resize( ais()->available() );
+	ais()->read( &(buffer[0]), buffer.size() );
+
+	SWHardRef<SWTexture> texture = SWTexture::createTexture( &(buffer[0]), buffer.size() );
+
+	m_texCache.insert( std::make_pair( filePath, texture() ) );
 
 	return texture;
+}
+
+SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
+{
+	if ( !m_accessor.isValid() ) return NULL;
+
+	ShaderTable::iterator itor = m_shaderCache.find( filePath );
+	if ( itor != m_shaderCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			return itor->second();
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
+	}
+
+	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+
+	tstring source;
+	source.resize( ais()->available() );
+	ais()->read( (tbyte*)&(source[0]), source.size() );
+
+	SWHardRef<SWShader> shader = SWShader::compileShader( source );
+
+	m_shaderCache.insert( std::make_pair( filePath, shader() ) );
+
+	return shader;
 }

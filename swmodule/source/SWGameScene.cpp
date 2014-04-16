@@ -14,7 +14,6 @@
 #include "SWTransform.h"
 #include "SWBehavior.h"
 #include "SWRenderer.h"
-#include "SWGameContext.h"
 #include "SWCamera.h"
 
 SWGameScene::SWGameScene()

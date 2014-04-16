@@ -2,29 +2,23 @@
 #define SWGameContext_h__
 
 #include "SWRefCounter.h"
+#include "SWCriticalSection.h"
+#include "SWPlatformAssetsAccessor.h"
 #include "SWType.h"
-#include "SWOpenGL.h"
 
 #define SW_GC ( SWGameContext::getInstance() )
 
-class TMatrix4x4;
 class SWGameScene;
-class SWObject;
-class SWOutputStream;
-class SWInputStream;
-class SWShader;
 class SWMaterial;
+class SWShader;
 
 class SWGameContext
 {
-	class Pimpl;
-	SWHardRef<Pimpl> m_pimpl;
-private:
-	SWGameContext();
-	SWGameContext( const SWGameContext& );
 public:
 
-	void onStart( SWGameScene* firstScene, const tstring& resFolder, int width, int height );
+	static SWGameContext& getInstance();
+
+	void onStart( SWGameScene* firstScene, const SWPlatformAssetsAccessor* accessor, int width, int height );
 	void onFrameMove();
 	void onRender();
 	void onResume();
@@ -34,46 +28,27 @@ public:
 	void onTouch( int type, int param1, int param2 );
 	void onKeyChange( tuint key, bool press );
 
-	////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////
-	void setVertexBuffer( const float* buffer );
-	void setTexCoordBuffer( const float* buffer );
-	void drawIndexed( size_t count, unsigned short* indeces);
-	void drawRect( float left, float top, float right, float bottom );
-	
-	//! test
-	SWMaterial* getDefaultMaterial();
-	//
-
-	//! shader
-	
-	SWHardRef<SWShader> compileShader( const tstring& source );
-	void releaseShader( SWShader* shader );
-	void useShader( SWShader* shader );
-
-	void setShaderMatrix4x4( int location, const float* val );
-	void setShaderFloat( int location, float val );
-	void setShaderVector2( int location, float x, float y );
-	void setShaderVector3( int location, float x, float y, float z );
-	void setShaderVector4( int location, float x, float y, float z, float w );
-	void setShaderTexture( int location, tuint val );
-	
-	////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////
 	SWGameScene* getScene();
 	void setNextScene( SWGameScene* scene );
 
 	int getScreenWidth();
 	int getScreenHeight();
 
-	bool storeItem( const tstring& key, SWObject* item );
-	void removeItem( const tstring& key );
-	SWObject* findItem( const tstring& key );
-
-	static SWGameContext& getInstance();
 private:
-	
+
+	SWGameContext();
+	SWGameContext( const SWGameContext& );
+
+private:
+
+	SWHardRef<SWGameScene> m_currentScene;
+	SWHardRef<SWGameScene> m_nextScene;
+	bool m_nextSceneReserved;
+
+	int m_screenWidth;
+	int m_screenHeight;
+
+	SWCriticalSection m_idleSection;
 };
 
 #endif // SWGameContext_h__

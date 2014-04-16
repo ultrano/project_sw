@@ -7,7 +7,6 @@
 //
 
 #include "SWGameObject.h"
-#include "SWGameContext.h"
 #include "SWGameScene.h"
 #include "SWTransform.h"
 #include "SWBehavior.h"

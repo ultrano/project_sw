@@ -16,7 +16,7 @@ public:
 
 	void resize( tuint size );
 	void clear();
-	tbyte* getBuffer();
+	tbyte* getRaw();
 	tuint size() const;
 
 };

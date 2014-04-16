@@ -1,6 +1,7 @@
 #include "SWShader.h"
-#include "SWGameContext.h"
 #include "SWFileStream.h"
+#include "SWOpenGL.h"
+#include "SWDefines.h"
 
 SWShader::SWShader()
 {
@@ -9,7 +10,7 @@ SWShader::SWShader()
 
 SWShader::~SWShader()
 {
-	SW_GC.releaseShader( this );
+	glDeleteProgram( m_shaderID );
 }
 
 int SWShader::getUniformLocation( const tstring& name ) const
@@ -45,16 +46,74 @@ tuint SWShader::getUniformCount() const
 
 void SWShader::use()
 {
-	SW_GC.useShader( this );
+	glUseProgram( m_shaderID );
+
+	glDisableVertexAttribArray( SW_Attribute_Position );
+	glDisableVertexAttribArray( SW_Attribute_Texture );
+
+	for ( tuint i = 0 ; i < m_attributes.size() ; ++i )
+	{
+		glEnableVertexAttribArray( m_attributes[i] );
+	}
 }
 
-SWHardRef<SWShader> SWShader::loadShader( const tstring& filePath )
+SWHardRef<SWShader> SWShader::compileShader( const tstring& source )
 {
-	SWHardRef<SWFileInputStream> fis = new SWFileInputStream( SW_GC.assetPath( filePath ) );
-	tuint bufSize = fis()->available();
-	tstring source;
-	source.resize( bufSize );
-	fis()->read( (tbyte*)&source[0], bufSize );
-	
-	return SW_GC.compileShader( source );
+	tuint shaderID = glLoadProgram( source.c_str() );
+	int bufSize = 0;
+	int count = 0;
+	tstring name;
+
+	SWHardRef<SWShader> shader = new SWShader();
+	shader()->m_shaderID = shaderID;
+
+	//! check uniform
+	{
+		glGetProgramiv( shaderID, GL_ACTIVE_UNIFORM_MAX_LENGTH, &bufSize );
+		glGetProgramiv( shaderID, GL_ACTIVE_UNIFORMS, &count );
+		name.resize( bufSize );
+
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			GLint sz = 0;
+			GLenum type = GL_NONE;
+			GLint len = 0;
+			glGetActiveUniform( shaderID, i, bufSize, &len, &sz, &type, &name[0] );
+			int index = glGetUniformLocation( shaderID, name.c_str() );
+			shader()->m_uniformTable.insert( std::make_pair( name.substr(0,len), index ) );
+		}
+	}
+
+	//! check attribute
+	{
+		glGetProgramiv( shaderID, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &bufSize );
+		glGetProgramiv( shaderID, GL_ACTIVE_ATTRIBUTES, &count );
+		name.resize( bufSize );
+
+		tarray<tstring> attribs;
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			GLint sz = 0;
+			GLenum type = GL_NONE;
+			GLint len = 0;
+			glGetActiveAttrib( shaderID, i, bufSize, &len, &sz, &type, &name[0] );
+			attribs.push_back( name.substr(0,len) );
+		}
+
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			int index = -1;
+			const tstring attribName = attribs[i];
+			if ( attribName == "a_pos" ) index = SW_Attribute_Position;
+			else if ( attribName == "a_tex" ) index = SW_Attribute_Texture;
+			else continue;
+
+			if ( index < 0 ) continue;
+			glBindAttribLocation( shaderID, index, attribName.c_str() );
+			shader()->m_attributes.push_back( (tuint)index );
+		}
+		glLinkProgram( shaderID );
+	}
+
+	return shader();
 }

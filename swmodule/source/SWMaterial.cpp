@@ -1,10 +1,14 @@
 #include "SWMaterial.h"
 #include "TMatrix4x4.h"
 #include "SWShader.h"
-#include "SWGameContext.h"
+#include "SWTexture.h"
+#include "SWOpenGL.h"
+
+SWHardRef<SWShader> SWMaterial::m_defaultShader = NULL;
 
 SWMaterial::SWMaterial()
 {
+	setShader( m_defaultShader() );
 }
 SWMaterial::SWMaterial( const SWShader* shader )
 {
@@ -54,11 +58,12 @@ void SWMaterial::setMatrix4x4( const tstring& name, const TMatrix4x4& val )
 	if ( index < 0 ) return;
 	m_matTable[ index ] = val;
 }
-void SWMaterial::setTexture( const tstring& name, tuint texID )
+
+void SWMaterial::setTexture( const tstring& name, SWTexture* texture )
 {
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
-	m_texTable[ index ] = texID;
+	m_texTable[ index ] = texture;
 }
 
 bool SWMaterial::getFloat( const tstring& name, float& val ) const
@@ -106,14 +111,14 @@ bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 	val = itor->second;
 	return true;
 }
-bool SWMaterial::getTexture( const tstring& name, tuint& texID ) const
+
+SWTexture* SWMaterial::getTexture( const tstring& name ) const
 {
 	int index = m_shader()->getUniformLocation( name );
-	if ( index < 0 ) return false;
+	if ( index < 0 ) return NULL;
 
 	TexTable::const_iterator itor = m_texTable.find( index );
-	texID = itor->second;
-	return true;
+	return itor->second();
 }
 
 void SWMaterial::apply()
@@ -123,7 +128,10 @@ void SWMaterial::apply()
 	//! float
 	{
 		FloatTable::iterator itor = m_floatTable.begin();
-		for ( ; itor != m_floatTable.end() ; ++itor ) SW_GC.setShaderFloat( itor->first, itor->second );
+		for ( ; itor != m_floatTable.end() ; ++itor )
+		{
+			glUniform1f( itor->first, itor->second );
+		}
 	}
 
 	//! vector2
@@ -132,7 +140,7 @@ void SWMaterial::apply()
 		for ( ; itor != m_vec2Table.end() ; ++itor )
 		{
 			TVector2f& v = itor->second;
-			SW_GC.setShaderVector2( itor->first, v.x, v.y );
+			glUniform2f( itor->first, v.x, v.y );
 		}
 	}
 
@@ -142,7 +150,7 @@ void SWMaterial::apply()
 		for ( ; itor != m_vec3Table.end() ; ++itor )
 		{
 			TVector3f& v = itor->second;
-			SW_GC.setShaderVector3( itor->first, v.x, v.y, v.z );
+			glUniform3f( itor->first, v.x, v.y, v.z );
 		}
 	}
 
@@ -152,19 +160,33 @@ void SWMaterial::apply()
 		for ( ; itor != m_vec4Table.end() ; ++itor )
 		{
 			TQuaternion& v = itor->second;
-			SW_GC.setShaderVector4( itor->first, v.x, v.y, v.z, v.w );
+			glUniform4f( itor->first, v.x, v.y, v.z, v.w );
 		}
 	}
 
 	//! matrix4x4
 	{
 		MatTable::iterator itor = m_matTable.begin();
-		for ( ; itor != m_matTable.end() ; ++itor ) SW_GC.setShaderMatrix4x4( itor->first, (float*)&itor->second );
+		for ( ; itor != m_matTable.end() ; ++itor )
+		{
+			glUniformMatrix4fv( itor->first, 1, GL_FALSE, (float*)&itor->second );
+		}
 	}
 
 	//! texture
 	{
 		TexTable::iterator itor = m_texTable.begin();
-		for ( ; itor != m_texTable.end() ; ++itor ) SW_GC.setShaderTexture( itor->first, itor->second );
+		for ( ; itor != m_texTable.end() ; ++itor )
+		{
+			SWTexture* texture = itor->second();
+			glActiveTexture( GL_TEXTURE0 );
+			glBindTexture( GL_TEXTURE_2D, texture->getTextureID() );
+			glUniform1i( itor->first, 0 );
+		}
 	}
+}
+
+void SWMaterial::setDefaultShader( SWShader* shader )
+{
+	m_defaultShader = shader;
 }

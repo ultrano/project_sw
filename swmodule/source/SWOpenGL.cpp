@@ -1,4 +1,5 @@
 #include "SWOpenGL.h"
+#include "SWLog.h"
 #include "stb_image.h"
 
 unsigned int glLoadTexture( const char* fileName, int& width, int& height )
@@ -69,4 +70,109 @@ unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& wi
 	if ( err ) return 0;
 
 	return texID[0];
+}
+
+GLuint loadShader( GLenum type, const char* shaderSource )
+{
+	if ( shaderSource == NULL )
+	{
+		SWLog( "shader source is NULL" );
+		return 0;
+	}
+
+	GLuint shaderID = glCreateShader( type );
+
+	if ( shaderID == 0 )
+	{
+		SWLog( "create shader failed" );
+		return 0;
+	}
+
+	tarray<const char*> sources;
+	switch ( type )
+	{
+	case GL_VERTEX_SHADER :
+		sources.push_back( "#define VERTEX_SHADER 1\n" );
+		break;
+	case GL_FRAGMENT_SHADER :
+		sources.push_back( "#define FRAGMENT_SHADER 1\n" );
+		sources.push_back( "#ifdef GL_ES\n" );
+		sources.push_back( "precision mediump float;\n" );
+		sources.push_back( "#endif\n" );
+		break;
+	}
+	sources.push_back( shaderSource );
+
+	glShaderSource( shaderID, sources.size(), &sources[0], NULL );
+	glCompileShader( shaderID );
+
+	GLint compiled = false;
+	glGetShaderiv( shaderID, GL_COMPILE_STATUS, &compiled );
+
+	if ( !compiled )
+	{
+		int infoLen = 0;
+		glGetShaderiv( shaderID, GL_INFO_LOG_LENGTH, &infoLen );
+		if ( infoLen > 0 )
+		{
+			tstring msg;
+			msg.resize( infoLen );
+			glGetShaderInfoLog( shaderID, infoLen, &infoLen, &msg[0] );
+
+			SWLog( msg.c_str() );
+		}
+		glDeleteShader( shaderID );
+		return 0;
+	}
+
+	return shaderID;
+}
+
+unsigned int glLoadProgram( const char* source )
+{
+	GLuint vsID = 0;
+	GLuint fsID = 0;
+	GLuint programID = 0;
+
+	if ( (vsID = loadShader( GL_VERTEX_SHADER, source )) == 0 )
+	{
+		SWLog( "failed compile vertex shader" );
+		return 0;
+	}
+	if ( (fsID = loadShader( GL_FRAGMENT_SHADER, source )) == 0 )
+	{
+		glDeleteShader( vsID );
+		SWLog( "failed compile fragment shader" );
+		return 0;
+	}
+
+	if ( (programID = glCreateProgram()) == 0 ) return 0;
+
+	glAttachShader( programID, vsID );
+	glAttachShader( programID, fsID );
+	glLinkProgram( programID );
+
+	GLint linked = false;
+	glGetProgramiv( programID, GL_LINK_STATUS, &linked );
+	if ( linked == 0 )
+	{
+		int infoLen = 0;
+		glGetProgramiv( programID, GL_INFO_LOG_LENGTH, &infoLen );
+		if ( infoLen > 0 )
+		{
+			tstring msg;
+			msg.resize( infoLen );
+			glGetProgramInfoLog( programID, infoLen, NULL, &msg[0] );
+
+			SWLog( msg.c_str() );
+		}
+		glDeleteProgram( programID );
+		programID = 0;
+	}
+
+	glDeleteShader( vsID );
+	glDeleteShader( fsID );
+
+	if ( programID == 0 ) SWLog( "failed to loading program" );
+	return programID;
 }

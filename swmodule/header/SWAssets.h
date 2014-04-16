@@ -6,6 +6,7 @@
 #include "SWPlatformAssetsAccessor.h"
 #include "SWByteBuffer.h"
 #include "SWTexture.h"
+#include "SWShader.h"
 
 class __SWAssets
 {
@@ -13,8 +14,10 @@ public:
 
 	static __SWAssets& getInstance();
 
-	SWHardRef<SWInputStream> load( const tstring& filePath );
+	SWHardRef<SWInputStream> loadBuffer( const tstring& filePath );
 	SWHardRef<SWTexture> loadTexture( const tstring& filePath );
+	SWHardRef<SWShader>  loadShader( const tstring& filePath );
+
 private:
 
 	__SWAssets();
@@ -23,12 +26,14 @@ private:
 private:
 	
 	friend class SWGameContext;
-	typedef ttable< thashstr, SWHardRef<SWByteBuffer> > AssetTable;
-	typedef ttable< thashstr, SWHardRef<SWTexture> > TextureTable;
+	typedef ttable< thashstr, SWWeakRef<SWByteBuffer> > BufferTable;
+	typedef ttable< thashstr, SWWeakRef<SWTexture> > TextureTable;
+	typedef ttable< thashstr, SWWeakRef<SWShader> >  ShaderTable;
 
 	SWHardRef<SWPlatformAssetsAccessor> m_accessor;
-	AssetTable m_cache;
+	BufferTable   m_bufferCache;
 	TextureTable m_texCache;
+	ShaderTable  m_shaderCache;
 };
 
 

@@ -25,7 +25,7 @@ void SWByteBuffer::clear()
 	m_buf.clear();
 	m_buf.resize( 0 );
 }
-tbyte* SWByteBuffer::getBuffer()
+tbyte* SWByteBuffer::getRaw()
 {
 	return &m_buf[0];
 }

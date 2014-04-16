@@ -1,5 +1,4 @@
 #include "SWMeshFilter.h"
-#include "SWGameContext.h"
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
 #include "SWMesh.h"

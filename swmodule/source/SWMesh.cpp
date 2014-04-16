@@ -2,7 +2,8 @@
 #include "TVector3f.h"
 #include "TVector2f.h"
 #include "TIndex3.h"
-#include "SWGameContext.h"
+#include "SWOpenGL.h"
+#include "SWDefines.h"
 
 void SWMesh::setVertexStream( size_t count, const TVector3f* stream )
 {
@@ -82,12 +83,13 @@ void SWMesh::draw()
 	{
 	  if ( m_updateMesh ) updateMesh();
 	  if ( m_vertices.size() == 0 ) return;
-	  SW_GC.setVertexBuffer( (float*)&m_vertices[0] );
-	  SW_GC.setTexCoordBuffer( (float*)&m_texCoords[0] );
+
+	  glVertexAttribPointer( SW_Attribute_Position, 3, GL_FLOAT, GL_FALSE, 0, (float*)&m_vertices[0] );
+	  glVertexAttribPointer( SW_Attribute_Texture, 2, GL_FLOAT, GL_FALSE, 0, (float*)&m_texCoords[0] );
 	}
 	lastMeshID = getID();
 	if ( m_triangles.size() == 0 ) return;
-	SW_GC.drawIndexed( m_triangles.size()*3, (tushort*)&m_triangles[0] );
+	glDrawElements( GL_TRIANGLES, m_triangles.size()*3, GL_UNSIGNED_SHORT, (tushort*)&m_triangles[0] );
 }
 
 void SWMesh::resizeVertexStream( tuint count )

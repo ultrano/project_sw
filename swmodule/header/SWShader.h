@@ -6,20 +6,12 @@
 class SWShader : public SWObject
 {
 	SW_RTTI( SWShader, SWObject );
-	
-	friend class SWGameContext;
-
-	typedef ttable<tstring,int> UniformTable;
-	typedef tarray<tuint> AttribArray;
-
-	tuint m_shaderID;
-	UniformTable m_uniformTable;
-	AttribArray m_attributes;
 
 public:
 
-	SWShader();
-	~SWShader();
+	static SWHardRef<SWShader> compileShader( const tstring& source );
+
+public:
 
 	int  getUniformLocation( const tstring& name ) const;
 	bool getUniformName( int index, tstring& name );
@@ -29,7 +21,21 @@ public:
 
 	void use();
 
-	static SWHardRef<SWShader> loadShader( const tstring& filePath );
+private:
+
+	SWShader();
+	~SWShader();
+
+private:
+	friend class SWGameContext;
+
+	typedef ttable<tstring,int> UniformTable;
+	typedef tarray<tuint> AttribArray;
+
+	tuint m_shaderID;
+	UniformTable m_uniformTable;
+	AttribArray m_attributes;
+
 };
 
 #endif // SWShader_h__
