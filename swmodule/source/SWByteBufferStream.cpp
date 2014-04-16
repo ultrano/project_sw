@@ -41,7 +41,7 @@ SWByteBufferInputStream::SWByteBufferInputStream( SWInputStream* is )
 	, m_cursor(0)
 {
 	m_buffer()->resize( is->available() );
-	is->read( m_buffer()->getRaw(), m_buffer()->size() );
+	is->read( &(m_buffer()->getRaw())[0], m_buffer()->size() );
 }
 
 int SWByteBufferInputStream::read(tbyte* b, tuint len)
@@ -52,7 +52,7 @@ int SWByteBufferInputStream::read(tbyte* b, tuint len)
 	tbyte* src = &(m_buffer()->getRaw())[m_cursor];
 	len = SWMath.min( len, remain );
 
-	memcpy( b, (void*)src[0], len );
+	memcpy( b, (void*)src, len );
 
 	m_cursor = SWMath.min<tuint>( m_cursor += len, available() );
 	return len;
