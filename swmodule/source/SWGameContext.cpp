@@ -75,7 +75,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 
 		"void main()\n"
 		"{\n"
-		"   gl_FragColor = u_color * texture2D( TEXTURE_0, v_tex );\n"
+		"   gl_FragColor = COLOR * texture2D( TEXTURE_0, v_tex );\n"
 		"}\n"
 
 		"#endif\n";
