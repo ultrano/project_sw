@@ -9,6 +9,9 @@
 #include "SWLog.h"
 #include <stdio.h>
 #include <stdarg.h>
+#ifdef ANDROID
+#include <android/log.h>
+#endif
 #include "SWProfiler.h"
 #include "SWUtil.h"
 /*

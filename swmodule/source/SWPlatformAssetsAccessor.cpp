@@ -24,8 +24,8 @@ SWHardRef<SWInputStream> SWIOSAssetsAccessor::access( const tstring& filePath )
 #elif ANDROID
 
 #include "SWFileStream.h"
-#include <android/asset_manager.h>
-#include <android/asset_manager_jni.h>
+#include <errno.h>
+
 int android_read(void* cookie, char* buf, int size)
 {
   return AAsset_read((AAsset*)cookie, buf, size);

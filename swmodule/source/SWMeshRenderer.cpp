@@ -20,9 +20,8 @@ void SWMeshRenderer::render()
 	{
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 		const TMatrix4x4& model = transform->getWorldMatrix();
-		const TMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
-		const TMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
-		m_material()->setMatrix4x4( "MATRIX_MVP", ( model * view * proj ) );
+		const TMatrix4x4& vpMat = SWCamera::mainCamera()->getVPMatrix();
+		m_material()->setMatrix4x4( "MATRIX_MVP", ( model * vpMat ) );
 		m_material()->setTexture( "TEXTURE_0", m_texture() );
 		m_material()->apply();
 	}

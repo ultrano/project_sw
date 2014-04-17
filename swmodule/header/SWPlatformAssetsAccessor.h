@@ -32,13 +32,15 @@ private:
     NSBundle* m_bundle;
 };
 #elif ANDROID
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
 class SWAndroidAssetsAccessor : public SWPlatformAssetsAccessor
 {
 public:
 	SWAndroidAssetsAccessor( AAssetManager* assetMgr ) : m_assetMgr( assetMgr ) {}
 	SWHardRef<SWInputStream> access( const tstring& filePath );
 private:
-	AAssetManager m_assetMgr;
+	AAssetManager* m_assetMgr;
 };
 #endif
 

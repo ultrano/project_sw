@@ -29,6 +29,9 @@ void SWCamera::onRemove()
 
 void SWCamera::onUpdate()
 {
+	SWTransform* trans = getComponent<SWTransform>();
+	trans->getWorldMatrix().inverse( m_viewMatrix );
+	m_vpMatrix = m_viewMatrix * m_projMatrix;
 }
 
 void SWCamera::orthoMode( float width, float height, float near, float far )
@@ -84,9 +87,12 @@ const TMatrix4x4& SWCamera::getProjMatrix() const
 	return m_projMatrix;
 }
 
-const TMatrix4x4& SWCamera::getViewMatrix()
+const TMatrix4x4& SWCamera::getViewMatrix() const
 {
-	SWTransform* trans = getComponent<SWTransform>();
-	trans->getWorldMatrix().inverse( m_viewMatrix );
 	return m_viewMatrix;
+}
+
+const TMatrix4x4& SWCamera::getVPMatrix() const
+{
+	return m_vpMatrix;
 }

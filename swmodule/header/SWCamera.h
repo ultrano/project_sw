@@ -15,6 +15,7 @@ class SWCamera : public SWComponent
 	
 	TMatrix4x4 m_viewMatrix;
 	TMatrix4x4 m_projMatrix;
+	TMatrix4x4 m_vpMatrix;
 	TMatrix4x4 m_invProjMatrix;
 
 	float m_near;
@@ -34,7 +35,8 @@ public:
 	tray  screenToRay( const tvec2& screenPt ) const;
 
 	const TMatrix4x4& getProjMatrix() const;
-	const TMatrix4x4& getViewMatrix();
+	const TMatrix4x4& getViewMatrix() const;
+	const TMatrix4x4& getVPMatrix() const;
 };
 
 #endif // SWCamera_h__
