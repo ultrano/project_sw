@@ -53,8 +53,9 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 	//! setting default shader and material
 	{
 		tstring source =
-		"uniform   mat4 u_mvpMat;\n"
-		"uniform sampler2D s_texture;\n"
+		"uniform mat4      MATRIX_MVP;\n"
+		"uniform sampler2D TEXTURE_0;\n"
+		"uniform vec4      COLOR;\n"
 		"varying   vec2 v_tex;\n"
 
 		"#ifdef VERTEX_SHADER\n"
@@ -64,7 +65,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 
 		"void main()\n"
 		"{\n"
-		"   gl_Position = u_mvpMat * a_pos;\n"
+		"   gl_Position = MATRIX_MVP * a_pos;\n"
 		"   v_tex = a_tex;\n"
 		"}\n"
 
@@ -74,11 +75,12 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 
 		"void main()\n"
 		"{\n"
-		"   gl_FragColor = texture2D( s_texture, v_tex );\n"
+		"   gl_FragColor = u_color * texture2D( TEXTURE_0, v_tex );\n"
 		"}\n"
 
 		"#endif\n";
-
+		
+		SWMaterial::setDefaultShader( NULL );
 		SWHardRef<SWShader> defaultShader = SWShader::compileShader( source );
 		SWMaterial::setDefaultShader( defaultShader() );
         SWLog( "game start up" );

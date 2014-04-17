@@ -29,6 +29,9 @@ public:
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();
 
+	void setMaterial( SWMaterial* material );
+	SWMaterial* getMaterial() const;
+
 	void onStart();
 };
 

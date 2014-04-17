@@ -2,6 +2,7 @@
 #include "SWFileStream.h"
 #include "SWOpenGL.h"
 #include "SWDefines.h"
+#include "SWLog.h"
 
 SWShader::SWShader()
 {
@@ -60,6 +61,11 @@ void SWShader::use()
 SWHardRef<SWShader> SWShader::compileShader( const tstring& source )
 {
 	tuint shaderID = glLoadProgram( source.c_str() );
+	if ( shaderID == 0 )
+	{
+		SWLog( "compile shader failed" );
+		return NULL;
+	}
 	int bufSize = 0;
 	int count = 0;
 	tstring name;

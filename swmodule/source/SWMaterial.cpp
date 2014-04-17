@@ -21,6 +21,12 @@ SWMaterial::~SWMaterial()
 void SWMaterial::setShader( const SWShader* shader )
 {
 	m_shader = shader;
+	m_floatTable.clear();
+	m_vec2Table.clear();
+	m_vec3Table.clear();
+	m_vec4Table.clear();
+	m_matTable.clear();
+	m_texTable.clear();
 }
 
 SWShader* SWMaterial::getShader() const
@@ -30,30 +36,40 @@ SWShader* SWMaterial::getShader() const
 
 void SWMaterial::setFloat( const tstring& name, float val )
 {
+	if ( !m_shader.isValid() ) return;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_floatTable[ index ] = val;
 }
 void SWMaterial::setVector2( const tstring& name, const TVector2f& val )
 {
+	if ( !m_shader.isValid() ) return;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_vec2Table[ index ] = val;
 }
 void SWMaterial::setVector3( const tstring& name, const TVector3f& val )
 {
+	if ( !m_shader.isValid() ) return;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_vec3Table[ index ] = val;
 }
 void SWMaterial::setVector4( const tstring& name, const TQuaternion& val )
 {
+	if ( !m_shader.isValid() ) return;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_vec4Table[ index ] = val;
 }
 void SWMaterial::setMatrix4x4( const tstring& name, const TMatrix4x4& val )
 {
+	if ( !m_shader.isValid() ) return;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_matTable[ index ] = val;
@@ -61,6 +77,8 @@ void SWMaterial::setMatrix4x4( const tstring& name, const TMatrix4x4& val )
 
 void SWMaterial::setTexture( const tstring& name, SWTexture* texture )
 {
+	if ( !m_shader.isValid() ) return;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return;
 	m_texTable[ index ] = texture;
@@ -68,6 +86,8 @@ void SWMaterial::setTexture( const tstring& name, SWTexture* texture )
 
 bool SWMaterial::getFloat( const tstring& name, float& val ) const
 {
+	if ( !m_shader.isValid() ) return false;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 	
@@ -77,6 +97,8 @@ bool SWMaterial::getFloat( const tstring& name, float& val ) const
 }
 bool SWMaterial::getVector2( const tstring& name, TVector2f& val ) const
 {
+	if ( !m_shader.isValid() ) return false;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 
@@ -86,6 +108,8 @@ bool SWMaterial::getVector2( const tstring& name, TVector2f& val ) const
 }
 bool SWMaterial::getVector3( const tstring& name, TVector3f& val ) const
 {
+	if ( !m_shader.isValid() ) return false;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 
@@ -95,6 +119,8 @@ bool SWMaterial::getVector3( const tstring& name, TVector3f& val ) const
 }
 bool SWMaterial::getVector4( const tstring& name, TQuaternion& val ) const
 {
+	if ( !m_shader.isValid() ) return false;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 
@@ -104,6 +130,8 @@ bool SWMaterial::getVector4( const tstring& name, TQuaternion& val ) const
 }
 bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 {
+	if ( !m_shader.isValid() ) return false;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return false;
 
@@ -114,6 +142,8 @@ bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 
 SWTexture* SWMaterial::getTexture( const tstring& name ) const
 {
+	if ( !m_shader.isValid() ) return false;
+
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return NULL;
 
@@ -123,6 +153,8 @@ SWTexture* SWMaterial::getTexture( const tstring& name ) const
 
 void SWMaterial::apply()
 {
+	if ( !m_shader.isValid() ) return;
+
 	m_shader()->use();
 	
 	//! float
@@ -188,5 +220,6 @@ void SWMaterial::apply()
 
 void SWMaterial::setDefaultShader( SWShader* shader )
 {
+	m_defaultShader = NULL;
 	m_defaultShader = shader;
 }

@@ -22,8 +22,8 @@ void SWMeshRenderer::render()
 		const TMatrix4x4& model = transform->getWorldMatrix();
 		const TMatrix4x4& view = SWCamera::mainCamera()->getViewMatrix();
 		const TMatrix4x4& proj = SWCamera::mainCamera()->getProjMatrix();
-		m_material()->setMatrix4x4( "u_mvpMat", ( model * view * proj ) );
-		m_material()->setTexture( "s_texture", m_texture() );
+		m_material()->setMatrix4x4( "MATRIX_MVP", ( model * view * proj ) );
+		m_material()->setTexture( "TEXTURE_0", m_texture() );
 		m_material()->apply();
 	}
 	if ( m_filter.isValid() )
@@ -37,6 +37,7 @@ void SWMeshRenderer::onStart()
 	__super::onStart();
 	m_filter = gameObject()->getComponent<SWMeshFilter>();
 	m_material = new SWMaterial();
+	m_material()->setVector4( "COLOR", tquat(1,1,1,0.5) );
 }
 
 void SWMeshRenderer::setTexture( SWTexture* texture )
@@ -57,4 +58,14 @@ void SWMeshRenderer::setMeshFilter( SWMeshFilter* filter )
 SWMeshFilter* SWMeshRenderer::getMeshFilter()
 {
 	return m_filter();
+}
+
+void SWMeshRenderer::setMaterial( SWMaterial* material )
+{
+	m_material = material;
+}
+
+SWMaterial* SWMeshRenderer::getMaterial() const
+{
+	return m_material();
 }
