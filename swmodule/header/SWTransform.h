@@ -77,7 +77,7 @@ public:
 	SWTransform* find( const tstring& name );
 	void copyChildren( SWObject::List& transList );
 
-	void onStart();
+	void onAwake();
 	void onRemove();
 	void onUpdate();
 

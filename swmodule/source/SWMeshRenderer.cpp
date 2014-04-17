@@ -22,7 +22,6 @@ void SWMeshRenderer::render()
 		const TMatrix4x4& model = transform->getWorldMatrix();
 		const TMatrix4x4& vpMat = SWCamera::mainCamera()->getVPMatrix();
 		m_material()->setMatrix4x4( "MATRIX_MVP", ( model * vpMat ) );
-		m_material()->setTexture( "TEXTURE_0", m_texture() );
 		m_material()->apply();
 	}
 	if ( m_filter.isValid() )
@@ -31,12 +30,12 @@ void SWMeshRenderer::render()
 	}
 }
 
-void SWMeshRenderer::onStart()
+void SWMeshRenderer::onAwake()
 {
-	__super::onStart();
+	__super::onAwake();
 	m_filter = gameObject()->getComponent<SWMeshFilter>();
 	m_material = new SWMaterial();
-	m_material()->setVector4( "COLOR", tquat(1,1,1,0.5) );
+	m_material()->setVector4( "COLOR", tquat(1,1,1,1) );
 }
 
 void SWMeshRenderer::setTexture( SWTexture* texture )

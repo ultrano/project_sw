@@ -20,14 +20,14 @@ SWBehavior::~SWBehavior()
     //SW_OutputLog( "behavior", "deleted" );
 }
 
-void SWBehavior::update( SWGameObject* )
+void SWBehavior::update()
 {
 	onUpdate();
 }
 
-void SWBehavior::onStart()
+void SWBehavior::onAwake()
 {
-	__super::onStart();
+	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( update ) );
 }
 

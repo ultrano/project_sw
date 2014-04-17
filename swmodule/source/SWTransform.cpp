@@ -248,9 +248,9 @@ void SWTransform::copyChildren( SWObject::List& transList )
 	transList = m_children;
 }
 
-void SWTransform::onStart()
+void SWTransform::onAwake()
 {
-	__super::onStart();
+	__super::onAwake();
 	SW_GC.getScene()->m_roots.push_back( gameObject.getRaw() );
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 }

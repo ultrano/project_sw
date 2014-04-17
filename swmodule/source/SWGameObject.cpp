@@ -27,7 +27,7 @@ SWGameObject::SWGameObject()
 	SWTransform* comp = new SWTransform;
 	m_components.push_back( comp );
 	comp->gameObject = this;
-	comp->onStart();
+	comp->onAwake();
 }
 
 SWGameObject::SWGameObject( const tstring& name )

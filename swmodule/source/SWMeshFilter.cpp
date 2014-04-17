@@ -9,7 +9,7 @@ void SWMeshFilter::draw()
 	if ( m_mesh.isValid() ) m_mesh()->draw();
 }
 
-void SWMeshFilter::onStart()
+void SWMeshFilter::onAwake()
 {
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
 	renderer->setMeshFilter( this );

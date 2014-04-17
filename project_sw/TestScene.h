@@ -43,6 +43,7 @@
 #include "WIFontChar.h"
 #include "WIFontData.h"
 #include "WIText.h"
+#include "SWAssets.h"
 
 #include <stdio.h>
 #include <set>
@@ -85,17 +86,7 @@ class TestScene : public SWGameScene
 			WIImage* parent = makeCatImg();
 			SWTransform* trans = parent->getComponent<SWTransform>();
 			trans->setLocalPosition( tvec3( 0, 0, 0 ) );
-			//trans->setLocalRotate( tquat().rotate( 0, 0, SWMath.angleToRadian(45) ) );
-			//trans->setLocalScale( tvec3( 2,0.5,1 ) );
-			SWAction* action = parent->gameObject()->addComponent<SWAction>();
-			SWAct* act1 = new SWActRotateBy( 5, tvec3( 0, 0, SWMath.angleToRadian(720) ) );//new SWActMoveBy( 1, tvec3( 0,100,0 ) );
-			//SWAct* act2 = new SWActMoveBy( 1, tvec3( 0,-100,0 ) );
-			SWActSequence* act3 = new SWActSequence();
-			act3->addAct( act1 );
-			//act3->addAct( act2 );
-			SWAct* act = new SWActRepeat( act3 ) ;
-			action->setAct( "gg", act );
-			//action->play( "gg" );
+		
 
 			WIImage* child = makeCatImg();
 			child->gameObject()->setName( "child" );
@@ -110,7 +101,8 @@ class TestScene : public SWGameScene
 		SWGameObject* go = new SWGameObject;
 		go->addUpdateDelegator( GetDelegator( onUpdateCat ) );
 		WIImage* image = go->addComponent<WIImage>();
-		image->setTexture( "cat3.png" );
+		image->setTexture( SWAssets.loadTexture("cat3.png") );
+		//image->setColor( 0,0,1,1 );
 		image->setSizeToTexture( 0.5f, 0.5f );
 		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 		body->setGravityScale( tvec2::zero );

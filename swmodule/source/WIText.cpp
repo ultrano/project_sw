@@ -7,6 +7,7 @@
 #include "SWGameObject.h"
 #include "SWMeshRenderer.h"
 #include "SWMeshFilter.h"
+#include "SWMaterial.h"
 
 void WIText::onAwake()
 {
@@ -59,7 +60,8 @@ void WIText::updateMesh()
 	m_updateMesh = false;
 
 	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
-	renderer->setTexture( m_font()->getFontTexture() );
+	SWMaterial* material = renderer->getMaterial();
+	material->setTexture( "TEXTURE_0", m_font()->getFontTexture() );
 
 	tarray<TVector3f, SWAllocator<TVector3f> > m_pos;
 	tarray<TVector2f, SWAllocator<TVector2f> > m_tex;

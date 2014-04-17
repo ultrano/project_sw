@@ -37,8 +37,7 @@ SWHardRef<SWInputStream> __SWAssets::loadBuffer( const tstring& filePath )
 
 	SWByteBufferInputStream* bbis = new SWByteBufferInputStream( ais() );
 
-	m_bufferCache.insert( std::make_pair( filePath, bbis->getBuffer() ) );
-
+	m_bufferCache[ filePath ] = bbis->getBuffer();
 	return bbis;
 }
 
@@ -65,8 +64,7 @@ SWHardRef<SWTexture> __SWAssets::loadTexture( const tstring& filePath )
 
 	SWHardRef<SWTexture> texture = SWTexture::createTexture( &(buffer[0]), buffer.size() );
 
-	m_texCache.insert( std::make_pair( filePath, texture() ) );
-
+	m_texCache[ filePath ] = texture();
 	return texture;
 }
 
@@ -93,7 +91,6 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 
 	SWHardRef<SWShader> shader = SWShader::compileShader( source );
 
-	m_shaderCache.insert( std::make_pair( filePath, shader() ) );
-
+	m_shaderCache[ filePath ] = shader();
 	return shader;
 }

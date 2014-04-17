@@ -33,7 +33,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 	//! opengl initializing
 	{
 		// 甕곌쑵�쓠 占쎄깻�뵳�딅선 占쎄퉳占쎄맒 筌욑옙占쎌젟.
-		glClearColor(0,0,1,1);
+		glClearColor(0,0,0,0);
 		
 		// 甕곌쑵�볩옙�뮞 甕곌쑵�쓠 占쎄텢占쎌뒠
 		glEnable(GL_TEXTURE_2D);

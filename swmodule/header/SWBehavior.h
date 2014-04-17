@@ -34,19 +34,7 @@ public:
     SWBehavior();
     ~SWBehavior();
     
-    //! 생성이 완료되고 초기에 한번만 호출.
-    //! SWGameObject::awake()의 호출시에 같이 호출된다.
-    virtual void onAwake() {};
-    
-    //! 제거 될때 한번만 호출.
-    //! SWGameObject::remove()의 호출시에 같이 호출된다.
-    virtual void onAsleep() {};
-    
-    //! 매 프레임 갱신시 호출
     virtual void onUpdate() {};
-    
-    //! SWCollider 컴포넌트에 의해 호출
-    virtual void onCollision( const SWCollisionInfo& info ) {};
 
 	void delegateMessage( const tstring& msgName, SWObject* param );
 	void setMessageDelegator( const tstring& msgName, const SWDelegator* del );
@@ -54,9 +42,9 @@ public:
 
 private:
 
-	void onStart();
+	void onAwake();
 	void onRemove();
-	void update( SWGameObject* );
+	void update();
 };
 
 #endif

@@ -32,7 +32,7 @@ public:
 	void setMaterial( SWMaterial* material );
 	SWMaterial* getMaterial() const;
 
-	void onStart();
+	void onAwake();
 };
 
 #endif // SWMeshRenderer_h__
