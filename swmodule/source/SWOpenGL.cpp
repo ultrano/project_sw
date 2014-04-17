@@ -48,7 +48,8 @@ unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& wi
 	if ( !data ) return 0;
 
 	unsigned int texID[1];
-
+    
+	GLenum err = glGetError();
 	glGenTextures(1,&texID[0]);
 	glBindTexture(GL_TEXTURE_2D,texID[0]);
 
@@ -63,8 +64,7 @@ unsigned int glLoadTextureFromMemory( const unsigned char* buf, int len, int& wi
 	, width, height, 0
 	, (comp==4)? GL_RGBA : (comp==3)? GL_RGB : GL_INVALID_ENUM
                  , GL_UNSIGNED_BYTE, data);
-    
-	GLenum err = glGetError();
+    err = glGetError();
 
 	stbi_image_free(data);
 	if ( err ) return 0;

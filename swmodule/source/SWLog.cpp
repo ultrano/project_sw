@@ -51,7 +51,7 @@ void SWLogCenter::write( const char* file, unsigned int line, const char* format
 #ifdef ANDROID
     __android_log_print( ANDROID_LOG_INFO, "game log", &buf[0] );
 #else
-    printf( &buf[0] );
+    printf( "%s\n", &buf[0] );
 #endif
 }
 

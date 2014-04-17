@@ -4,21 +4,39 @@
 #include "TIndex3.h"
 #include "SWOpenGL.h"
 #include "SWDefines.h"
+#include "SWMath.h"
+
+struct SWMeshVertex
+{
+    tvec3 pos;
+    tvec2 tex;
+};
+
+SWMesh::SWMesh()
+: m_vboID( 0 )
+, m_iboID( 0 )
+, m_updateMesh( false )
+{
+    
+}
+
+SWMesh::~SWMesh()
+{
+    if ( m_vboID != 0 ) glDeleteBuffers( 1, &m_vboID );
+    if ( m_iboID != 0 ) glDeleteBuffers( 1, &m_iboID );
+}
 
 void SWMesh::setVertexStream( size_t count, const TVector3f* stream )
 {
-	size_t newCount = count*3;
-	size_t byteSize = sizeof(TVector3f)*count;
-	m_vertices.resize( newCount );
-	memcpy( &m_vertices[0], stream, byteSize );
+	m_vertices.resize( count );
+	memcpy( &m_vertices[0], stream, sizeof(TVector3f)*count );
 	m_updateMesh = true;
 }
 
 void SWMesh::setTexCoordStream( size_t count, const TVector2f* stream )
 {
-	size_t streamSize = sizeof(TVector2f)*count;
-	m_texCoords.resize(count*2);
-	memcpy( &m_texCoords[0], stream, streamSize );
+	m_texCoords.resize(count);
+	memcpy( &m_texCoords[0], stream, sizeof(TVector2f)*count );
 	m_updateMesh = true;
 }
 
@@ -73,7 +91,38 @@ void SWMesh::getTriangle( tuint index, TIndex3& val )
 void SWMesh::updateMesh()
 {
 	m_updateMesh = false;
+    /*
 	//! this is for when using graphic buffer
+    if ( m_vboID == 0 ) glGenBuffers( 1, &m_vboID );
+    if ( m_iboID == 0 ) glGenBuffers( 1, &m_iboID );
+    
+    //! set vertex data
+    {
+        tuint count = SWMath.max<tuint>( m_vertices.size(), m_texCoords.size() );
+        tarray<SWMeshVertex> vbo;
+        for ( int i=0 ; i < count ; ++i )
+        {
+            SWMeshVertex vertex;
+            vertex.pos = ( m_vertices.size() > i )? m_vertices[i] : tvec3::zero;
+            vertex.tex = ( m_texCoords.size() > i )? m_texCoords[i] : tvec2::zero;
+            vbo.push_back( vertex );
+        }
+        glBindBuffer(GL_ARRAY_BUFFER, m_vboID );
+        glBufferData(GL_ARRAY_BUFFER, count*sizeof(SWMeshVertex), &vbo[0], GL_STATIC_DRAW );
+    }
+    
+    //! set index data
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iboID );
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_triangles.size()*sizeof(TIndex3), &m_triangles[0], GL_STATIC_DRAW );
+    }
+    
+    //! clear binding
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, 0 );
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0 );
+    }
+    */
 }
 
 void SWMesh::draw()
@@ -81,15 +130,39 @@ void SWMesh::draw()
 	static int lastMeshID = 0;
 	if ( getID() != lastMeshID )
 	{
-	  if ( m_updateMesh ) updateMesh();
-	  if ( m_vertices.size() == 0 ) return;
-
-	  glVertexAttribPointer( SW_Attribute_Position, 3, GL_FLOAT, GL_FALSE, 0, (float*)&m_vertices[0] );
-	  glVertexAttribPointer( SW_Attribute_Texture, 2, GL_FLOAT, GL_FALSE, 0, (float*)&m_texCoords[0] );
+        if ( m_updateMesh ) updateMesh();
+        if ( m_vertices.size() == 0 ) return;
+        
+        glVertexAttribPointer( SW_Attribute_Position, 3, GL_FLOAT, GL_FALSE, 0, (float*)&m_vertices[0] );
+        glVertexAttribPointer( SW_Attribute_Texture, 2, GL_FLOAT, GL_FALSE, 0, (float*)&m_texCoords[0] );
 	}
 	lastMeshID = getID();
 	if ( m_triangles.size() == 0 ) return;
 	glDrawElements( GL_TRIANGLES, m_triangles.size()*3, GL_UNSIGNED_SHORT, (tushort*)&m_triangles[0] );
+    /*
+	static int lastMeshID = 0;
+	if ( getID() != lastMeshID )
+	{
+	  if ( m_updateMesh ) updateMesh();
+	  if ( m_vertices.size() == 0 ) return;
+        
+        glBindBuffer(GL_ARRAY_BUFFER, m_vboID );
+	 
+        glVertexAttribPointer( SW_Attribute_Position
+                            , 3
+                            , GL_FLOAT, GL_FALSE
+                            , sizeof( SWMeshVertex ), 0 );
+	  
+        glVertexAttribPointer( SW_Attribute_Texture
+                            , 2
+                            , GL_FLOAT, GL_FALSE
+                            , sizeof( SWMeshVertex ), (void*)sizeof(tvec3) );
+	}
+	lastMeshID = getID();
+	if ( m_triangles.size() == 0 ) return;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iboID );
+	glDrawElements( GL_TRIANGLES, m_triangles.size()*3, GL_UNSIGNED_SHORT, 0 );
+     */
 }
 
 void SWMesh::resizeVertexStream( tuint count )

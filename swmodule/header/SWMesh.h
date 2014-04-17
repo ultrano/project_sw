@@ -10,12 +10,11 @@ class SWMesh : public SWObject
 {
 	SW_RTTI( SWMesh, SWObject );
 
-	tarray< TVector3f >  m_vertices;
-	tarray< TVector2f >  m_texCoords;
-	tarray< TIndex3 >  m_triangles;
-	bool m_updateMesh;
 public:
 
+    SWMesh();
+    ~SWMesh();
+    
 	void setVertexStream( size_t count, const TVector3f* stream );
 	void setTexCoordStream( size_t count, const TVector2f* stream );
 	void setTriangleStream( size_t count, const TIndex3* stream );
@@ -42,6 +41,15 @@ public:
 
 	void updateMesh();
 	void draw();
+    
+private:
+	tarray< TVector3f >  m_vertices;
+	tarray< TVector2f >  m_texCoords;
+	tarray< TIndex3 >  m_triangles;
+	bool m_updateMesh;
+    tuint m_vaoID;
+    tuint m_vboID;
+    tuint m_iboID;
 };
 
 #endif // SWMesh_h__
