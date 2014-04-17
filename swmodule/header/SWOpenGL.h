@@ -1,14 +1,18 @@
 #ifndef SWOpenGL_h__
 #define SWOpenGL_h__
 
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#endif
+
 #ifdef WIN32
 # include "glew.h"
-#elif IOS
+#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 # include <OpenGLES/ES1/gl.h>
 # include <OpenGLES/ES1/glext.h>
 # include <OpenGLES/ES2/gl.h>
 # include <OpenGLES/ES2/glext.h>
-#elif OSX
+#elif TARGET_OS_MAC
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
 # include <OpenGL/glext.h>

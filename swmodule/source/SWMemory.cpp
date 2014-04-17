@@ -7,6 +7,7 @@
 //
 
 #include "SWMemory.h"
+#include <stdlib.h>
 
 #ifdef WIN32
 #pragma pack(push,1)

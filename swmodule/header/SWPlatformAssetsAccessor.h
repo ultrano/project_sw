@@ -3,6 +3,9 @@
 
 #include "SWRefCounter.h"
 #include "SWIOStream.h"
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#endif
 
 class SWPlatformAssetsAccessor : public SWRefCountable
 {
@@ -18,6 +21,15 @@ public:
 	SWHardRef<SWInputStream> access( const tstring& filePath );
 private:
 	tstring m_assetPath;
+};
+#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+class SWIOSAssetsAccessor : public SWPlatformAssetsAccessor
+{
+public:
+    SWIOSAssetsAccessor( NSBundle* bundle ) : m_bundle( bundle ) {};
+	SWHardRef<SWInputStream> access( const tstring& filePath );
+private:
+    NSBundle* m_bundle;
 };
 #elif ANDROID
 class SWAndroidAssetsAccessor : public SWPlatformAssetsAccessor

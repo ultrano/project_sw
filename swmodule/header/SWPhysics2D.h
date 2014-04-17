@@ -16,7 +16,7 @@ private:
 public:
 
 	float getGravityForce() const { return m_gravityForce; }
-	float setGravityForce( float force ) { m_gravityForce = force; }
+	void setGravityForce( float force ) { m_gravityForce = force; }
 
 	__SWPhysics2D();
 	~__SWPhysics2D();

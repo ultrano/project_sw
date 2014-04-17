@@ -8,6 +8,19 @@ SWHardRef<SWInputStream> SWWIN32AssetsAccessor::access( const tstring& filePath 
 	return new SWFileInputStream( m_assetPath + filePath );
 }
 
+#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+
+#include "SWFileStream.h"
+SWHardRef<SWInputStream> SWIOSAssetsAccessor::access( const tstring& filePath )
+{
+    NSString* manifest_string = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:filePath.c_str()]
+                                                                ofType:nil];
+    const char* manifest_path = [manifest_string fileSystemRepresentation];
+    
+    FILE* file = fopen(manifest_path, "r");
+	return new SWFileInputStream( file );
+}
+
 #elif ANDROID
 
 #include "SWFileStream.h"

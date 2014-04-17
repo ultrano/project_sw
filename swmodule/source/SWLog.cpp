@@ -48,21 +48,13 @@ void SWLogCenter::write( const char* file, unsigned int line, const char* format
     vsprintf( &buf[0],format, args );
     va_end( args );
 
-	LogKey key( file, line );
-	LogTable::iterator itor = m_logTable.find( key );
-	if ( itor != m_logTable.end() ) itor->second = &buf[0];
-	else m_logTable.insert( std::make_pair( key, &buf[0] ) );
+#ifdef ANDROID
+    __android_log_print( ANDROID_LOG_INFO, "game log", &buf[0] );
+#else
+    printf( &buf[0] );
+#endif
 }
 
 void SWLogCenter::present()
 {
-	int line = 0;
-	LogTable::iterator itor = m_logTable.begin();
-	for ( ; itor != m_logTable.end() ; ++itor )
-	{
-	    SWUtil.consoleXY( 0, line );
-		printf("%*d", 64, line);
-	    SWUtil.consoleXY( 0, line++ );
-		printf( itor->second.c_str() );
-	}
 }

@@ -81,6 +81,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 
 		SWHardRef<SWShader> defaultShader = SWShader::compileShader( source );
 		SWMaterial::setDefaultShader( defaultShader() );
+        SWLog( "game start up" );
 	}
 
 }
@@ -96,8 +97,8 @@ void SWGameContext::onFrameMove()
 
 	SWTime.m_DPS = ( SWTime.m_accumDraw / SWTime.m_accumTime );
 	SWTime.m_FPS = ( SWTime.m_accumFrame / SWTime.m_accumTime );
-	SWLog( "FPS : %.1f", SWTime.getFPS() );
-	SWLog( "DPS : %.1f", SWTime.getDPS() );
+	//SWLog( "FPS : %.1f", SWTime.getFPS() );
+	//SWLog( "DPS : %.1f", SWTime.getDPS() );
 	if ( SWTime.m_accumTime > 10 )
 	{
 		SWTime.m_accumDraw  /= SWTime.m_accumTime;
