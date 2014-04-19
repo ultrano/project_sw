@@ -21,14 +21,6 @@ class SWCollisionManager;
 class SWGameScene : public SWObject
 {
     SW_RTTI( SWGameScene, SWObject );
-	friend class SWTransform;
-	friend class SWRenderer;
-protected:
-
-	//! root game objects
-	SWObject::List m_roots;
-	SWObject::List m_updates;
-	SWObject::List m_renderers;
 public:
     
     //! 메소드들
@@ -36,16 +28,10 @@ public:
     ~SWGameScene();
     
     //! 객체를 찾는다.
-    SWGameObject* find( const char* name );
+    SWGameObject* findGO( const char* name );
     
-    void awake();
-    void destroy();
-    void resume();
-    void pause();
-    void update();
-    void draw();
-    void handleEvent();
-    
+private:
+
     //! @breif 처음 시작할때만 한번 호출
     virtual void onAwake() {};
     
@@ -66,7 +52,27 @@ public:
     
     //! @breif 터치 이벤트가 발생하면 호출
 	virtual void onHandleTouch() {};
-    
+
+private:
+
+	friend class SWTransform;
+	friend class SWRenderer;
+	friend class SWGameContext;
+
+	void awake();
+	void destroy();
+	void resume();
+	void pause();
+	void update();
+	void draw();
+	void handleEvent();
+
+private:
+
+	//! root game objects
+	SWObject::List m_roots;
+	SWObject::List m_updates;
+	SWObject::List m_renderers;
 };
 
 #endif

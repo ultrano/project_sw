@@ -11,6 +11,7 @@
 #include "SWGameScene.h"
 #include "SWShader.h"
 #include "SWMaterial.h"
+#include "SWCamera.h"
 
 #include <memory>
 #include <stdio.h>
@@ -56,7 +57,7 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 		"uniform mat4      MATRIX_MVP;\n"
 		"uniform sampler2D TEXTURE_0;\n"
 		"uniform vec4      COLOR;\n"
-		"varying   vec2 v_tex;\n"
+		"varying vec2      v_tex;\n"
 
 		"#ifdef VERTEX_SHADER\n"
 
@@ -131,6 +132,10 @@ void SWGameContext::onFrameMove()
 
 void SWGameContext::onRender()
 {
+	if ( SWCamera::mainCamera.isValid() == false ) return;
+
+	const tcolor& color = SWCamera::mainCamera()->getClearColor();
+	glClearColor( color.r, color.g, color.b, color.a );
 	glClear( GL_COLOR_BUFFER_BIT );
 	if ( SWGameScene* scene = m_currentScene() )
 	{
@@ -141,8 +146,6 @@ void SWGameContext::onRender()
 
 void SWGameContext::onTouch( int type, int param1, int param2 )
 {
-	SWLog( "touch type:%d, x:%d, y:%d", type, param1, param2 );
-
 	SWInput.m_touchState = type;
 	if ( type == SW_TouchPress )
 	{

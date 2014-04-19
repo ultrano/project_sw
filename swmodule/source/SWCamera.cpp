@@ -8,6 +8,7 @@ SWHardRef<SWCamera> SWCamera::mainCamera = NULL;
 SWCamera::SWCamera()
 	: m_near( 0 )
 	, m_far( 0 )
+	, m_clearColor( 0, 0, 1, 1 )
 {
 }
 
@@ -95,4 +96,14 @@ const TMatrix4x4& SWCamera::getViewMatrix() const
 const TMatrix4x4& SWCamera::getVPMatrix() const
 {
 	return m_vpMatrix;
+}
+
+void SWCamera::setClearColor( const tcolor& color )
+{
+	m_clearColor = color;
+}
+
+const tcolor& SWCamera::getClearColor() const
+{
+	return m_clearColor;
 }

@@ -34,6 +34,8 @@ SWHardRef<SWInputStream> __SWAssets::loadBuffer( const tstring& filePath )
 	}
 
 	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
 
 	SWByteBufferInputStream* bbis = new SWByteBufferInputStream( ais() );
 
@@ -57,13 +59,15 @@ SWHardRef<SWTexture> __SWAssets::loadTexture( const tstring& filePath )
 	}
 
 	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
-
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
+	
 	tarray<tbyte> buffer;
 	buffer.resize( ais()->available() );
 	ais()->read( &(buffer[0]), buffer.size() );
 
 	SWHardRef<SWTexture> texture = SWTexture::createTexture( &(buffer[0]), buffer.size() );
-
+	 
 	m_texCache[ filePath ] = texture();
 	return texture;
 }
@@ -84,6 +88,8 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 	}
 
 	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
 
 	tstring source;
 	source.resize( ais()->available() );

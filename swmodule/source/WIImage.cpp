@@ -21,6 +21,7 @@ WIImage::WIImage()
 	, m_alignH( UI_Center )
 	, m_updateVert( false )
 	, m_updateTex( false )
+	, m_color(1,1,1,1)
 {
 
 }
@@ -43,9 +44,12 @@ void WIImage::onAwake()
 	mesh->setTriangleStream( 2, &indices[0] );
 
 	setAlign( UI_Center, UI_Center );
-	gameObject()->addComponent<SWMeshFilter>()->setMesh( mesh );
-	gameObject()->addComponent<SWMeshRenderer>();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
+
+	gameObject()->addComponent<SWMeshFilter>()->setMesh( mesh );
+	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
+	renderer->addPreRenderDelegate( GetDelegator( onPreRender ) );
+
 }
 
 void WIImage::onRemove()
@@ -87,10 +91,13 @@ void WIImage::onUpdate()
 	{
 		m_updateTex = false;
 
-		float left   = m_uvRect.left   / m_width;
-		float top    = m_uvRect.top    / m_height;
-		float right  = m_uvRect.right  / m_width;
-		float bottom = m_uvRect.bottom / m_height;
+		float width  = m_texture()->getWidth();
+		float height = m_texture()->getHeight();
+
+		float left   = m_uvRect.left   / width;
+		float top    = m_uvRect.top    / height;
+		float right  = m_uvRect.right  / width;
+		float bottom = m_uvRect.bottom / height;
 		TVector2f texCoords[] = 
 		{ TVector2f( left , top)
 		, TVector2f( right, top)
@@ -102,7 +109,7 @@ void WIImage::onUpdate()
 	}
 }
 
-void WIImage::setSizeToTexture( float scaleW, float scaleH )
+void WIImage::onPreRender()
 {
 	SWMeshRenderer* renderer = getComponent<SWMeshRenderer>();
 	if ( renderer == NULL ) return;
@@ -110,12 +117,17 @@ void WIImage::setSizeToTexture( float scaleW, float scaleH )
 	SWMaterial* material = renderer->getMaterial();
 	if ( material == NULL ) return;
 
-	SWTexture* texture = material->getTexture( "TEXTURE_0" );
-	if ( texture == NULL ) return;
+	material->setTexture( "TEXTURE_0", m_texture() );
+	material->setVector4( "COLOR", tquat( m_color.r, m_color.g, m_color.b, m_color.a ) );
+}
+
+void WIImage::setSizeToTexture( float scaleW, float scaleH )
+{
+	if ( m_texture() == NULL ) return;
 
 	scaleW = (scaleW == 0)? 1:scaleW;
 	scaleH = (scaleH == 0)? 1:scaleH;
-	setSize( texture->getWidth()*scaleW, texture->getHeight()*scaleH );
+	setSize( m_texture()->getWidth()*scaleW, m_texture()->getHeight()*scaleH );
 }
 
 void WIImage::setSize( float width, float height )
@@ -126,24 +138,27 @@ void WIImage::setSize( float width, float height )
 }
 void WIImage::setTexture( SWTexture* texture )
 {
-	SWMeshRenderer* renderer = getComponent<SWMeshRenderer>();
-	if ( renderer == NULL ) return;
-
-	SWMaterial* material = renderer->getMaterial();
-	if ( material == NULL ) return;
-
-	material->setTexture( "TEXTURE_0", texture );
+	m_texture = texture;
 }
 
 void WIImage::setTexture( SWHardRef<SWTexture> texture )
 {
-	SWMeshRenderer* renderer = getComponent<SWMeshRenderer>();
-	if ( renderer == NULL ) return;
+	m_texture = texture;
+}
 
-	SWMaterial* material = renderer->getMaterial();
-	if ( material == NULL ) return;
+SWTexture* WIImage::getTexture() const
+{
+	return m_texture();
+}
 
-	material->setTexture( "TEXTURE_0", texture() );
+void WIImage::setColor( float r, float g, float b, float a )
+{
+	m_color = tcolor( r,g,b,a );
+}
+
+const tcolor& WIImage::getColor() const
+{
+	return m_color;
 }
 
 void WIImage::setAlignV( int align )
@@ -169,15 +184,4 @@ void WIImage::setUVRect( float left, float top, float right, float bottom )
 {
 	m_uvRect.setRect( left, top, right, bottom );
 	m_updateTex = true;
-}
-
-void WIImage::setColor( float r, float g, float b, float a )
-{
-	SWMeshRenderer* renderer = getComponent<SWMeshRenderer>();
-	if ( renderer == NULL ) return;
-
-	SWMaterial* material = renderer->getMaterial();
-	if ( material == NULL ) return;
-
-	material->setVector4( "COLOR", tquat( r, g, b, a ) );
 }

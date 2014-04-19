@@ -92,6 +92,8 @@ bool SWMaterial::getFloat( const tstring& name, float& val ) const
 	if ( index < 0 ) return false;
 	
 	FloatTable::const_iterator itor = m_floatTable.find( index );
+	if ( itor == m_floatTable.end() ) return false;
+
 	val = itor->second;
 	return true;
 }
@@ -103,6 +105,8 @@ bool SWMaterial::getVector2( const tstring& name, TVector2f& val ) const
 	if ( index < 0 ) return false;
 
 	Vec2Table::const_iterator itor = m_vec2Table.find( index );
+	if ( itor == m_vec2Table.end() ) return false;
+
 	val = itor->second;
 	return true;
 }
@@ -114,6 +118,8 @@ bool SWMaterial::getVector3( const tstring& name, TVector3f& val ) const
 	if ( index < 0 ) return false;
 
 	Vec3Table::const_iterator itor = m_vec3Table.find( index );
+	if ( itor == m_vec3Table.end() ) return false;
+
 	val = itor->second;
 	return true;
 }
@@ -125,6 +131,8 @@ bool SWMaterial::getVector4( const tstring& name, TQuaternion& val ) const
 	if ( index < 0 ) return false;
 
 	Vec4Table::const_iterator itor = m_vec4Table.find( index );
+	if ( itor == m_vec4Table.end() ) return false;
+
 	val = itor->second;
 	return true;
 }
@@ -136,6 +144,8 @@ bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 	if ( index < 0 ) return false;
 
 	MatTable::const_iterator itor = m_matTable.find( index );
+	if ( itor == m_matTable.end() ) return false;
+
 	val = itor->second;
 	return true;
 }
@@ -148,6 +158,8 @@ SWTexture* SWMaterial::getTexture( const tstring& name ) const
 	if ( index < 0 ) return NULL;
 
 	TexTable::const_iterator itor = m_texTable.find( index );
+	if ( itor == m_texTable.end() ) return NULL;
+
 	return itor->second();
 }
 
@@ -211,8 +223,9 @@ void SWMaterial::apply()
 		for ( ; itor != m_texTable.end() ; ++itor )
 		{
 			SWTexture* texture = itor->second();
+			int texID = (texture!=NULL)? texture->getTextureID() : 0;
 			glActiveTexture( GL_TEXTURE0 );
-			glBindTexture( GL_TEXTURE_2D, texture->getTextureID() );
+			glBindTexture( GL_TEXTURE_2D, texID );
 			glUniform1i( itor->first, 0 );
 		}
 	}

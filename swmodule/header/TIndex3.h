@@ -3,7 +3,6 @@
 
 #include "SWPrimaryType.h"
 
-// TODO: change class category to Type (TIndex3 -> TIndex3 )
 class TIndex3 : public SWMemory
 {
 public:

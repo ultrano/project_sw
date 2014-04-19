@@ -23,12 +23,15 @@ class IntroScene : public SWGameScene
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
+			
 			SWGameObject* go = new SWGameObject;
 			go->setName( "camera" );
+
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
-			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
+			cam->setClearColor( tcolor( 1,1,1,1 ) );
+
 			SWCamera::mainCamera = cam;
 		}
 

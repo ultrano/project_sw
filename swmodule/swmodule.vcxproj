@@ -119,6 +119,7 @@
     <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
     <ClInclude Include="header\SWTexture.h" />
+    <ClInclude Include="header\TColorRGBA.h" />
     <ClInclude Include="header\TRay.h" />
     <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />

@@ -14,7 +14,6 @@
 #include "SWTransform.h"
 #include "SWBehavior.h"
 #include "SWRenderer.h"
-#include "SWCamera.h"
 
 SWGameScene::SWGameScene()
 {
@@ -26,7 +25,7 @@ SWGameScene::~SWGameScene()
 	SWLog( "game scene", "deleted" );
 }
 
-SWGameObject* SWGameScene::find( const char *name )
+SWGameObject* SWGameScene::findGO( const char *name )
 {
 
 	SWObject::List::iterator itor = m_roots.begin();
@@ -88,8 +87,6 @@ void SWGameScene::update()
 
 void SWGameScene::draw()
 {
-	if ( SWCamera::mainCamera.isValid() == false ) return;
-
 	SWObject::List::iterator itor = m_renderers.begin();
 	for ( ; itor != m_renderers.end() ; ++itor )
 	{

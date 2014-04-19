@@ -253,6 +253,9 @@
     <Filter Include="SW\SWTexture">
       <UniqueIdentifier>{563b965a-780e-466a-a391-c2db17260b2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType\TColorRGBA">
+      <UniqueIdentifier>{5bd785e8-cf97-4056-8d0c-a3fc21c9a5e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -530,6 +533,9 @@
     </ClInclude>
     <ClInclude Include="header\SWTexture.h">
       <Filter>SW\SWTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TColorRGBA.h">
+      <Filter>SW\SWType\TColorRGBA</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -100,13 +100,16 @@ class TestScene : public SWGameScene
 	{
 		SWGameObject* go = new SWGameObject;
 		go->addUpdateDelegator( GetDelegator( onUpdateCat ) );
+		
 		WIImage* image = go->addComponent<WIImage>();
 		image->setTexture( SWAssets.loadTexture("cat3.png") );
 		//image->setColor( 0,0,1,1 );
 		image->setSizeToTexture( 0.5f, 0.5f );
+
 		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 		body->setGravityScale( tvec2::zero );
 		body->setInertia( 100 );
+		
 		return image;
 	}
 

@@ -27,14 +27,17 @@ public:
 
 	void setTexture( SWTexture* texture );
 	void setTexture( SWHardRef<SWTexture> texture );
+	SWTexture* getTexture() const;
 
 	void setColor( float r, float g, float b, float a );
+	const tcolor& getColor() const;
 
 private:
 
 	virtual void onAwake();
 	virtual void onRemove();
 	void onUpdate();
+	void onPreRender();
 
 private:
 
@@ -47,6 +50,9 @@ private:
 
 	bool m_updateVert;
 	bool m_updateTex;
+
+	SWHardRef<SWTexture> m_texture;
+	tcolor m_color;
 };
 
 #endif // __UIImage_h_

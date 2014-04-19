@@ -21,6 +21,8 @@ class SWCamera : public SWComponent
 	float m_near;
 	float m_far;
 
+	tcolor m_clearColor;
+
 public:
 
 	static SWHardRef<SWCamera> mainCamera;
@@ -33,6 +35,9 @@ public:
 
 	tvec3 screenToWorld( const tvec3& screenPt ) const;
 	tray  screenToRay( const tvec2& screenPt ) const;
+
+	void setClearColor( const tcolor& color );
+	const tcolor& getClearColor() const;
 
 	const TMatrix4x4& getProjMatrix() const;
 	const TMatrix4x4& getViewMatrix() const;
