@@ -2,6 +2,7 @@
 #include "SWTransform.h"
 #include "SWGameObject.h"
 #include "SWAction.h"
+#include "SWTime.h"
 
 SWActMoveBy::SWActMoveBy( float duration, const tvec3& val )
 	: m_spendTime( 0 )
@@ -30,9 +31,10 @@ bool SWActMoveBy::onStart()
 	return true;
 }
 
-void SWActMoveBy::onUpdate( float delta )
+void SWActMoveBy::onUpdate()
 {
 	if ( isDone() ) return;
+	float delta = SWTime.getDeltaTime();
 	if ( (m_spendTime + delta) > m_duration )
 	{
 		delta = (m_duration - m_spendTime);

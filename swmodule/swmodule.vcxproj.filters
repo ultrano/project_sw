@@ -256,6 +256,9 @@
     <Filter Include="SW\SWType\TColorRGBA">
       <UniqueIdentifier>{5bd785e8-cf97-4056-8d0c-a3fc21c9a5e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActAlphaTo">
+      <UniqueIdentifier>{0c529d29-342b-4d9a-b9dd-953f30b2dd3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -537,6 +540,9 @@
     <ClInclude Include="header\TColorRGBA.h">
       <Filter>SW\SWType\TColorRGBA</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActAlphaTo.h">
+      <Filter>SW\SWAct\SWActAlphaTo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -760,6 +766,9 @@
     </ClCompile>
     <ClCompile Include="source\SWTexture.cpp">
       <Filter>SW\SWTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActAlphaTo.cpp">
+      <Filter>SW\SWAct\SWActAlphaTo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "SWTransform.h"
 #include "SWGameObject.h"
 #include "SWAction.h"
+#include "SWTime.h"
 
 SWActRotateBy::SWActRotateBy( float duration, const tvec3& val )
 	: m_spendTime( 0 )
@@ -30,9 +31,12 @@ bool SWActRotateBy::onStart()
 	return true;
 }
 
-void SWActRotateBy::onUpdate( float delta )
+void SWActRotateBy::onUpdate()
 {
 	if ( isDone() ) return;
+
+	float delta = SWTime.getDeltaTime();
+
 	if ( (m_spendTime + delta) > m_duration )
 	{
 		delta = (m_duration - m_spendTime);

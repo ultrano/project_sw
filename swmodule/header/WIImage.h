@@ -23,13 +23,14 @@ public:
 	void setAlignV( int align );
 	void setAlignH( int align );
 	void setAlign( int alignV, int alignH );
-	void setUVRect( float left, float top, float right, float bottom );
+	void setUVRect( float x, float y, float width, float height );
 
 	void setTexture( SWTexture* texture );
 	void setTexture( SWHardRef<SWTexture> texture );
 	SWTexture* getTexture() const;
 
 	void setColor( float r, float g, float b, float a );
+	void setColor( const tcolor& color );
 	const tcolor& getColor() const;
 
 private:

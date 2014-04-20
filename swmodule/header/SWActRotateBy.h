@@ -18,7 +18,7 @@ public:
 
 	virtual bool isDone();
 	virtual bool onStart();
-	virtual void onUpdate( float delta );
+	virtual void onUpdate();
 };
 
 #endif // SWActRotateBy_h__

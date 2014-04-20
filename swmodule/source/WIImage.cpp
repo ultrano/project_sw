@@ -156,6 +156,11 @@ void WIImage::setColor( float r, float g, float b, float a )
 	m_color = tcolor( r,g,b,a );
 }
 
+void WIImage::setColor( const tcolor& color )
+{
+	m_color = color;
+}
+
 const tcolor& WIImage::getColor() const
 {
 	return m_color;
@@ -180,8 +185,8 @@ void WIImage::setAlign( int alignV, int alignH )
 	m_updateVert = true;
 }
 
-void WIImage::setUVRect( float left, float top, float right, float bottom )
+void WIImage::setUVRect( float x, float y, float width, float height )
 {
-	m_uvRect.setRect( left, top, right, bottom );
+	m_uvRect.setRect( x, y, x+width, y+height );
 	m_updateTex = true;
 }

@@ -33,13 +33,14 @@ bool SWActSequence::onStart()
 	return true;
 }
 
-void SWActSequence::onUpdate( float delta )
+void SWActSequence::onUpdate()
 {
 	if ( isDone() ) return;
 	
+	float delta = SWTime.getDeltaTime();
 	if ( m_current() != NULL )
 	{
-		m_current()->onUpdate( delta );
+		m_current()->onUpdate();
 		if ( m_current()->isDone() )
 		{
 			m_current = NULL;
@@ -63,7 +64,7 @@ void SWActSequence::onUpdate( float delta )
 			}
 			else
 			{
-				m_current()->onUpdate( delta );
+				m_current()->onUpdate();
 				break;
 			}
 		} while ( true );

@@ -18,7 +18,7 @@ public:
 
 	bool isDone();
 	bool onStart();
-	void onUpdate( float delta );
+	void onUpdate();
 };
 
 #endif // SWActMoveBy_h__

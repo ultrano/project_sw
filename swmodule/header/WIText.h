@@ -10,16 +10,10 @@ class WIText : public SWComponent
 {
 	SW_RTTI( WIText, SWComponent );
 
-	SWHardRef<WIFontData> m_font;
-	SWHardRef<SWMesh> m_mesh;
-	twstring m_text;
-	bool m_updateMesh;
-	size_t m_fontSize;
-
 public:
 
-	void onAwake();
-	void onRemove();
+	WIText();
+	~WIText();
 
 	void setFont( WIFontData* font );
 
@@ -30,6 +24,20 @@ public:
 	const twstring& getText() const;
 
 	void updateMesh();
+
+private:
+
+	void onAwake();
+	void onRemove();
+	void onPreRender();
+
+private:
+
+	SWHardRef<WIFontData> m_font;
+	SWHardRef<SWMesh> m_mesh;
+	twstring m_text;
+	bool m_updateMesh;
+	size_t m_fontSize;
 };
 
 #endif // WIText_h__

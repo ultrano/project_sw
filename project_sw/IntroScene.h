@@ -11,6 +11,10 @@
 #include "SWTime.h"
 #include "TestScene.h"
 
+#include "SWActAlphaTo.h"
+#include "SWActDelegate.h"
+#include "SWActSequence.h"
+
 class IntroScene : public SWGameScene
 {
 	SW_RTTI( IntroScene, SWGameScene );
@@ -38,10 +42,17 @@ class IntroScene : public SWGameScene
 		{
 			SWGameObject* go = new SWGameObject;
 			go->setName( "logo" );
+
 			WIImage* image = go->addComponent<WIImage>();
 			image->setTexture( SWAssets.loadTexture( "logo.png" ) );
 			image->setSize( 320, 480 );
-			go->addUpdateDelegator( GetDelegator( onUpdateLogo ) );
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWActSequence* seq = new SWActSequence();
+			seq->addAct( new SWActAlphaTo( 1, 0 ) );
+			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
+			action->setAct( "logo", seq );
+			action->play( "logo" );
 		}
 
 		{
@@ -49,16 +60,9 @@ class IntroScene : public SWGameScene
 			m_remain = m_time;
 		}
 	}
-
-	void onUpdateLogo( SWGameObject* go )
+	void onEndLogo()
 	{
-		m_remain -= SWTime.getDeltaTime();
-		WIImage* image = go->getComponent<WIImage>();
-		image->setColor( 1,1,1, m_remain/m_time );
-		if ( m_remain < 0 )
-		{
-			SW_GC.setNextScene( new TestScene );
-		}
+		SW_GC.setNextScene( new TestScene );
 	}
 };
 

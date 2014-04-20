@@ -45,6 +45,8 @@
 #include "WIText.h"
 #include "SWAssets.h"
 
+#include "SWActAlphaTo.h"
+
 #include <stdio.h>
 #include <set>
 #include <map>
@@ -102,9 +104,10 @@ class TestScene : public SWGameScene
 		go->addUpdateDelegator( GetDelegator( onUpdateCat ) );
 		
 		WIImage* image = go->addComponent<WIImage>();
-		image->setTexture( SWAssets.loadTexture("cat3.png") );
+		image->setTexture( SWAssets.loadTexture("balls.png") );
 		//image->setColor( 0,0,1,1 );
-		image->setSizeToTexture( 0.5f, 0.5f );
+		image->setUVRect( 0,100,100,100 );
+		image->setSize( 100, 100 );
 
 		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 		body->setGravityScale( tvec2::zero );
@@ -115,16 +118,12 @@ class TestScene : public SWGameScene
 
 	void onUpdateCat( SWGameObject* go )
 	{
-		//if ( go->getName() != "child" ) return;
-		if ( SWInput.getTouchState() != SW_TouchMove ) return;
-
-		tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 500 );
-		pos = SWCamera::mainCamera()->screenToWorld( pos );
-
-		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
-		tvec3 delta(SWInput.getDeltaX(), -SWInput.getDeltaY(), 500);
-		//delta = SWCamera::mainCamera()->screenToWorld( delta );
-		body->addForce( delta.xy() / 10, pos.xy() );
+		if ( SWInput.getTouchState() == SW_TouchPress )
+		{
+			SWAction* action = go->addComponent<SWAction>();
+			action->setAct( "pop", new SWActAlphaTo( 3, 0 ) );
+			action->play( "pop" );
+		}
 	}
 
 	void onUpdate()

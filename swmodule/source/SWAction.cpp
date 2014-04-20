@@ -35,7 +35,7 @@ void SWAction::onUpdate()
 	}
 	if ( m_act() != NULL )
 	{
-		m_act()->onUpdate( SWTime.getDeltaTime() );
+		m_act()->onUpdate();
 		if ( m_act()->isDone() ) stop();
 	}
 	/*

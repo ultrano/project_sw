@@ -28,10 +28,11 @@ bool SWActDestroy::onStart()
 	return true;
 }
 
-void SWActDestroy::onUpdate( float delta )
+void SWActDestroy::onUpdate()
 {
 	if ( ( m_accum -= SWTime.getDeltaTime() ) > 0 ) return;
 
+	float delta = SWTime.getDeltaTime();
 	SWAction* action = getAction();
 	if ( !action ) return;
 	SWGameObject* go = action->gameObject();

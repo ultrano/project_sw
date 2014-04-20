@@ -1,5 +1,6 @@
 #include "SWActContinue.h"
 #include "SWAction.h"
+#include "SWTime.h"
 
 SWActContinue::SWActContinue( SWAct* act )
 	: m_act( act )
@@ -24,8 +25,8 @@ bool SWActContinue::onStart()
 	return true;
 }
 
-void SWActContinue::onUpdate( float delta )
+void SWActContinue::onUpdate()
 {
 	if ( m_act()->isDone() ) m_act()->onStart();
-	m_act()->onUpdate( delta );
+	m_act()->onUpdate();
 }

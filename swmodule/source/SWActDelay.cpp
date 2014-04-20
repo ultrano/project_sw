@@ -1,4 +1,5 @@
 #include "SWActDelay.h"
+#include "SWTime.h"
 
 SWActDelay::SWActDelay( float delay )
 	: m_delay( delay )
@@ -21,10 +22,10 @@ bool SWActDelay::onStart()
 	return true;
 }
 
-void SWActDelay::onUpdate( float delta )
+void SWActDelay::onUpdate()
 {
 	if ( isDone() ) return;
-	
-	m_accum += delta;
+
+	m_accum += SWTime.getDeltaTime();
 
 }

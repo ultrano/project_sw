@@ -24,7 +24,7 @@ bool SWActDelegate::onStart()
 	return true;
 }
 
-void SWActDelegate::onUpdate( float delta )
+void SWActDelegate::onUpdate()
 {
 
 }

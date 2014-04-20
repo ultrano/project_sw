@@ -9,20 +9,43 @@
 #include "SWMeshFilter.h"
 #include "SWMaterial.h"
 
+
+WIText::WIText()
+	: m_updateMesh( false )
+	, m_fontSize( 0 )
+{
+
+}
+
+WIText::~WIText()
+{
+
+}
+
 void WIText::onAwake()
 {
 	m_fontSize = 40;
 	m_updateMesh = false;
-	gameObject()->addComponent<SWMeshRenderer>();
+	gameObject()->addUpdateDelegator( GetDelegator(updateMesh) );
+
+	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
+	renderer->addPreRenderDelegate( GetDelegator( onPreRender ) );
+
 	SWMeshFilter* filter = gameObject()->addComponent<SWMeshFilter>();
 	filter->setMesh( new SWMesh );
 	m_mesh = filter->getMesh();
-	gameObject()->addUpdateDelegator( GetDelegator(updateMesh) );
 }
 
 void WIText::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator(updateMesh) );
+}
+
+void WIText::onPreRender()
+{
+	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
+	SWMaterial* material = renderer->getMaterial();
+	material->setTexture( "TEXTURE_0", m_font()->getFontTexture() );
 }
 
 void WIText::setFont( WIFontData* font )
@@ -58,10 +81,6 @@ void WIText::updateMesh()
 	if ( m_updateMesh == false ) return;
 	if ( m_text.size() == 0 ) return;
 	m_updateMesh = false;
-
-	SWMeshRenderer* renderer = gameObject()->addComponent<SWMeshRenderer>();
-	SWMaterial* material = renderer->getMaterial();
-	material->setTexture( "TEXTURE_0", m_font()->getFontTexture() );
 
 	tarray<TVector3f, SWAllocator<TVector3f> > m_pos;
 	tarray<TVector2f, SWAllocator<TVector2f> > m_tex;

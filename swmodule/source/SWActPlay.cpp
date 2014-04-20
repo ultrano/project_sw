@@ -36,9 +36,10 @@ bool SWActPlay::onStart()
 	return true;
 }
 
-void SWActPlay::onUpdate( float delta )
+void SWActPlay::onUpdate()
 {
 	if ( !m_renderer.isValid() ) return ;
+	float delta = SWTime.getDeltaTime();
 	m_accumulation += SWTime.getDeltaTime();
 	float rate = ( m_accumulation / m_duration );
 	SWLog( "rate: %f", rate );

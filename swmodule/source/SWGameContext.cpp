@@ -126,6 +126,7 @@ void SWGameContext::onFrameMove()
 
 	SWInput.m_deltaX = 0;
 	SWInput.m_deltaY = 0;
+	SWInput.m_touchState = SW_TouchNone;
 
 	SWLogCenter::getInstance().present();
 }

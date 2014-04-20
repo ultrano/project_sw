@@ -26,15 +26,16 @@ bool SWActRepeat::onStart()
 	return ret;
 }
 
-void SWActRepeat::onUpdate( float delta )
+void SWActRepeat::onUpdate()
 {
 	if ( isDone() ) return;
-	
-	m_act()->onUpdate( delta );
+
+	float delta = SWTime.getDeltaTime();
+	m_act()->onUpdate();
 	if ( m_act()->isDone() )
 	{
 		m_repeatCount += 1;
 		m_act()->onStart();
-		m_act()->onUpdate( delta );
+		m_act()->onUpdate();
 	}
 }
