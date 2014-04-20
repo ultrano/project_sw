@@ -3,13 +3,13 @@
 
 #include <locale>
 #include <stdlib.h>
+#include <iconv.h>
 
 #ifdef _MSC_VER
 #include <Windows.h>
-#include <codecvt>
 #else
 #include <sys/time.h>
-//#include <iconv.h>
+//
 #endif
 
 
@@ -67,44 +67,46 @@ void __SWUtil::consoleXY( int x, int y )
 #endif
 }
 
-twstring __SWUtil::utf8ToUnicode( const tstring& str )
+bool __SWUtil::utf8ToUTF16( const tstring& utf8, twstring& unicode )
 {
-#ifdef _MSC_VER
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-	const char* begin = &str[0];
-	const char* end   = &str[str.size()];
+	iconv_t cd = iconv_open( "UTF-16", "UTF-8" );
+	if ( cd == (iconv_t)-1 ) return false;
 
-	//! bom check
-	if ( str.size() > 3 ) do
-	{
-		if ( str[0] != (char)0xEF ) break;
-		if ( str[1] != (char)0xBB ) break;
-		if ( str[2] != (char)0xBF ) break;
-		begin = &str[3];
-	} while ( false );
+	tuint inSize  = utf8.size();
+	tuint outSize = inSize * 2;
+	const char* inBuf  = (char*)SWAlloc( inSize );
+	char* outBuf = (char*)SWAlloc( outSize );
 
-	return conv.from_bytes( begin, end ).c_str();
-#else
-	return L"";
-#endif
+	memcpy( (void*)inBuf, utf8.c_str(), inSize );
+
+	tuint ret = iconv( cd, &inBuf, &inSize, &outBuf, &outSize );
+	if ( ret != (tuint)-1 ) unicode = (wchar_t*)outBuf;
+
+	SWFree( (void*)inBuf );
+	SWFree( (void*)outBuf );
+
+	return ( ret != (tuint)-1 );
 }
 
-tstring __SWUtil::unicodeToUtf8( const twstring& str )
+bool __SWUtil::utf16ToUTF8( const twstring& unicode, tstring& utf8 )
 {
-#ifdef _MSC_VER
-	if ( str.size() == 0 ) return "";
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-	const wchar_t* begin = &str[0];
-	const wchar_t* end   = &str[str.size()];
-	
-	//! bom check
-	if ( str[0] == (wchar_t)0xfeff ) begin = &str[1];
-	else if ( str[0] == (wchar_t)0xfffe ) begin = &str[1];
+	iconv_t cd = iconv_open( "UTF-8", "UTF-16" );
+	if ( cd == (iconv_t)-1 ) return false;
 
-	return conv.to_bytes( begin, end ).c_str();
-#else
-	return "";
-#endif
+	tuint inSize  = unicode.size() * 2;
+	tuint outSize = inSize * 2;
+	const char* inBuf  = (char*)SWAlloc( inSize );
+	char* outBuf = (char*)SWAlloc( outSize );
+
+	memcpy( (void*)inBuf, unicode.c_str(), inSize );
+
+	tuint ret = iconv( cd, &inBuf, &inSize, &outBuf, &outSize );
+	if ( ret != (tuint)-1 ) utf8 = outBuf;
+
+	SWFree( (void*)inBuf );
+	SWFree( (void*)outBuf );
+
+	return ( ret != (tuint)-1 );
 }
 
 

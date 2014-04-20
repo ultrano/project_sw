@@ -26,8 +26,8 @@ public:
 
 	tnumber strToNum( const tstring& str );
 
-	twstring utf8ToUnicode( const tstring& str );
-	tstring  unicodeToUtf8( const twstring& str );
+	bool utf8ToUTF16( const tstring& utf8, twstring& unicode );
+	bool utf16ToUTF8( const twstring& unicode, tstring& utf8 );
 
 	void consoleXY( int x, int y );
 

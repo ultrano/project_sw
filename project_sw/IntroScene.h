@@ -15,6 +15,8 @@
 #include "SWActDelegate.h"
 #include "SWActSequence.h"
 
+#include "SWUtil.h"
+
 class IntroScene : public SWGameScene
 {
 	SW_RTTI( IntroScene, SWGameScene );
@@ -24,6 +26,14 @@ class IntroScene : public SWGameScene
 
 	void onAwake()
 	{
+		//! convert test
+		{
+			twstring wstr = L"test";
+			tstring tstr = "";
+			SWUtil.utf16ToUTF8( wstr, tstr );
+			int a= 0;
+		}
+
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );

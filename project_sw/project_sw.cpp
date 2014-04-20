@@ -13,6 +13,7 @@
 #include "IntroScene.h"
 #include "TestScene.h"
 
+
 void callbackDisplay()
 {
 	SW_GC.onRender();
