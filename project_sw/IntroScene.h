@@ -53,13 +53,18 @@ class IntroScene : public SWGameScene
 			SWGameObject* go = new SWGameObject;
 			go->setName( "logo" );
 
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( tvec3::zero );
+
 			WIImage* image = go->addComponent<WIImage>();
-			image->setTexture( SWAssets.loadTexture( "logo.png" ) );
-			image->setSize( 320, 480 );
+			image->setTexture( SWAssets.loadTexture( "logo3.png" ) );
+			image->setSizeToTexture();
+			image->setColor( tcolor( 1,1,1,0 ) );
 
 			SWAction* action = go->addComponent<SWAction>();
 			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActAlphaTo( 1, 0 ) );
+			seq->addAct( new SWActAlphaTo( 1, 1 ) );
+			seq->addAct( new SWActAlphaTo( 2, 0 ) );
 			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
 			action->setAct( "logo", seq );
 			action->play( "logo" );

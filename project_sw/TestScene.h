@@ -35,6 +35,7 @@
 #include "SWActDelay.h"
 #include "SWActDelegate.h"
 #include "SWActRotateBy.h"
+#include "SWActScaleTo.h"
 
 #include "SWRigidBody2D.h"
 
@@ -93,8 +94,8 @@ class TestScene : public SWGameScene
 			WIImage* child = makeCatImg();
 			child->gameObject()->setName( "child" );
 			trans = child->getComponent<SWTransform>();
-			trans->setParent( parent->getComponent<SWTransform>() );
-			trans->setLocalPosition( tvec3( 100, 100, 0 ) );
+			//trans->setParent( parent->getComponent<SWTransform>() );
+			trans->setPosition( tvec3( 100, 100, 0 ) );
 		}
 	}
 
@@ -104,14 +105,20 @@ class TestScene : public SWGameScene
 		go->addUpdateDelegator( GetDelegator( onUpdateCat ) );
 		
 		WIImage* image = go->addComponent<WIImage>();
-		image->setTexture( SWAssets.loadTexture("balls.png") );
-		//image->setColor( 0,0,1,1 );
-		image->setUVRect( 0,100,100,100 );
-		image->setSize( 100, 100 );
+		image->setTexture( SWAssets.loadTexture("Image4.png") );
+		image->setUVRect( 0,0,32,32 );
+		image->setSize( 64, 64 );
 
 		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 		body->setGravityScale( tvec2::zero );
 		body->setInertia( 100 );
+
+		SWAction* action = go->addComponent<SWAction>();
+		SWActSequence* seq = new SWActSequence();
+		seq->addAct( new SWActScaleTo( 1, tvec3( 1.2f, 1.2f, 1 ) ) );
+		seq->addAct( new SWActScaleTo( 1, tvec3( 0.8f, 0.8f, 1 ) ) );
+		action->setAct( "pumping", new SWActRepeat( seq ) );
+		action->play( "pumping" );
 		
 		return image;
 	}

@@ -98,6 +98,7 @@
     <ClInclude Include="header\SWActRepeat.h" />
     <ClInclude Include="header\SWActDelegate.h" />
     <ClInclude Include="header\SWActRotateBy.h" />
+    <ClInclude Include="header\SWActScaleTo.h" />
     <ClInclude Include="header\SWActSequence.h" />
     <ClInclude Include="header\SWAnimation.h" />
     <ClInclude Include="header\SWAnimationClip.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="source\SWActRepeat.cpp" />
     <ClCompile Include="source\SWActDelegate.cpp" />
     <ClCompile Include="source\SWActRotateBy.cpp" />
+    <ClCompile Include="source\SWActScaleTo.cpp" />
     <ClCompile Include="source\SWActSequence.cpp" />
     <ClCompile Include="source\SWAnimation.cpp" />
     <ClCompile Include="source\SWAnimationClip.cpp" />
