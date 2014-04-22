@@ -26,6 +26,19 @@ WIImage::WIImage()
 
 }
 
+WIImage::WIImage( factory_constructor )
+	: m_width( 0 )
+	, m_height( 0 )
+	, m_uvRect( 0, 0, 0, 0 )
+	, m_alignV( UI_Center )
+	, m_alignH( UI_Center )
+	, m_updateVert( false )
+	, m_updateTex( false )
+	, m_color(1,1,1,1)
+{
+
+}
+
 WIImage::~WIImage()
 {
 

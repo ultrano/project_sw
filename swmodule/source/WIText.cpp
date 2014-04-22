@@ -17,6 +17,13 @@ WIText::WIText()
 
 }
 
+WIText::WIText( factory_constructor )
+	: m_updateMesh( false )
+	, m_fontSize( 0 )
+{
+
+}
+
 WIText::~WIText()
 {
 

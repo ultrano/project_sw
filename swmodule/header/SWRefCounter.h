@@ -143,7 +143,7 @@ public:
 	bool operator == (const SWWeakRef& ref) const { return ((*this)() == ref()); };
 	bool operator != (const SWWeakRef& ref) const { return ((*this)() != ref()); };
 	bool isValid() const { return (m_ref && (m_ref->getHard() > 0)); };
-	bool isDying() const { return (m_ref && m_ref->isUndead() ); };
+	bool isUndead() const { return (m_ref && m_ref->isUndead() ); };
 };
 
 
@@ -213,7 +213,7 @@ public:
 	bool operator == (const SWHardRef& ref) const { return ((*this)() == ref()); };
 	bool operator != (const SWHardRef& ref) const { return ((*this)() != ref()); };
 	bool isValid() const { return (m_ref && (m_ref->getHard() > 0)); };
-	bool isDying() const { return (m_ref && m_ref->isUndead() ); };
+	bool isUndead() const { return (m_ref && m_ref->isUndead() ); };
 };
 
 #endif

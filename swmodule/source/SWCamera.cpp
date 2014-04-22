@@ -12,6 +12,14 @@ SWCamera::SWCamera()
 {
 }
 
+SWCamera::SWCamera( factory_constructor )
+	: m_near( 0 )
+	, m_far( 0 )
+	, m_clearColor( 0, 0, 1, 1 )
+{
+
+}
+
 SWCamera::~SWCamera()
 {
 }

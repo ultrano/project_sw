@@ -47,8 +47,8 @@ public:
 	const thashstr&  getName() const { return m_name; };
 
 	template<typename T>
-	T* addComponent() { return (T*)addComponent( new T() ); };
-	SWComponent* addComponent( SWComponent* comp );
+	T* addComponent() { return (T*)addComponent( T::getRtti() ); };
+	SWComponent* addComponent( const SWRtti* rtti );
 
 	template<typename T>
 	T* getComponent() const { return (T*)getComponent( T::getRtti() ); };

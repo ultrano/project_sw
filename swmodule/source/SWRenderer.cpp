@@ -3,6 +3,21 @@
 #include "SWGameContext.h"
 #include "SWGameScene.h"
 
+SWRenderer::SWRenderer()
+{
+
+}
+
+SWRenderer::SWRenderer( factory_constructor )
+{
+
+}
+
+SWRenderer::~SWRenderer()
+{
+
+}
+
 void SWRenderer::onStart()
 {
 	SWGameScene* scene = SW_GC.getScene();

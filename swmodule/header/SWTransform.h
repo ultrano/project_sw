@@ -18,29 +18,11 @@
 class SWTransform : public SWComponent
 {
     SW_RTTI( SWTransform, SWComponent );
-private:
-
-	SWWeakRef<SWTransform> m_parent;
-	SWObject::List           m_children;
-	SWObject::List           m_setParentDelegates;
-	
-	TVector3f    m_scale;    //< 비율.
-	TQuaternion  m_rotate;   //< 회전.
-	TVector3f    m_euler;
-	TVector3f    m_position; //< 위치.
-	TMatrix4x4   m_worldMat; //< world matrix
-	TMatrix4x4   m_localMat; //< local matrix
-	TMatrix4x4   m_invWorldMat;
-
-	bool m_needLocalUpdate;
-	bool m_needWorldUpdate;
-
-	void needUpdateMatrix();
 
 public:
 	
-	void updateMatrix();
-    SWTransform();
+	SWTransform();
+	SWTransform( factory_constructor );
     ~SWTransform();
 
 	void setParent( SWTransform* parent );
@@ -77,10 +59,30 @@ public:
 	SWTransform* find( const tstring& name );
 	void copyChildren( SWObject::List& transList );
 
+private:
+
 	void onAwake();
 	void onRemove();
 	void onUpdate();
+	void needUpdateMatrix();
+	void updateMatrix();
 
+private:
+
+	SWWeakRef<SWTransform> m_parent;
+	SWObject::List           m_children;
+	SWObject::List           m_setParentDelegates;
+
+	TVector3f    m_scale;    //< 비율.
+	TQuaternion  m_rotate;   //< 회전.
+	TVector3f    m_euler;
+	TVector3f    m_position; //< 위치.
+	TMatrix4x4   m_worldMat; //< world matrix
+	TMatrix4x4   m_localMat; //< local matrix
+	TMatrix4x4   m_invWorldMat;
+
+	bool m_needLocalUpdate;
+	bool m_needWorldUpdate;
 };
 
 #endif

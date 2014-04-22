@@ -12,6 +12,7 @@ class WIImage : public SWComponent
 public:
 
 	WIImage();
+	WIImage( factory_constructor );
 	~WIImage();
 
 	void setSize( float width, float height );
@@ -35,8 +36,8 @@ public:
 
 private:
 
-	virtual void onAwake();
-	virtual void onRemove();
+	void onAwake();
+	void onRemove();
 	void onUpdate();
 	void onPreRender();
 

@@ -12,6 +12,28 @@
 #include "SWShader.h"
 #include "SWMaterial.h"
 #include "SWCamera.h"
+#include "SWAction.h"
+#include "SWAnimation.h"
+#include "SWCamera.h"
+#include "SWMeshFilter.h"
+#include "SWRigidBody2D.h"
+#include "SWTransform.h"
+#include "WIImage.h"
+#include "WIText.h"
+#include "SWMeshRenderer.h"
+
+void registerBasicObjectFactories( SWGameContext* gc )
+{
+	gc->registerFactory<SWAction>();
+	gc->registerFactory<SWAnimation>();
+	gc->registerFactory<SWCamera>();
+	gc->registerFactory<SWMeshFilter>();
+	gc->registerFactory<SWRigidBody2D>();
+	gc->registerFactory<SWTransform>();
+	gc->registerFactory<WIImage>();
+	gc->registerFactory<WIText>();
+	gc->registerFactory<SWMeshRenderer>();
+}
 
 #include <memory>
 #include <stdio.h>
@@ -87,6 +109,10 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
         SWLog( "game start up" );
 	}
 
+	//! register basic components
+	{
+		registerBasicObjectFactories( this );
+	}
 }
 
 void SWGameContext::onFrameMove()
@@ -226,4 +252,30 @@ void SWGameContext::onResize( int width, int height )
 {
 	// 占쎈떭占쎄껴�듊占쎌뭼�듊�쉱 吏뺧옙�뀒�돞占�.
 	glViewport(0,0,width,height);
+}
+
+void SWGameContext::registerFactory( const SWRtti* rtti, const SWAbstractObjectFactory* factory )
+{
+	if ( rtti == NULL || factory == NULL ) return;
+	m_factoryTable[rtti] = factory;
+}
+
+SWHardRef<SWObject> SWGameContext::newInstance( const SWRtti* rtti )
+{
+	FactoryTable::iterator itor = m_factoryTable.find( rtti );
+	if ( itor != m_factoryTable.end() ) return itor->second()->newInstance();
+	return NULL;
+}
+
+SWHardRef<SWObject> SWGameContext::newInstance( const tstring& name )
+{
+	FactoryTable::iterator itor = m_factoryTable.begin();
+	for ( ; itor != m_factoryTable.end() ; ++itor )
+	{
+		if ( name == itor->first->name )
+		{
+			return itor->second()->newInstance();
+		}
+	}
+	return NULL;
 }

@@ -15,6 +15,11 @@ SWBehavior::SWBehavior()
     
 }
 
+SWBehavior::SWBehavior( factory_constructor )
+{
+
+}
+
 SWBehavior::~SWBehavior()
 {
     //SW_OutputLog( "behavior", "deleted" );

@@ -7,27 +7,13 @@
 class SWCamera : public SWComponent
 {
 	SW_RTTI( SWCamera, SWComponent );
-	
-	void onAwake();
-	void onRemove();
-
-	void onUpdate();
-	
-	TMatrix4x4 m_viewMatrix;
-	TMatrix4x4 m_projMatrix;
-	TMatrix4x4 m_vpMatrix;
-	TMatrix4x4 m_invProjMatrix;
-
-	float m_near;
-	float m_far;
-
-	tcolor m_clearColor;
 
 public:
 
 	static SWHardRef<SWCamera> mainCamera;
 
 	SWCamera();
+	SWCamera( factory_constructor );
 	~SWCamera();
 
 	void orthoMode( float width, float height, float near, float far );
@@ -42,6 +28,24 @@ public:
 	const TMatrix4x4& getProjMatrix() const;
 	const TMatrix4x4& getViewMatrix() const;
 	const TMatrix4x4& getVPMatrix() const;
+
+private:
+
+	void onAwake();
+	void onRemove();
+	void onUpdate();
+
+private:
+
+	TMatrix4x4 m_viewMatrix;
+	TMatrix4x4 m_projMatrix;
+	TMatrix4x4 m_vpMatrix;
+	TMatrix4x4 m_invProjMatrix;
+
+	float m_near;
+	float m_far;
+
+	tcolor m_clearColor;
 };
 
 #endif // SWCamera_h__

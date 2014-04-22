@@ -8,6 +8,11 @@ SWAction::SWAction()
 {
 }
 
+SWAction::SWAction( factory_constructor )
+{
+
+}
+
 SWAction::~SWAction()
 {
 

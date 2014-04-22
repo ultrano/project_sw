@@ -19,6 +19,7 @@ class SWMeshRenderer : public SWRenderer
 public:
 	
 	SWMeshRenderer();
+	SWMeshRenderer( factory_constructor );
 	~SWMeshRenderer();
 
 	void render();

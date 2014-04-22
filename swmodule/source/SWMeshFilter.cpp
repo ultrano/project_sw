@@ -4,6 +4,21 @@
 #include "SWMesh.h"
 #include <memory>
 
+SWMeshFilter::SWMeshFilter()
+{
+
+}
+
+SWMeshFilter::SWMeshFilter( factory_constructor )
+{
+
+}
+
+SWMeshFilter::~SWMeshFilter()
+{
+
+}
+
 void SWMeshFilter::draw()
 {
 	if ( m_mesh.isValid() ) m_mesh()->draw();

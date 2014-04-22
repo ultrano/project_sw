@@ -17,13 +17,24 @@
 #include <math.h>
 
 SWTransform::SWTransform()
-: m_position( 0, 0, 0 )
-, m_rotate()
-, m_euler( 0, 0, 0 )
-, m_scale( 1, 1, 1 )
-, m_needLocalUpdate( true )
-, m_needWorldUpdate( true )
+	: m_position( 0, 0, 0 )
+	, m_rotate()
+	, m_euler( 0, 0, 0 )
+	, m_scale( 1, 1, 1 )
+	, m_needLocalUpdate( true )
+	, m_needWorldUpdate( true )
 {
+}
+
+SWTransform::SWTransform( factory_constructor )
+	: m_position( 0, 0, 0 )
+	, m_rotate()
+	, m_euler( 0, 0, 0 )
+	, m_scale( 1, 1, 1 )
+	, m_needLocalUpdate( true )
+	, m_needWorldUpdate( true )
+{
+
 }
 
 SWTransform::~SWTransform()

@@ -23,15 +23,11 @@ class SWNotifyMessage;
 class SWBehavior : public SWComponent
 {
     SW_RTTI( SWBehavior, SWComponent );
-private:
-
-	typedef ttable< tstring,SWHardRef<SWDelegator> > ReceiverTable;
-
-	ReceiverTable m_recvTable;
 
 public:
     
-    SWBehavior();
+	SWBehavior();
+	SWBehavior( factory_constructor );
     ~SWBehavior();
     
     virtual void onUpdate() {};
@@ -45,6 +41,12 @@ private:
 	void onAwake();
 	void onRemove();
 	void update();
+
+private:
+
+	typedef ttable< tstring,SWHardRef<SWDelegator> > ReceiverTable;
+
+	ReceiverTable m_recvTable;
 };
 
 #endif

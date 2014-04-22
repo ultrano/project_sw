@@ -23,7 +23,9 @@ class IntroScene : public SWGameScene
 
 	float m_time;
 	float m_remain;
-
+public:
+	IntroScene() {};
+	IntroScene(factory_constructor){};
 	void onAwake()
 	{
 		//! convert test
@@ -34,6 +36,7 @@ class IntroScene : public SWGameScene
 			int a= 0;
 		}
 
+		SW_GC.registerFactory<IntroScene>();
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );

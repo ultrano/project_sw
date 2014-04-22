@@ -11,6 +11,8 @@
 class SWGameScene;
 class SWMaterial;
 class SWShader;
+class SWObject;
+class SWAbstractObjectFactory;
 
 class SWGameContext
 {
@@ -34,12 +36,24 @@ public:
 	int getScreenWidth();
 	int getScreenHeight();
 
+	template<typename T>
+	void registerFactory() { registerFactory( T::getRtti(), new SWTemplateObjectFactory<T>() ); }
+	void registerFactory( const SWRtti* rtti, const SWAbstractObjectFactory* factory );
+
+	template<typename T>
+	SWHardRef<T> newInstance() { return newInstance( T::getRtti() ); }
+
+	SWHardRef<SWObject> newInstance( const SWRtti* rtti );
+	SWHardRef<SWObject> newInstance( const tstring& name );
+
 private:
 
 	SWGameContext();
 	SWGameContext( const SWGameContext& );
 
 private:
+
+	typedef ttable<const SWRtti*, SWHardRef<SWAbstractObjectFactory> > FactoryTable;
 
 	SWHardRef<SWGameScene> m_currentScene;
 	SWHardRef<SWGameScene> m_nextScene;
@@ -49,6 +63,8 @@ private:
 	int m_screenHeight;
 
 	SWCriticalSection m_idleSection;
+
+	FactoryTable m_factoryTable;
 };
 
 #endif // SWGameContext_h__

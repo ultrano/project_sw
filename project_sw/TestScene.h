@@ -55,14 +55,21 @@
 #include <locale>
 #include <codecvt>
 
+
 class TestScene : public SWGameScene
 {
 	SW_RTTI( TestScene, SWGameScene );
 
 	TMatrix4x4 mat;
-	void onAwake()
+public:
+	TestScene(){}
+	TestScene( factory_constructor )
 	{
 
+	}
+	void onAwake()
+	{
+		SW_GC.registerFactory<TestScene>();
 		//! matrix inverse test
 		{
 			tmat44 mat1, mat2;
@@ -137,7 +144,8 @@ class TestScene : public SWGameScene
 	{
 		if ( SWInput.getKey( 'p' ) )
 		{
-			SW_GC.setNextScene( new TestScene );
+			SWHardRef<SWObject> scene = SW_GC.newInstance( "IntroScene" );
+			SW_GC.setNextScene( swrtti_cast<SWGameScene>( scene() ) );
 		}
 	}
 

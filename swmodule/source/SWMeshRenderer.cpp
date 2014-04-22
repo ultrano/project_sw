@@ -10,6 +10,12 @@
 SWMeshRenderer::SWMeshRenderer()
 {
 }
+
+SWMeshRenderer::SWMeshRenderer( factory_constructor )
+{
+
+}
+
 SWMeshRenderer::~SWMeshRenderer()
 {
 }

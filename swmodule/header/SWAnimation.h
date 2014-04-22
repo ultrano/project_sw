@@ -7,12 +7,14 @@ class SWAnimationClip;
 class SWAnimation : public SWComponent
 {
 	SW_RTTI( SWAnimation, SWComponent );
-	
-	typedef ttable< thashstr, SWHardRef<SWAnimationClip> > ClipTable;
 
-	ClipTable m_clipTable;
-	SWAnimationClip* m_current;
-	float m_flowTime;
+public:
+
+	SWAnimation();
+	SWAnimation( factory_constructor );
+	~SWAnimation();
+	void addClip( const tstring& name, SWAnimationClip* clip );
+	void play( const tstring& name );
 
 private:
 
@@ -20,10 +22,13 @@ private:
 	void onRemove();
 	void onUpdate();
 
-public:
+private:
 
-	void addClip( const tstring& name, SWAnimationClip* clip );
-	void play( const tstring& name );
+	typedef ttable< thashstr, SWHardRef<SWAnimationClip> > ClipTable;
+
+	ClipTable m_clipTable;
+	SWAnimationClip* m_current;
+	float m_flowTime;
 };
 
 #endif // SWAnimation_h__

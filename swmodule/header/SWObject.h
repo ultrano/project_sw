@@ -95,4 +95,21 @@ public:
 	SWObject* getObject() const { return m_object(); };
 	const SWHandler& getHandler() const { return m_handler; };
 };
+
+class SWAbstractObjectFactory : public SWRefCountable
+{
+public:
+	virtual SWHardRef<SWObject> newInstance() = 0;
+};
+
+static struct factory_constructor{} factory_arg;
+template<typename T>
+class SWTemplateObjectFactory : public SWAbstractObjectFactory
+{
+	SWHardRef<SWObject> newInstance()
+	{
+		return new T( factory_arg );
+	}
+};
+
 #endif

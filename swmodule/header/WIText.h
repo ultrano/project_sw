@@ -13,6 +13,7 @@ class WIText : public SWComponent
 public:
 
 	WIText();
+	WIText( factory_constructor );
 	~WIText();
 
 	void setFont( WIFontData* font );

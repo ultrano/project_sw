@@ -2,6 +2,22 @@
 #include "SWGameObject.h"
 #include "SWAnimationClip.h"
 #include "SWTime.h"
+
+SWAnimation::SWAnimation()
+{
+
+}
+
+SWAnimation::SWAnimation( factory_constructor )
+{
+
+}
+
+SWAnimation::~SWAnimation()
+{
+
+}
+
 void SWAnimation::onAwake()
 {
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );

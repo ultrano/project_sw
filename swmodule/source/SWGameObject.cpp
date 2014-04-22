@@ -25,10 +25,7 @@ public:
 SWGameObject::SWGameObject()
 	: m_name( "nonamed" )
 {
-	SWTransform* comp = new SWTransform;
-	m_components.push_back( comp );
-	comp->gameObject = this;
-	comp->onAwake();
+	addComponent<SWTransform>();
 }
 
 SWGameObject::SWGameObject( const tstring& name )
@@ -91,9 +88,10 @@ void SWGameObject::udpate()
 	}
 }
 
-SWComponent* SWGameObject::addComponent( SWComponent* comp )
+SWComponent* SWGameObject::addComponent( const SWRtti* rtti )
 {
-	SWHardRef<SWComponent> holder = comp;
+	SWHardRef<SWObject> holder = SW_GC.newInstance( rtti );
+	SWComponent* comp = swrtti_cast<SWComponent>( holder() );
 
 	if ( !comp ) return NULL;
 	if ( SWComponent* existComp = getComponent( comp->queryRtti() ) ) return existComp;

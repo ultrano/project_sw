@@ -20,6 +20,21 @@ SWRigidBody2D::SWRigidBody2D()
 {
 }
 
+SWRigidBody2D::SWRigidBody2D( factory_constructor )
+	: m_center( tvec2::zero )
+	, m_angle( 0 )
+	, m_velocity( tvec2::zero )
+	, m_torque( 0 )
+	, m_elastic( 0 )
+	, m_mass( 1 )
+	, m_inertia( 10 )
+	, m_linearDrag( 0.1f )
+	, m_angularDrag( 0.1f )
+	, m_gravityScale( -tvec2::axisY )
+{
+
+}
+
 SWRigidBody2D::~SWRigidBody2D()
 {
 }
