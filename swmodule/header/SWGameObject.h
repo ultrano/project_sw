@@ -39,6 +39,7 @@ public:
 
     void awake();
     void destroy();
+	void destroyNow();
 
 	void udpate();
 

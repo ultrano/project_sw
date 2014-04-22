@@ -29,6 +29,7 @@ public:
     
     //! 객체를 찾는다.
     SWGameObject* findGO( const char* name );
+	void reserveDestroy( const SWGameObject* go );
     
 private:
 
@@ -73,6 +74,7 @@ private:
 	SWObject::List m_roots;
 	SWObject::List m_updates;
 	SWObject::List m_renderers;
+	SWObject::List m_destroyGOs;
 };
 
 #endif

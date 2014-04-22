@@ -27,7 +27,6 @@ SWGameScene::~SWGameScene()
 
 SWGameObject* SWGameScene::findGO( const char *name )
 {
-
 	SWObject::List::iterator itor = m_roots.begin();
 	for ( ; itor != m_roots.end() ; ++itor )
 	{
@@ -35,6 +34,11 @@ SWGameObject* SWGameScene::findGO( const char *name )
 		if ( object->getName() == name ) return object;
 	}
 	return NULL;
+}
+
+void SWGameScene::reserveDestroy( const SWGameObject* go )
+{
+	m_destroyGOs.push_back( go );
 }
 
 void SWGameScene::awake()
@@ -51,12 +55,13 @@ void SWGameScene::destroy()
 	SWObject::List::iterator itor = m_updates.begin();
 	for ( ; itor != m_updates.end() ; ++itor )
 	{
-		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
-		object->destroy();
+		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+		go->destroyNow();
 	}
 
 	m_updates.clear();
 	m_renderers.clear();
+	m_destroyGOs.clear();
 
 	SWInput.removeInputDelegate( GetDelegator(handleEvent) );
 	__super::destroy();
@@ -76,13 +81,30 @@ void SWGameScene::update()
 {
 	onUpdate();
 
-	m_updates = m_roots;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ; ++itor )
+	//! regular update
 	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		go->udpate();
+		m_updates = m_roots;
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
+		{
+			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+			go->udpate();
+		}
 	}
+
+	//! post destroy game objects
+	do
+	{
+		m_updates = m_destroyGOs;
+		m_destroyGOs.clear();
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
+		{
+			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+			if ( !go ) continue;
+			go->destroyNow();
+		}
+	} while ( m_destroyGOs.size() != 0 );
 }
 
 void SWGameScene::draw()

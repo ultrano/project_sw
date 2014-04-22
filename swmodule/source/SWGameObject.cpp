@@ -8,6 +8,7 @@
 
 #include "SWGameObject.h"
 #include "SWGameScene.h"
+#include "SWGameContext.h"
 #include "SWTransform.h"
 #include "SWBehavior.h"
 #include "SWLog.h"
@@ -46,6 +47,11 @@ void SWGameObject::awake()
 }
 
 void SWGameObject::destroy()
+{
+	SW_GC.getScene()->reserveDestroy( this );
+}
+
+void SWGameObject::destroyNow()
 {
 	SWGameObject::Ref holder = this;
 	removeComponentAll();

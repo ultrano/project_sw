@@ -263,7 +263,7 @@ void SWTransform::onRemove()
 	for ( ; itor != copy.end() ; ++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		go->destroy();
+		go->destroyNow();
 	}
 	copy.clear();
 	m_children.clear();
