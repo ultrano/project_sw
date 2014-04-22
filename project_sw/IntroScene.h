@@ -60,7 +60,7 @@ public:
 			transform->setLocalPosition( tvec3::zero );
 
 			WIImage* image = go->addComponent<WIImage>();
-			image->setTexture( SWAssets.loadTexture( "logo3.png" ) );
+			image->setTexture( SWAssets.loadTexture( "logo5.png" ) );
 			image->setSizeToTexture();
 			image->setColor( tcolor( 1,1,1,0 ) );
 
