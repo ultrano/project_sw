@@ -28,6 +28,14 @@ SWGameObject::SWGameObject()
 	addComponent<SWTransform>();
 }
 
+SWGameObject::SWGameObject( factory_constructor )
+	: m_name( "nonamed" )
+{
+	//! don't add transform component
+	//! when created by factory.
+	//! because transform will be added by loader from data.
+}
+
 SWGameObject::SWGameObject( const tstring& name )
 	: m_name( name )
 {
@@ -37,10 +45,6 @@ SWGameObject::SWGameObject( const tstring& name )
 SWGameObject::~SWGameObject()
 {
 	SWLog( "delete game object [%s:%d]", m_name.c_str(), getID() );
-}
-
-void SWGameObject::awake()
-{
 }
 
 void SWGameObject::destroy()

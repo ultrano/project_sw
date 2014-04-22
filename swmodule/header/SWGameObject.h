@@ -21,23 +21,12 @@ class SWGameObject : public SWObject
 	friend class SWGameScene;
 
 public:
-	typedef ttable< tstring,SWObject::Ref > ObjectMap;
-
-private:
-    thashstr        m_name;
-	SWObject::Array m_components;
-	SWObject::List  m_addedComponents;
-
-	SWObject::List   m_updateDelegates;
-	ObjectMap      m_propTable;
-
-public:
 
 	SWGameObject();
+	SWGameObject( factory_constructor );
 	SWGameObject( const tstring& name );
     ~SWGameObject();
 
-    void awake();
     void destroy();
 	void destroyNow();
 
@@ -53,12 +42,6 @@ public:
 	template<typename T>
 	T* getComponent() const { return (T*)getComponent( T::getRtti() ); };
 	SWComponent* getComponent( const SWRtti* rtti ) const;
-	
-	/*
-	template<typename T>
-	SWObjectList getComponentsOf() { return getComponentsOf( T::getRtti() ); };
-	SWObjectList getComponentsOf( const SWRtti* rtti );
-	*/
 
 	template<typename T>
 	void removeComponent() { removeComponent( T::getRtti() ); };
@@ -76,6 +59,15 @@ public:
 
 	void sendMessage( const tstring& msgName, SWObject* param );
 
+private:
+
+	typedef ttable< tstring,SWObject::Ref > ObjectMap;
+	thashstr        m_name;
+	SWObject::Array m_components;
+	SWObject::List  m_addedComponents;
+
+	SWObject::List  m_updateDelegates;
+	ObjectMap       m_propTable;
 };
 
 #endif
