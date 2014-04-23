@@ -33,6 +33,10 @@ public:
 	T* getComponent() const { return (T*)getComponent( T::getRtti() ); };
 	SWComponent* getComponent( const SWRtti* rtti ) const;
 
+	void destroy();
+
+private:
+
 	virtual void onAwake() {};
 	virtual void onStart() {};
 	virtual void onRemove() {};
