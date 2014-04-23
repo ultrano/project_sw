@@ -29,21 +29,30 @@ public:
 
 	typedef tlist< Ref, SWAllocator< Ref > > List;
 	typedef tarray< Ref, SWAllocator< Ref > > Array;
+	typedef tset< Ref, SWAllocator< Ref > > Set;
 
 	typedef tlist< WRef, SWAllocator< WRef > > WList;
 	typedef tarray< WRef, SWAllocator< WRef > > WArray;
-
-private:
-	unsigned     m_id;        //< 객체의 유일성을 위한 ID
-	SWObject::List m_delegates;
+	typedef tset< Ref, SWAllocator< WRef > > WSet;
 
 public:
 	SWObject();
 	~SWObject();
-	unsigned getID() const { return m_id; };
+	tuint getID() const { return m_id; };
 	SWDelegator* getDelegator( const SWHandler& handler );
 	virtual tstring toString() const;
 	virtual void destroy();
+
+protected:
+
+	friend class SWObjectWriter;
+	friend class SWObjectReader;
+	virtual void serialize( SWObjectWriter* ow ) {};
+	virtual void deserialize( SWObjectReader* or ) {};
+
+private:
+	tuint m_id;        //< 객체의 유일성을 위한 ID
+	SWObject::List m_delegates;
 };
 
 #define GetDelegator( method ) ( getDelegator( SWHandler::delimit(&__this::method) ) )

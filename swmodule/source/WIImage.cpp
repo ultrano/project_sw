@@ -9,6 +9,7 @@
 #include "TIndex3.h"
 #include "SWAssets.h"
 #include "SWTexture.h"
+#include "SWObjectStream.h"
 
 #include "WIDefines.h"
 
@@ -202,4 +203,43 @@ void WIImage::setUVRect( float x, float y, float width, float height )
 {
 	m_uvRect.setRect( x, y, x+width, y+height );
 	m_updateTex = true;
+}
+
+void WIImage::serialize( SWObjectWriter* ow )
+{
+	ow->writeFloat( m_width );
+	ow->writeFloat( m_height );
+	ow->writeInt( m_alignV );
+	ow->writeInt( m_alignH );
+	ow->writeRect( m_uvRect );
+	ow->writeColor( m_color );
+
+	tstring path;
+	bool isAsset = SWAssets.findPathOfTexture( m_texture(), path );
+	ow->writeBool( isAsset );
+	if ( isAsset )
+	{
+		ow->writeString( path );
+	}
+}
+
+void WIImage::deserialize( SWObjectReader* or )
+{
+	m_width = or->readFloat();
+	m_height = or->readFloat();
+	m_alignV = or->readInt();
+	m_alignH = or->readInt();
+	or->readRect( m_uvRect );
+	or->readColor( m_color );
+
+	bool isAsset = or->readBool();
+	if ( isAsset )
+	{
+		tstring path;
+		or->readString( path );
+		setTexture( SWAssets.loadTexture( path ) );
+	}
+
+	m_updateTex = true;
+	m_updateVert = true;
 }

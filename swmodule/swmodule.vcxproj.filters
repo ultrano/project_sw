@@ -262,6 +262,9 @@
     <Filter Include="SW\SWAct\SWActScaleTo">
       <UniqueIdentifier>{28d9d26d-43b1-40c4-a0e2-c345ad8a1b07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWObjectStream">
+      <UniqueIdentifier>{cbf9a09d-6cf4-45e7-a2c3-91d91d324e88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -549,6 +552,9 @@
     <ClInclude Include="header\SWActScaleTo.h">
       <Filter>SW\SWAct\SWActScaleTo</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWObjectStream.h">
+      <Filter>SW\SWObjectStream</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -778,6 +784,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActScaleTo.cpp">
       <Filter>SW\SWAct\SWActScaleTo</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWObjectStream.cpp">
+      <Filter>SW\SWObjectStream</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

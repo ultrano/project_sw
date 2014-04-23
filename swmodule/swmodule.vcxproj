@@ -115,6 +115,7 @@
     <ClInclude Include="header\SWCriticalSection.h" />
     <ClInclude Include="header\SWDefines.h" />
     <ClInclude Include="header\SWFileStream.h" />
+    <ClInclude Include="header\SWObjectStream.h" />
     <ClInclude Include="header\SWOpenGL.h" />
     <ClInclude Include="header\SWPhysics2D.h" />
     <ClInclude Include="header\SWPlatformAssetsAccessor.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
+    <ClCompile Include="source\SWObjectStream.cpp" />
     <ClCompile Include="source\SWOpenGL.cpp" />
     <ClCompile Include="source\SWPhysics2D.cpp" />
     <ClCompile Include="source\SWPlatformAssetsAccessor.cpp" />

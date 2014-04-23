@@ -13,6 +13,7 @@
 #include "SWLog.h"
 #include "SWParam.h"
 #include "SWMath.h"
+#include "SWObjectStream.h"
 #include <algorithm>
 #include <math.h>
 
@@ -312,4 +313,33 @@ void SWTransform::updateMatrix()
 		m_worldMat = getLocalMatrix();
 	}
 	m_worldMat.inverse( m_invWorldMat );
+}
+
+void SWTransform::serialize( SWObjectWriter* ow )
+{
+	ow->writeUInt( m_children.size() );
+	SWObject::List::iterator itor = m_children.begin();
+	for ( ; itor != m_children.end() ; ++itor )
+	{
+		ow->writeObject( (*itor)() );
+	}
+	
+	ow->writeVec3( m_scale );
+	ow->writeQuat( m_rotate );
+	ow->writeVec3( m_euler );
+	ow->writeVec3( m_position );
+}
+
+void SWTransform::deserialize( SWObjectReader* or )
+{
+	m_children.resize( or->readUInt() );
+	for ( int i = 0 ; i < m_children.size() ; ++i )
+	{
+		m_children.push_back( or->readObject() );
+	}
+
+	or->readVec3( m_scale );
+	or->readQuat( m_rotate );
+	or->readVec3( m_euler );
+	or->readVec3( m_position );
 }

@@ -35,7 +35,7 @@ public:
 
 	void destroy();
 
-private:
+protected:
 
 	virtual void onAwake() {};
 	virtual void onStart() {};

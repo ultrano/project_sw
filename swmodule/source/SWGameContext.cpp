@@ -21,6 +21,7 @@
 #include "WIImage.h"
 #include "WIText.h"
 #include "SWMeshRenderer.h"
+#include "SWGameObject.h"
 
 void registerBasicObjectFactories( SWGameContext* gc )
 {
@@ -33,6 +34,7 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<WIImage>();
 	gc->registerFactory<WIText>();
 	gc->registerFactory<SWMeshRenderer>();
+	gc->registerFactory<SWGameObject>();
 }
 
 #include <memory>

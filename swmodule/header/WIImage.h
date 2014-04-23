@@ -34,6 +34,11 @@ public:
 	void setColor( const tcolor& color );
 	const tcolor& getColor() const;
 
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	void onAwake();
@@ -45,16 +50,17 @@ private:
 
 	float m_width;
 	float m_height;
-	trect m_uvRect;
 
 	int m_alignV;
 	int m_alignH;
 
-	bool m_updateVert;
-	bool m_updateTex;
+	trect m_uvRect;
+	tcolor m_color;
 
 	SWHardRef<SWTexture> m_texture;
-	tcolor m_color;
+
+	bool m_updateVert;
+	bool m_updateTex;
 };
 
 #endif // __UIImage_h_

@@ -13,6 +13,7 @@
 #include "SWBehavior.h"
 #include "SWLog.h"
 #include "SWProfiler.h"
+#include "SWObjectStream.h"
 
 #include <algorithm>
 
@@ -204,5 +205,55 @@ void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 		SWBehavior* comp = swrtti_cast<SWBehavior>( (*itor)() );
 		if ( comp == NULL ) continue;
 		comp->delegateMessage( msgName, param );
+	}
+}
+
+void SWGameObject::serialize( SWObjectWriter* ow )
+{
+	ow->writeString( m_name.str() );
+
+	ow->writeUInt( m_components.size() );
+	for ( int i = 0 ; i < m_components.size() ; ++i )
+	{
+		SWObject* object = (m_components[i])();
+		ow->writeObject( object );
+	}
+
+	ow->writeUInt( m_propTable.size() );
+	for ( ObjectMap::iterator itor = m_propTable.begin()
+		; itor != m_propTable.end() 
+		; ++itor )
+	{
+		ow->writeString( itor->first );
+		ow->writeObject( itor->second() );
+	}
+}
+
+void SWGameObject::deserialize( SWObjectReader* or )
+{
+	{
+		tstring name;
+		or->readString( name );
+		m_name = name;
+	}
+
+	m_components.resize( or->readUInt() );
+	for ( int i = 0 ; i < m_components.size() ; ++i )
+	{
+		m_components[i] = or->readObject();
+	}
+	for ( int i = 0 ; i < m_components.size() ; ++i )
+	{
+		SWComponent* comp = swrtti_cast<SWComponent>( m_components[i]() );
+		comp->onAwake();
+	}
+
+	tuint count = or->readUInt();
+	while ( count-- )
+	{
+		tstring   name;
+		or->readString( name );
+		SWObject* prop = or->readObject();
+		m_propTable[ name ] = prop;
 	}
 }

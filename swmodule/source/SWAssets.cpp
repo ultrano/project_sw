@@ -100,3 +100,17 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 	m_shaderCache[ filePath ] = shader();
 	return shader;
 }
+
+bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )
+{
+	TextureTable::iterator itor = m_texCache.begin();
+	for ( ; itor != m_texCache.end() ; ++itor )
+	{
+		if ( itor->second() == texture )
+		{
+			path = itor->first.str();
+			return true;
+		}
+	}
+	return false;
+}

@@ -59,6 +59,11 @@ public:
 
 	void sendMessage( const tstring& msgName, SWObject* param );
 
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	typedef ttable< tstring,SWObject::Ref > ObjectMap;

@@ -59,6 +59,11 @@ public:
 	SWTransform* find( const tstring& name );
 	void copyChildren( SWObject::List& transList );
 
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	void onAwake();
@@ -70,13 +75,14 @@ private:
 private:
 
 	SWWeakRef<SWTransform> m_parent;
-	SWObject::List           m_children;
-	SWObject::List           m_setParentDelegates;
+	SWObject::List         m_children;
+	SWObject::List         m_setParentDelegates;
 
 	TVector3f    m_scale;    //< 비율.
 	TQuaternion  m_rotate;   //< 회전.
 	TVector3f    m_euler;
 	TVector3f    m_position; //< 위치.
+
 	TMatrix4x4   m_worldMat; //< world matrix
 	TMatrix4x4   m_localMat; //< local matrix
 	TMatrix4x4   m_invWorldMat;
