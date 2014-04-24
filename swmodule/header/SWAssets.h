@@ -19,6 +19,7 @@ public:
 	SWHardRef<SWShader>  loadShader( const tstring& filePath );
 
 	bool findPathOfTexture( SWTexture* texture, tstring& path );
+	bool findPathOfShader( SWShader* shader, tstring& path );
 private:
 
 	__SWAssets();

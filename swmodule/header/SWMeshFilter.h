@@ -18,6 +18,11 @@ public:
 
 	void draw();
 
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	void onAwake();

@@ -114,3 +114,17 @@ bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )
 	}
 	return false;
 }
+
+bool __SWAssets::findPathOfShader( SWShader* shader, tstring& path )
+{
+	ShaderTable::iterator itor = m_shaderCache.begin();
+	for ( ; itor != m_shaderCache.end() ; ++itor )
+	{
+		if ( itor->second() == shader )
+		{
+			path = itor->first.str();
+			return true;
+		}
+	}
+	return false;
+}

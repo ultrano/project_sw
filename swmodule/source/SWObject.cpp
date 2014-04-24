@@ -9,6 +9,8 @@
 #include "SWObject.h"
 #include "SWLog.h"
 #include "SWRtti.h"
+#include "SWByteBufferStream.h"
+#include "SWObjectStream.h"
 
 int& getObjectCount()
 {
@@ -65,6 +67,19 @@ void SWObject::destroy()
 		dg->destroy();
 	}
 	_make_zero_ref();
+}
+
+SWHardRef<SWObject> SWObject::clone()
+{
+	SWByteBufferOutputStream* bbos = new SWByteBufferOutputStream();
+	SWHardRef<SWObjectWriter> ow = new SWObjectWriter( bbos );
+	ow()->writeObject( this );
+
+	SWByteBufferInputStream* bbis = new SWByteBufferInputStream( bbos->getBuffer() );
+	SWHardRef<SWObjectReader> or = new SWObjectReader( bbis );
+
+	SWHardRef<SWObject> ret = or()->readObject();
+	return ret;
 }
 
 SWDelegator::SWDelegator( SWObject* object, const SWHandler& handler )

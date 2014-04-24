@@ -48,6 +48,9 @@
 
 #include "SWActAlphaTo.h"
 
+#include "SWObjectStream.h"
+#include "SWByteBufferStream.h"
+
 #include <stdio.h>
 #include <set>
 #include <map>
@@ -136,7 +139,18 @@ public:
 		{
 			SWAction* action = go->addComponent<SWAction>();
 			action->setAct( "pop", new SWActAlphaTo( 3, 0 ) );
-			action->play( "pop" );
+			//action->play( "pop" );
+
+			{
+				/*
+				SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "test.txt" );
+				SWHardRef<SWObjectReader> or = new SWObjectReader( is() );
+				go = swrtti_cast<SWGameObject>( or()->readObject() );
+
+				tvec3 pos = SWCamera::mainCamera()->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
+				go->getComponent<SWTransform>()->setPosition( pos );
+				*/
+			}
 		}
 	}
 
@@ -146,6 +160,19 @@ public:
 		{
 			SWHardRef<SWObject> scene = SW_GC.newInstance( "IntroScene" );
 			SW_GC.setNextScene( swrtti_cast<SWGameScene>( scene() ) );
+		}
+		
+		if ( SWInput.getTouchState() == SW_TouchPress )
+		{
+			//! object streaming test
+			{
+				SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "test.txt" );
+				SWHardRef<SWObjectReader> or = new SWObjectReader( is() );
+				SWGameObject* go = swrtti_cast<SWGameObject>( or()->readObject() );
+
+				tvec3 pos = SWCamera::mainCamera()->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
+				go->getComponent<SWTransform>()->setPosition( pos );
+			}
 		}
 	}
 

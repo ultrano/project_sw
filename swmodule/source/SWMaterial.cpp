@@ -3,6 +3,8 @@
 #include "SWShader.h"
 #include "SWTexture.h"
 #include "SWOpenGL.h"
+#include "SWObjectStream.h"
+#include "SWAssets.h"
 
 SWHardRef<SWShader> SWMaterial::m_defaultShader = NULL;
 
@@ -14,6 +16,12 @@ SWMaterial::SWMaterial( const SWShader* shader )
 {
 	setShader( shader );
 }
+
+SWMaterial::SWMaterial( factory_constructor )
+{
+
+}
+
 SWMaterial::~SWMaterial()
 {
 }
@@ -235,4 +243,30 @@ void SWMaterial::setDefaultShader( SWShader* shader )
 {
 	m_defaultShader = NULL;
 	m_defaultShader = shader;
+}
+
+void SWMaterial::serialize( SWObjectWriter* ow )
+{
+	tstring path;
+	bool isAsset = SWAssets.findPathOfShader( m_shader(), path );
+	ow->writeBool( isAsset );
+	if ( isAsset )
+	{
+		ow->writeString( path );
+	}
+}
+
+void SWMaterial::deserialize( SWObjectReader* or )
+{
+	bool isAsset = or->readBool();
+	if ( isAsset )
+	{
+		tstring path;
+		or->readString( path );
+		m_shader = SWAssets.loadShader( path );
+	}
+	else
+	{
+		m_shader = m_defaultShader;
+	}
 }

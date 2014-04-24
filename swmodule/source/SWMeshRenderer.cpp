@@ -6,14 +6,18 @@
 #include "SWShader.h"
 #include "SWCamera.h"
 #include "SWTexture.h"
+#include "SWObjectStream.h"
 
 SWMeshRenderer::SWMeshRenderer()
+	: m_material( new SWMaterial() )
 {
+	m_material()->setVector4( "COLOR", tquat(1,1,1,1) );
 }
 
 SWMeshRenderer::SWMeshRenderer( factory_constructor )
+	: m_material( new SWMaterial() )
 {
-
+	m_material()->setVector4( "COLOR", tquat(1,1,1,1) );
 }
 
 SWMeshRenderer::~SWMeshRenderer()
@@ -40,18 +44,6 @@ void SWMeshRenderer::onAwake()
 {
 	__super::onAwake();
 	m_filter = gameObject()->getComponent<SWMeshFilter>();
-	m_material = new SWMaterial();
-	m_material()->setVector4( "COLOR", tquat(1,1,1,1) );
-}
-
-void SWMeshRenderer::setTexture( SWTexture* texture )
-{
-	m_texture = texture;
-}
-
-SWTexture* SWMeshRenderer::getTexture()
-{
-	return m_texture();
 }
 
 void SWMeshRenderer::setMeshFilter( SWMeshFilter* filter )
@@ -72,4 +64,14 @@ void SWMeshRenderer::setMaterial( SWMaterial* material )
 SWMaterial* SWMeshRenderer::getMaterial() const
 {
 	return m_material();
+}
+
+void SWMeshRenderer::serialize( SWObjectWriter* ow )
+{
+	ow->writeObject( m_material() );
+}
+
+void SWMeshRenderer::deserialize( SWObjectReader* or )
+{
+	m_material = swrtti_cast<SWMaterial>( or->readObject() );
 }

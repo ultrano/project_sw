@@ -36,12 +36,14 @@ public:
 	typedef tset< Ref, SWAllocator< WRef > > WSet;
 
 public:
+
 	SWObject();
 	~SWObject();
 	tuint getID() const { return m_id; };
 	SWDelegator* getDelegator( const SWHandler& handler );
 	virtual tstring toString() const;
 	virtual void destroy();
+	virtual SWHardRef<SWObject> clone();
 
 protected:
 

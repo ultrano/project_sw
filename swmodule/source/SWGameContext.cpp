@@ -22,19 +22,22 @@
 #include "WIText.h"
 #include "SWMeshRenderer.h"
 #include "SWGameObject.h"
-
+#include "SWMesh.h"
+#include "SWMaterial.h"
 void registerBasicObjectFactories( SWGameContext* gc )
 {
 	gc->registerFactory<SWAction>();
 	gc->registerFactory<SWAnimation>();
 	gc->registerFactory<SWCamera>();
-	gc->registerFactory<SWMeshFilter>();
 	gc->registerFactory<SWRigidBody2D>();
 	gc->registerFactory<SWTransform>();
-	gc->registerFactory<WIImage>();
-	gc->registerFactory<WIText>();
+	gc->registerFactory<SWMeshFilter>();
 	gc->registerFactory<SWMeshRenderer>();
 	gc->registerFactory<SWGameObject>();
+	gc->registerFactory<SWMesh>();
+	gc->registerFactory<SWMaterial>();
+	gc->registerFactory<WIImage>();
+	gc->registerFactory<WIText>();
 }
 
 #include <memory>

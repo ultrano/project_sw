@@ -11,11 +11,6 @@ class SWMeshRenderer : public SWRenderer
 {
 	SW_RTTI( SWMeshRenderer, SWRenderer );
 
-	SWHardRef<SWTexture> m_texture;
-	TMatrix4x4  m_texMat;
-	SWWeakRef<SWMeshFilter> m_filter;
-	SWHardRef<SWMaterial> m_material;
-
 public:
 	
 	SWMeshRenderer();
@@ -24,16 +19,25 @@ public:
 
 	void render();
 
-	void setTexture( SWTexture* texture );
-	SWTexture* getTexture();
-
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();
 
 	void setMaterial( SWMaterial* material );
 	SWMaterial* getMaterial() const;
 
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
+private:
+
 	void onAwake();
+
+private:
+
+	SWWeakRef<SWMeshFilter> m_filter;
+	SWHardRef<SWMaterial> m_material;
 };
 
 #endif // SWMeshRenderer_h__

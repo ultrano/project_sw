@@ -40,6 +40,7 @@ protected:
 	virtual void onAwake() {};
 	virtual void onStart() {};
 	virtual void onRemove() {};
+
 };
 
 #endif

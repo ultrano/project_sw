@@ -95,19 +95,37 @@ void SWGameObject::udpate()
 
 SWComponent* SWGameObject::addComponent( const SWRtti* rtti )
 {
-	SWHardRef<SWObject> holder = SW_GC.newInstance( rtti );
-	SWComponent* comp = swrtti_cast<SWComponent>( holder() );
+	if ( SWComponent* existComp = getComponent( rtti ) ) return existComp;
 
-	if ( !comp ) return NULL;
-	if ( SWComponent* existComp = getComponent( comp->queryRtti() ) ) return existComp;
+	SWComponent* comp = NULL;
+	for ( int i = 0 ; i < m_loadedComponents.size() ; ++i )
+	{
+		comp = swrtti_cast<SWComponent>( (m_loadedComponents[i])() );
+		if ( comp->queryRtti() == rtti ) break; 
+		comp = NULL;
+	}
 
-	m_components.push_back( comp );
+	SWHardRef<SWObject> holder = NULL;
+	if ( comp == NULL )
+	{
+		holder = SW_GC.newInstance( rtti );
+		comp = swrtti_cast<SWComponent>( holder() );
+		if ( comp == NULL ) return NULL;
+	}
 
-	comp->gameObject = this;
-	m_addedComponents.push_back( comp );
-	comp->onAwake();
-
+	registerComponent( comp );
 	return comp;
+}
+
+void SWGameObject::registerComponent( SWComponent* comp )
+{
+	if ( !comp ) return;
+	if ( getComponent( comp->queryRtti() ) != NULL ) return;
+
+	m_addedComponents.push_back( comp );
+	m_components.push_back( comp );
+	comp->gameObject = this;
+	comp->onAwake();
 }
 
 SWComponent* SWGameObject::getComponent( const SWRtti* rtti ) const
@@ -237,16 +255,18 @@ void SWGameObject::deserialize( SWObjectReader* or )
 		m_name = name;
 	}
 
-	m_components.resize( or->readUInt() );
-	for ( int i = 0 ; i < m_components.size() ; ++i )
+	m_loadedComponents.resize( or->readUInt() );
+	for ( int i = 0 ; i < m_loadedComponents.size() ; ++i )
 	{
-		m_components[i] = or->readObject();
+		m_loadedComponents[i] = or->readObject();
 	}
-	for ( int i = 0 ; i < m_components.size() ; ++i )
+
+	for ( int i = 0 ; i < m_loadedComponents.size() ; ++i )
 	{
-		SWComponent* comp = swrtti_cast<SWComponent>( m_components[i]() );
-		comp->onAwake();
+		SWComponent* comp = swrtti_cast<SWComponent>( m_loadedComponents[i]() );
+		registerComponent( comp );
 	}
+	m_loadedComponents.clear();
 
 	tuint count = or->readUInt();
 	while ( count-- )

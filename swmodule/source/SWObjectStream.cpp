@@ -92,6 +92,11 @@ void SWObjectWriter::writeColor( const tcolor& val )
 	m_os()->write( (tbyte*)&val, sizeof(val) );
 }
 
+void SWObjectWriter::writeIndex3( const tindex3& val )
+{
+	m_os()->write( (tbyte*)&val, sizeof(val) );
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 SWObjectReader::SWObjectReader( SWInputStream* is )
@@ -201,6 +206,11 @@ void SWObjectReader::readRect( trect& val )
 }
 
 void SWObjectReader::readColor( tcolor& val )
+{
+	m_is()->read( (tbyte*)&val, sizeof( val ) );
+}
+
+void SWObjectReader::readIndex3( tindex3& val )
 {
 	m_is()->read( (tbyte*)&val, sizeof( val ) );
 }

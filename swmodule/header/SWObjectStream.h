@@ -28,6 +28,7 @@ public:
 	void writeMat44( const tmat44& val );
 	void writeRect( const trect& val );
 	void writeColor( const tcolor& val );
+	void writeIndex3( const tindex3& val );
 
 private:
 	typedef ttable< tuint, SWHardRef<SWObject> > ObjectTable;
@@ -59,6 +60,7 @@ public:
 	void  readMat44( tmat44& val );
 	void  readRect( trect& val );
 	void  readColor( tcolor& val );
+	void  readIndex3( tindex3& val );
 
 private:
 	typedef ttable< tuint, SWHardRef<SWObject> > ObjectTable;

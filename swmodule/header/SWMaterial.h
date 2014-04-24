@@ -23,6 +23,7 @@ public:
 
 	SWMaterial();
 	SWMaterial( const SWShader* shader );
+	SWMaterial( factory_constructor );
 	~SWMaterial();
 
 	void setShader( const SWShader* shader );;
@@ -43,6 +44,11 @@ public:
 	SWTexture* getTexture( const tstring& name ) const;
 
 	void apply();
+
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 
 private:
 

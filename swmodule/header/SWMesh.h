@@ -13,6 +13,7 @@ class SWMesh : public SWObject
 public:
 
     SWMesh();
+	SWMesh( factory_constructor );
     ~SWMesh();
     
 	void setVertexStream( size_t count, const TVector3f* stream );
@@ -42,10 +43,15 @@ public:
 	void updateMesh();
 	void draw();
     
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 	tarray< TVector3f >  m_vertices;
 	tarray< TVector2f >  m_texCoords;
-	tarray< TIndex3 >  m_triangles;
+	tarray< TIndex3 >    m_triangles;
 	bool m_updateMesh;
     tuint m_vaoID;
     tuint m_vboID;

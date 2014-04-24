@@ -66,9 +66,14 @@ protected:
 
 private:
 
+	void registerComponent( SWComponent* comp );
+
+private:
+
 	typedef ttable< tstring,SWObject::Ref > ObjectMap;
 	thashstr        m_name;
 	SWObject::Array m_components;
+	SWObject::Array m_loadedComponents;
 	SWObject::List  m_addedComponents;
 
 	SWObject::List  m_updateDelegates;
