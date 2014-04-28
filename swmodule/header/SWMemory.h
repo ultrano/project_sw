@@ -73,4 +73,14 @@ struct SWAllocator {
         p->~T();
     }
 };
+template<class _Ty, class _Other> 
+inline bool operator==(const SWAllocator<_Ty>&, const SWAllocator<_Other>&)
+{	// test for allocator equality
+	return (true);
+}
+template<class _Ty, class _Other> 
+inline bool operator==(const SWAllocator<_Ty>&, const _Other&)
+{	// test for allocator equality
+	return (false);
+}
 #endif

@@ -164,10 +164,7 @@ void SWGameContext::onFrameMove()
 
 void SWGameContext::onRender()
 {
-	if ( SWCamera::mainCamera.isValid() == false ) return;
-
-	const tcolor& color = SWCamera::mainCamera()->getClearColor();
-	glClearColor( color.r, color.g, color.b, color.a );
+	glClearColor( 1, 1, 1, 1 );
 	glClear( GL_COLOR_BUFFER_BIT );
 	if ( SWGameScene* scene = m_currentScene() )
 	{

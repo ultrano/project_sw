@@ -17,7 +17,7 @@ public:
 	SWMeshRenderer( factory_constructor );
 	~SWMeshRenderer();
 
-	void render();
+	void render( SWCamera* );
 
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();

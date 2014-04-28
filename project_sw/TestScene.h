@@ -84,28 +84,46 @@ public:
 			pos = pos * mat1;
 		}
 
-		//! set default camera
+		//! set primary camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
 			SWGameObject* go = new SWGameObject;
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
-			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
+			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -100 ) );
 			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
-			SWCamera::mainCamera = cam;
+		}
+
+		//! set secondary camera
+		{
+			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
+			SWGameObject* go = new SWGameObject;
+			SWCamera* cam = go->addComponent<SWCamera>();
+			cam->setTargetLayerName( "second" );
+			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
+			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -100 ) );
+
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWActSequence* seq = new SWActSequence();
+			seq->addAct( new SWActMoveBy( 2, tvec3( 100, 0, 0 ) ) );
+			seq->addAct( new SWActMoveBy( 2, tvec3( -100, 0, 0 ) ) );
+			action->setAct( "test", new SWActRepeat( seq ) );
+			action->play( "test" );
+
 		}
 
 		{
 			WIImage* parent = makeCatImg();
 			SWTransform* trans = parent->getComponent<SWTransform>();
-			trans->setLocalPosition( tvec3( 0, 0, 0 ) );
+			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
 		
 
 			WIImage* child = makeCatImg();
+			child->gameObject()->setLayerName( "second" );
 			child->gameObject()->setName( "child" );
 			trans = child->getComponent<SWTransform>();
-			//trans->setParent( parent->getComponent<SWTransform>() );
-			trans->setPosition( tvec3( 100, 100, 0 ) );
+			trans->setLocalPosition( tvec3( 10, 10, -3 ) );
 		}
 
 		{
@@ -172,11 +190,11 @@ public:
 
 		if ( SWInput.getTouchState() == SW_TouchPress )
 		{
-			SWHardRef<SWObject> object = findGO( "img" )->clone();
-			SWGameObject* go = swrtti_cast<SWGameObject>( object() );
-			go->setActive( true );
-			tvec3 pos = SWCamera::mainCamera()->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
-			go->getComponent<SWTransform>()->setPosition( pos );
+			//SWHardRef<SWObject> object = findGO( "img" )->clone();
+			//SWGameObject* go = swrtti_cast<SWGameObject>( object() );
+			//go->setActive( true );
+			//tvec3 pos = SWCamera::mainCamera()->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
+			//go->getComponent<SWTransform>()->setPosition( pos );
 		}
 	}
 

@@ -10,8 +10,6 @@ class SWCamera : public SWComponent
 
 public:
 
-	static SWHardRef<SWCamera> mainCamera;
-
 	SWCamera();
 	SWCamera( factory_constructor );
 	~SWCamera();
@@ -28,6 +26,16 @@ public:
 	const TMatrix4x4& getProjMatrix() const;
 	const TMatrix4x4& getViewMatrix() const;
 	const TMatrix4x4& getVPMatrix() const;
+
+	const thashstr& getTargetLayerName() const;
+	void setTargetLayerName( const thashstr& name );
+
+	int getDepth() const { return m_depth; }
+	void setDepth( int depth ) { m_depth = depth; }
+
+	const tvec3& getLookDir() const { return m_lookDir; }
+	const tvec3& getUpDir() const { return m_upDir; }
+	const tvec3& getRightDir() const { return m_rightDir; }
 
 private:
 
@@ -46,6 +54,13 @@ private:
 	float m_far;
 
 	tcolor m_clearColor;
+
+	thashstr m_layerName;
+	int m_depth;
+
+	tvec3 m_lookDir;
+	tvec3 m_upDir;
+	tvec3 m_rightDir;
 };
 
 #endif // SWCamera_h__

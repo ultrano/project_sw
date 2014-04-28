@@ -35,8 +35,8 @@ public:
 	void setName( const thashstr& name ) { m_name = name; }
 	const thashstr&  getName() const { return m_name; }
 
-	void setLayer( const thashstr& layer) { m_layer = layer; }
-	const thashstr& getLayer() const { return m_layer; }
+	void setLayerName( const thashstr& layer) { m_layer = layer; }
+	const thashstr& getLayerName() const { return m_layer; }
 
 	void setActive( bool active );
 	bool isActiveSelf() const;

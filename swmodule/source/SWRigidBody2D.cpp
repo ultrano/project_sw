@@ -55,6 +55,7 @@ void SWRigidBody2D::onUpdate()
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	
+	float depth = transform->getPosition().z;
 	float deltaTime = SWTime.getDeltaTime();
 	
 	addAccel( m_gravityScale * ( SWPhysics.getGravityForce() ) * deltaTime );
@@ -65,7 +66,7 @@ void SWRigidBody2D::onUpdate()
 	m_center += linearStep;
 	m_angle  += angularStep;
 
-	transform->setPosition( tvec3( m_center, 0 ) );
+	transform->setPosition( tvec3( m_center, depth ) );
 	transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
 
 	m_velocity -= linearStep* m_linearDrag;

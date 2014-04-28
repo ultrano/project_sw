@@ -2,13 +2,14 @@
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWGameContext.h"
-
-SWHardRef<SWCamera> SWCamera::mainCamera = NULL;
+#include "SWGameScene.h"
 
 SWCamera::SWCamera()
 	: m_near( 0 )
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
+	, m_layerName( "default" )
+	, m_depth( 0 )
 {
 }
 
@@ -16,6 +17,8 @@ SWCamera::SWCamera( factory_constructor )
 	: m_near( 0 )
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
+	, m_layerName( "default" )
+	, m_depth( 0 )
 {
 
 }
@@ -28,10 +31,12 @@ void SWCamera::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
+	SW_GC.getScene()->m_cameras.push_back( this );
 }
 
 void SWCamera::onRemove()
 {
+	SW_GC.getScene()->m_cameras.remove( this );
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
@@ -39,8 +44,28 @@ void SWCamera::onRemove()
 void SWCamera::onUpdate()
 {
 	SWTransform* trans = getComponent<SWTransform>();
-	trans->getWorldMatrix().inverse( m_viewMatrix );
+	const tmat44& worldMat = trans->getWorldMatrix();
+	worldMat.inverse( m_viewMatrix );
 	m_vpMatrix = m_viewMatrix * m_projMatrix;
+
+	{
+		tquat quat(0,0,1,0);
+		quat = (quat * worldMat);
+		quat = quat.normal();
+		m_lookDir = quat.vec();
+	}
+	{
+		tquat quat(0,1, 0,0);
+		quat = (quat * worldMat);
+		quat = quat.normal();
+		m_upDir = quat.vec();
+	}
+	{
+		tquat quat(1,0, 0,0);
+		quat = (quat * worldMat);
+		quat = quat.normal();
+		m_rightDir = quat.vec();
+	}
 }
 
 void SWCamera::orthoMode( float width, float height, float near, float far )
@@ -114,4 +139,14 @@ void SWCamera::setClearColor( const tcolor& color )
 const tcolor& SWCamera::getClearColor() const
 {
 	return m_clearColor;
+}
+
+const thashstr& SWCamera::getTargetLayerName() const
+{
+	return m_layerName;
+}
+
+void SWCamera::setTargetLayerName( const thashstr& name )
+{
+	m_layerName = name;
 }

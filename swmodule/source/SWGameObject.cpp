@@ -26,6 +26,7 @@ public:
 SWGameObject::SWGameObject()
 	: m_name( "nonamed" )
 	, m_active( true )
+	, m_layer( "default" )
 {
 	addComponent<SWTransform>();
 }
@@ -33,6 +34,7 @@ SWGameObject::SWGameObject()
 SWGameObject::SWGameObject( factory_constructor )
 	: m_name( "nonamed" )
 	, m_active( true )
+	, m_layer( "default" )
 {
 	//! don't add transform component
 	//! when created by factory.
@@ -42,6 +44,7 @@ SWGameObject::SWGameObject( factory_constructor )
 SWGameObject::SWGameObject( const tstring& name )
 	: m_name( name )
 	, m_active( true )
+	, m_layer( "default" )
 {
 	addComponent<SWTransform>();
 }

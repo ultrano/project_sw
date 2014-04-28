@@ -4,6 +4,7 @@
 #include "SWComponent.h"
 #include "SWList.h"
 
+class SWCamera;
 class SWRenderer : public SWComponent
 {
 	SW_RTTI( SWRenderer, SWComponent );
@@ -18,11 +19,11 @@ public:
 	void removePreRenderDelegate( const SWDelegator* del );
 
 	void preRender();
-	virtual void render() = 0;
+	virtual void render( SWCamera* ) = 0;
 
-private:
+protected:
 
-	void onStart();
+	void onAwake();
 	void onRemove();
 
 private:

@@ -13,7 +13,10 @@
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
+#include "SWCamera.h"
 #include "SWRenderer.h"
+
+#include <algorithm>
 
 SWGameScene::SWGameScene()
 {
@@ -109,13 +112,65 @@ void SWGameScene::update()
 
 void SWGameScene::draw()
 {
-	SWObject::List::iterator itor = m_renderers.begin();
-	for ( ; itor != m_renderers.end() ; ++itor )
+	struct CameraSorter
 	{
-		SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
-		renderer->preRender();
-		renderer->render();
+		bool operator()( SWObject::Ref left, SWObject::Ref right )
+		{
+			return ((SWCamera*)left())->getDepth() < ((SWCamera*)right())->getDepth();
+		}
+	} cameraSorter;
+
+	struct RendererSorter
+	{
+		tvec3 cameraPos;
+		tvec3 lookDir;
+		RendererSorter( const tvec3& pos, const tvec3& look ) : cameraPos( pos ), lookDir( look ) {}
+		bool operator()( SWObject::Ref left, SWObject::Ref right )
+		{
+			SWTransform* lTrans = ((SWComponent*)left())->getComponent<SWTransform>();
+			SWTransform* rTrans = ((SWComponent*)right())->getComponent<SWTransform>();
+			tvec3 lPos = lTrans->getPosition();
+			tvec3 rPos = rTrans->getPosition();
+			float lDepth = lookDir.dot(lPos - cameraPos);
+			float rDepth = lookDir.dot(rPos - cameraPos);
+			return lDepth < rDepth;
+		}
+	};
+
+	m_cameras.sort( cameraSorter );
+
+	ttable<thashstr,SWObject::List> layers;
+	
+	{
+		SWObject::List::iterator itor = m_renderers.begin();
+		for ( ; itor != m_renderers.end() ; ++itor )
+		{
+			SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
+			SWGameObject* go = renderer->gameObject();
+			layers[ go->getLayerName() ].push_back( renderer );
+		}
 	}
+
+	{
+		SWObject::List::iterator itor = m_cameras.begin();
+		for ( ; itor != m_cameras.end() ; ++itor )
+		{
+			SWCamera* camera = swrtti_cast<SWCamera>((*itor)());
+			SWTransform* transform = camera->getComponent<SWTransform>();
+			SWObject::List& objectList = layers[ camera->getTargetLayerName() ];
+			objectList.sort( RendererSorter( transform->getPosition(), camera->getLookDir() ) );
+
+			SWObject::List::iterator itor2 = objectList.begin();
+			for ( ; itor2 != objectList.end() ; ++itor2 )
+			{
+				SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor2)());
+				renderer->preRender();
+				renderer->render( camera );
+			}
+		}
+	}
+
+	/**/
 	
     onPostDraw();
 }

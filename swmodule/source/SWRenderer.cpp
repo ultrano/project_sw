@@ -18,7 +18,7 @@ SWRenderer::~SWRenderer()
 
 }
 
-void SWRenderer::onStart()
+void SWRenderer::onAwake()
 {
 	SWGameScene* scene = SW_GC.getScene();
 	scene->m_renderers.push_back( this );

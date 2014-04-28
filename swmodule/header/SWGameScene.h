@@ -57,6 +57,7 @@ private:
 private:
 
 	friend class SWTransform;
+	friend class SWCamera;
 	friend class SWRenderer;
 	friend class SWGameContext;
 
@@ -73,6 +74,7 @@ private:
 	//! root game objects
 	SWObject::List m_roots;
 	SWObject::List m_updates;
+	SWObject::List m_cameras;
 	SWObject::List m_renderers;
 	SWObject::List m_destroyGOs;
 };

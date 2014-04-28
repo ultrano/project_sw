@@ -24,13 +24,13 @@ SWMeshRenderer::~SWMeshRenderer()
 {
 }
 
-void SWMeshRenderer::render()
+void SWMeshRenderer::render( SWCamera* camera )
 {
 	if ( m_material.isValid() )
 	{
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 		const TMatrix4x4& model = transform->getWorldMatrix();
-		const TMatrix4x4& vpMat = SWCamera::mainCamera()->getVPMatrix();
+		const TMatrix4x4& vpMat = camera->getVPMatrix();
 		m_material()->setMatrix4x4( "MATRIX_MVP", ( model * vpMat ) );
 		m_material()->apply();
 	}

@@ -265,6 +265,9 @@
     <Filter Include="SW\SWObjectStream">
       <UniqueIdentifier>{cbf9a09d-6cf4-45e7-a2c3-91d91d324e88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWLayer">
+      <UniqueIdentifier>{b456b5ec-041a-4610-bcf6-52b4c68eb436}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -555,6 +558,9 @@
     <ClInclude Include="header\SWObjectStream.h">
       <Filter>SW\SWObjectStream</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWLayer.h">
+      <Filter>SW\SWLayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -787,6 +793,9 @@
     </ClCompile>
     <ClCompile Include="source\SWObjectStream.cpp">
       <Filter>SW\SWObjectStream</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWLayer.cpp">
+      <Filter>SW\SWLayer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
