@@ -50,7 +50,6 @@ public:
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setClearColor( tcolor( 1,1,1,1 ) );
-
 		}
 
 		{
@@ -67,8 +66,8 @@ public:
 
 			SWAction* action = go->addComponent<SWAction>();
 			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActAlphaTo( 0.1f, 1 ) );
-			seq->addAct( new SWActAlphaTo( 0.1f, 0 ) );
+			seq->addAct( new SWActAlphaTo( 1, 1 ) );
+			seq->addAct( new SWActAlphaTo( 2, 0 ) );
 			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
 			action->setAct( "logo", seq );
 			action->play( "logo" );

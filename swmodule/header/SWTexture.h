@@ -16,9 +16,12 @@ public:
 
 	~SWTexture();
 
-	tuint getTextureID() { return m_texID; };
-	tuint getWidth() { return m_width; };
-	tuint getHeight() { return m_height; };
+	tuint getTextureID();
+	tuint getWidth();
+	tuint getHeight();
+
+	void setFilter( int magFilter, int minFilter );
+	void setUVWrap( int wrapU, int wrapV );
 
 private:
 	
