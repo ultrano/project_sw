@@ -64,9 +64,9 @@ void SWTransform::setParent( SWTransform* parent )
 	arr->add( this );
 	arr->add( parent );
 
-	SWObject::List copy = m_setParentDelegates;
-	SWObject::List::iterator itor = copy.begin();
-	for ( ; itor != copy.end() ;++itor )
+	m_updates = m_setParentDelegates;
+	SWObject::List::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ;++itor )
 	{
 		SWDelegator* dg = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( dg == NULL ) m_setParentDelegates.remove( *itor );
@@ -270,14 +270,15 @@ void SWTransform::onAwake()
 void SWTransform::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
-	SWObject::List copy = m_children;
-	SWObject::List::iterator itor = copy.begin();
-	for ( ; itor != copy.end() ; ++itor )
+
+	m_updates = m_children;
+	SWObject::List::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ; ++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		go->destroyNow();
 	}
-	copy.clear();
+	m_updates.clear();
 	m_children.clear();
 	
 	SWGameObject* object = gameObject();
@@ -288,11 +289,18 @@ void SWTransform::onRemove()
 void SWTransform::onUpdate()
 {
 	updateMatrix();
-	SWObject::List::iterator itor = m_children.begin();
-	for ( ; itor != m_children.end() ;++itor )
+
+	SWWeakRef<SWTransform> vital = this;
+	m_updates = m_children;
+	SWObject::List::iterator itor = m_updates.end();
+	for ( ; itor != m_updates.end() ;++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		go->udpate();
+		if ( go->isActiveSelf() )
+		{
+			go->udpate();
+			if ( !vital.isValid() ) break;
+		}
 	}
 }
 

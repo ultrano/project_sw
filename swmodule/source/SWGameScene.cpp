@@ -88,7 +88,7 @@ void SWGameScene::update()
 		for ( ; itor != m_updates.end() ; ++itor )
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			go->udpate();
+			if ( go->isActiveSelf() ) go->udpate();
 		}
 	}
 

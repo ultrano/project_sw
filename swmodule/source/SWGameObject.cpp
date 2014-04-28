@@ -25,12 +25,14 @@ public:
 
 SWGameObject::SWGameObject()
 	: m_name( "nonamed" )
+	, m_active( true )
 {
 	addComponent<SWTransform>();
 }
 
 SWGameObject::SWGameObject( factory_constructor )
 	: m_name( "nonamed" )
+	, m_active( true )
 {
 	//! don't add transform component
 	//! when created by factory.
@@ -39,6 +41,7 @@ SWGameObject::SWGameObject( factory_constructor )
 
 SWGameObject::SWGameObject( const tstring& name )
 	: m_name( name )
+	, m_active( true )
 {
 	addComponent<SWTransform>();
 }
@@ -67,10 +70,10 @@ void SWGameObject::udpate()
 {
 	if ( m_addedComponents.size() )
 	{
-		SWObject::List copy = m_addedComponents;
+		m_updates = m_addedComponents;
 		m_addedComponents.clear();
-		SWObject::List::iterator itor = copy.begin();
-		for ( ; itor != copy.end() ; ++itor )
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
 		{
 			SWComponent* comp = swrtti_cast<SWComponent>( (*itor)() );
 			comp->onStart();
@@ -80,9 +83,9 @@ void SWGameObject::udpate()
 	if ( m_updateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
-		SWObject::List copy = m_updateDelegates;
-		SWObject::List::iterator itor = copy.end();
-		while ( itor != copy.begin() )
+		m_updates = m_updateDelegates;
+		SWObject::List::iterator itor = m_updates.end();
+		while ( itor != m_updates.begin() )
 		{
 			--itor;
 			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
@@ -229,6 +232,7 @@ void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 void SWGameObject::serialize( SWObjectWriter* ow )
 {
 	ow->writeString( m_name.str() );
+	ow->writeBool( m_active );
 
 	ow->writeUInt( m_components.size() );
 	for ( int i = 0 ; i < m_components.size() ; ++i )
@@ -253,6 +257,7 @@ void SWGameObject::deserialize( SWObjectReader* or )
 		tstring name;
 		or->readString( name );
 		m_name = name;
+		m_active = or->readBool();
 	}
 
 	m_loadedComponents.resize( or->readUInt() );
@@ -276,4 +281,28 @@ void SWGameObject::deserialize( SWObjectReader* or )
 		SWObject* prop = or->readObject();
 		m_propTable[ name ] = prop;
 	}
+}
+
+void SWGameObject::setActive( bool active )
+{
+	m_active = active;
+}
+
+bool SWGameObject::isActiveSelf() const
+{
+	return m_active;
+}
+
+bool SWGameObject::isActiveInScene() const
+{
+	SWTransform* transform = getComponent<SWTransform>();
+	do 
+	{
+		bool active = transform->gameObject()->isActiveSelf();
+		if ( active == false ) return false;
+		transform = transform->getParent();
+
+	} while ( transform != NULL );
+
+	return true;
 }

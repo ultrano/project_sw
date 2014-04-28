@@ -80,18 +80,6 @@ public:
 			m_remain = m_time;
 		}
 
-		//! object streaming test
-		{
-			SWByteBufferOutputStream* bbos = new SWByteBufferOutputStream();
-			SWHardRef<SWObjectWriter> ow = new SWObjectWriter( bbos );
-			SWGameObject* go = findGO( "logo" );
-			ow()->writeObject( go );
-
-			SWByteBufferInputStream* bbis = new SWByteBufferInputStream( bbos->getBuffer() );
-			SWHardRef<SWObjectReader> or = new SWObjectReader( bbis );
-			go = swrtti_cast<SWGameObject>( or()->readObject() );
-
-		}
 	}
 	void onEndLogo()
 	{

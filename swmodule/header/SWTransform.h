@@ -75,8 +75,10 @@ private:
 private:
 
 	SWWeakRef<SWTransform> m_parent;
-	SWObject::List         m_children;
-	SWObject::List         m_setParentDelegates;
+
+	SWObject::List m_updates;
+	SWObject::List m_children;
+	SWObject::List m_setParentDelegates;
 
 	TVector3f    m_scale;    //< 비율.
 	TQuaternion  m_rotate;   //< 회전.

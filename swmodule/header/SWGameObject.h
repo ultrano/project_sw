@@ -32,8 +32,15 @@ public:
 
 	void udpate();
 
-	void setName( const thashstr& name ) { m_name = name; };
-	const thashstr&  getName() const { return m_name; };
+	void setName( const thashstr& name ) { m_name = name; }
+	const thashstr&  getName() const { return m_name; }
+
+	void setLayer( const thashstr& layer) { m_layer = layer; }
+	const thashstr& getLayer() const { return m_layer; }
+
+	void setActive( bool active );
+	bool isActiveSelf() const;
+	bool isActiveInScene() const;
 
 	template<typename T>
 	T* addComponent() { return (T*)addComponent( T::getRtti() ); };
@@ -71,12 +78,18 @@ private:
 private:
 
 	typedef ttable< tstring,SWObject::Ref > ObjectMap;
-	thashstr        m_name;
+	
+	thashstr m_name;
+	thashstr m_layer;
+	bool     m_active;
+
 	SWObject::Array m_components;
 	SWObject::Array m_loadedComponents;
+	
 	SWObject::List  m_addedComponents;
-
 	SWObject::List  m_updateDelegates;
+	SWObject::List  m_updates;
+
 	ObjectMap       m_propTable;
 };
 
