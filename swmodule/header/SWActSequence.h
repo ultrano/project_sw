@@ -19,7 +19,7 @@ public:
 	void addAct( SWAct* act );
 
 	virtual bool isDone();
-	virtual bool onStart();
+	virtual void onStart();
 	virtual void onUpdate();
 };
 

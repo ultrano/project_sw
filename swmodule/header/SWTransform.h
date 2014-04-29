@@ -37,6 +37,7 @@ public:
 
 	const TVector3f&   getLocalScale() const;
 	const TQuaternion& getLocalRotate() const;
+	const TVector3f&   getLocalEuler() const;
 	const TVector3f&   getLocalPosition() const;
 
 	void setLocalScale( const tvec3& scale );

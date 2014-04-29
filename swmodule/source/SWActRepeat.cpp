@@ -18,12 +18,11 @@ bool SWActRepeat::isDone()
 	return ( m_limitCount > 0 )? ( m_repeatCount >= m_limitCount ) : false;
 }
 
-bool SWActRepeat::onStart()
+void SWActRepeat::onStart()
 {
-	if ( !m_act.isValid() ) return false;
+	if ( !m_act.isValid() ) return ;
 	m_act()->setAction( getAction() );
-	bool ret = m_act()->onStart();
-	return ret;
+	m_act()->onStart();
 }
 
 void SWActRepeat::onUpdate()

@@ -211,17 +211,11 @@
     <Filter Include="SW\SWAct\SWActRepeat">
       <UniqueIdentifier>{f15cc2a2-739e-41c6-be04-f34b54ea20ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWAct\SWActMoveBy">
-      <UniqueIdentifier>{58556477-4d80-4e24-a9bc-1deb9abb8654}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWAct\SWActDelay">
       <UniqueIdentifier>{28feca58-60a5-4c1e-a36e-673ec42ad756}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWAct\SWActDelegate">
       <UniqueIdentifier>{bed4819b-b00b-44bc-a05c-7ccf6bd4b75b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SW\SWAct\SWActRotateBy">
-      <UniqueIdentifier>{ca45f4ae-f479-47b6-9453-3a6c652d9e49}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWRigidBody2D">
       <UniqueIdentifier>{8308971f-904e-42c0-a3e9-46a6928e541c}</UniqueIdentifier>
@@ -259,14 +253,23 @@
     <Filter Include="SW\SWAct\SWActAlphaTo">
       <UniqueIdentifier>{0c529d29-342b-4d9a-b9dd-953f30b2dd3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWAct\SWActScaleTo">
-      <UniqueIdentifier>{28d9d26d-43b1-40c4-a0e2-c345ad8a1b07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWObjectStream">
       <UniqueIdentifier>{cbf9a09d-6cf4-45e7-a2c3-91d91d324e88}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWLayer">
       <UniqueIdentifier>{b456b5ec-041a-4610-bcf6-52b4c68eb436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActMove">
+      <UniqueIdentifier>{9d8e5711-9690-4a54-9108-66400aa2fcf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActRotate">
+      <UniqueIdentifier>{ceda324f-0afd-4756-998e-6e0013786673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActScale">
+      <UniqueIdentifier>{192e2d31-e0a1-44c2-bee1-2a278dfe8ceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAct\SWActColor">
+      <UniqueIdentifier>{9f56cd68-7e7b-4df1-bf8f-3d0fda6ec1b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -510,17 +513,11 @@
     <ClInclude Include="header\SWActRepeat.h">
       <Filter>SW\SWAct\SWActRepeat</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWActMoveBy.h">
-      <Filter>SW\SWAct\SWActMoveBy</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWActDelay.h">
       <Filter>SW\SWAct\SWActDelay</Filter>
     </ClInclude>
     <ClInclude Include="header\SWActDelegate.h">
       <Filter>SW\SWAct\SWActDelegate</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActRotateBy.h">
-      <Filter>SW\SWAct\SWActRotateBy</Filter>
     </ClInclude>
     <ClInclude Include="header\SWRigidBody2D.h">
       <Filter>SW\SWRigidBody2D</Filter>
@@ -552,14 +549,20 @@
     <ClInclude Include="header\SWActAlphaTo.h">
       <Filter>SW\SWAct\SWActAlphaTo</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWActScaleTo.h">
-      <Filter>SW\SWAct\SWActScaleTo</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWObjectStream.h">
       <Filter>SW\SWObjectStream</Filter>
     </ClInclude>
     <ClInclude Include="header\SWLayer.h">
       <Filter>SW\SWLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActMove.h">
+      <Filter>SW\SWAct\SWActMove</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActRotate.h">
+      <Filter>SW\SWAct\SWActRotate</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWActScale.h">
+      <Filter>SW\SWAct\SWActScale</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -752,17 +755,11 @@
     <ClCompile Include="source\SWActRepeat.cpp">
       <Filter>SW\SWAct\SWActRepeat</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWActMoveBy.cpp">
-      <Filter>SW\SWAct\SWActMoveBy</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWActDelay.cpp">
       <Filter>SW\SWAct\SWActDelay</Filter>
     </ClCompile>
     <ClCompile Include="source\SWActDelegate.cpp">
       <Filter>SW\SWAct\SWActDelegate</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActRotateBy.cpp">
-      <Filter>SW\SWAct\SWActRotateBy</Filter>
     </ClCompile>
     <ClCompile Include="source\SWRigidBody2D.cpp">
       <Filter>SW\SWRigidBody2D</Filter>
@@ -788,14 +785,20 @@
     <ClCompile Include="source\SWActAlphaTo.cpp">
       <Filter>SW\SWAct\SWActAlphaTo</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWActScaleTo.cpp">
-      <Filter>SW\SWAct\SWActScaleTo</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWObjectStream.cpp">
       <Filter>SW\SWObjectStream</Filter>
     </ClCompile>
     <ClCompile Include="source\SWLayer.cpp">
       <Filter>SW\SWLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActMove.cpp">
+      <Filter>SW\SWAct\SWActMove</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActRotate.cpp">
+      <Filter>SW\SWAct\SWActRotate</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActScale.cpp">
+      <Filter>SW\SWAct\SWActScale</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

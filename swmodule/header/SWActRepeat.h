@@ -17,7 +17,7 @@ public:
 	~SWActRepeat();
 
 	virtual bool isDone();
-	virtual bool onStart();
+	virtual void onStart();
 	virtual void onUpdate();
 
 

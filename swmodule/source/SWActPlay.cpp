@@ -25,15 +25,14 @@ bool SWActPlay::isDone()
 	return ( ( m_accumulation / m_duration ) >= 1.0f );
 }
 
-bool SWActPlay::onStart()
+void SWActPlay::onStart()
 {
-	if ( getAction() == NULL ) return false;
-	if ( !m_sequence.isValid() ) return false;
-	if ( m_duration <= 0 ) return false;
+	if ( getAction() == NULL ) return ;
+	if ( !m_sequence.isValid() ) return ;
+	if ( m_duration <= 0 ) return ;
 	m_renderer = getAction()->getComponent<SWMeshRenderer>();
-	if ( !m_renderer.isValid() ) return false;
+	if ( !m_renderer.isValid() ) return ;
 	m_accumulation = 0;
-	return true;
 }
 
 void SWActPlay::onUpdate()

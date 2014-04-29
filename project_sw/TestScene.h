@@ -29,13 +29,13 @@
 #include "SWAnimationClip.h"
 
 #include "SWAction.h"
-#include "SWActMoveBy.h"
+#include "SWActMove.h"
+#include "SWActRotate.h"
+#include "SWActScale.h"
 #include "SWActRepeat.h"
 #include "SWActSequence.h"
 #include "SWActDelay.h"
 #include "SWActDelegate.h"
-#include "SWActRotateBy.h"
-#include "SWActScaleTo.h"
 
 #include "SWRigidBody2D.h"
 
@@ -94,36 +94,19 @@ public:
 			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
 		}
 
-		//! set secondary camera
-		{
-			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-			SWGameObject* go = new SWGameObject;
-			SWCamera* cam = go->addComponent<SWCamera>();
-			cam->setTargetLayerName( "second" );
-			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
-			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -100 ) );
-
-
-			SWAction* action = go->addComponent<SWAction>();
-			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActMoveBy( 2, tvec3( 100, 0, 0 ) ) );
-			seq->addAct( new SWActMoveBy( 2, tvec3( -100, 0, 0 ) ) );
-			action->setAct( "test", new SWActRepeat( seq ) );
-			action->play( "test" );
-
-		}
-
 		{
 			WIImage* parent = makeCatImg();
 			SWTransform* trans = parent->getComponent<SWTransform>();
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
-		
 
-			WIImage* child = makeCatImg();
-			child->gameObject()->setLayerName( "second" );
-			child->gameObject()->setName( "child" );
-			trans = child->getComponent<SWTransform>();
-			trans->setLocalPosition( tvec3( 10, 10, -3 ) );
+			SWGameObject* go = parent->gameObject();
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWActSequence* seq = new SWActSequence();
+			seq->addAct( new SWActRotateTo( 3, tvec3( 0, SWMath.angleToRadian( 360 ), SWMath.angleToRadian( 180 ) ) ) );
+			action->setAct( "test", new SWActRepeat( seq ) );
+			action->play( "test" );
+
 		}
 
 		{
@@ -145,9 +128,9 @@ public:
 		image->setUVRect( 0,0,32,32 );
 		image->setSize( 64, 64 );
 
-		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-		body->setGravityScale( tvec2::zero );
-		body->setInertia( 100 );
+		//SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+		//body->setGravityScale( tvec2::zero );
+		//body->setInertia( 100 );
 
 		SWAction* action = go->addComponent<SWAction>();
 		SWActSequence* seq = new SWActSequence();

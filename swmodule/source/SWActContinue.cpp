@@ -18,11 +18,10 @@ bool SWActContinue::isDone()
 	return false;
 }
 
-bool SWActContinue::onStart()
+void SWActContinue::onStart()
 {
-	if ( !m_act.isValid() ) return false;
+	if ( !m_act.isValid() ) return ;
 	m_act()->onStart();
-	return true;
 }
 
 void SWActContinue::onUpdate()

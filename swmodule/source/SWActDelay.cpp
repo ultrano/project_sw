@@ -16,10 +16,9 @@ bool SWActDelay::isDone()
 	return ( m_accum >= m_delay );
 }
 
-bool SWActDelay::onStart()
+void SWActDelay::onStart()
 {
 	m_accum  = 0;
-	return true;
 }
 
 void SWActDelay::onUpdate()

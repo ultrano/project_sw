@@ -23,10 +23,10 @@ bool SWActAlphaTo::isDone()
 	return ( m_spendTIme >= m_duration );
 }
 
-bool SWActAlphaTo::onStart()
+void SWActAlphaTo::onStart()
 {
 	WIImage* image = getAction()->getComponent<WIImage>();
-	if ( image == NULL ) return false;
+	if ( image == NULL ) return ;
 
 	m_srcAlpha = image->getColor().a;
 	m_spendTIme = 0;

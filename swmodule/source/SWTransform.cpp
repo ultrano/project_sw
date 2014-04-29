@@ -139,6 +139,11 @@ const TQuaternion& SWTransform::getLocalRotate() const
 	return m_rotate;
 }
 
+const TVector3f& SWTransform::getLocalEuler() const
+{
+	return m_euler;
+}
+
 const TVector3f& SWTransform::getLocalPosition() const
 {
 	return m_position;

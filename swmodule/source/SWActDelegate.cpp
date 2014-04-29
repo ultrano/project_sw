@@ -17,11 +17,10 @@ bool SWActDelegate::isDone()
 	return m_called;
 }
 
-bool SWActDelegate::onStart()
+void SWActDelegate::onStart()
 {
 	m_called = true;
 	if ( m_del() ) m_del()->call( this );
-	return true;
 }
 
 void SWActDelegate::onUpdate()
