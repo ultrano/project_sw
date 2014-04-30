@@ -271,6 +271,9 @@
     <Filter Include="SW\SWAct\SWActColor">
       <UniqueIdentifier>{9f56cd68-7e7b-4df1-bf8f-3d0fda6ec1b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActSendMsg">
+      <UniqueIdentifier>{3924a20a-946a-49a5-8f77-3179b7fd24db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -564,6 +567,9 @@
     <ClInclude Include="header\SWActScale.h">
       <Filter>SW\SWAct\SWActScale</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActSendMsg.h">
+      <Filter>SW\SWAct\SWActSendMsg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -799,6 +805,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActScale.cpp">
       <Filter>SW\SWAct\SWActScale</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActSendMsg.cpp">
+      <Filter>SW\SWAct\SWActSendMsg</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
