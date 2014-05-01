@@ -14,7 +14,7 @@ SWTexture::~SWTexture()
 	glDeleteTextures( 1, &m_texID );
 }
 
-SWHardRef<SWTexture> SWTexture::createTexture( const tbyte* buf, tuint len )
+SWHardRef<SWTexture> SWTexture::create( const tbyte* buf, tuint len )
 {
 	int id, w, h;
 	id = glLoadTextureFromMemory( buf, len, w, h );

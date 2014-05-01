@@ -123,6 +123,8 @@
     <ClInclude Include="header\SWPlatformAssetsAccessor.h" />
     <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
+    <ClInclude Include="header\SWSprite.h" />
+    <ClInclude Include="header\SWSpriteRenderer.h" />
     <ClInclude Include="header\SWTexture.h" />
     <ClInclude Include="header\TColorRGBA.h" />
     <ClInclude Include="header\TRay.h" />
@@ -217,6 +219,8 @@
     <ClCompile Include="source\SWPlatformAssetsAccessor.cpp" />
     <ClCompile Include="source\SWRigidBody2D.cpp" />
     <ClCompile Include="source\SWShape2D.cpp" />
+    <ClCompile Include="source\SWSprite.cpp" />
+    <ClCompile Include="source\SWSpriteRenderer.cpp" />
     <ClCompile Include="source\SWTexture.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />

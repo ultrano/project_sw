@@ -10,7 +10,7 @@ class SWTexture : public SWRefCountable
 	SW_RTTI_ROOT( SWTexture );
 public:
 
-	static SWHardRef<SWTexture> createTexture( const tbyte* buf, tuint len );
+	static SWHardRef<SWTexture> create( const tbyte* buf, tuint len );
 
 public:
 

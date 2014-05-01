@@ -66,7 +66,7 @@ SWHardRef<SWTexture> __SWAssets::loadTexture( const tstring& filePath )
 	buffer.resize( ais()->available() );
 	ais()->read( &(buffer[0]), buffer.size() );
 
-	SWHardRef<SWTexture> texture = SWTexture::createTexture( &(buffer[0]), buffer.size() );
+	SWHardRef<SWTexture> texture = SWTexture::create( &(buffer[0]), buffer.size() );
 	 
 	m_texCache[ filePath ] = texture();
 	return texture;

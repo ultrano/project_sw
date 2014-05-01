@@ -274,6 +274,12 @@
     <Filter Include="SW\SWAct\SWActSendMsg">
       <UniqueIdentifier>{3924a20a-946a-49a5-8f77-3179b7fd24db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWSpriteRenderer">
+      <UniqueIdentifier>{68827120-6c04-4cd3-9aed-58f57113b04e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWSprite">
+      <UniqueIdentifier>{c12ec48f-1276-4bd0-93d7-fb3396086a11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -570,6 +576,12 @@
     <ClInclude Include="header\SWActSendMsg.h">
       <Filter>SW\SWAct\SWActSendMsg</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWSpriteRenderer.h">
+      <Filter>SW\SWSpriteRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWSprite.h">
+      <Filter>SW\SWSprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -808,6 +820,12 @@
     </ClCompile>
     <ClCompile Include="source\SWActSendMsg.cpp">
       <Filter>SW\SWAct\SWActSendMsg</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSpriteRenderer.cpp">
+      <Filter>SW\SWSpriteRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSprite.cpp">
+      <Filter>SW\SWSprite</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
