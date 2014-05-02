@@ -280,6 +280,9 @@
     <Filter Include="SW\SWSprite">
       <UniqueIdentifier>{c12ec48f-1276-4bd0-93d7-fb3396086a11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWSpriteSheet">
+      <UniqueIdentifier>{3fe3416a-c8b3-4571-9922-ac6bd4d8aeda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -582,6 +585,9 @@
     <ClInclude Include="header\SWSprite.h">
       <Filter>SW\SWSprite</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWSpriteSheet.h">
+      <Filter>SW\SWSpriteSheet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -826,6 +832,9 @@
     </ClCompile>
     <ClCompile Include="source\SWSprite.cpp">
       <Filter>SW\SWSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSpriteSheet.cpp">
+      <Filter>SW\SWSpriteSheet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -32,8 +32,8 @@ public:
 	void add( const SWObject* object );
 	void remove( unsigned int index );
 	void clear();
-	void copy( Type& val );
-	void copy( SWArray* val );
+	void copyTo( Type& val );
+	void copyTo( SWArray* val );
 
 	unsigned int count() const;
 

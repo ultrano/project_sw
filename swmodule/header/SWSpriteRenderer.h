@@ -3,6 +3,7 @@
 
 #include "SWRenderer.h"
 
+class SWMesh;
 class SWSprite;
 class SWMaterial;
 class SWSpriteRenderer : public SWRenderer
@@ -14,6 +15,12 @@ public:
 	SWSpriteRenderer( factory_constructor );
 	~SWSpriteRenderer();
 
+	void setSprite( const SWSprite* sprite );
+	const SWSprite* getSprite() const;
+
+	void setColor( const tcolor& color );
+	const tcolor& getColor() const;
+
 protected:
 
 	virtual void onAwake();
@@ -23,6 +30,7 @@ protected:
 
 private:
 
+	SWHardRef<SWMesh>   m_mesh;
 	SWHardRef<SWSprite> m_sprite;
 	SWHardRef<SWMaterial> m_material;
 	tcolor m_color;

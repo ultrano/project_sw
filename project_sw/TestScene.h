@@ -11,6 +11,7 @@
 #include "SWMesh.h"
 #include "TVector2f.h"
 #include "SWMeshRenderer.h"
+#include "SWSpriteRenderer.h"
 #include "SWLog.h"
 #include "SWDefines.h"
 #include "SWMath.h"
@@ -36,6 +37,7 @@
 #include "SWActSequence.h"
 #include "SWActDelay.h"
 #include "SWActDelegate.h"
+#include "SWSprite.h"
 
 #include "SWRigidBody2D.h"
 
@@ -73,16 +75,6 @@ public:
 	void onAwake()
 	{
 		SW_GC.registerFactory<TestScene>();
-		//! matrix inverse test
-		{
-			tmat44 mat1, mat2;
-			mat1.perspective( SWMath.angleToRadian(90), 1, 1, 1000 );
-			mat1.inverse( mat2 );
-			tvec3 pos( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(),100 );
-			pos = pos * mat1;
-			pos = pos * mat2;
-			pos = pos * mat1;
-		}
 
 		//! set primary camera
 		{
@@ -115,6 +107,18 @@ public:
 			trans->setLocalPosition( tvec3( 0, 0, 0 ) );
 			img->gameObject()->setActive( false );
 			img->gameObject()->setName( "img" );
+		}
+
+		{
+			SWHardRef<SWTexture> texture = SWAssets.loadTexture("balls.png");
+
+			SWGameObject* go = new SWGameObject();
+
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( new SWSprite( texture(), 0, 0, 100, 100 ) );
+
+			SWTransform* trans = renderer->getComponent<SWTransform>();
+			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
 		}
 	}
 

@@ -1,9 +1,17 @@
 #include "SWSprite.h"
 #include "SWTexture.h"
 
-SWSprite::SWSprite()
+SWSprite::SWSprite( SWTexture* texture, float x, float y, float width, float height )
+	: m_texture( texture )
+	, m_offset( x, y )
+	, m_size( width, height )
 {
-
+	float texW = (float)m_texture()->getWidth();
+	float texH = (float)m_texture()->getHeight();
+	m_scaledOffset.x = x/texW;
+	m_scaledOffset.y = y/texH;
+	m_scaledSize.x = width/texW;
+	m_scaledSize.y = height/texH;
 }
 
 SWSprite::~SWSprite()

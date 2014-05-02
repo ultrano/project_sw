@@ -10,7 +10,7 @@ class SWSprite : public SWObject
 
 public:
 
-	SWSprite();
+	SWSprite( SWTexture* texture, float x, float y, float width, float height );
 	~SWSprite();
 
 	SWTexture* getTexture() const;
@@ -18,8 +18,6 @@ public:
 	const tvec2& getSize() const;
 	const tvec2& getScaledOffset() const;
 	const tvec2& getScaledSize() const;
-
-
 
 private:
 

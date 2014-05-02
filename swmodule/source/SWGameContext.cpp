@@ -21,6 +21,7 @@
 #include "WIImage.h"
 #include "WIText.h"
 #include "SWMeshRenderer.h"
+#include "SWSpriteRenderer.h"
 #include "SWGameObject.h"
 #include "SWMesh.h"
 #include "SWMaterial.h"
@@ -33,6 +34,7 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<SWTransform>();
 	gc->registerFactory<SWMeshFilter>();
 	gc->registerFactory<SWMeshRenderer>();
+	gc->registerFactory<SWSpriteRenderer>();
 	gc->registerFactory<SWGameObject>();
 	gc->registerFactory<SWMesh>();
 	gc->registerFactory<SWMaterial>();

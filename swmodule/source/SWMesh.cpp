@@ -74,14 +74,17 @@ void SWMesh::getTriangleStream( tarray<TIndex3>& stream ) const
 void SWMesh::setVertex( tuint index, const TVector3f& val )
 {
 	if ( index < m_vertices.size() ) m_vertices[index] = val;
+	m_updateMesh = true;
 }
 void SWMesh::setTexCoord( tuint index, const TVector2f& val )
 {
 	if ( index < m_texCoords.size() ) m_texCoords[index] = val;
+	m_updateMesh = true;
 }
 void SWMesh::setTriangle( tuint index, const TIndex3& val )
 {
 	if ( index < m_triangles.size() ) m_triangles[index] = val;
+	m_updateMesh = true;
 }
 
 void SWMesh::getVertex( tuint index, TVector3f& val )

@@ -39,12 +39,12 @@ void SWArray::clear()
 	m_value.clear();
 }
 
-void SWArray::copy( Type& val )
+void SWArray::copyTo( Type& val )
 {
 	val = m_value;
 }
 
-void SWArray::copy( SWArray* val )
+void SWArray::copyTo( SWArray* val )
 {
 	if ( swrtti_cast<SWArray>( val ) == NULL) return;
 	val->m_value = m_value;
