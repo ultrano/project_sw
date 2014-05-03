@@ -1,24 +1,27 @@
 #ifndef SWSpriteSheet_h__
 #define SWSpriteSheet_h__
 
-#include "SWObject.h"
+#include "SWResource.h"
 
 class SWArray;
 class SWSprite;
-class SWSpriteSheet : public SWObject
+class SWSpriteSheet : public SWResource
 {
-	SW_RTTI( SWSpriteSheet, SWObject );
+	SW_RTTI( SWSpriteSheet, SWResource );
 
 public:
 
-	SWSpriteSheet( factory_constructor );
+	SWSpriteSheet();
 	~SWSpriteSheet();
 	
 	void addSprite( const SWSprite* sprite );
 	void setDelayPerUnit( float delay );
 
-	SWHardRef<SWArray> getSprites() const;
+	SWSprite* getSpriteAt( tuint index ) const;
+	SWHardRef<SWArray> getSpriteArray() const;
 	float getDelayPerUnit() const;
+
+	tuint count() const;
 
 private:
 

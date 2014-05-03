@@ -283,6 +283,12 @@
     <Filter Include="SW\SWSpriteSheet">
       <UniqueIdentifier>{3fe3416a-c8b3-4571-9922-ac6bd4d8aeda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActAnimate">
+      <UniqueIdentifier>{b38cf233-4284-482c-8d90-51f7deb182d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWResource">
+      <UniqueIdentifier>{870e3b52-f2cf-4d2f-959b-73da52018eb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -588,6 +594,12 @@
     <ClInclude Include="header\SWSpriteSheet.h">
       <Filter>SW\SWSpriteSheet</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActAnimate.h">
+      <Filter>SW\SWAct\SWActAnimate</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWResource.h">
+      <Filter>SW\SWResource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -835,6 +847,9 @@
     </ClCompile>
     <ClCompile Include="source\SWSpriteSheet.cpp">
       <Filter>SW\SWSpriteSheet</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActAnimate.cpp">
+      <Filter>SW\SWAct\SWActAnimate</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

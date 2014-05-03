@@ -1,13 +1,11 @@
 #ifndef __SWTexture_h__
 #define __SWTexture_h__
 
-#include "SWRefCounter.h"
-#include "SWRtti.h"
-#include "SWType.h"
+#include "SWResource.h"
 
-class SWTexture : public SWRefCountable
+class SWTexture : public SWResource
 {
-	SW_RTTI_ROOT( SWTexture );
+	SW_RTTI( SWTexture, SWResource );
 public:
 
 	static SWHardRef<SWTexture> create( const tbyte* buf, tuint len );

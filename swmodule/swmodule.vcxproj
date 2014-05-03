@@ -89,6 +89,7 @@
     <ClInclude Include="header\stb_image.h" />
     <ClInclude Include="header\SWAct.h" />
     <ClInclude Include="header\SWActAlphaTo.h" />
+    <ClInclude Include="header\SWActAnimate.h" />
     <ClInclude Include="header\SWActContinue.h" />
     <ClInclude Include="header\SWActDelay.h" />
     <ClInclude Include="header\SWActDestroy.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="header\SWAnimationClip.h" />
     <ClInclude Include="header\SWAnimationLine.h" />
     <ClInclude Include="header\SWArray.h" />
+    <ClInclude Include="header\SWResource.h" />
     <ClInclude Include="header\SWAssets.h" />
     <ClInclude Include="header\SWBehavior.h" />
     <ClInclude Include="header\SWBoolean.h" />
@@ -184,6 +186,7 @@
     <ClCompile Include="source\stb_image.c" />
     <ClCompile Include="source\SWAct.cpp" />
     <ClCompile Include="source\SWActAlphaTo.cpp" />
+    <ClCompile Include="source\SWActAnimate.cpp" />
     <ClCompile Include="source\SWActContinue.cpp" />
     <ClCompile Include="source\SWActDelay.cpp" />
     <ClCompile Include="source\SWActDestroy.cpp" />

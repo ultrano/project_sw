@@ -1,11 +1,11 @@
 #ifndef SWShader_h__
 #define SWShader_h__
 
-#include "SWObject.h"
+#include "SWResource.h"
 
-class SWShader : public SWObject
+class SWShader : public SWResource
 {
-	SW_RTTI( SWShader, SWObject );
+	SW_RTTI( SWShader, SWResource );
 
 public:
 

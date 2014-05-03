@@ -37,7 +37,10 @@
 #include "SWActSequence.h"
 #include "SWActDelay.h"
 #include "SWActDelegate.h"
+#include "SWActAnimate.h"
+
 #include "SWSprite.h"
+#include "SWSpriteSheet.h"
 
 #include "SWRigidBody2D.h"
 
@@ -110,15 +113,34 @@ public:
 		}
 
 		{
-			SWHardRef<SWTexture> texture = SWAssets.loadTexture("balls.png");
 
 			SWGameObject* go = new SWGameObject();
 
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( new SWSprite( texture(), 0, 0, 100, 100 ) );
 
 			SWTransform* trans = renderer->getComponent<SWTransform>();
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
+
+			SWHardRef<SWTexture> texture = SWAssets.loadTexture("boom.png");
+			SWSpriteSheet* sheet = new SWSpriteSheet();
+			sheet->addSprite( new SWSprite( texture(), 100*0,100*0,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*1,100*0,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*2,100*0,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*3,100*0,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*4,100*0,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*0,100*1,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*1,100*1,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*2,100*1,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*3,100*1,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*4,100*1,100,100 ) );
+			sheet->addSprite( new SWSprite( texture(), 100*0,100*2,100,100 ) );
+			sheet->setDelayPerUnit(1.0f/11.0f);
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWActAnimate* act1 = new SWActAnimate(1, sheet);
+			action->setAct( "test", new SWActRepeat(act1) );
+			action->play( "test" );
+
 		}
 	}
 
