@@ -7,6 +7,7 @@
 #include "SWByteBuffer.h"
 #include "SWTexture.h"
 #include "SWShader.h"
+#include "SWSpriteSequence.h"
 
 class __SWAssets
 {
@@ -17,6 +18,7 @@ public:
 	SWHardRef<SWInputStream> loadBuffer( const tstring& filePath );
 	SWHardRef<SWTexture> loadTexture( const tstring& filePath );
 	SWHardRef<SWShader>  loadShader( const tstring& filePath );
+	SWHardRef<SWSpriteSequence> loadSpriteSheet( const tstring& filePath );
 
 	bool findPathOfTexture( SWTexture* texture, tstring& path );
 	bool findPathOfShader( SWShader* shader, tstring& path );

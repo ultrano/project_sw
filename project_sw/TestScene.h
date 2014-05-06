@@ -40,7 +40,7 @@
 #include "SWActAnimate.h"
 
 #include "SWSprite.h"
-#include "SWSpriteSheet.h"
+#include "SWSpriteSequence.h"
 
 #include "SWRigidBody2D.h"
 
@@ -122,7 +122,7 @@ public:
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
 
 			SWHardRef<SWTexture> texture = SWAssets.loadTexture("boom.png");
-			SWSpriteSheet* sheet = new SWSpriteSheet();
+			SWSpriteSequence* sheet = new SWSpriteSequence();
 			sheet->addSprite( new SWSprite( texture(), 100*0,100*0,100,100 ) );
 			sheet->addSprite( new SWSprite( texture(), 100*1,100*0,100,100 ) );
 			sheet->addSprite( new SWSprite( texture(), 100*2,100*0,100,100 ) );

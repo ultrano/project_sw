@@ -1,10 +1,10 @@
 #include "SWActAnimate.h"
 #include "SWAction.h"
-#include "SWSpriteSheet.h"
+#include "SWSpriteSequence.h"
 #include "SWSpriteRenderer.h"
 #include "SWTime.h"
 
-SWActAnimate::SWActAnimate( float speed, SWSpriteSheet* sheet )
+SWActAnimate::SWActAnimate( float speed, SWSpriteSequence* sheet )
 	: m_speed( speed )
 	, m_sheet( sheet )
 {

@@ -101,6 +101,11 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 	return shader;
 }
 
+SWHardRef<SWSpriteSequence> __SWAssets::loadSpriteSheet( const tstring& filePath )
+{
+	return NULL;
+}
+
 bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )
 {
 	TextureTable::iterator itor = m_texCache.begin();

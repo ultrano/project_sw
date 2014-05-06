@@ -280,14 +280,17 @@
     <Filter Include="SW\SWSprite">
       <UniqueIdentifier>{c12ec48f-1276-4bd0-93d7-fb3396086a11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWSpriteSheet">
-      <UniqueIdentifier>{3fe3416a-c8b3-4571-9922-ac6bd4d8aeda}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWAct\SWActAnimate">
       <UniqueIdentifier>{b38cf233-4284-482c-8d90-51f7deb182d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWResource">
       <UniqueIdentifier>{870e3b52-f2cf-4d2f-959b-73da52018eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWSpriteSequence">
+      <UniqueIdentifier>{3fe3416a-c8b3-4571-9922-ac6bd4d8aeda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWSpriteAnimation">
+      <UniqueIdentifier>{3f078869-a96b-4536-bac0-7cc94db401e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -591,14 +594,17 @@
     <ClInclude Include="header\SWSprite.h">
       <Filter>SW\SWSprite</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWSpriteSheet.h">
-      <Filter>SW\SWSpriteSheet</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWActAnimate.h">
       <Filter>SW\SWAct\SWActAnimate</Filter>
     </ClInclude>
     <ClInclude Include="header\SWResource.h">
       <Filter>SW\SWResource</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWSpriteSequence.h">
+      <Filter>SW\SWSpriteSequence</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWSpriteAnimation.h">
+      <Filter>SW\SWSpriteAnimation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -845,11 +851,11 @@
     <ClCompile Include="source\SWSprite.cpp">
       <Filter>SW\SWSprite</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWSpriteSheet.cpp">
-      <Filter>SW\SWSpriteSheet</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWActAnimate.cpp">
       <Filter>SW\SWAct\SWActAnimate</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSpriteSequence.cpp">
+      <Filter>SW\SWSpriteSequence</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

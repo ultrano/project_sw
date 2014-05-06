@@ -126,8 +126,9 @@
     <ClInclude Include="header\SWRigidBody2D.h" />
     <ClInclude Include="header\SWShape2D.h" />
     <ClInclude Include="header\SWSprite.h" />
+    <ClInclude Include="header\SWSpriteAnimation.h" />
     <ClInclude Include="header\SWSpriteRenderer.h" />
-    <ClInclude Include="header\SWSpriteSheet.h" />
+    <ClInclude Include="header\SWSpriteSequence.h" />
     <ClInclude Include="header\SWTexture.h" />
     <ClInclude Include="header\TColorRGBA.h" />
     <ClInclude Include="header\TRay.h" />
@@ -225,7 +226,7 @@
     <ClCompile Include="source\SWShape2D.cpp" />
     <ClCompile Include="source\SWSprite.cpp" />
     <ClCompile Include="source\SWSpriteRenderer.cpp" />
-    <ClCompile Include="source\SWSpriteSheet.cpp" />
+    <ClCompile Include="source\SWSpriteSequence.cpp" />
     <ClCompile Include="source\SWTexture.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />

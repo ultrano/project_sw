@@ -4,14 +4,14 @@
 #include "SWAct.h"
 
 class SWSprite;
-class SWSpriteSheet;
+class SWSpriteSequence;
 class SWActAnimate : public SWAct
 {
 	SW_RTTI( SWActAnimate, SWAct );
 
 public:
 
-	SWActAnimate( float speed, SWSpriteSheet* sheet );
+	SWActAnimate( float speed, SWSpriteSequence* sheet );
 	~SWActAnimate();
 
 protected:
@@ -26,7 +26,7 @@ private:
 
 private:
 
-	SWHardRef<SWSpriteSheet> m_sheet;
+	SWHardRef<SWSpriteSequence> m_sheet;
 	float m_speed;
 	tuint m_lastIndex;
 	float m_spendTime;

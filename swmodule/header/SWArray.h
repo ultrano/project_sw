@@ -26,6 +26,8 @@ public:
 	SWArray();
 	~SWArray();
 
+	template<typename T>
+	T* get( tuint index ) const { return swrtti_cast<T>( get(index) ); }
 	SWObject* get( unsigned int index ) const;
 	void set( unsigned int index, const SWObject* object );
 

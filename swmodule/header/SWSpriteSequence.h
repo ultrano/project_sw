@@ -5,29 +5,32 @@
 
 class SWArray;
 class SWSprite;
-class SWSpriteSheet : public SWResource
+class SWSpriteSequence : public SWResource
 {
-	SW_RTTI( SWSpriteSheet, SWResource );
+	SW_RTTI( SWSpriteSequence, SWResource );
 
 public:
 
-	SWSpriteSheet();
-	~SWSpriteSheet();
-	
-	void addSprite( const SWSprite* sprite );
-	void setDelayPerUnit( float delay );
+	SWSpriteSequence();
+	~SWSpriteSequence();
 
-	SWSprite* getSpriteAt( tuint index ) const;
-	SWHardRef<SWArray> getSpriteArray() const;
+	void setName( const tstring& name );
+	const tstring& getName() const;
+
+	void setDelayPerUnit( float delay );
 	float getDelayPerUnit() const;
+
+	void addSprite( const SWSprite* sprite );
+	SWSprite* getSpriteAt( tuint index ) const;
 
 	tuint count() const;
 
 private:
 
+	tstring m_name;
 	float m_delayPerUnit;
 	SWHardRef<SWArray> m_sprites;
-
+	SWObject
 };
 
 #endif // SWSpriteSheet_h__
