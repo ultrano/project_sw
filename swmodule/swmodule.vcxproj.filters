@@ -857,5 +857,8 @@
     <ClCompile Include="source\SWSpriteSequence.cpp">
       <Filter>SW\SWSpriteSequence</Filter>
     </ClCompile>
+    <ClCompile Include="source\SWSpriteAnimation.cpp">
+      <Filter>SW\SWSpriteAnimation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

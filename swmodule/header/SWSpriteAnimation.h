@@ -3,13 +3,28 @@
 
 #include "SWResource.h"
 
+class SWSprite;
+class SWSpriteSequence;
 class SWSpriteAnimation : public SWResource
 {
 	SW_RTTI( SWSpriteAnimation, SWResource );
 
+public:
+
+	static SWHardRef<SWSpriteAnimation> create( const tstring& json );
+
+	SWSpriteSequence* getSequenceByName( const tstring& name ) const;
+	SWSpriteSequence* getSequenceAt( tuint index ) const;
+	tuint count() const;
+
 private:
 
-	ttable<tstring,SWSprite
+	//typedef ttable< tstring, SWHardRef<SWSprite> > SpriteTable;
+	//typedef ttable< tstring, SWHardRef<SWSpriteSequence> > SequenceTable;
+	typedef tarray< SWHardRef<SWSpriteSequence> > SequenceArray;
+
+	//SpriteTable    m_batch;
+	SequenceArray m_sequences;
 
 };
 

@@ -225,6 +225,7 @@
     <ClCompile Include="source\SWRigidBody2D.cpp" />
     <ClCompile Include="source\SWShape2D.cpp" />
     <ClCompile Include="source\SWSprite.cpp" />
+    <ClCompile Include="source\SWSpriteAnimation.cpp" />
     <ClCompile Include="source\SWSpriteRenderer.cpp" />
     <ClCompile Include="source\SWSpriteSequence.cpp" />
     <ClCompile Include="source\SWTexture.cpp" />

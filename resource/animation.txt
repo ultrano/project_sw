@@ -1,0 +1,133 @@
+{
+  "sprites": [
+    {
+      "name": "0",
+      "texture": "boom.png",
+      "rect": [
+        0,
+        0,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "1",
+      "texture": "boom.png",
+      "rect": [
+        100,
+        0,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "2",
+      "texture": "boom.png",
+      "rect": [
+        200,
+        0,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "3",
+      "texture": "boom.png",
+      "rect": [
+        300,
+        0,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "4",
+      "texture": "boom.png",
+      "rect": [
+        400,
+        0,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "5",
+      "texture": "boom.png",
+      "rect": [
+        0,
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "6",
+      "texture": "boom.png",
+      "rect": [
+        100,
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "7",
+      "texture": "boom.png",
+      "rect": [
+        200,
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "8",
+      "texture": "boom.png",
+      "rect": [
+        300,
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "9",
+      "texture": "boom.png",
+      "rect": [
+        400,
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "name": "10",
+      "texture": "boom.png",
+      "rect": [
+        0,
+        200,
+        100,
+        100
+      ]
+    }
+  ],
+  "sequences": [
+    {
+      "name": "boom",
+      "delay": 0.1,
+      "sprites": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ]
+    }
+  ]
+}

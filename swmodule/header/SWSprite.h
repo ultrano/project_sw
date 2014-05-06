@@ -10,7 +10,7 @@ class SWSprite : public SWObject
 
 public:
 
-	SWSprite( SWHardRef<SWTexture> texture, float x, float y, float width, float height );
+	SWSprite( SWHardRef<SWTexture> texture, int x, int y, int width, int height );
 	~SWSprite();
 
 	SWTexture* getTexture() const;

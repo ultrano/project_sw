@@ -41,6 +41,7 @@
 
 #include "SWSprite.h"
 #include "SWSpriteSequence.h"
+#include "SWSpriteAnimation.h"
 
 #include "SWRigidBody2D.h"
 
@@ -113,6 +114,11 @@ public:
 		}
 
 		{
+			SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "animation.txt" );
+			tstring json;
+			json.resize( is()->available() );
+			is()->read( (tbyte*)&json[0], json.size() );
+			SWHardRef<SWSpriteAnimation> animation = SWSpriteAnimation::create( json );
 
 			SWGameObject* go = new SWGameObject();
 
@@ -121,23 +127,8 @@ public:
 			SWTransform* trans = renderer->getComponent<SWTransform>();
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
 
-			SWHardRef<SWTexture> texture = SWAssets.loadTexture("boom.png");
-			SWSpriteSequence* sheet = new SWSpriteSequence();
-			sheet->addSprite( new SWSprite( texture(), 100*0,100*0,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*1,100*0,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*2,100*0,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*3,100*0,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*4,100*0,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*0,100*1,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*1,100*1,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*2,100*1,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*3,100*1,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*4,100*1,100,100 ) );
-			sheet->addSprite( new SWSprite( texture(), 100*0,100*2,100,100 ) );
-			sheet->setDelayPerUnit(1.0f/11.0f);
-
 			SWAction* action = go->addComponent<SWAction>();
-			SWActAnimate* act1 = new SWActAnimate(1, sheet);
+			SWActAnimate* act1 = new SWActAnimate(1, animation()->getSequenceByName( "boom" ) );
 			action->setAct( "test", new SWActRepeat(act1) );
 			action->play( "test" );
 

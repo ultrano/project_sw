@@ -30,7 +30,6 @@ private:
 	tstring m_name;
 	float m_delayPerUnit;
 	SWHardRef<SWArray> m_sprites;
-	SWObject
 };
 
 #endif // SWSpriteSheet_h__

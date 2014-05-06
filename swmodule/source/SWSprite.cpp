@@ -1,7 +1,7 @@
 #include "SWSprite.h"
 #include "SWTexture.h"
 
-SWSprite::SWSprite( SWHardRef<SWTexture> texture, float x, float y, float width, float height )
+SWSprite::SWSprite( SWHardRef<SWTexture> texture, int x, int y, int width, int height )
 	: m_texture( texture )
 	, m_offset( x, y )
 	, m_size( width, height )
