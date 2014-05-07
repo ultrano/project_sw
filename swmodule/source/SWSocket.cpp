@@ -1,6 +1,7 @@
 #include "SWSocket.h"
 #include "SWMath.h"
 #include "SWLog.h"
+#include <fcntl.h>
 
 #ifdef WIN32
 #pragma comment(lib, "ws2_32.lib")
@@ -118,16 +119,38 @@ SWSocket::~SWSocket()
 	m_pimpl = NULL;
 }
 
-void SWSocket::connect( const tstring& ip, int port )
+SWHardRef<SWSocket> SWSocket::connect( const tstring& ip, int port, bool blocking )
 {
 	sockaddr_in serv = {0};
 	serv.sin_family  = AF_INET;
 	serv.sin_port    = htons( port );
 	serv.sin_addr.s_addr = inet_addr( ip.c_str() );
 	
-	int ret = ::connect( pimpl()->sock, (sockaddr*)&serv, sizeof( serv ) );
-	pimpl()->connected = ( ret > 0 );
-	if ( pimpl()->connected == false ) SWLog( "fail to connect" );
+	SWHardRef<SWSocket> socket = new SWSocket();
+
+	SWSocket::Pimpl* pimpl = socket()->pimpl();
+
+	int ret = ::connect( pimpl->sock, (sockaddr*)&serv, sizeof( serv ) );
+	pimpl->connected = ( ret > 0 );
+	if ( pimpl->connected == false ) SWLog( "fail to connect" );
+	else
+	{
+		bool ret = false;
+#ifdef WIN32
+		unsigned long mode = blocking ? 0 : 1;
+		ret = (ioctlsocket(pimpl->sock, FIONBIO, &mode) != 0);
+#else
+		int flags = fcntl( pimpl->sock, F_GETFL, 0);
+		if (flags < 0) return false;
+		flags = blocking ? (flags&~O_NONBLOCK) : (flags|O_NONBLOCK);
+		ret = (fcntl(pimpl->sock, F_SETFL, flags) == 0);
+#endif
+		if ( !ret )
+		{
+			SWLog( blocking? "fail to block socket":"fail to non-block socket" );
+		}
+	}
+	return socket();
 }
 
 bool SWSocket::isConnected() const

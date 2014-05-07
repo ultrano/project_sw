@@ -7,16 +7,11 @@
 class SWSocket : public SWObject
 {
 	SW_RTTI( SWSocket, SWObject );
-
 	class Pimpl;
-	SWHardRef<Pimpl> m_pimpl;
 
 public:
-
-	SWSocket();
-	~SWSocket();
 	
-	void connect( const tstring& ip, int port );
+	static SWHardRef<SWSocket> connect( const tstring& ip, int port, bool blocking = false );
 	bool isConnected() const;
 
 	SWHardRef<SWOutputStream> getOutputStream();
@@ -24,6 +19,16 @@ public:
 
 	//! this is not for you.
 	Pimpl* pimpl() const;
+
+private:
+
+	SWSocket();
+	~SWSocket();
+
+private:
+
+	SWHardRef<Pimpl> m_pimpl;
+
 };
 
 #endif // SWSocket_h__
