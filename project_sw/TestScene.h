@@ -114,11 +114,7 @@ public:
 		}
 
 		{
-			SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "animation.txt" );
-			tstring json;
-			json.resize( is()->available() );
-			is()->read( (tbyte*)&json[0], json.size() );
-			SWHardRef<SWSpriteAnimation> animation = SWSpriteAnimation::create( json );
+			SWHardRef<SWSpriteAnimation> animation = SWAssets.loadSpriteAnimation( "animation.txt" );
 
 			SWGameObject* go = new SWGameObject();
 

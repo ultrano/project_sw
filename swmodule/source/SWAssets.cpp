@@ -101,9 +101,33 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 	return shader;
 }
 
-SWHardRef<SWSpriteSequence> __SWAssets::loadSpriteSheet( const tstring& filePath )
+SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& filePath )
 {
-	return NULL;
+	if ( !m_accessor.isValid() ) return NULL;
+
+	AnimationTable::iterator itor = m_animCache.find( filePath );
+	if ( itor != m_animCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			return itor->second();
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
+	}
+
+	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
+
+	tstring json;
+	json.resize( ais()->available() );
+	ais()->read( (tbyte*)&json[0], json.size() );
+
+	SWHardRef<SWSpriteAnimation> animation = SWSpriteAnimation::create( json );
+
+	m_animCache[ filePath ] = animation();
+	return animation;
 }
 
 bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )

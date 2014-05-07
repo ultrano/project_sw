@@ -7,7 +7,7 @@
 #include "SWByteBuffer.h"
 #include "SWTexture.h"
 #include "SWShader.h"
-#include "SWSpriteSequence.h"
+#include "SWSpriteAnimation.h"
 
 class __SWAssets
 {
@@ -18,7 +18,7 @@ public:
 	SWHardRef<SWInputStream> loadBuffer( const tstring& filePath );
 	SWHardRef<SWTexture> loadTexture( const tstring& filePath );
 	SWHardRef<SWShader>  loadShader( const tstring& filePath );
-	SWHardRef<SWSpriteSequence> loadSpriteSheet( const tstring& filePath );
+	SWHardRef<SWSpriteAnimation> loadSpriteAnimation( const tstring& filePath );
 
 	bool findPathOfTexture( SWTexture* texture, tstring& path );
 	bool findPathOfShader( SWShader* shader, tstring& path );
@@ -33,11 +33,13 @@ private:
 	typedef ttable< thashstr, SWWeakRef<SWByteBuffer> > BufferTable;
 	typedef ttable< thashstr, SWWeakRef<SWTexture> > TextureTable;
 	typedef ttable< thashstr, SWWeakRef<SWShader> >  ShaderTable;
+	typedef ttable< thashstr, SWWeakRef<SWSpriteAnimation> >  AnimationTable;
 
 	SWHardRef<SWPlatformAssetsAccessor> m_accessor;
 	BufferTable   m_bufferCache;
-	TextureTable m_texCache;
-	ShaderTable  m_shaderCache;
+	TextureTable  m_texCache;
+	ShaderTable   m_shaderCache;
+	AnimationTable m_animCache;
 };
 
 

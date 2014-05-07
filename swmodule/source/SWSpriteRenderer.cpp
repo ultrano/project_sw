@@ -61,9 +61,14 @@ void SWSpriteRenderer::render( SWCamera* camera )
 
 void SWSpriteRenderer::setSprite( const SWSprite* sprite )
 {
+	tvec2 oldSize = m_sprite.isValid()? m_sprite()->getSize() : tvec2::zero;
+	
 	m_sprite = sprite;
+	if ( !m_sprite.isValid() ) return;
 
 	const tvec2& size = sprite->getSize();
+	if ( oldSize == size ) return;
+
 	float halfW = size.x/2.0f;
 	float halfH = size.y/2.0f;
 
