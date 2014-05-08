@@ -91,6 +91,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TestScene2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="project_sw.cpp" />

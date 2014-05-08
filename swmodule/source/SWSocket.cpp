@@ -83,7 +83,16 @@ public:
 		if ( m_socket()->isConnected() == false ) return -1;
 		
 		len = recv( m_socket()->pimpl()->sock, (char*)&b[0], len, 0 );
-		if ( len < 0 ) SWLog( "fail to recv" );
+		int err = errno;
+		if ( len < 0 )
+		{
+			if ((err == EAGAIN) || (err == EWOULDBLOCK))
+			{
+				len = 0;
+				SWLog( "pendding recv" );
+			}
+			else SWLog( "fail to recv" );
+		}
 		return len;
 	}
 	int skip( tuint len )
@@ -131,14 +140,14 @@ SWHardRef<SWSocket> SWSocket::connect( const tstring& ip, int port, bool blockin
 	SWSocket::Pimpl* pimpl = socket()->pimpl();
 
 	int ret = ::connect( pimpl->sock, (sockaddr*)&serv, sizeof( serv ) );
-	pimpl->connected = ( ret > 0 );
+	pimpl->connected = ( ret == 0 );
 	if ( pimpl->connected == false ) SWLog( "fail to connect" );
 	else
 	{
 		bool ret = false;
 #ifdef WIN32
 		unsigned long mode = blocking ? 0 : 1;
-		ret = (ioctlsocket(pimpl->sock, FIONBIO, &mode) != 0);
+		ret = (ioctlsocket(pimpl->sock, FIONBIO, &mode) == 0);
 #else
 		int flags = fcntl( pimpl->sock, F_GETFL, 0);
 		if (flags < 0) return false;
