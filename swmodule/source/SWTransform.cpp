@@ -119,6 +119,16 @@ const TMatrix4x4& SWTransform::getWorldMatrix()
 	return m_worldMat;
 }
 
+const TMatrix4x4& SWTransform::getInvWorldMatrix()
+{
+	if ( m_needWorldUpdate )
+	{
+		m_needWorldUpdate = false;
+		updateMatrix();
+	}
+	return m_invWorldMat;
+}
+
 const TMatrix4x4& SWTransform::getLocalMatrix()
 {
 	if ( m_needLocalUpdate )

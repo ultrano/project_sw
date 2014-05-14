@@ -18,7 +18,6 @@
 #include "SWInput.h"
 #include "SWParam.h"
 #include "SWValue.h"
-#include "SWActPlay.h"
 #include "SWSpriteData.h"
 #include "SWActContinue.h"
 #include "SWFileStream.h"
@@ -44,6 +43,7 @@
 #include "SWSpriteAnimation.h"
 
 #include "SWRigidBody2D.h"
+#include "SWCollider2D.h"
 
 #include "WIDefines.h"
 #include "WIImage.h"
@@ -84,6 +84,7 @@ public:
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
 			SWGameObject* go = new SWGameObject;
+			go->setName( "mainCam" );
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -100 ) );
@@ -91,34 +92,13 @@ public:
 		}
 
 		{
-			WIImage* parent = makeCatImg();
-			SWTransform* trans = parent->getComponent<SWTransform>();
-			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
-
-			SWGameObject* go = parent->gameObject();
-
-			SWAction* action = go->addComponent<SWAction>();
-			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActRotateTo( 3, tvec3( 0, SWMath.angleToRadian( 360 ), SWMath.angleToRadian( 180 ) ) ) );
-			action->setAct( "test", new SWActRepeat( seq ) );
-			action->play( "test" );
-
-		}
-
-		{
-			WIImage* img = makeCatImg();
-			SWTransform* trans = img->getComponent<SWTransform>();
-			trans->setLocalPosition( tvec3( 0, 0, 0 ) );
-			img->gameObject()->setActive( false );
-			img->gameObject()->setName( "img" );
-		}
-
-		{
 			SWHardRef<SWSpriteAnimation> animation = SWAssets.loadSpriteAnimation( "animation.txt" );
 
 			SWGameObject* go = new SWGameObject();
+			go->setName( "boom" );
 
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( new SWSprite( SWAssets.loadTexture("balls.png"), 0,100,100,100 ) );
 
 			SWTransform* trans = renderer->getComponent<SWTransform>();
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
@@ -126,8 +106,16 @@ public:
 			SWAction* action = go->addComponent<SWAction>();
 			SWActAnimate* act1 = new SWActAnimate(1, animation()->getSequenceByName( "boom" ) );
 			action->setAct( "test", new SWActRepeat(act1) );
-			action->play( "test" );
+			//action->play( "test" );
+			SWActSequence* seq = new SWActSequence;
+			seq->addAct( new SWActRotateFrom( 5, tvec3( 0,0,3.14f ) ));
+			//seq->addAct( new SWActMoveBy( 2, tvec3( -100,0,0 ) ));
+			action->setAct( "move", new SWActRepeat( seq ) );
+			action->play( "move" );
 
+			SWRectCollider2D* collider = go->addComponent<SWRectCollider2D>();
+			collider->setCenter( tvec2::zero );
+			collider->setSize( tvec2::one*100 );
 		}
 	}
 
@@ -157,23 +145,6 @@ public:
 
 	void onUpdateCat( SWGameObject* go )
 	{
-		if ( SWInput.getTouchState() == SW_TouchPress )
-		{
-			SWAction* action = go->addComponent<SWAction>();
-			action->setAct( "pop", new SWActAlphaTo( 3, 0 ) );
-			//action->play( "pop" );
-
-			{
-				/*
-				SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "test.txt" );
-				SWHardRef<SWObjectReader> or = new SWObjectReader( is() );
-				go = swrtti_cast<SWGameObject>( or()->readObject() );
-
-				tvec3 pos = SWCamera::mainCamera()->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
-				go->getComponent<SWTransform>()->setPosition( pos );
-				*/
-			}
-		}
 	}
 
 	void onUpdate()
@@ -186,6 +157,16 @@ public:
 
 		if ( SWInput.getTouchState() == SW_TouchPress )
 		{
+			SWGameObject* go = findGO( "boom" );
+			SWCollider2D* collider = go->getComponent<SWRectCollider2D>();
+			go = findGO( "mainCam" );
+			SWCamera* camera = go->getComponent<SWCamera>();
+			tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 100 );
+			pos = camera->screenToWorld( pos );
+			if ( collider->containPoint( pos.xy() ) )
+			{
+				SWLog( "hit collider" );
+			}
 			//SWHardRef<SWObject> object = findGO( "img" )->clone();
 			//SWGameObject* go = swrtti_cast<SWGameObject>( object() );
 			//go->setActive( true );

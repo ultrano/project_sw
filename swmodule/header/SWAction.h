@@ -26,6 +26,9 @@ private:
 	void onStart();
 	void onRemove();
 	void onUpdate();
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 
 private:
 

@@ -1,6 +1,7 @@
 #include "SWActSendMsg.h"
 #include "SWGameObject.h"
 #include "SWAction.h"
+#include "SWObjectStream.h"
 
 SWActSendMsg::SWActSendMsg( const tstring& eventName )
 	: m_eventName( eventName )
@@ -31,4 +32,16 @@ void SWActSendMsg::onStart()
 
 void SWActSendMsg::onUpdate()
 {
+}
+
+void SWActSendMsg::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeString( m_eventName );
+}
+
+void SWActSendMsg::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	or->readString( m_eventName );
 }

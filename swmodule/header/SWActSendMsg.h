@@ -17,6 +17,9 @@ protected:
 	virtual bool isDone();
 	virtual void onStart();
 	virtual void onUpdate();
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 
 private:
 

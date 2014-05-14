@@ -36,7 +36,7 @@ public:
 	void setMessageDelegator( const tstring& msgName, const SWDelegator* del );
 	const SWDelegator* getMessageDelegator( const tstring& msgName );
 
-private:
+protected:
 
 	void onAwake();
 	void onRemove();

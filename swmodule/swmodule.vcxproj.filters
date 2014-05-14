@@ -13,9 +13,6 @@
     <Filter Include="SW\SWAct\SWActDestroy">
       <UniqueIdentifier>{f70a8719-19d9-4a73-8299-9319db51d3f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWAct\SWActPlay">
-      <UniqueIdentifier>{3c8f0906-ef67-4a38-aefa-94adb5e81c9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWAct\SWActContinue">
       <UniqueIdentifier>{2cac3cec-e5e1-48fa-a808-32614db3711d}</UniqueIdentifier>
     </Filter>
@@ -318,9 +315,6 @@
     <ClInclude Include="header\SWAction.h">
       <Filter>SW\SWAction</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWActPlay.h">
-      <Filter>SW\SWAct\SWActPlay</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWActSequence.h">
       <Filter>SW\SWAct\SWActSequence</Filter>
     </ClInclude>
@@ -619,9 +613,6 @@
     </ClCompile>
     <ClCompile Include="source\SWAction.cpp">
       <Filter>SW\SWAction</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWActPlay.cpp">
-      <Filter>SW\SWAct\SWActPlay</Filter>
     </ClCompile>
     <ClCompile Include="source\SWActSequence.cpp">
       <Filter>SW\SWAct\SWActSequence</Filter>

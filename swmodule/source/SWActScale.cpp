@@ -3,6 +3,7 @@
 #include "SWGameObject.h"
 #include "SWAction.h"
 #include "SWTime.h"
+#include "SWObjectStream.h"
 
 SWActScale::SWActScale( float duration, const tvec3& from, const tvec3& to )
 	: m_duration( duration )
@@ -43,6 +44,24 @@ void SWActScale::onUpdate()
 
 	SWTransform* transform = getAction()->getComponent<SWTransform>();
 	transform->setLocalScale( pos );
+}
+
+void SWActScale::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeFloat( m_duration );
+	ow->writeFloat( m_spendTime );
+	ow->writeVec3( m_from );
+	ow->writeVec3( m_to );
+}
+
+void SWActScale::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	m_duration = or->readFloat();
+	m_spendTime = or->readFloat();
+	or->readVec3( m_from );
+	or->readVec3( m_to );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -112,4 +131,16 @@ void SWActScaleBy::onStart()
 	SWTransform* transform = getAction()->getComponent<SWTransform>();
 	m_from = transform->getLocalScale();
 	m_to = m_from + (m_by * m_duration);
+}
+
+void SWActScaleBy::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeVec3( m_by );
+}
+
+void SWActScaleBy::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	or->readVec3( m_by );
 }

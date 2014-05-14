@@ -1,13 +1,13 @@
 #ifndef SWSpriteSheet_h__
 #define SWSpriteSheet_h__
 
-#include "SWResource.h"
+#include "SWObject.h"
 
 class SWArray;
 class SWSprite;
-class SWSpriteSequence : public SWResource
+class SWSpriteSequence : public SWObject
 {
-	SW_RTTI( SWSpriteSequence, SWResource );
+	SW_RTTI( SWSpriteSequence, SWObject );
 
 public:
 

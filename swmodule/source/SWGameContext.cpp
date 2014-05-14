@@ -25,19 +25,26 @@
 #include "SWGameObject.h"
 #include "SWMesh.h"
 #include "SWMaterial.h"
+#include "SWCollider2D.h"
 void registerBasicObjectFactories( SWGameContext* gc )
 {
 	gc->registerFactory<SWAction>();
 	gc->registerFactory<SWAnimation>();
 	gc->registerFactory<SWCamera>();
-	gc->registerFactory<SWRigidBody2D>();
 	gc->registerFactory<SWTransform>();
+
 	gc->registerFactory<SWMeshFilter>();
 	gc->registerFactory<SWMeshRenderer>();
+
 	gc->registerFactory<SWSpriteRenderer>();
 	gc->registerFactory<SWGameObject>();
 	gc->registerFactory<SWMesh>();
 	gc->registerFactory<SWMaterial>();
+	
+	gc->registerFactory<SWRigidBody2D>();
+	gc->registerFactory<SWCircleCollider2D>();
+	gc->registerFactory<SWRectCollider2D>();
+
 	gc->registerFactory<WIImage>();
 	gc->registerFactory<WIText>();
 }

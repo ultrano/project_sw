@@ -39,8 +39,15 @@ SWRigidBody2D::~SWRigidBody2D()
 {
 }
 
+void SWRigidBody2D::onAwake()
+{
+	__super::onAwake();
+	SWPhysics.m_bodies.push_back( this );
+}
+
 void SWRigidBody2D::onStart()
 {
+	__super::onStart();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 	SWTransform* transform = getComponent<SWTransform>();
 	m_center = transform->getPosition().xy();
@@ -48,7 +55,9 @@ void SWRigidBody2D::onStart()
 
 void SWRigidBody2D::onRemove()
 {
+	SWPhysics.m_bodies.remove( this );
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
+	__super::onRemove();
 }
 
 void SWRigidBody2D::onUpdate()

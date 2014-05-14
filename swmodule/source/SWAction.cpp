@@ -3,6 +3,7 @@
 #include "SWGameObject.h"
 #include "SWTime.h"
 #include "SWAct.h"
+#include "SWObjectStream.h"
 
 SWAction::SWAction()
 {
@@ -93,3 +94,29 @@ bool SWAction::isPlaying() const
 {
 	return ((m_act() != NULL) && ( !m_act()->isDone() ));
 }
+
+void SWAction::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	
+	ow->writeUInt( m_actTable.size() );
+	ActTable::iterator itor = m_actTable.begin();
+	for ( ; itor != m_actTable.end() ; ++itor )
+	{
+		ow->writeString( itor->first.str() );
+		ow->writeObject( itor->second() );
+	}
+}
+
+void SWAction::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	tuint count = or->readUInt();
+	for ( tuint i = 0 ; i < count ; ++i )
+	{
+		tstring key;
+		or->readString( key );
+		m_actTable[ key ] = swrtti_cast<SWAct>( or->readObject() );
+	}
+}
+

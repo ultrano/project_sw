@@ -95,7 +95,6 @@
     <ClInclude Include="header\SWActDestroy.h" />
     <ClInclude Include="header\SWAction.h" />
     <ClInclude Include="header\SWActMove.h" />
-    <ClInclude Include="header\SWActPlay.h" />
     <ClInclude Include="header\SWActRepeat.h" />
     <ClInclude Include="header\SWActDelegate.h" />
     <ClInclude Include="header\SWActRotate.h" />
@@ -193,7 +192,6 @@
     <ClCompile Include="source\SWActDestroy.cpp" />
     <ClCompile Include="source\SWAction.cpp" />
     <ClCompile Include="source\SWActMove.cpp" />
-    <ClCompile Include="source\SWActPlay.cpp" />
     <ClCompile Include="source\SWActRepeat.cpp" />
     <ClCompile Include="source\SWActDelegate.cpp" />
     <ClCompile Include="source\SWActRotate.cpp" />

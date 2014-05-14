@@ -7,10 +7,6 @@ class SWActDestroy : public SWAct
 {
 	SW_RTTI( SWActDestroy, SWAct );
 
-	float m_accum;
-	float m_delay;
-	bool m_destroied;
-
 public:
 
 	SWActDestroy( float delay = 0 );
@@ -19,6 +15,15 @@ public:
 	virtual bool isDone();
 	virtual void onStart();
 	virtual void onUpdate();
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
+private:
+
+	float m_accum;
+	float m_delay;
+	bool m_destroied;
 };
 
 #endif // SWActDestroy_h__

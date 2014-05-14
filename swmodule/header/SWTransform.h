@@ -33,6 +33,7 @@ public:
 	void removeSetParentDelegate( SWObject* object, const SWHandler& handler );
 
 	const TMatrix4x4& getWorldMatrix();
+	const TMatrix4x4& getInvWorldMatrix();
 	const TMatrix4x4& getLocalMatrix();
 
 	const TVector3f&   getLocalScale() const;

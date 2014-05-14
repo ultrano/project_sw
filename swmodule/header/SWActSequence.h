@@ -21,6 +21,9 @@ public:
 	virtual bool isDone();
 	virtual void onStart();
 	virtual void onUpdate();
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 };
 
 #endif // SWActSequence_h__

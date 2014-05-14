@@ -3,6 +3,7 @@
 #include "SWGameObject.h"
 #include "SWAction.h"
 #include "SWTime.h"
+#include "SWObjectStream.h"
 
 SWActMove::SWActMove( float duration, const tvec3& from, const tvec3& to )
 	: m_duration( duration )
@@ -43,6 +44,24 @@ void SWActMove::onUpdate()
 
 	SWTransform* transform = getAction()->getComponent<SWTransform>();
 	transform->setLocalPosition( pos );
+}
+
+void SWActMove::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeFloat( m_duration );
+	ow->writeFloat( m_spendTime );
+	ow->writeVec3( m_from );
+	ow->writeVec3( m_to );
+}
+
+void SWActMove::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	m_duration = or->readFloat();
+	m_spendTime = or->readFloat();
+	or->readVec3( m_from );
+	or->readVec3( m_to );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -112,4 +131,16 @@ void SWActMoveBy::onStart()
 	SWTransform* transform = getAction()->getComponent<SWTransform>();
 	m_from = transform->getLocalPosition();
 	m_to = m_from + (m_by * m_duration);
+}
+
+void SWActMoveBy::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeVec3( m_by );
+}
+
+void SWActMoveBy::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	or->readVec3( m_by );
 }

@@ -3,6 +3,7 @@
 #include "SWSpriteSequence.h"
 #include "SWSpriteRenderer.h"
 #include "SWTime.h"
+#include "SWObjectStream.h"
 
 SWActAnimate::SWActAnimate( float speed, SWSpriteSequence* sheet )
 	: m_speed( speed )
@@ -50,4 +51,25 @@ void SWActAnimate::changeSpriteWithAt( tuint index )
 	SWSprite* sprite = m_sheet()->getSpriteAt( index );
 	SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
 	renderer->setSprite( sprite );
+}
+
+void SWActAnimate::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	
+	ow->writeFloat( m_speed );
+	ow->writeFloat( m_spendTime );
+	ow->writeFloat( m_totalTime );
+	ow->writeUInt( m_lastIndex );
+	ow->writeObject( swrtti_cast<SWObject>( m_sheet() ) );
+}
+
+void SWActAnimate::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	m_speed = or->readFloat();
+	m_spendTime = or->readFloat();
+	m_totalTime = or->readFloat();
+	m_lastIndex = or->readUInt();
+	m_sheet = swrtti_cast<SWSpriteSequence>( or->readObject() );
 }

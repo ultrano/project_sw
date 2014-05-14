@@ -7,9 +7,6 @@ class SWActDelay : public SWAct
 {
 	SW_RTTI( SWActDelay, SWAct );
 
-	float m_accum;
-	float m_delay;
-
 public:
 
 	SWActDelay( float delay = 0 );
@@ -18,6 +15,14 @@ public:
 	virtual bool isDone();
 	virtual void onStart();
 	virtual void onUpdate();
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
+private:
+
+	float m_accum;
+	float m_delay;
 };
 
 #endif // SWActDelay_h__

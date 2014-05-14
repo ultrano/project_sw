@@ -2,6 +2,7 @@
 #include "SWAction.h"
 #include "SWGameObject.h"
 #include "SWTime.h"
+#include "SWObjectStream.h"
 
 SWActDestroy::SWActDestroy( float delay /*= 0 */ )
 	: m_delay( delay )
@@ -38,4 +39,21 @@ void SWActDestroy::onUpdate()
 	if ( !go ) return;
 	m_destroied = true;
 	go->destroy();
+}
+
+void SWActDestroy::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeFloat( m_accum );
+	ow->writeFloat( m_delay );
+	ow->writeBool( m_destroied );
+
+}
+
+void SWActDestroy::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	m_accum = or->readFloat();
+	m_delay = or->readFloat();
+	m_destroied = or->readBool();
 }
