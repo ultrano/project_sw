@@ -3,13 +3,16 @@
 #include "SWTransform.h"
 #include "SWGameContext.h"
 #include "SWGameScene.h"
+#include "SWDefines.h"
 
 SWCamera::SWCamera()
 	: m_near( 0 )
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
+	, m_clearDepth( 0 )
 	, m_layerName( "default" )
 	, m_depth( 0 )
+	, m_clearFlags( SW_Dont_Clear )
 {
 }
 
@@ -17,8 +20,10 @@ SWCamera::SWCamera( factory_constructor )
 	: m_near( 0 )
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
+	, m_clearDepth( 0 )
 	, m_layerName( "default" )
 	, m_depth( 0 )
+	, m_clearFlags( SW_Dont_Clear )
 {
 
 }
@@ -139,6 +144,16 @@ void SWCamera::setClearColor( const tcolor& color )
 const tcolor& SWCamera::getClearColor() const
 {
 	return m_clearColor;
+}
+
+void SWCamera::setClearDepth( float depth )
+{
+	m_clearDepth = depth;
+}
+
+float SWCamera::getClearDepth() const
+{
+	return m_clearDepth;
 }
 
 const thashstr& SWCamera::getTargetLayerName() const

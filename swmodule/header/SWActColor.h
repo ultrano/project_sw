@@ -1,16 +1,16 @@
-#ifndef SWActMove_h__
-#define SWActMove_h__
+#ifndef SWActColor_h__
+#define SWActColor_h__
 
 #include "SWAct.h"
 
-class SWActMove : public SWAct
+class SWActColor : public SWAct
 {
-	SW_RTTI( SWActMove, SWAct );
-
+	SW_RTTI( SWActColor, SWAct );
+	
 public:
 
-	SWActMove( float duration, const tvec3& from, const tvec3& to );
-	~SWActMove();
+	SWActColor( float duration, const tcolor& from, const tcolor& to );
+	~SWActColor();
 
 protected:
 
@@ -25,19 +25,34 @@ protected:
 
 	float m_duration;
 	float m_spendTime;
-	tvec3 m_from;
-	tvec3 m_to;
+	tcolor m_from;
+	tcolor m_to;
 };
 
 //////////////////////////////////////////////////////////////////////////
-class SWActMoveTo : public SWActMove
+class SWActColorTo : public SWActColor
 {
-	SW_RTTI( SWActMoveTo, SWActMove );
+	SW_RTTI( SWActColorTo, SWActColor );
 
 public:
 
-	SWActMoveTo( float duration, const tvec3& to );
-	~SWActMoveTo();
+	SWActColorTo( float duration, const tcolor& to );
+	~SWActColorTo();
+
+protected:
+
+	virtual void onStart();
+
+};
+//////////////////////////////////////////////////////////////////////////
+class SWActColorFrom : public SWActColor
+{
+	SW_RTTI( SWActColorFrom, SWActColor );
+
+public:
+
+	SWActColorFrom( float duration, const tcolor& from );
+	~SWActColorFrom();
 
 protected:
 
@@ -46,30 +61,14 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class SWActMoveFrom : public SWActMove
+class SWActColorBy : public SWActColor
 {
-	SW_RTTI( SWActMoveFrom, SWActMove );
+	SW_RTTI( SWActColorBy, SWActColor );
 
 public:
 
-	SWActMoveFrom( float duration, const tvec3& from );
-	~SWActMoveFrom();
-
-protected:
-
-	virtual void onStart();
-
-};
-
-//////////////////////////////////////////////////////////////////////////
-class SWActMoveBy : public SWActMove
-{
-	SW_RTTI( SWActMoveBy, SWActMove );
-
-public:
-
-	SWActMoveBy( float duration, const tvec3& by );
-	~SWActMoveBy();
+	SWActColorBy( float duration, const tcolor& by );
+	~SWActColorBy();
 
 protected:
 
@@ -80,7 +79,8 @@ protected:
 
 private:
 
-	tvec3 m_by;
+	tcolor m_by;
 
 };
-#endif // SWActMove_h__
+
+#endif //SWActColor_h__

@@ -50,6 +50,7 @@ public:
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setClearColor( tcolor( 1,1,1,1 ) );
+			cam->setClearFlags( SW_Clear_Color );
 		}
 
 		{

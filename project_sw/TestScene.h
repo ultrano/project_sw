@@ -88,6 +88,7 @@ public:
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -100 ) );
+			cam->setClearFlags( SW_Clear_Color );
 			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
 		}
 

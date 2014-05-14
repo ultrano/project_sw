@@ -62,6 +62,11 @@ enum SWDefines
 	//! input stream 
 	SW_Pendding_Stream = -2,
 	SW_Invalid_Stream = -1,
+
+	//! camera clear flags
+	SW_Dont_Clear  = 1 << 0,
+	SW_Clear_Color = 1 << 1,
+	SW_Clear_Depth = 1 << 2,
 };
 
 

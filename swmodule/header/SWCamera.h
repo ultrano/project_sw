@@ -23,6 +23,9 @@ public:
 	void setClearColor( const tcolor& color );
 	const tcolor& getClearColor() const;
 
+	void setClearDepth( float depth );
+	float getClearDepth() const;
+
 	const TMatrix4x4& getProjMatrix() const;
 	const TMatrix4x4& getViewMatrix() const;
 	const TMatrix4x4& getVPMatrix() const;
@@ -32,6 +35,9 @@ public:
 
 	int getDepth() const { return m_depth; }
 	void setDepth( int depth ) { m_depth = depth; }
+
+	int getClearFlags() const { return m_clearFlags; }
+	void setClearFlags( int flags ) { m_clearFlags = flags; }
 
 	const tvec3& getLookDir() const { return m_lookDir; }
 	const tvec3& getUpDir() const { return m_upDir; }
@@ -54,9 +60,11 @@ private:
 	float m_far;
 
 	tcolor m_clearColor;
+	float  m_clearDepth;
 
 	thashstr m_layerName;
 	int m_depth;
+	int m_clearFlags;
 
 	tvec3 m_lookDir;
 	tvec3 m_upDir;

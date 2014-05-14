@@ -10,6 +10,8 @@
 #include "SWGameObject.h"
 #include "SWLog.h"
 #include "SWInput.h"
+#include "SWOpenGL.h"
+#include "SWDefines.h"
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
@@ -137,10 +139,12 @@ void SWGameScene::draw()
 		}
 	};
 
+	//! sort cameras
 	m_cameras.sort( cameraSorter );
 
 	ttable<thashstr,SWObject::List> layers;
 	
+	//! extract game objects in layer
 	{
 		SWObject::List::iterator itor = m_renderers.begin();
 		for ( ; itor != m_renderers.end() ; ++itor )
@@ -150,15 +154,32 @@ void SWGameScene::draw()
 			layers[ go->getLayerName() ].push_back( renderer );
 		}
 	}
-
+	
+	//! sort game objects and render
 	{
 		SWObject::List::iterator itor = m_cameras.begin();
 		for ( ; itor != m_cameras.end() ; ++itor )
 		{
 			SWCamera* camera = swrtti_cast<SWCamera>((*itor)());
 			SWTransform* transform = camera->getComponent<SWTransform>();
+
+			//! get clear mask
+			int clearMask = GL_NONE;
+			if ( camera->getClearFlags() & SW_Clear_Color ) clearMask |= GL_COLOR_BUFFER_BIT;
+			if ( camera->getClearFlags() & SW_Clear_Depth ) clearMask |= GL_DEPTH_BUFFER_BIT;
+
+			//! sort objects from camera
 			SWObject::List& objectList = layers[ camera->getTargetLayerName() ];
 			objectList.sort( RendererSorter( transform->getPosition(), camera->getLookDir() ) );
+
+			//! clear buffer
+			if ( clearMask != GL_NONE )
+			{
+				tcolor color = camera->getClearColor();
+				glClearColor( color.r, color.g, color.b, color.a );
+				glClearDepth( camera->getClearDepth() );
+				glClear( clearMask );
+			}
 
 			SWObject::List::iterator itor2 = objectList.begin();
 			for ( ; itor2 != objectList.end() ; ++itor2 )

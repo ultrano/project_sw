@@ -173,8 +173,6 @@ void SWGameContext::onFrameMove()
 
 void SWGameContext::onRender()
 {
-	glClearColor( 1, 1, 1, 1 );
-	glClear( GL_COLOR_BUFFER_BIT );
 	if ( SWGameScene* scene = m_currentScene() )
 	{
 		scene->draw();

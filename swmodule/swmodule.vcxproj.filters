@@ -600,6 +600,9 @@
     <ClInclude Include="header\SWSpriteAnimation.h">
       <Filter>SW\SWSpriteAnimation</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActColor.h">
+      <Filter>SW\SWAct\SWActColor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -850,6 +853,9 @@
     </ClCompile>
     <ClCompile Include="source\SWSpriteAnimation.cpp">
       <Filter>SW\SWSpriteAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActColor.cpp">
+      <Filter>SW\SWAct\SWActColor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
