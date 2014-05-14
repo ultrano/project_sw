@@ -16,6 +16,7 @@
 #include "SWActSequence.h"
 #include "SWObjectStream.h"
 #include "SWByteBufferStream.h"
+#include "SWFileStream.h"
 
 #include "SWUtil.h"
 
@@ -77,6 +78,16 @@ public:
 		{
 			m_time = 4;
 			m_remain = m_time;
+		}
+
+		{
+			SWHardRef<SWInputStream> fis = SWAssets.loadBuffer( "animation.txt" );
+			SWInputStreamReader reader( fis() );
+			tstring line;
+			while( reader.readLine( line ) )
+			{
+				SWLog( line.c_str() );
+			}
 		}
 
 	}
