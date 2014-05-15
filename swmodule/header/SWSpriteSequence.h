@@ -1,5 +1,5 @@
-#ifndef SWSpriteSheet_h__
-#define SWSpriteSheet_h__
+#ifndef SWSpriteSequence_h__
+#define SWSpriteSequence_h__
 
 #include "SWObject.h"
 
@@ -25,6 +25,11 @@ public:
 
 	tuint count() const;
 
+protected:
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	tstring m_name;
@@ -32,4 +37,4 @@ private:
 	SWHardRef<SWArray> m_sprites;
 };
 
-#endif // SWSpriteSheet_h__
+#endif // SWSpriteSequence_h__

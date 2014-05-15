@@ -100,6 +100,24 @@ SWHardRef<SWSpriteAnimation> SWSpriteAnimation::create( const tstring& json )
 	return animation;
 }
 
+SWSpriteAnimation::SWSpriteAnimation()
+{
+
+}
+
+SWSpriteAnimation::~SWSpriteAnimation()
+{
+}
+
+void SWSpriteAnimation::addSequence( SWSpriteSequence* sequence )
+{
+	for ( tuint i = 0 ; i < m_sequences.size() ; ++i )
+	{
+		if ( m_sequences[i]() == sequence ) return;
+	}
+	m_sequences.push_back( sequence );
+}
+
 SWSpriteSequence* SWSpriteAnimation::getSequenceByName( const tstring& name ) const
 {
 	for ( tuint i = 0 ; i < m_sequences.size() ; ++i )

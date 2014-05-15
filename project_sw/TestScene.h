@@ -93,13 +93,14 @@ public:
 		}
 
 		{
-			SWHardRef<SWSpriteAnimation> animation = SWAssets.loadSpriteAnimation( "animation.txt" );
-
+			SWHardRef<SWSpriteAnimation> animation = SWAssets.loadSpriteAnimation( "animation2.txt" );
+			SWHardRef<SWTexture> tex = SWAssets.loadTexture( "boom.png" );
 			SWGameObject* go = new SWGameObject();
 			go->setName( "boom" );
 
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( new SWSprite( SWAssets.loadTexture("balls.png"), 0,100,100,100 ) );
+			SWHardRef<SWSpriteSheet> sheet = SWAssets.loadSpriteSheet( "balls.png" );
+			renderer->setSprite( sheet()->find( "ball_1" ) );
 
 			SWTransform* trans = renderer->getComponent<SWTransform>();
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
@@ -107,12 +108,12 @@ public:
 			SWAction* action = go->addComponent<SWAction>();
 			SWActAnimate* act1 = new SWActAnimate(1, animation()->getSequenceByName( "boom" ) );
 			action->setAct( "test", new SWActRepeat(act1) );
-			//action->play( "test" );
+			action->play( "test" );
 			SWActSequence* seq = new SWActSequence;
 			seq->addAct( new SWActRotateFrom( 5, tvec3( 0,0,3.14f ) ));
 			//seq->addAct( new SWActMoveBy( 2, tvec3( -100,0,0 ) ));
 			action->setAct( "move", new SWActRepeat( seq ) );
-			action->play( "move" );
+			//action->play( "move" );
 
 			SWRectCollider2D* collider = go->addComponent<SWRectCollider2D>();
 			collider->setCenter( tvec2::zero );

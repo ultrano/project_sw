@@ -289,6 +289,9 @@
     <Filter Include="SW\SWSpriteAnimation">
       <UniqueIdentifier>{3f078869-a96b-4536-bac0-7cc94db401e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWSpriteSheet">
+      <UniqueIdentifier>{8585b75e-6baf-4f2d-bbfe-c88fe4f8a42f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -603,6 +606,9 @@
     <ClInclude Include="header\SWActColor.h">
       <Filter>SW\SWAct\SWActColor</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWSpriteSheet.h">
+      <Filter>SW\SWSpriteSheet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -856,6 +862,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActColor.cpp">
       <Filter>SW\SWAct\SWActColor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWSpriteSheet.cpp">
+      <Filter>SW\SWSpriteSheet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

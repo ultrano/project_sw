@@ -1,5 +1,7 @@
 #include "SWSprite.h"
 #include "SWTexture.h"
+#include "SWAssets.h"
+#include "SWObjectStream.h"
 
 SWSprite::SWSprite( SWHardRef<SWTexture> texture, int x, int y, int width, int height )
 	: m_texture( texture )
@@ -47,4 +49,34 @@ const tvec2& SWSprite::getScaledOffset() const
 const tvec2& SWSprite::getScaledSize() const
 {
 	return m_scaledSize;
+}
+
+void SWSprite::serialize( SWObjectWriter* ow )
+{
+	tstring path;
+	bool isAsset = SWAssets.findPathOfTexture( m_texture(), path );
+
+	ow->writeBool( isAsset );
+	if ( isAsset ) ow->writeString( path );
+
+	ow->writeVec2( m_offset );
+	ow->writeVec2( m_size );
+	ow->writeVec2( m_scaledOffset );
+	ow->writeVec2( m_scaledSize );
+}
+
+void SWSprite::deserialize( SWObjectReader* or )
+{
+	bool isAsset = or->readBool();
+	if ( isAsset )
+	{
+		tstring path;
+		or->readString( path );
+		m_texture = SWAssets.loadTexture( path );
+	}
+
+	or->readVec2( m_offset );
+	or->readVec2( m_size );
+	or->readVec2( m_scaledOffset );
+	or->readVec2( m_scaledSize );
 }

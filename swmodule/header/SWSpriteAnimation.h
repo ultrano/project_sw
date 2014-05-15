@@ -13,6 +13,10 @@ public:
 
 	static SWHardRef<SWSpriteAnimation> create( const tstring& json );
 
+	SWSpriteAnimation();
+	~SWSpriteAnimation();
+
+	void addSequence( SWSpriteSequence* sequence );
 	SWSpriteSequence* getSequenceByName( const tstring& name ) const;
 	SWSpriteSequence* getSequenceAt( tuint index ) const;
 	tuint count() const;

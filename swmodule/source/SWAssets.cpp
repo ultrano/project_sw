@@ -1,6 +1,9 @@
 #include "SWAssets.h"
 #include "SWLog.h"
+#include "SWUtil.h"
 #include "SWByteBufferStream.h"
+#include "SWSprite.h"
+#include "SWSpriteSequence.h"
 
 __SWAssets::__SWAssets()
 {
@@ -120,14 +123,78 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 	if ( ais.isValid() == false ) return NULL;
 	if ( ais()->available() <= 0 ) return NULL;
 
-	tstring json;
-	json.resize( ais()->available() );
-	ais()->read( (tbyte*)&json[0], json.size() );
+	SWInputStreamReader reader( ais() );
+	tstring line;
+	if ( !reader.readLine( line ) ) return NULL;
 
-	SWHardRef<SWSpriteAnimation> animation = SWSpriteAnimation::create( json );
+	SWHardRef<SWSpriteSheet> sheet = loadSpriteSheet( line );
+	if ( !sheet.isValid() ) return NULL;
+	
+	SWHardRef<SWSpriteAnimation> animation = new SWSpriteAnimation();
+	while ( reader.readLine( line ) )
+	{
+		char name[125] = {0};
+		float delay = 0;
+		char buf[256] = {0};
+		sscanf( line.c_str(), "%s %f %s", &name[0], &delay, &buf[0] );
 
+		SWHardRef<SWSpriteSequence> sequence = new SWSpriteSequence();
+		sequence()->setName( name );
+		sequence()->setDelayPerUnit( delay );
+		animation()->addSequence( sequence() );
+
+		line = buf;
+		tuint begin = 0;
+		while( begin < line.length() )
+		{
+			tuint end = line.find( ",", begin );
+			if ( end == tstring::npos ) end = line.length();
+			tstring spriteName = line.substr( begin, end - begin );
+			sequence()->addSprite( sheet()->find( spriteName ) );
+			begin = end + 1;
+		}
+	}
 	m_animCache[ filePath ] = animation();
 	return animation;
+}
+
+SWHardRef<SWSpriteSheet> __SWAssets::loadSpriteSheet( const tstring& filePath )
+{
+	if ( !m_accessor.isValid() ) return NULL;
+
+	tstring sheetFile = filePath + ".sheet";
+	SheetTable::iterator itor = m_sheetCache.find( sheetFile );
+	if ( itor != m_sheetCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" cache load", sheetFile.c_str() );
+			return itor->second();
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", sheetFile.c_str() );
+	}
+	
+	SWHardRef<SWTexture> texture = loadTexture( filePath );
+	if ( !texture.isValid() ) return NULL;
+
+	SWHardRef<SWInputStream> ais = m_accessor()->access( sheetFile );
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
+
+	SWHardRef<SWSpriteSheet> sheet = new SWSpriteSheet();
+	SWInputStreamReader reader( ais() );
+
+	tstring line;
+	while( reader.readLine( line ) )
+	{
+		char name[128] = {0};
+		float x, y, w, h;
+		sscanf( line.c_str(), "%s %f %f %f %f", &name[0], &x, &y, &w, &h );
+		sheet()->insert( name, new SWSprite( texture, x, y, w, h ) );
+	}
+
+	m_sheetCache[ filePath ] = sheet();
+	return sheet;
 }
 
 bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )

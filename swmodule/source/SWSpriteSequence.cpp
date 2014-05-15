@@ -1,6 +1,7 @@
 #include "SWSpriteSequence.h"
 #include "SWSprite.h"
 #include "SWArray.h"
+#include "SWObjectStream.h"
 
 SWSpriteSequence::SWSpriteSequence()
 	: m_sprites( new SWArray() )
@@ -48,4 +49,30 @@ float SWSpriteSequence::getDelayPerUnit() const
 tuint SWSpriteSequence::count() const
 {
 	return m_sprites()->count();
+}
+
+void SWSpriteSequence::serialize( SWObjectWriter* ow )
+{
+	ow->writeString( m_name );
+	ow->writeFloat( m_delayPerUnit );
+
+	tuint count = m_sprites()->count();
+	ow->writeUInt( count );
+	for ( tuint i = 0 ; i < count ; ++i )
+	{
+		ow->writeObject( m_sprites()->get( i ) );
+	}
+}
+
+void SWSpriteSequence::deserialize( SWObjectReader* or )
+{
+	or->readString( m_name );
+	m_delayPerUnit = or->readFloat();
+
+	m_sprites()->clear();
+	tuint count = or->readUInt();
+	for ( tuint i = 0 ; i < count ; ++i )
+	{
+		m_sprites()->add( or->readObject() );
+	}
 }

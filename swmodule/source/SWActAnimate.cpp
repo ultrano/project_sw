@@ -7,7 +7,7 @@
 
 SWActAnimate::SWActAnimate( float speed, SWSpriteSequence* sheet )
 	: m_speed( speed )
-	, m_sheet( sheet )
+	, m_sequence( sheet )
 {
 
 }
@@ -19,14 +19,14 @@ SWActAnimate::~SWActAnimate()
 
 bool SWActAnimate::isDone()
 {
-	return (!m_sheet.isValid()) || (m_spendTime >= m_totalTime);
+	return (!m_sequence.isValid()) || (m_spendTime >= m_totalTime);
 }
 
 void SWActAnimate::onStart()
 {
-	if ( !m_sheet.isValid() ) return;
+	if ( !m_sequence.isValid() ) return;
 
-	m_totalTime = m_sheet()->getDelayPerUnit() * m_sheet()->count();
+	m_totalTime = m_sequence()->getDelayPerUnit() * m_sequence()->count();
 	m_spendTime = 0;
 	m_lastIndex = 0;
 	changeSpriteWithAt( m_lastIndex );
@@ -37,7 +37,7 @@ void SWActAnimate::onUpdate()
 	m_spendTime += SWTime.getDeltaTime() * m_speed;
 	if ( isDone() ) return;
 
-	tuint index = (m_spendTime / m_sheet()->getDelayPerUnit());
+	tuint index = (m_spendTime / m_sequence()->getDelayPerUnit());
 	if ( index == m_lastIndex ) return;
 
 	changeSpriteWithAt( index );
@@ -46,9 +46,9 @@ void SWActAnimate::onUpdate()
 
 void SWActAnimate::changeSpriteWithAt( tuint index )
 {
-	if ( !m_sheet.isValid() ) return;
+	if ( !m_sequence.isValid() ) return;
 
-	SWSprite* sprite = m_sheet()->getSpriteAt( index );
+	SWSprite* sprite = m_sequence()->getSpriteAt( index );
 	SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
 	renderer->setSprite( sprite );
 }
@@ -61,7 +61,7 @@ void SWActAnimate::serialize( SWObjectWriter* ow )
 	ow->writeFloat( m_spendTime );
 	ow->writeFloat( m_totalTime );
 	ow->writeUInt( m_lastIndex );
-	ow->writeObject( swrtti_cast<SWObject>( m_sheet() ) );
+	ow->writeObject( swrtti_cast<SWObject>( m_sequence() ) );
 }
 
 void SWActAnimate::deserialize( SWObjectReader* or )
@@ -71,5 +71,5 @@ void SWActAnimate::deserialize( SWObjectReader* or )
 	m_spendTime = or->readFloat();
 	m_totalTime = or->readFloat();
 	m_lastIndex = or->readUInt();
-	m_sheet = swrtti_cast<SWSpriteSequence>( or->readObject() );
+	m_sequence = swrtti_cast<SWSpriteSequence>( or->readObject() );
 }

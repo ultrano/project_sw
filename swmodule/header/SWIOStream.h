@@ -87,6 +87,7 @@ public:
 		while( true )
 		{
 			c = m_is()->read();
+			if ( c == '\r' ) continue;
 			if ( c <= 0 || c == '\n' ) break;
 			str += c;
 		}

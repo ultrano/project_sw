@@ -11,7 +11,7 @@ class SWActAnimate : public SWAct
 
 public:
 
-	SWActAnimate( float speed, SWSpriteSequence* sheet );
+	SWActAnimate( float speed, SWSpriteSequence* sequence );
 	~SWActAnimate();
 
 protected:
@@ -29,7 +29,7 @@ private:
 
 private:
 
-	SWHardRef<SWSpriteSequence> m_sheet;
+	SWHardRef<SWSpriteSequence> m_sequence;
 	float m_speed;
 	tuint m_lastIndex;
 	float m_spendTime;

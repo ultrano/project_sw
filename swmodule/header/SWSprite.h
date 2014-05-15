@@ -19,6 +19,11 @@ public:
 	const tvec2& getScaledOffset() const;
 	const tvec2& getScaledSize() const;
 
+protected:
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	SWHardRef<SWTexture> m_texture;
