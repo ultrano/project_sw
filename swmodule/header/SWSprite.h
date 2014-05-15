@@ -11,6 +11,7 @@ class SWSprite : public SWObject
 public:
 
 	SWSprite( SWHardRef<SWTexture> texture, int x, int y, int width, int height );
+	SWSprite( factory_constructor );
 	~SWSprite();
 
 	SWTexture* getTexture() const;

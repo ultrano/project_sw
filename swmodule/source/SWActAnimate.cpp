@@ -12,6 +12,12 @@ SWActAnimate::SWActAnimate( float speed, SWSpriteSequence* sheet )
 
 }
 
+SWActAnimate::SWActAnimate( factory_constructor )
+	: m_speed( 0 )
+	, m_sequence( NULL )
+{
+}
+
 SWActAnimate::~SWActAnimate()
 {
 

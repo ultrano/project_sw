@@ -7,13 +7,10 @@ class SWActRepeat : public SWAct
 {
 	SW_RTTI( SWActRepeat, SWAct );
 
-	SWHardRef<SWAct> m_act;
-	tuint m_limitCount;
-	tuint m_repeatCount;
-
 public:
 
 	SWActRepeat( SWAct* act, tuint count = 0 );
+	SWActRepeat( factory_constructor );
 	~SWActRepeat();
 
 	virtual bool isDone();
@@ -23,6 +20,11 @@ public:
 	void serialize( SWObjectWriter* ow );
 	void deserialize( SWObjectReader* or );
 
+private:
+
+	SWHardRef<SWAct> m_act;
+	tuint m_limitCount;
+	tuint m_repeatCount;
 };
 
 #endif // SWActRepeat_h__

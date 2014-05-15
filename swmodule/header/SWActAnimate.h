@@ -12,6 +12,7 @@ class SWActAnimate : public SWAct
 public:
 
 	SWActAnimate( float speed, SWSpriteSequence* sequence );
+	SWActAnimate( factory_constructor );
 	~SWActAnimate();
 
 protected:

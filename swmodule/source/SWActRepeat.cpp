@@ -10,6 +10,13 @@ SWActRepeat::SWActRepeat( SWAct* act, tuint count )
 {
 }
 
+SWActRepeat::SWActRepeat( factory_constructor )
+	: m_act( NULL )
+	, m_repeatCount(0)
+	, m_limitCount(0)
+{
+}
+
 SWActRepeat::~SWActRepeat()
 {
 }

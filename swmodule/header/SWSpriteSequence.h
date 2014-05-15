@@ -12,6 +12,7 @@ class SWSpriteSequence : public SWObject
 public:
 
 	SWSpriteSequence();
+	SWSpriteSequence( factory_constructor );
 	~SWSpriteSequence();
 
 	void setName( const tstring& name );

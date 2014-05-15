@@ -8,6 +8,11 @@ SWSpriteSequence::SWSpriteSequence()
 {
 
 }
+SWSpriteSequence::SWSpriteSequence( factory_constructor )
+	: m_sprites( new SWArray() )
+{
+
+}
 
 SWSpriteSequence::~SWSpriteSequence()
 {

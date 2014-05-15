@@ -21,6 +21,15 @@ SWSprite::SWSprite( SWHardRef<SWTexture> texture, int x, int y, int width, int h
 	}
 }
 
+SWSprite::SWSprite( factory_constructor )
+	: m_texture( NULL )
+	, m_offset( 0, 0 )
+	, m_size( 0, 0 )
+	, m_scaledOffset( 0, 0 )
+	, m_scaledSize( 0, 0 )
+{
+}
+
 SWSprite::~SWSprite()
 {
 

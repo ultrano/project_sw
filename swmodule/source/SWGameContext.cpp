@@ -21,11 +21,15 @@
 #include "WIImage.h"
 #include "WIText.h"
 #include "SWMeshRenderer.h"
+#include "SWSprite.h"
 #include "SWSpriteRenderer.h"
+#include "SWSpriteSequence.h"
 #include "SWGameObject.h"
 #include "SWMesh.h"
 #include "SWMaterial.h"
 #include "SWCollider2D.h"
+#include "SWActRepeat.h"
+#include "SWActAnimate.h"
 void registerBasicObjectFactories( SWGameContext* gc )
 {
 	gc->registerFactory<SWAction>();
@@ -35,8 +39,10 @@ void registerBasicObjectFactories( SWGameContext* gc )
 
 	gc->registerFactory<SWMeshFilter>();
 	gc->registerFactory<SWMeshRenderer>();
-
+	
+	gc->registerFactory<SWSprite>();
 	gc->registerFactory<SWSpriteRenderer>();
+	gc->registerFactory<SWSpriteSequence>();
 	gc->registerFactory<SWGameObject>();
 	gc->registerFactory<SWMesh>();
 	gc->registerFactory<SWMaterial>();
@@ -44,6 +50,9 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<SWRigidBody2D>();
 	gc->registerFactory<SWCircleCollider2D>();
 	gc->registerFactory<SWRectCollider2D>();
+
+	gc->registerFactory<SWActAnimate>();
+	gc->registerFactory<SWActRepeat>();
 
 	gc->registerFactory<WIImage>();
 	gc->registerFactory<WIText>();

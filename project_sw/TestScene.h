@@ -106,9 +106,15 @@ public:
 			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
 
 			SWAction* action = go->addComponent<SWAction>();
+			
 			SWActAnimate* act1 = new SWActAnimate(1, animation()->getSequenceByName( "boom" ) );
-			action->setAct( "test", new SWActRepeat(act1) );
+			SWHardRef<SWActRepeat> act2 = new SWActRepeat(act1);
+			SWHardRef<SWObject> clone = act2()->clone();
+			
+			act2 = swrtti_cast<SWActRepeat>( clone() );
+			action->setAct( "test", act2() );
 			action->play( "test" );
+			
 			SWActSequence* seq = new SWActSequence;
 			seq->addAct( new SWActRotateFrom( 5, tvec3( 0,0,3.14f ) ));
 			//seq->addAct( new SWActMoveBy( 2, tvec3( -100,0,0 ) ));
