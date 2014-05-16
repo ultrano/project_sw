@@ -9,6 +9,12 @@ SWActSendMsg::SWActSendMsg( const tstring& eventName )
 
 }
 
+SWActSendMsg::SWActSendMsg( factory_constructor )
+	: m_eventName( "" )
+{
+
+}
+
 SWActSendMsg::~SWActSendMsg()
 {
 

@@ -10,6 +10,7 @@ class SWActAlphaTo : public SWAct
 public:
 
 	SWActAlphaTo( float duration, float alpha );
+	SWActAlphaTo( factory_constructor );
 	~SWActAlphaTo();
 
 private:

@@ -10,6 +10,7 @@ class SWActScale : public SWAct
 public:
 
 	SWActScale( float duration, const tvec3& from, const tvec3& to );
+	SWActScale( factory_constructor );
 	~SWActScale();
 
 protected:
@@ -37,6 +38,7 @@ class SWActScaleTo : public SWActScale
 public:
 
 	SWActScaleTo( float duration, const tvec3& to );
+	SWActScaleTo( factory_constructor );
 	~SWActScaleTo();
 
 protected:
@@ -53,6 +55,7 @@ class SWActScaleFrom : public SWActScale
 public:
 
 	SWActScaleFrom( float duration, const tvec3& from );
+	SWActScaleFrom( factory_constructor );
 	~SWActScaleFrom();
 
 protected:
@@ -69,6 +72,7 @@ class SWActScaleBy : public SWActScale
 public:
 
 	SWActScaleBy( float duration, const tvec3& by );
+	SWActScaleBy( factory_constructor );
 	~SWActScaleBy();
 
 protected:

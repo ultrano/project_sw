@@ -30,6 +30,10 @@
 #include "SWCollider2D.h"
 #include "SWActRepeat.h"
 #include "SWActAnimate.h"
+#include "SWActMove.h"
+#include "SWActRotate.h"
+#include "SWActScale.h"
+
 void registerBasicObjectFactories( SWGameContext* gc )
 {
 	gc->registerFactory<SWAction>();
@@ -53,6 +57,18 @@ void registerBasicObjectFactories( SWGameContext* gc )
 
 	gc->registerFactory<SWActAnimate>();
 	gc->registerFactory<SWActRepeat>();
+	gc->registerFactory<SWActMove>();
+	gc->registerFactory<SWActMoveTo>();
+	gc->registerFactory<SWActMoveFrom>();
+	gc->registerFactory<SWActMoveBy>();
+	gc->registerFactory<SWActRotate>();
+	gc->registerFactory<SWActRotateTo>();
+	gc->registerFactory<SWActRotateFrom>();
+	gc->registerFactory<SWActRotateBy>();
+	gc->registerFactory<SWActScale>();
+	gc->registerFactory<SWActScaleTo>();
+	gc->registerFactory<SWActScaleFrom>();
+	gc->registerFactory<SWActScaleBy>();
 
 	gc->registerFactory<WIImage>();
 	gc->registerFactory<WIText>();

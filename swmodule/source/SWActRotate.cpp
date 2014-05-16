@@ -14,6 +14,15 @@ SWActRotate::SWActRotate( float duration, const tvec3& from, const tvec3& to )
 
 }
 
+SWActRotate::SWActRotate( factory_constructor )
+	: m_duration( 0 )
+	, m_spendTime( 0 )
+	, m_from( tvec3::zero )
+	, m_to(  tvec3::zero )
+{
+
+}
+
 SWActRotate::~SWActRotate()
 {
 
@@ -73,6 +82,12 @@ SWActRotateTo::SWActRotateTo( float duration, const tvec3& to )
 
 }
 
+SWActRotateTo::SWActRotateTo( factory_constructor arg )
+	: SWActRotate( arg )
+{
+
+}
+
 SWActRotateTo::~SWActRotateTo()
 {
 
@@ -96,6 +111,12 @@ SWActRotateFrom::SWActRotateFrom( float duration, const tvec3& from )
 
 }
 
+SWActRotateFrom::SWActRotateFrom( factory_constructor arg )
+	: SWActRotate( arg )
+{
+
+}
+
 SWActRotateFrom::~SWActRotateFrom()
 {
 
@@ -115,6 +136,12 @@ void SWActRotateFrom::onStart()
 SWActRotateBy::SWActRotateBy( float duration, const tvec3& by )
 	: SWActRotate( duration, tvec3::zero, tvec3::zero )
 	, m_by( by )
+{
+
+}
+
+SWActRotateBy::SWActRotateBy( factory_constructor arg )
+	: SWActRotate( arg )
 {
 
 }

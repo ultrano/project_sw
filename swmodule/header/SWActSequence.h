@@ -6,14 +6,11 @@
 class SWActSequence : public SWAct
 {
 	SW_RTTI( SWActSequence, SWAct );
-	
-	tuint m_cursor;
-	SWWeakRef<SWAct> m_current;
-	tarray< SWHardRef<SWAct> > m_acts;
 
 public:
 
 	SWActSequence();
+	SWActSequence( factory_constructor );
 	~SWActSequence();
 
 	void addAct( SWAct* act );
@@ -24,6 +21,12 @@ public:
 	
 	void serialize( SWObjectWriter* ow );
 	void deserialize( SWObjectReader* or );
+
+private:
+	
+	tuint m_cursor;
+	SWWeakRef<SWAct> m_current;
+	tarray< SWHardRef<SWAct> > m_acts;
 };
 
 #endif // SWActSequence_h__

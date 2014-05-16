@@ -14,6 +14,15 @@ SWActScale::SWActScale( float duration, const tvec3& from, const tvec3& to )
 
 }
 
+SWActScale::SWActScale( factory_constructor )
+	: m_duration( 0 )
+	, m_spendTime( 0 )
+	, m_from( tvec3::zero )
+	, m_to( tvec3::zero )
+{
+
+}
+
 SWActScale::~SWActScale()
 {
 
@@ -74,6 +83,12 @@ SWActScaleTo::SWActScaleTo( float duration, const tvec3& to )
 
 }
 
+SWActScaleTo::SWActScaleTo( factory_constructor arg )
+	: SWActScale( arg )
+{
+
+}
+
 SWActScaleTo::~SWActScaleTo()
 {
 
@@ -97,6 +112,12 @@ SWActScaleFrom::SWActScaleFrom( float duration, const tvec3& from )
 
 }
 
+SWActScaleFrom::SWActScaleFrom( factory_constructor arg )
+	: SWActScale( arg )
+{
+
+}
+
 SWActScaleFrom::~SWActScaleFrom()
 {
 
@@ -116,6 +137,12 @@ void SWActScaleFrom::onStart()
 SWActScaleBy::SWActScaleBy( float duration, const tvec3& by )
 	: SWActScale( duration, tvec3::zero, tvec3::zero )
 	, m_by( by )
+{
+
+}
+
+SWActScaleBy::SWActScaleBy( factory_constructor arg )
+	: SWActScale( arg )
 {
 
 }

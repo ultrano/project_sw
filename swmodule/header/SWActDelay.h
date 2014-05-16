@@ -10,6 +10,7 @@ class SWActDelay : public SWAct
 public:
 
 	SWActDelay( float delay = 0 );
+	SWActDelay( factory_constructor );
 	~SWActDelay();
 
 	virtual bool isDone();

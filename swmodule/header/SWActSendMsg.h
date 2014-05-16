@@ -10,6 +10,7 @@ class SWActSendMsg : public SWAct
 public:
 
 	SWActSendMsg( const tstring& eventName );
+	SWActSendMsg( factory_constructor );
 	~SWActSendMsg();
 
 protected:

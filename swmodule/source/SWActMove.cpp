@@ -14,6 +14,15 @@ SWActMove::SWActMove( float duration, const tvec3& from, const tvec3& to )
 
 }
 
+SWActMove::SWActMove( factory_constructor )
+	: m_duration( 0 )
+	, m_spendTime( 0 )
+	, m_from( tvec3::zero )
+	, m_to( tvec3::zero )
+{
+
+}
+
 SWActMove::~SWActMove()
 {
 
@@ -74,6 +83,11 @@ SWActMoveTo::SWActMoveTo( float duration, const tvec3& to )
 
 }
 
+SWActMoveTo::SWActMoveTo( factory_constructor arg )
+	: SWActMove( arg )
+{
+}
+
 SWActMoveTo::~SWActMoveTo()
 {
 
@@ -97,6 +111,11 @@ SWActMoveFrom::SWActMoveFrom( float duration, const tvec3& from )
 
 }
 
+SWActMoveFrom::SWActMoveFrom( factory_constructor arg )
+	: SWActMove( arg )
+{
+}
+
 SWActMoveFrom::~SWActMoveFrom()
 {
 
@@ -118,6 +137,11 @@ SWActMoveBy::SWActMoveBy( float duration, const tvec3& by )
 	, m_by( by )
 {
 
+}
+
+SWActMoveBy::SWActMoveBy( factory_constructor arg )
+	: SWActMove( arg )
+{
 }
 
 SWActMoveBy::~SWActMoveBy()

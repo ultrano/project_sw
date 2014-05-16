@@ -11,6 +11,13 @@ SWActSequence::SWActSequence()
 
 }
 
+SWActSequence::SWActSequence( factory_constructor )
+	: m_current( NULL )
+	, m_cursor(0)
+{
+
+}
+
 SWActSequence::~SWActSequence()
 {
 

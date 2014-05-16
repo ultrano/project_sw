@@ -10,6 +10,7 @@ class SWActMove : public SWAct
 public:
 
 	SWActMove( float duration, const tvec3& from, const tvec3& to );
+	SWActMove( factory_constructor );
 	~SWActMove();
 
 protected:
@@ -37,6 +38,7 @@ class SWActMoveTo : public SWActMove
 public:
 
 	SWActMoveTo( float duration, const tvec3& to );
+	SWActMoveTo( factory_constructor );
 	~SWActMoveTo();
 
 protected:
@@ -53,6 +55,7 @@ class SWActMoveFrom : public SWActMove
 public:
 
 	SWActMoveFrom( float duration, const tvec3& from );
+	SWActMoveFrom( factory_constructor );
 	~SWActMoveFrom();
 
 protected:
@@ -69,6 +72,7 @@ class SWActMoveBy : public SWActMove
 public:
 
 	SWActMoveBy( float duration, const tvec3& by );
+	SWActMoveBy( factory_constructor );
 	~SWActMoveBy();
 
 protected:

@@ -13,6 +13,15 @@ SWActAlphaTo::SWActAlphaTo( float duration, float alpha )
 
 }
 
+SWActAlphaTo::SWActAlphaTo( factory_constructor )
+	: m_duration( 0 )
+	, m_dstAlpha( 0 )
+	, m_srcAlpha( 0 )
+	, m_spendTIme( 0 )
+{
+
+}
+
 SWActAlphaTo::~SWActAlphaTo()
 {
 

@@ -8,6 +8,12 @@ SWActDelay::SWActDelay( float delay )
 {
 }
 
+SWActDelay::SWActDelay( factory_constructor )
+	: m_delay( 0 )
+	, m_accum( 0 )
+{
+}
+
 SWActDelay::~SWActDelay()
 {
 }

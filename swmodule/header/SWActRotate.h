@@ -10,6 +10,7 @@ class SWActRotate : public SWAct
 public:
 
 	SWActRotate( float duration, const tvec3& from, const tvec3& to );
+	SWActRotate( factory_constructor );
 	~SWActRotate();
 
 protected:
@@ -37,6 +38,7 @@ class SWActRotateTo : public SWActRotate
 public:
 
 	SWActRotateTo( float duration, const tvec3& to );
+	SWActRotateTo( factory_constructor );
 	~SWActRotateTo();
 
 protected:
@@ -53,6 +55,7 @@ class SWActRotateFrom : public SWActRotate
 public:
 
 	SWActRotateFrom( float duration, const tvec3& from );
+	SWActRotateFrom( factory_constructor );
 	~SWActRotateFrom();
 
 protected:
@@ -69,6 +72,7 @@ class SWActRotateBy : public SWActRotate
 public:
 
 	SWActRotateBy( float duration, const tvec3& by );
+	SWActRotateBy( factory_constructor );
 	~SWActRotateBy();
 
 protected:
