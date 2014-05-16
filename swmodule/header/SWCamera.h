@@ -43,6 +43,11 @@ public:
 	const tvec3& getUpDir() const { return m_upDir; }
 	const tvec3& getRightDir() const { return m_rightDir; }
 
+protected:
+	
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
+
 private:
 
 	void onAwake();
@@ -50,11 +55,6 @@ private:
 	void onUpdate();
 
 private:
-
-	TMatrix4x4 m_viewMatrix;
-	TMatrix4x4 m_projMatrix;
-	TMatrix4x4 m_vpMatrix;
-	TMatrix4x4 m_invProjMatrix;
 
 	float m_near;
 	float m_far;
@@ -69,6 +69,11 @@ private:
 	tvec3 m_lookDir;
 	tvec3 m_upDir;
 	tvec3 m_rightDir;
+
+	TMatrix4x4 m_viewMatrix;
+	TMatrix4x4 m_projMatrix;
+	TMatrix4x4 m_vpMatrix;
+	TMatrix4x4 m_invProjMatrix;
 };
 
 #endif // SWCamera_h__

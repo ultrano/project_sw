@@ -4,6 +4,7 @@
 #include "SWGameContext.h"
 #include "SWGameScene.h"
 #include "SWDefines.h"
+#include "SWObjectStream.h"
 
 SWCamera::SWCamera()
 	: m_near( 0 )
@@ -164,4 +165,31 @@ const thashstr& SWCamera::getTargetLayerName() const
 void SWCamera::setTargetLayerName( const thashstr& name )
 {
 	m_layerName = name;
+}
+
+void SWCamera::serialize( SWObjectWriter* ow )
+{
+	__super::serialize( ow );
+	ow->writeFloat( m_clearDepth );
+	ow->writeFloat( m_near );
+	ow->writeFloat( m_far );
+	ow->writeInt( m_depth );
+	ow->writeInt( m_clearFlags );
+	ow->writeColor( m_clearColor );
+	ow->writeString( m_layerName.str() );
+}
+
+void SWCamera::deserialize( SWObjectReader* or )
+{
+	__super::deserialize( or );
+	m_clearDepth = or->readFloat();
+	m_near  = or->readFloat();
+	m_far   = or->readFloat();
+	m_depth = or->readInt();
+	m_clearFlags = or->readInt();
+	or->readColor( m_clearColor );
+
+	tstring layerName;
+	or->readString( layerName );
+	m_layerName = layerName;
 }

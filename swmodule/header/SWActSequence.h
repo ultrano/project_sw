@@ -19,6 +19,8 @@ public:
 	virtual void onStart();
 	virtual void onUpdate();
 	
+protected:
+
 	void serialize( SWObjectWriter* ow );
 	void deserialize( SWObjectReader* or );
 
