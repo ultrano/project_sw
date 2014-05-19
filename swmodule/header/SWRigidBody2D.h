@@ -21,6 +21,11 @@ public:
 	void setElastic( float elastic );
 	void setMass( tfloat mass );
 	void setInertia( tfloat inertia );
+	
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 
 private:
 
@@ -31,21 +36,20 @@ private:
 
 private:
 
-	tvec2   m_center;
-	float   m_angle;
+	tvec2  m_center;
+	float  m_angle;
 
-
-	tvec2   m_velocity;
-	tfloat  m_torque;
+	tvec2  m_velocity;
+	tfloat m_torque;
 
 	tfloat m_mass;
 	tfloat m_inertia;
 
-	tfloat  m_linearDrag;
-	tfloat  m_angularDrag;
+	tfloat m_linearDrag;
+	tfloat m_angularDrag;
 
-	tfloat  m_elastic;
-	tvec2   m_gravityScale;
+	tfloat m_elastic;
+	tvec2  m_gravityScale;
 };
 
 #endif // SWRigidBody2D_h__

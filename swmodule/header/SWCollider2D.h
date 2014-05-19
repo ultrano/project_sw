@@ -29,7 +29,15 @@ public:
 	float getRadius() const { return m_radius; };
 	const tvec2& getCenter() const { return m_center; };
 	
+	float getWorldRadius() const;
+	tvec2 getWorldCenter() const;
+
 	bool containPoint( const tvec2 point );
+
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 
 private:
 
@@ -48,7 +56,15 @@ public:
 	void setSize( const tvec2& size ) { m_size = size; }
 	void setCenter( const tvec2& center ) { m_center = center; }
 
+	tvec2 getWorldCenter() const;
+	void getWorldEdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const;
+
 	bool containPoint( const tvec2 point );
+	
+protected:
+
+	void serialize( SWObjectWriter* ow );
+	void deserialize( SWObjectReader* or );
 
 private:
 	tvec2 m_size;

@@ -5,6 +5,7 @@
 #include "SWPhysics2D.h"
 #include "SWTime.h"
 #include "SWMath.h"
+#include "SWObjectStream.h"
 
 SWRigidBody2D::SWRigidBody2D()
 	: m_center( tvec2::zero )
@@ -42,7 +43,7 @@ SWRigidBody2D::~SWRigidBody2D()
 void SWRigidBody2D::onAwake()
 {
 	__super::onAwake();
-	SWPhysics.m_bodies.push_back( this );
+	SWPhysics2D.m_bodies.push_back( this );
 }
 
 void SWRigidBody2D::onStart()
@@ -55,7 +56,7 @@ void SWRigidBody2D::onStart()
 
 void SWRigidBody2D::onRemove()
 {
-	SWPhysics.m_bodies.remove( this );
+	SWPhysics2D.m_bodies.remove( this );
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
@@ -67,7 +68,7 @@ void SWRigidBody2D::onUpdate()
 	float depth = transform->getPosition().z;
 	float deltaTime = SWTime.getDeltaTime();
 	
-	addAccel( m_gravityScale * ( SWPhysics.getGravityForce() ) * deltaTime );
+	addAccel( m_gravityScale * ( SWPhysics2D.getGravityForce() ) * deltaTime );
 	
 	tvec2  linearStep  = m_velocity* deltaTime;
 	tfloat angularStep = m_torque* deltaTime;
@@ -129,4 +130,32 @@ void SWRigidBody2D::setInertia( tfloat inertia )
 {
 	if ( inertia > 0 ) m_inertia = inertia;
 	else m_inertia = FLT_EPSILON;
+}
+
+void SWRigidBody2D::serialize( SWObjectWriter* ow )
+{
+	ow->writeVec2( m_center );
+	ow->writeVec2( m_velocity );
+	ow->writeVec2( m_gravityScale );
+	ow->writeFloat( m_angle );
+	ow->writeFloat( m_torque );
+	ow->writeFloat( m_mass );
+	ow->writeFloat( m_inertia );
+	ow->writeFloat( m_elastic );
+	ow->writeFloat( m_linearDrag );
+	ow->writeFloat( m_angularDrag );
+}
+
+void SWRigidBody2D::deserialize( SWObjectReader* or )
+{
+	or->readVec2( m_center );
+	or->readVec2( m_velocity );
+	or->readVec2( m_gravityScale );
+	m_angle   = or->readFloat();
+	m_torque  = or->readFloat();
+	m_mass    = or->readFloat();
+	m_inertia = or->readFloat();
+	m_elastic = or->readFloat();
+	m_linearDrag  = or->readFloat();
+	m_angularDrag = or->readFloat();
 }

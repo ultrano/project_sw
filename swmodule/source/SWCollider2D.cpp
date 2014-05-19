@@ -2,16 +2,17 @@
 #include "SWTransform.h"
 #include "SWMath.h"
 #include "SWPhysics2D.h"
+#include "SWObjectStream.h"
 
 void SWCollider2D::onAwake()
 {
 	__super::onAwake();
-	SWPhysics.m_colliders.push_back( this );
+	SWPhysics2D.m_colliders.push_back( this );
 }
 
 void SWCollider2D::onRemove()
 {
-	SWPhysics.m_colliders.remove( this );
+	SWPhysics2D.m_colliders.remove( this );
 	__super::onRemove();
 }
 
@@ -25,11 +26,37 @@ SWCircleCollider2D::~SWCircleCollider2D()
 {
 }
 
+float SWCircleCollider2D::getWorldRadius() const
+{
+	tquat radius( m_radius, m_radius, m_radius, 0 );
+	radius = radius * getComponent<SWTransform>()->getWorldMatrix();
+	return SWMath.max( radius.x, SWMath.max( radius.y, radius.z ) );
+}
+
+tvec2 SWCircleCollider2D::getWorldCenter() const
+{
+	tvec3 pos( m_center.x, m_center.y, 0 );
+	pos = pos * getComponent<SWTransform>()->getWorldMatrix();
+	return pos.xy();
+}
+
 bool SWCircleCollider2D::containPoint( const tvec2 point )
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	tvec3 center = tvec3(m_center, 0)* transform->getWorldMatrix();
 	return ( (center.xy()- point).length() <= m_radius );
+}
+
+void SWCircleCollider2D::serialize( SWObjectWriter* ow )
+{
+	ow->writeVec2( m_center );
+	ow->writeFloat( m_radius );
+}
+
+void SWCircleCollider2D::deserialize( SWObjectReader* or )
+{
+	or->readVec2( m_center );
+	m_radius = or->readFloat();
 }
 
 ////////////////////////////////////////////////////////////////
@@ -42,6 +69,25 @@ SWRectCollider2D::~SWRectCollider2D()
 {
 }
 
+tvec2 SWRectCollider2D::getWorldCenter() const
+{
+	tvec3 pos( m_center.x, m_center.y, 0 );
+	pos = pos * getComponent<SWTransform>()->getWorldMatrix();
+	return pos.xy();
+}
+
+void SWRectCollider2D::getWorldEdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const
+{
+	float halfW = m_size.x/2;
+	float halfH = m_size.y/2;
+	const tmat44& worldMat = getComponent<SWTransform>()->getWorldMatrix();
+
+	edge1 = (tvec3( -halfW, +halfH, 0 ) * worldMat).xy();
+	edge2 = (tvec3( -halfW, -halfH, 0 ) * worldMat).xy();
+	edge3 = (tvec3( +halfW, +halfH, 0 ) * worldMat).xy();
+	edge4 = (tvec3( +halfW, -halfH, 0 ) * worldMat).xy();
+}
+
 bool SWRectCollider2D::containPoint( const tvec2 point )
 {
 	SWTransform* transform = getComponent<SWTransform>();
@@ -49,4 +95,16 @@ bool SWRectCollider2D::containPoint( const tvec2 point )
 	tvec2 center = point3.xy() - m_center;
 	return SWMath.abs( center.x ) < m_size.x/2.0f && 
 	       SWMath.abs( center.y ) < m_size.y/2.0f;
+}
+
+void SWRectCollider2D::serialize( SWObjectWriter* ow )
+{
+	ow->writeVec2( m_center );
+	ow->writeVec2( m_size );
+}
+
+void SWRectCollider2D::deserialize( SWObjectReader* or )
+{
+	or->readVec2( m_center );
+	or->readVec2( m_size );
 }

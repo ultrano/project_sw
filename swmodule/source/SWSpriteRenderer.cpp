@@ -97,10 +97,16 @@ const tcolor& SWSpriteRenderer::getColor() const
 
 void SWSpriteRenderer::serialize( SWObjectWriter* ow )
 {
-
+	ow->writeColor( m_color );
+	ow->writeObject( m_mesh() );
+	ow->writeObject( m_sprite() );
+	ow->writeObject( m_material() );
 }
 
 void SWSpriteRenderer::deserialize( SWObjectReader* or )
 {
-
+	or->readColor( m_color );
+	m_mesh   = swrtti_cast<SWMesh>( or->readObject() );
+	m_sprite = swrtti_cast<SWSprite>( or->readObject() );
+	m_material = swrtti_cast<SWMaterial>( or->readObject() );
 }

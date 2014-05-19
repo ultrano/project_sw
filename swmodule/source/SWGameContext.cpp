@@ -3,6 +3,7 @@
 #include "SWOpenGL.h"
 #include "SWDefines.h"
 
+#include "SWPhysics2D.h"
 #include "SWTime.h"
 #include "SWInput.h"
 #include "SWLog.h"
@@ -190,6 +191,7 @@ void SWGameContext::onFrameMove()
 	{
 		scene->update();
 	}
+	SWPhysics2D.simulate();
 
 	SWInput.m_deltaX = 0;
 	SWInput.m_deltaY = 0;

@@ -93,98 +93,32 @@ public:
 		}
 
 		{
-			SWHardRef<SWSpriteAnimation> animation = SWAssets.loadSpriteAnimation( "animation2.txt" );
-			SWHardRef<SWTexture> tex = SWAssets.loadTexture( "boom.png" );
 			SWGameObject* go = new SWGameObject();
-			go->setName( "boom" );
-
+			go->setName( "origin" );
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			SWHardRef<SWSpriteSheet> sheet = SWAssets.loadSpriteSheet( "balls.png" );
-			renderer->setSprite( sheet()->find( "ball_1" ) );
+			SWHardRef<SWSpriteSheet> sheet = SWAssets.loadSpriteSheet( "boom.png" );
+			renderer->setSprite( sheet()->find( "boom_0" ) );
 
-			SWTransform* trans = renderer->getComponent<SWTransform>();
-			trans->setLocalPosition( tvec3( 0, 0, -2 ) );
+			SWCircleCollider2D* collider = go->addComponent<SWCircleCollider2D>();
+			collider->setRadius( 25 );
 
-			SWAction* action = go->addComponent<SWAction>();
-			{
-				SWActAnimate* act1 = new SWActAnimate(1, animation()->getSequenceByName( "boom" ) );
-				SWHardRef<SWActRepeat> act2 = new SWActRepeat(act1);
-				SWHardRef<SWObject> clone = act2()->clone();
-
-				act2 = swrtti_cast<SWActRepeat>( clone() );
-				action->setAct( "test", act2() );
-				//action->play( "test" );
-			}
-
-			{
-				SWActSequence* seq = new SWActSequence;
-				seq->addAct( new SWActRotateFrom( 5, tvec3( 0,0,3.14f ) ));
-				SWHardRef<SWAct> act = new SWActRepeat( seq );
-				SWHardRef<SWObject> clone = act()->clone();
-				action->setAct( "move", swrtti_cast<SWAct>(clone()) );
-				action->play( "move" );
-			}
-
-			SWRectCollider2D* collider = go->addComponent<SWRectCollider2D>();
-			collider->setCenter( tvec2::zero );
-			collider->setSize( tvec2::one*100 );
+			SWGameObject* go2 = swrtti_cast<SWGameObject>( go->clone()() );
+			go2->getComponent<SWTransform>()->setPosition( tvec3( 0, 100, 0 ) );
+			
+			SWRigidBody2D* body = go2->addComponent<SWRigidBody2D>();
+			body->setGravityScale( tvec2::zero );
 		}
-	}
-
-	WIImage* makeCatImg()
-	{
-		SWGameObject* go = new SWGameObject;
-		go->addUpdateDelegator( GetDelegator( onUpdateCat ) );
-		
-		WIImage* image = go->addComponent<WIImage>();
-		image->setTexture( SWAssets.loadTexture("Image4.png") );
-		image->setUVRect( 0,0,32,32 );
-		image->setSize( 64, 64 );
-
-		//SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-		//body->setGravityScale( tvec2::zero );
-		//body->setInertia( 100 );
-
-		SWAction* action = go->addComponent<SWAction>();
-		SWActSequence* seq = new SWActSequence();
-		seq->addAct( new SWActScaleTo( 1, tvec3( 1.2f, 1.2f, 1 ) ) );
-		seq->addAct( new SWActScaleTo( 1, tvec3( 0.8f, 0.8f, 1 ) ) );
-		action->setAct( "pumping", new SWActRepeat( seq ) );
-		action->play( "pumping" );
-		
-		return image;
-	}
-
-	void onUpdateCat( SWGameObject* go )
-	{
 	}
 
 	void onUpdate()
 	{
-		if ( SWInput.getKey( 'p' ) )
-		{
-			SWHardRef<SWObject> scene = SW_GC.newInstance( "IntroScene" );
-			SW_GC.setNextScene( swrtti_cast<SWGameScene>( scene() ) );
-		}
-
-		if ( SWInput.getTouchState() == SW_TouchPress )
-		{
-			SWGameObject* go = findGO( "boom" );
-			SWCollider2D* collider = go->getComponent<SWRectCollider2D>();
-			go = findGO( "mainCam" );
-			SWCamera* camera = go->getComponent<SWCamera>();
-			tvec3 pos( SWInput.getTouchX(), SWInput.getTouchY(), 100 );
-			pos = camera->screenToWorld( pos );
-			if ( collider->containPoint( pos.xy() ) )
-			{
-				SWLog( "hit collider" );
-			}
-			//SWHardRef<SWObject> object = findGO( "img" )->clone();
-			//SWGameObject* go = swrtti_cast<SWGameObject>( object() );
-			//go->setActive( true );
-			//tvec3 pos = SWCamera::mainCamera()->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
-			//go->getComponent<SWTransform>()->setPosition( pos );
-		}
+		if ( SWInput.getTouchState() != SW_TouchMove ) return;
+		SWCamera* cam = findGO( "mainCam" )->getComponent<SWCamera>();
+		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
+		
+		SWGameObject* go = findGO( "origin" );
+		SWTransform* trans = go->getComponent<SWTransform>();
+		trans->setPosition( pos );
 	}
 
 	void onPostDraw()
