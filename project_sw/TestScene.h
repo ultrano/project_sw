@@ -38,6 +38,8 @@
 #include "SWActDelegate.h"
 #include "SWActAnimate.h"
 
+#include "SWPhysics2D.h"
+
 #include "SWSprite.h"
 #include "SWSpriteSequence.h"
 #include "SWSpriteAnimation.h"

@@ -22,12 +22,15 @@ typedef unsigned int   tuint;
 typedef unsigned short tushort;
 typedef unsigned char  tbyte;
 typedef tint           tint32;
+typedef long long int  tint64;
 typedef tuint          tuint32;
+typedef unsigned long long int tuint64;
 typedef tshort         tint16;
 typedef tushort        tuint16;
 typedef tchar          tint8;
 typedef tbyte          tuint8;
 typedef tuint32        thash32;
+typedef tuint64        thash64;
 typedef tfloat         tfloat32;
 
 #define tlist  std::list

@@ -1,6 +1,7 @@
 #include "SWPhysics2D.h"
 #include "SWTransform.h"
 #include "SWGameObject.h"
+#include "SWMath.h"
 #include "SWLog.h"
 
 __SWPhysics2D& __SWPhysics2D::instance()
@@ -48,13 +49,35 @@ void __SWPhysics2D::simulate()
 			if ( collider1 == collider2 ) continue;
 			if ( collider1->getComponent<SWRigidBody2D>() == NULL
 				&& collider2->getComponent<SWRigidBody2D>() == NULL ) continue;
-
+			const thashstr& layer1 = collider1->gameObject()->getLayerName();
+			const thashstr& layer2 = collider2->gameObject()->getLayerName();
+			if ( getIgnoreLayer( layer1, layer2 ) ) continue;
 			if ( testCollide( collider1, collider2 ) )
 			{
 				SWLog( "collided!!" );
 			}
 		}
 	}
+}
+
+bool __SWPhysics2D::getIgnoreLayer( const thashstr& layer1, const thashstr& layer2 )
+{
+	thash32 hash1 = SWMath.min( layer1.hash(), layer2.hash() );
+	thash32 hash2 = SWMath.max( layer1.hash(), layer2.hash() );
+	thash64 hash = (hash2<<32) | (hash1);
+
+	IgnoreTable::iterator itor = m_ignoreTable.find( hash );
+	if ( itor != m_ignoreTable.end() ) return itor->second;
+	return false;
+}
+
+void __SWPhysics2D::ignoreLayer( const thashstr& layer1, const thashstr& layer2, bool ignore )
+{
+	thash32 hash1 = SWMath.min( layer1.hash(), layer2.hash() );
+	thash32 hash2 = SWMath.max( layer1.hash(), layer2.hash() );
+	thash64 hash = (hash2<<32) | (hash1);
+
+	m_ignoreTable[ hash ] = ignore;
 }
 
 bool __SWPhysics2D::testCollide( SWCollider2D* collider1, SWCollider2D* collider2 )
