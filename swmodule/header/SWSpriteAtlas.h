@@ -1,12 +1,12 @@
-#ifndef SWSpriteSheet_h__
-#define SWSpriteSheet_h__
+#ifndef SWSpriteAtlas_h__
+#define SWSpriteAtlas_h__
 
 #include "SWResource.h"
 
 class SWSprite;
-class SWSpriteSheet : public SWResource
+class SWSpriteAtlas : public SWResource
 {
-	SW_RTTI( SWSpriteSheet, SWResource );
+	SW_RTTI( SWSpriteAtlas, SWResource );
 
 public:
 
@@ -16,8 +16,8 @@ public:
 
 public:
 
-	SWSpriteSheet();
-	~SWSpriteSheet();
+	SWSpriteAtlas();
+	~SWSpriteAtlas();
 
 	void insert( const tstring& name, SWSprite* sprite );
 	SWSprite* find( const tstring& name ) const;
@@ -35,4 +35,4 @@ private:
 
 };
 
-#endif // SWSpriteSheet_h__
+#endif // SWSpriteAtlas_h__

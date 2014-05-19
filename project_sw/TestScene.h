@@ -96,8 +96,8 @@ public:
 			SWGameObject* go = new SWGameObject();
 			go->setName( "origin" );
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			SWHardRef<SWSpriteSheet> sheet = SWAssets.loadSpriteSheet( "boom.png" );
-			renderer->setSprite( sheet()->find( "boom_0" ) );
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "boom.png" );
+			renderer->setSprite( atlas()->find( "boom_0" ) );
 
 			SWCircleCollider2D* collider = go->addComponent<SWCircleCollider2D>();
 			collider->setRadius( 25 );

@@ -155,6 +155,12 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 	{
 		registerBasicObjectFactories( this );
 	}
+
+	//! initialize variables
+	{
+		m_physicsFrameCount = 0;
+		m_physicsSimulateFrame = 40;
+	}
 }
 
 void SWGameContext::onFrameMove()
@@ -191,7 +197,13 @@ void SWGameContext::onFrameMove()
 	{
 		scene->update();
 	}
-	SWPhysics2D.simulate();
+
+	m_physicsFrameCount += 1;
+	while ( m_physicsFrameCount >= m_physicsSimulateFrame )
+	{
+		m_physicsFrameCount -= m_physicsSimulateFrame;
+		SWPhysics2D.simulate();
+	}
 
 	SWInput.m_deltaX = 0;
 	SWInput.m_deltaY = 0;

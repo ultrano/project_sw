@@ -65,6 +65,10 @@ private:
 	SWCriticalSection m_idleSection;
 
 	FactoryTable m_factoryTable;
+
+	//! for physics2D
+	tuint m_physicsFrameCount;
+	tuint m_physicsSimulateFrame;
 };
 
 #endif // SWGameContext_h__

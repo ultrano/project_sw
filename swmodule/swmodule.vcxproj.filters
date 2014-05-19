@@ -606,7 +606,7 @@
     <ClInclude Include="header\SWActColor.h">
       <Filter>SW\SWAct\SWActColor</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWSpriteSheet.h">
+    <ClInclude Include="header\SWSpriteAtlas.h">
       <Filter>SW\SWSpriteSheet</Filter>
     </ClInclude>
   </ItemGroup>
@@ -863,7 +863,7 @@
     <ClCompile Include="source\SWActColor.cpp">
       <Filter>SW\SWAct\SWActColor</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWSpriteSheet.cpp">
+    <ClCompile Include="source\SWSpriteAtlas.cpp">
       <Filter>SW\SWSpriteSheet</Filter>
     </ClCompile>
   </ItemGroup>

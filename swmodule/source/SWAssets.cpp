@@ -127,8 +127,8 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 	tstring line;
 	if ( !reader.readLine( line ) ) return NULL;
 
-	SWHardRef<SWSpriteSheet> sheet = loadSpriteSheet( line );
-	if ( !sheet.isValid() ) return NULL;
+	SWHardRef<SWSpriteAtlas> atlas = loadSpriteAtlas( line );
+	if ( !atlas.isValid() ) return NULL;
 	
 	SWHardRef<SWSpriteAnimation> animation = new SWSpriteAnimation();
 	while ( reader.readLine( line ) )
@@ -150,7 +150,7 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 			tuint end = line.find( ",", begin );
 			if ( end == tstring::npos ) end = line.length();
 			tstring spriteName = line.substr( begin, end - begin );
-			sequence()->addSprite( sheet()->find( spriteName ) );
+			sequence()->addSprite( atlas()->find( spriteName ) );
 			begin = end + 1;
 		}
 	}
@@ -158,13 +158,13 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 	return animation;
 }
 
-SWHardRef<SWSpriteSheet> __SWAssets::loadSpriteSheet( const tstring& filePath )
+SWHardRef<SWSpriteAtlas> __SWAssets::loadSpriteAtlas( const tstring& filePath )
 {
 	if ( !m_accessor.isValid() ) return NULL;
 
-	tstring sheetFile = filePath + ".sheet";
-	SheetTable::iterator itor = m_sheetCache.find( sheetFile );
-	if ( itor != m_sheetCache.end() )
+	tstring sheetFile = filePath + ".atlas";
+	AtlasTable::iterator itor = m_atlasCache.find( sheetFile );
+	if ( itor != m_atlasCache.end() )
 	{
 		if ( itor->second.isValid() )
 		{
@@ -181,7 +181,7 @@ SWHardRef<SWSpriteSheet> __SWAssets::loadSpriteSheet( const tstring& filePath )
 	if ( ais.isValid() == false ) return NULL;
 	if ( ais()->available() <= 0 ) return NULL;
 
-	SWHardRef<SWSpriteSheet> sheet = new SWSpriteSheet();
+	SWHardRef<SWSpriteAtlas> sheet = new SWSpriteAtlas();
 	SWInputStreamReader reader( ais() );
 
 	tstring line;
@@ -193,7 +193,7 @@ SWHardRef<SWSpriteSheet> __SWAssets::loadSpriteSheet( const tstring& filePath )
 		sheet()->insert( name, new SWSprite( texture, x, y, w, h ) );
 	}
 
-	m_sheetCache[ filePath ] = sheet();
+	m_atlasCache[ filePath ] = sheet();
 	return sheet;
 }
 
