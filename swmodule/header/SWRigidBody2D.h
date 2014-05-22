@@ -22,6 +22,9 @@ public:
 	void setMass( tfloat mass );
 	void setInertia( tfloat inertia );
 	
+	const tvec2& getVelocity() const;
+	const float& getTorque() const;
+
 protected:
 
 	void serialize( SWObjectWriter* ow );

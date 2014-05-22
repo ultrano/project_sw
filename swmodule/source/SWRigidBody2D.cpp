@@ -132,6 +132,16 @@ void SWRigidBody2D::setInertia( tfloat inertia )
 	else m_inertia = FLT_EPSILON;
 }
 
+const tvec2& SWRigidBody2D::getVelocity() const
+{
+	return m_velocity;
+}
+
+const float& SWRigidBody2D::getTorque() const
+{
+	return m_torque;
+}
+
 void SWRigidBody2D::serialize( SWObjectWriter* ow )
 {
 	ow->writeVec2( m_center );

@@ -21,7 +21,8 @@ public:
 	TQuaternion& operator /= ( float f ) { vec() /= f; w /= f; return *this; }
 	TQuaternion& operator *= ( float f ) { vec() *= f; w *= f; return *this; }
 	TQuaternion& operator *= ( const TQuaternion& q );
-
+	
+	const TVector2f&   xy() const { return *((TVector2f*)this); };
 	void		identify();
 	TQuaternion normal();
 	float		norm() const;

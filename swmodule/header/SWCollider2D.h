@@ -11,7 +11,8 @@ public:
 	void onAwake();
 	void onRemove();
 	
-	virtual bool containPoint( const tvec2 point ) = 0;
+	virtual bool containPoint( const tvec2& worldPt ) = 0;
+	virtual void farthestPoint( tvec2& ret, const tvec2& worldDir ) = 0;
 };
 
 class SWCircleCollider2D : public SWCollider2D
@@ -32,7 +33,8 @@ public:
 	float getWorldRadius() const;
 	tvec2 getWorldCenter() const;
 
-	bool containPoint( const tvec2 point );
+	bool containPoint( const tvec2& point );
+	void farthestPoint( tvec2& ret, const tvec2& worldDir );
 
 protected:
 
@@ -59,9 +61,12 @@ public:
 	tvec2 getWorldCenter() const;
 	void getWorldEdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const;
 
-	bool containPoint( const tvec2 point );
+	bool containPoint( const tvec2& point );
+	void farthestPoint( tvec2& ret, const tvec2& worldDir );
 	
 protected:
+
+	void getSREdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const;
 
 	void serialize( SWObjectWriter* ow );
 	void deserialize( SWObjectReader* or );
