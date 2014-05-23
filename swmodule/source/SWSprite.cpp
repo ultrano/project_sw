@@ -5,10 +5,10 @@
 
 SWSprite::SWSprite( SWHardRef<SWTexture> texture, int x, int y, int width, int height )
 	: m_texture( texture )
-	, m_offset( x, y )
-	, m_size( width, height )
-	, m_scaledOffset( 0, 0 )
-	, m_scaledSize( 0, 0 )
+	, m_offset( (float)x, (float)y )
+	, m_size( (float)width, (float)height )
+	, m_scaledOffset( 0.0f, 0.0f )
+	, m_scaledSize( 0.0f, 0.0f )
 {
 	if ( m_texture.isValid() )
 	{

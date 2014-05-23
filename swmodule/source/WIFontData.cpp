@@ -33,7 +33,7 @@ void WIFontData::setChar( WIFontChar* fontChar )
 void WIFontData::load( SWObject* data )
 {
 	if ( data == NULL ) return;
-
+	/*
 	SWValue* tbl = (SWValue*)( data );
 	SWValue* font = tbl->find( "font" );
 	SWValue* chars = (SWValue*)font->find( "chars" );
@@ -63,4 +63,5 @@ void WIFontData::load( SWObject* data )
 	m_lineHeight = common->find( "-lineHeight" )->asNumber();
 	m_scaleW     = common->find( "-scaleW" )->asNumber();
 	m_scaleH     = common->find( "-scaleH" )->asNumber();
+	*/
 }

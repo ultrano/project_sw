@@ -202,8 +202,8 @@ tquat SWTransform::worldToLocalRotate( const tquat& rotate ) const
 		float m31 = m.m31/scaleZ;
 		float m32 = m.m32/scaleZ;
 		float m33 = m.m33/scaleZ;
-		ret.w = sqrt(1.0 + m11 + m22 + m33) / 2.0;
-		float w4 = (4.0 * ret.w);
+		ret.w = sqrt(1.0f + m11 + m22 + m33) / 2.0f;
+		float w4 = (4.0f * ret.w);
 		ret.x = (m32 - m23) / w4 ;
 		ret.y = (m13 - m31) / w4 ;
 		ret.z = (m21 - m12) / w4 ;
@@ -356,7 +356,7 @@ void SWTransform::serialize( SWObjectWriter* ow )
 void SWTransform::deserialize( SWObjectReader* or )
 {
 	m_children.resize( or->readUInt() );
-	for ( int i = 0 ; i < m_children.size() ; ++i )
+	for ( tuint i = 0 ; i < m_children.size() ; ++i )
 	{
 		m_children.push_back( or->readObject() );
 	}

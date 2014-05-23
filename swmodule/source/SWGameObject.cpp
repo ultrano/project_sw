@@ -104,7 +104,7 @@ SWComponent* SWGameObject::addComponent( const SWRtti* rtti )
 	if ( SWComponent* existComp = getComponent( rtti ) ) return existComp;
 
 	SWComponent* comp = NULL;
-	for ( int i = 0 ; i < m_loadedComponents.size() ; ++i )
+	for ( tuint i = 0 ; i < m_loadedComponents.size() ; ++i )
 	{
 		comp = swrtti_cast<SWComponent>( (m_loadedComponents[i])() );
 		if ( comp->queryRtti() == rtti ) break; 
@@ -138,7 +138,7 @@ SWComponent* SWGameObject::getComponent( const SWRtti* rtti ) const
 {
 	if ( !rtti ) return NULL;
 
-	for ( int i = 0 ; i < m_components.size() ; ++i )
+	for ( tuint i = 0 ; i < m_components.size() ; ++i )
 	{
 		SWComponent* comp = swrtti_cast<SWComponent>( (m_components[i])() );
 		if ( comp->queryRtti() == rtti ) return comp; 
@@ -238,7 +238,7 @@ void SWGameObject::serialize( SWObjectWriter* ow )
 	ow->writeBool( m_active );
 
 	ow->writeUInt( m_components.size() );
-	for ( int i = 0 ; i < m_components.size() ; ++i )
+	for ( tuint i = 0 ; i < m_components.size() ; ++i )
 	{
 		SWObject* object = (m_components[i])();
 		ow->writeObject( object );
@@ -264,12 +264,12 @@ void SWGameObject::deserialize( SWObjectReader* or )
 	}
 
 	m_loadedComponents.resize( or->readUInt() );
-	for ( int i = 0 ; i < m_loadedComponents.size() ; ++i )
+	for ( tuint i = 0 ; i < m_loadedComponents.size() ; ++i )
 	{
 		m_loadedComponents[i] = or->readObject();
 	}
 
-	for ( int i = 0 ; i < m_loadedComponents.size() ; ++i )
+	for ( tuint i = 0 ; i < m_loadedComponents.size() ; ++i )
 	{
 		SWComponent* comp = swrtti_cast<SWComponent>( m_loadedComponents[i]() );
 		registerComponent( comp );

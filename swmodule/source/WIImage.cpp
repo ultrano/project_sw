@@ -105,8 +105,8 @@ void WIImage::onUpdate()
 	{
 		m_updateTex = false;
 
-		float width  = m_texture()->getWidth();
-		float height = m_texture()->getHeight();
+		float width  = (float)m_texture()->getWidth();
+		float height = (float)m_texture()->getHeight();
 
 		float left   = m_uvRect.left   / width;
 		float top    = m_uvRect.top    / height;

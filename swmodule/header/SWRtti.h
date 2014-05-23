@@ -2,34 +2,34 @@
 //  SWRtti.h
 //  prototype
 //
-//  Created by 한상운 on 13. 5. 24..
-//  Copyright (c) 2013년 한상운. All rights reserved.
+//  Created by SangWoon-Han on 13. 5. 24..
+//  Copyright (c) 2013 SangWoon-Han. All rights reserved.
 //
 
 #ifndef prototype_SWRtti_h
 #define prototype_SWRtti_h
 
-/** @biref RTTI(Real Time Type Info) 를 저장.
+/** @biref save the RTTI(Real Time Type Info).
  */
 class SWRtti
 {
 public:
     
-	const char* name;  //< 타임 이름
-	const SWRtti* super; //< 상위 타입 정보
+	const char* name;  //< name of type
+	const SWRtti* super; //< info of super type
     
 	SWRtti(const char* n) : name(n), super(NULL) {}
 	SWRtti(const char* n, const SWRtti* s) : name(n), super(s) {}
 };
 
-/* @brief RTTI의 시작점인 클레스에 선언 */
+/* @brief declare RTTI start point */
 #define SW_RTTI_ROOT(typeName) public:\
 virtual const SWRtti* queryRtti() const { return getRtti(); }; \
 static const SWRtti* getRtti() { static SWRtti rtti(#typeName); return &rtti;} \
 typedef typeName __this;\
 private:
 
-/* @brief 타입의 이름과 상위 타입 이름을 기제 */
+/* @brief write type name and super type name */
 
 #ifdef _MSC_VER
 #define SW_RTTI(typeName,superType) public:\
@@ -46,11 +46,11 @@ private:
 private:
 #endif
 /**
- @brief static_cast, reinterpret_cast 와 같은 형태로 사용
+ @brief using like (static_cast, reinterpret_cast) 
  static_cast<TypeA>( a );
  reinterpret_cast<TypeB>( b );
- swrtti_cast<TypeC>( c ); << 이런 형태로 사용.
- %%% SWRtti 가 선언 되지 않은 타입은 컴파일에러 혹은 오동작 할수 있음. %%%
+ swrtti_cast<TypeC>( c ); << using like this.
+ %%% SWRtti will fail to compile if there isn't. %%%
  */
 template<typename T1, typename T2>
 T1* swrtti_cast(T2* cls)

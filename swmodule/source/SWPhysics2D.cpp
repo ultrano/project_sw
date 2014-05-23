@@ -64,7 +64,7 @@ bool __SWPhysics2D::getIgnoreLayer( const thashstr& layer1, const thashstr& laye
 {
 	thash32 hash1 = SWMath.min( layer1.hash(), layer2.hash() );
 	thash32 hash2 = SWMath.max( layer1.hash(), layer2.hash() );
-	thash64 hash = (hash2<<32) | (hash1);
+	thash64 hash = ((thash64)hash2<<32) | (hash1);
 
 	IgnoreTable::iterator itor = m_ignoreTable.find( hash );
 	if ( itor != m_ignoreTable.end() ) return itor->second;
@@ -75,7 +75,7 @@ void __SWPhysics2D::ignoreLayer( const thashstr& layer1, const thashstr& layer2,
 {
 	thash32 hash1 = SWMath.min( layer1.hash(), layer2.hash() );
 	thash32 hash2 = SWMath.max( layer1.hash(), layer2.hash() );
-	thash64 hash = (hash2<<32) | (hash1);
+	thash64 hash = ((thash64)hash2<<32) | (hash1);
 
 	m_ignoreTable[ hash ] = ignore;
 }
@@ -131,4 +131,6 @@ bool __SWPhysics2D::testCollide( SWCollider2D* collider1, SWCollider2D* collider
 	
 	if ( swrtti_cast<SWRectCollider2D>( collider1 ) 
 		&& swrtti_cast<SWRectCollider2D>( collider2 ) ) return Tester::Rects( collider1, collider2 );
+
+	return false;
 }

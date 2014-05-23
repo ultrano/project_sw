@@ -17,7 +17,7 @@ void SWAnimationClip::addLine( const SWRtti* type, const tstring& key, SWAnimati
 
 void SWAnimationClip::updatePlay( SWGameObject* go, float time )
 {
-	for ( int i = 0 ; i < m_animInfos.size() ; ++i )
+	for ( tuint i = 0 ; i < m_animInfos.size() ; ++i )
 	{
 		const AnimInfo& info = m_animInfos[i];
 		SWComponent* comp = go->getComponent( info.type );

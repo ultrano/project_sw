@@ -79,7 +79,7 @@ SWHardRef<SWShader> SWShader::compileShader( const tstring& source )
 		glGetProgramiv( shaderID, GL_ACTIVE_UNIFORMS, &count );
 		name.resize( bufSize );
 
-		for ( tuint i = 0 ; i < count ; ++i )
+		for ( int i = 0 ; i < count ; ++i )
 		{
 			GLint sz = 0;
 			GLenum type = GL_NONE;
@@ -97,7 +97,7 @@ SWHardRef<SWShader> SWShader::compileShader( const tstring& source )
 		name.resize( bufSize );
 
 		tarray<tstring> attribs;
-		for ( tuint i = 0 ; i < count ; ++i )
+		for ( int i = 0 ; i < count ; ++i )
 		{
 			GLint sz = 0;
 			GLenum type = GL_NONE;
@@ -106,7 +106,7 @@ SWHardRef<SWShader> SWShader::compileShader( const tstring& source )
 			attribs.push_back( name.substr(0,len) );
 		}
 
-		for ( tuint i = 0 ; i < count ; ++i )
+		for ( int i = 0 ; i < count ; ++i )
 		{
 			int index = -1;
 			const tstring attribName = attribs[i];

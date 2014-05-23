@@ -82,13 +82,13 @@ float matDet( unsigned square, float* m )
 {
 	if ( square == 1 ) return *m;
 	float ret = 0;
-	for ( int i = 0 ; i < square ; ++i )
+	for ( unsigned i = 0 ; i < square ; ++i )
 	{
 		int k = 0;
 		float sub[9] = {0};
-		for ( int r = 1 ; r < square ; ++r )
+		for ( unsigned r = 1 ; r < square ; ++r )
 		{
-			for ( int c = 0 ; c < square ; ++c )
+			for ( unsigned c = 0 ; c < square ; ++c )
 			{
 				if ( i == c ) continue;
 				sub[k++] = (m[(r*square) + c]);

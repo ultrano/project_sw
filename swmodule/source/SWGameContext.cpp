@@ -252,7 +252,7 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 
 void SWGameContext::onKeyChange( tuint key, bool press )
 {
-	if ( key >= SWInput.eKeyCount ) return;
+	if ( key >= (tuint)SWInput.eKeyCount ) return;
 	SWInput.m_keyFlags[ key ] = press;
 	SWInput.m_lastKey = key;
 	SWInput.m_keyDownCount += press? +1:-1;

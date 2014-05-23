@@ -19,7 +19,7 @@ SWHardRef<SWSpriteAnimation> SWSpriteAnimation::create( const tstring& json )
 	if ( sequences == Json::nullValue ) return NULL;
 
 	ttable<tstring, SWHardRef<SWSprite> > spriteTable;
-	for ( int i = 0 ; i < sprites.size() ; ++i )
+	for ( tuint i = 0 ; i < sprites.size() ; ++i )
 	{
 		Json::Value info = sprites.get( (Json::Value::UInt)i, Json::nullValue );
 		if ( info == Json::nullValue ) continue;
@@ -60,7 +60,7 @@ SWHardRef<SWSpriteAnimation> SWSpriteAnimation::create( const tstring& json )
 
 	SWHardRef<SWSpriteAnimation> animation = new SWSpriteAnimation();
 	animation()->m_sequences.reserve( sequences.size() );
-	for ( int i = 0 ; i < sequences.size() ; ++i )
+	for ( tuint i = 0 ; i < sequences.size() ; ++i )
 	{
 		Json::Value info = sequences.get( (Json::Value::UInt)i, Json::nullValue );
 		if ( info == Json::nullValue ) continue;
@@ -82,7 +82,7 @@ SWHardRef<SWSpriteAnimation> SWSpriteAnimation::create( const tstring& json )
 		sequence()->setName( name.asString() );
 		sequence()->setDelayPerUnit( (float)delay.asDouble() );
 
-		for ( int j = 0 ; j < sprites.size() ; ++j )
+		for ( tuint j = 0 ; j < sprites.size() ; ++j )
 		{
 			Json::Value spriteName = sprites.get( (Json::Value::UInt)j, Json::nullValue );
 			if ( spriteName == Json::nullValue ) continue;

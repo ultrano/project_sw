@@ -14,7 +14,7 @@ SWAnimationLine::~SWAnimationLine()
 int SWAnimationLine::addKey( float time, float value )
 {
 	//! is there same one.
-	for ( int i = 0 ; i < m_keyFrames.size() ; ++i)
+	for ( tuint i = 0 ; i < m_keyFrames.size() ; ++i)
 	{
 		if ( m_keyFrames[i].time == time ) return -1;
 	}

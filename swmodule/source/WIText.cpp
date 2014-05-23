@@ -105,7 +105,7 @@ void WIText::updateMesh()
 	float lineHeight = m_font()->getLineHeight()*sizeScale;
 	float startOffsetX = 0;
 	float startOffsetY = 0;
-	for ( int i = 0 ; i < m_text.size() ; ++i )
+	for ( tuint i = 0 ; i < m_text.size() ; ++i )
 	{
 		int charID = m_text[i];
 		if ( charID < 256 )

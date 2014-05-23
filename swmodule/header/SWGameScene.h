@@ -2,8 +2,8 @@
 //  SWGameScene.h
 //  prototype
 //
-//  Created by 한상운 on 13. 5. 23..
-//  Copyright (c) 2013년 한상운. All rights reserved.
+//  Created by SangWoon-Han on 13. 5. 23..
+//  Copyright (c) 2013 SangWoon-Han. All rights reserved.
 //
 
 #ifndef prototype_SWGameScene_h

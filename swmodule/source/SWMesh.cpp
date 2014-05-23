@@ -210,17 +210,17 @@ tuint SWMesh::getTriangleCount() const
 void SWMesh::serialize( SWObjectWriter* ow )
 {
 	ow->writeUInt( m_vertices.size() );
-	for ( int i = 0 ; i < m_vertices.size() ; ++i)
+	for ( tuint i = 0 ; i < m_vertices.size() ; ++i)
 	{
 		ow->writeVec3( m_vertices[i] );
 	}
 	ow->writeUInt( m_texCoords.size() );
-	for ( int i = 0 ; i < m_texCoords.size() ; ++i)
+	for ( tuint i = 0 ; i < m_texCoords.size() ; ++i)
 	{
 		ow->writeVec2( m_texCoords[i] );
 	}
 	ow->writeUInt( m_triangles.size() );
-	for ( int i = 0 ; i < m_triangles.size() ; ++i)
+	for ( tuint i = 0 ; i < m_triangles.size() ; ++i)
 	{
 		ow->writeIndex3( m_triangles[i] );
 	}
@@ -229,17 +229,17 @@ void SWMesh::serialize( SWObjectWriter* ow )
 void SWMesh::deserialize( SWObjectReader* or )
 {
 	m_vertices.resize( or->readUInt() );
-	for ( int i = 0 ; i < m_vertices.size() ; ++i)
+	for ( tuint i = 0 ; i < m_vertices.size() ; ++i)
 	{
 		or->readVec3( m_vertices[i] );
 	}
 	m_texCoords.resize( or->readUInt() );
-	for ( int i = 0 ; i < m_texCoords.size() ; ++i)
+	for ( tuint i = 0 ; i < m_texCoords.size() ; ++i)
 	{
 		or->readVec2( m_texCoords[i] );
 	}
 	m_triangles.resize( or->readUInt() );
-	for ( int i = 0 ; i < m_triangles.size() ; ++i)
+	for ( tuint i = 0 ; i < m_triangles.size() ; ++i)
 	{
 		or->readIndex3( m_triangles[i] );
 	}
