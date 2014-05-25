@@ -43,7 +43,7 @@ void SWActAnimate::onUpdate()
 	m_spendTime += SWTime.getDeltaTime() * m_speed;
 	if ( isDone() ) return;
 
-	tuint index = (m_spendTime / m_sequence()->getDelayPerUnit());
+	tuint index = (tuint)(m_spendTime / m_sequence()->getDelayPerUnit());
 	if ( index == m_lastIndex ) return;
 
 	changeSpriteWithAt( index );

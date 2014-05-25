@@ -134,3 +134,15 @@ bool __SWPhysics2D::testCollide( SWCollider2D* collider1, SWCollider2D* collider
 
 	return false;
 }
+
+SWCollider2D* __SWPhysics2D::overlapPoint( const tvec2& point )
+{
+	SWObject::WList::iterator itor1 = m_colliders.begin();
+	for ( ; itor1 != m_colliders.end() ; ++itor1 )
+	{
+		SWCollider2D* collider = swrtti_cast<SWCollider2D>( (*itor1)() );
+		
+		if ( collider->containPoint( point ) ) return collider;
+	}
+	return NULL;
+}
