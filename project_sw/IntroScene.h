@@ -14,6 +14,9 @@
 #include "SWActAlphaTo.h"
 #include "SWActDelegate.h"
 #include "SWActSequence.h"
+#include "SWActColor.h"
+#include "SWActSendMsg.h"
+
 #include "SWObjectStream.h"
 #include "SWByteBufferStream.h"
 #include "SWFileStream.h"
@@ -61,16 +64,17 @@ public:
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( tvec3::zero );
 
-			WIImage* image = go->addComponent<WIImage>();
-			image->setTexture( SWAssets.loadTexture( "logo5.png" ) );
-			image->setSizeToTexture();
-			image->setColor( tcolor( 1,1,1,0 ) );
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "logo5.png" );
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( atlas()->find( "logo" )  );
+			renderer->setColor( tcolor( 1,1,1,0 ) );
 
 			SWAction* action = go->addComponent<SWAction>();
 			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActAlphaTo( 1, 1 ) );
-			seq->addAct( new SWActAlphaTo( 1, 0 ) );
-			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
+			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,1 ) ) );
+			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,0 ) ) );
+			seq->addAct( new SWActSendMsg( "EndLogo" ) );
+			action->setMessageDelegator( "EndLogo", GetDelegator( onEndLogo ) );
 			action->setAct( "logo", seq );
 			action->play( "logo" );
 		}

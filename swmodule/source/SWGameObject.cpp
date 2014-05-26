@@ -222,7 +222,7 @@ SWObject* SWGameObject::getProp( const tstring& name )
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 {
 	SWObject::Array copy = m_components;
-	SWObject::Array::iterator itor = copy.end();
+	SWObject::Array::iterator itor = copy.begin();
 	
 	for ( ; itor != copy.end() ; ++itor )
 	{

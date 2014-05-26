@@ -1,13 +1,13 @@
 #ifndef SWAction_h__
 #define SWAction_h__
 
-#include "SWComponent.h"
+#include "SWBehavior.h"
 
 class SWAct;
 class SWList;
-class SWAction : public SWComponent
+class SWAction : public SWBehavior
 {
-	SW_RTTI( SWAction, SWComponent );
+	SW_RTTI( SWAction, SWBehavior );
 
 public:
 
