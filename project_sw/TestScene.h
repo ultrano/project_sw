@@ -118,9 +118,11 @@ public:
 		SWCamera* cam = findGO( "mainCam" )->getComponent<SWCamera>();
 		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchXY().x, SWInput.getTouchXY().y, 500 ) );
 		
-		if ( SWPhysics2D.overlapPoint( pos.xy() ) )
+		if ( SWCollider2D* collider = SWPhysics2D.overlapPoint( pos.xy() ) )
 		{
-			SWLog( "overlapped!" );
+			tvec3 delta( SWInput.getDeltaX(), -SWInput.getDeltaY(), 0 );
+			SWTransform* transform = collider->getComponent<SWTransform>();
+			transform->move( delta );
 		}
 	}
 

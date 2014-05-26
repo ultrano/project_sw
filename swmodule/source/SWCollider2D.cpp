@@ -20,6 +20,8 @@ void SWCollider2D::onRemove()
 ////////////////////////////////////////////////////////////////
 
 SWCircleCollider2D::SWCircleCollider2D( factory_constructor )
+	: m_center( 0, 0 )
+	, m_radius( 0 )
 {
 }
 
@@ -78,6 +80,8 @@ void SWCircleCollider2D::deserialize( SWObjectReader* or )
 ////////////////////////////////////////////////////////////////
 
 SWRectCollider2D::SWRectCollider2D( factory_constructor )
+	: m_center( 0, 0 )
+	, m_size( 0, 0 )
 {
 }
 
