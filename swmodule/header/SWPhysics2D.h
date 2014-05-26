@@ -21,9 +21,12 @@ public:
 	static __SWPhysics2D& instance();
 	
 	void simulate();
+	bool testCollide( SWCollider2D* collider1, SWCollider2D* collider2 );
+
 	bool getIgnoreLayer( const thashstr& layer1, const thashstr& layer2 );
 	void ignoreLayer( const thashstr& layer1, const thashstr& layer2, bool ignore );
-	bool testCollide( SWCollider2D* collider1, SWCollider2D* collider2 );
+
+	SWCollider2D* overlapPoint( const tvec2& point );
 private:
 
 	typedef ttable<thash64,bool> IgnoreTable;

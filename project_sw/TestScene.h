@@ -116,11 +116,12 @@ public:
 	{
 		if ( SWInput.getTouchState() != SW_TouchMove ) return;
 		SWCamera* cam = findGO( "mainCam" )->getComponent<SWCamera>();
-		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchX(), SWInput.getTouchY(), 500 ) );
+		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchXY().x, SWInput.getTouchXY().y, 500 ) );
 		
-		SWGameObject* go = findGO( "origin" );
-		SWTransform* trans = go->getComponent<SWTransform>();
-		trans->setPosition( pos );
+		if ( SWPhysics2D.overlapPoint( pos.xy() ) )
+		{
+			SWLog( "overlapped!" );
+		}
 	}
 
 	void onPostDraw()

@@ -231,11 +231,10 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 	}
 	else if ( type == SW_TouchMove )
 	{
-		SWInput.m_deltaX = param1 - SWInput.m_touchX;
-		SWInput.m_deltaY = param2 - SWInput.m_touchY;
+		SWInput.m_deltaX = param1 - (int)SWInput.m_touchXY.x;
+		SWInput.m_deltaY = param2 - (int)SWInput.m_touchXY.y;
 	}
-	SWInput.m_touchX = param1;
-	SWInput.m_touchY = param2;
+	SWInput.m_touchXY = tvec2( param1, param2 );
 
 	//////////////////////////////////////////////////////////////////////////
 	{

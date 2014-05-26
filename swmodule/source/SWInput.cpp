@@ -24,14 +24,9 @@ int __SWInput::getTouchState() const
 	return m_touchState;
 }
 
-int __SWInput::getTouchX() const
+const tvec2& __SWInput::getTouchXY() const
 {
-	return m_touchX;
-}
-
-int __SWInput::getTouchY() const
-{
-	return m_touchY;
+	return m_touchXY;
 }
 
 int __SWInput::getDeltaX() const

@@ -12,10 +12,9 @@ class __SWInput : public SWMemory
 private:
 
 	int m_touchState;
-	int m_touchX;
-	int m_touchY;
 	int m_deltaX;
 	int m_deltaY;
+	tvec2 m_touchXY;
 
 	enum { eKeyCount = 256 };
 	bool m_keyFlags[eKeyCount];
@@ -32,8 +31,7 @@ public:
 	static __SWInput& getInstance();
 
 	int getTouchState() const;
-	int getTouchX() const;
-	int getTouchY() const;
+	const tvec2& getTouchXY() const;
 
 	int getDeltaX() const;
 	int getDeltaY() const;
