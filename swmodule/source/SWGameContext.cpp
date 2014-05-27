@@ -169,6 +169,11 @@ void SWGameContext::onFrameMove()
 	SWTime.m_deltaFrameTime = ( nowTime - SWTime.m_lastFrameTime );
 	SWTime.m_lastFrameTime = nowTime;
 
+	if ( SWTime.m_deltaFrameTime == 0 )
+	{
+		SWLog( "delta time is zero" );
+	}
+
 	SWTime.m_accumFrame += 1;
 	SWTime.m_accumTime  += SWTime.getDeltaTime();
 

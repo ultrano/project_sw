@@ -5,13 +5,6 @@
 #include <stdlib.h>
 #include <iconv.h>
 
-#ifdef _MSC_VER
-#include <Windows.h>
-#else
-#include <sys/time.h>
-//
-#endif
-
 
 __SWUtil::__SWUtil()
 {
@@ -25,19 +18,6 @@ __SWUtil& __SWUtil::getInstance()
 {
 	static __SWUtil instance;
 	return instance;
-}
-
-unsigned int __SWUtil::getMicroCount()
-{
-#ifdef _MSC_VER
-    return GetTickCount()*1000;
-#else
-    struct timeval tick;
-    gettimeofday(&tick, 0);
-    unsigned int sec = tick.tv_sec*1000000;
-    unsigned int usec = tick.tv_usec;
-    return (sec + usec);
-#endif
 }
 
 void* __SWUtil::alloc( size_t size )
@@ -57,14 +37,6 @@ tnumber __SWUtil::strToNum( const tstring& str )
 	float num = 0;
 	sscanf( str.c_str(), "%f", &num );
 	return num;
-}
-
-void __SWUtil::consoleXY( int x, int y )
-{
-#ifdef _MSC_VER
-	COORD pos = {x, y};
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-#endif
 }
 
 bool __SWUtil::utf8ToUTF16( const tstring& utf8, twstring& unicode )

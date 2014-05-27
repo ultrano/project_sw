@@ -20,6 +20,7 @@ public:
 	void play( const tstring& name );
 	void stop();
 	bool isPlaying() const;
+	bool isPlaying( const tstring& name ) const;
 
 private:
 

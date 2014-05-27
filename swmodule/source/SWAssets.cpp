@@ -189,7 +189,7 @@ SWHardRef<SWSpriteAtlas> __SWAssets::loadSpriteAtlas( const tstring& filePath )
 	{
 		char name[128] = {0};
 		int x, y, w, h;
-		sscanf( line.c_str(), "%s %d %d %d %d", &name[0], &x, &y, &w, &h );
+		sscanf( line.c_str(), "%s = %d %d %d %d", &name[0], &x, &y, &w, &h );
 		sheet()->insert( name, new SWSprite( texture, x, y, w, h ) );
 	}
 

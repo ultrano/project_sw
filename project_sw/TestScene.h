@@ -95,6 +95,7 @@ public:
 		}
 
 		{
+			//! origin
 			SWGameObject* go = new SWGameObject();
 			go->setName( "origin" );
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
@@ -104,6 +105,7 @@ public:
 			SWCircleCollider2D* collider = go->addComponent<SWCircleCollider2D>();
 			collider->setRadius( 25 );
 
+			//! clone
 			SWGameObject* go2 = swrtti_cast<SWGameObject>( go->clone()() );
 			go2->getComponent<SWTransform>()->setPosition( tvec3( 0, 100, 0 ) );
 
@@ -111,6 +113,15 @@ public:
 			
 			SWRigidBody2D* body = go2->addComponent<SWRigidBody2D>();
 			body->setGravityScale( tvec2::zero );
+			body->setLinearDrag( 0.9f );
+
+			SWHardRef<SWSpriteAnimation> spriteAnim = SWAssets.loadSpriteAnimation( "animation.txt" );
+			SWActAnimate* idle = new SWActAnimate( 1,spriteAnim()->getSequenceByName( "idle" ) );
+			SWActAnimate* run  = new SWActAnimate( 1,spriteAnim()->getSequenceByName( "run" ) );
+			SWAction* action = go2->addComponent<SWAction>();
+			action->setAct( "idle", new SWActRepeat( idle ) );
+			action->setAct( "run", new SWActRepeat( run ) );
+			action->play( "idle" );
 		}
 	}
 
@@ -124,6 +135,16 @@ public:
 			tvec3 pos = m_target()->getPosition();
 			pos.z = -100;
 			transform->setPosition( pos );
+			
+			SWRigidBody2D* body = m_target()->getComponent<SWRigidBody2D>();
+			if ( body )
+			{
+				if ( body->getVelocity().length() < 1 )
+				{
+					SWAction* action = body->getComponent<SWAction>();
+					if ( !action->isPlaying( "idle" ) ) action->play( "idle" );
+				}
+			}
 		}
 		if ( SWInput.getTouchState() != SW_TouchMove ) return;
 		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchXY().x, SWInput.getTouchXY().y, 500 ) );
@@ -135,8 +156,10 @@ public:
 			SWRigidBody2D* body = collider->getComponent<SWRigidBody2D>();
 			if ( body )
 			{
-				body->setVelocity( delta.xy().normal()*30 );
+				body->addForce( delta.xy().normal()*30 );
 				m_target = body->getComponent<SWTransform>();
+				SWAction* action = body->getComponent<SWAction>();
+				action->play( "run" );
 			}
 		}
 	}

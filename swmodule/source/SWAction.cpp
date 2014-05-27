@@ -95,6 +95,19 @@ bool SWAction::isPlaying() const
 	return ((m_act() != NULL) && ( !m_act()->isDone() ));
 }
 
+bool SWAction::isPlaying( const tstring& name ) const
+{
+	ActTable::const_iterator itor = m_actTable.begin();
+	for ( ; itor != m_actTable.end() ; ++itor )
+	{
+		if ( itor->second() == m_act() )
+		{
+			return (itor->first == name);
+		}
+	}
+	return false;
+}
+
 void SWAction::serialize( SWObjectWriter* ow )
 {
 	__super::serialize( ow );

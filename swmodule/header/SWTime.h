@@ -29,7 +29,6 @@ public:
 	float getDeltaTime();
 	float getFPS();
 	float getDPS();
-
 };
 
 #endif // SWTime_h__

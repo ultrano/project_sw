@@ -19,8 +19,6 @@ class __SWUtil : public SWMemory
 public:
 	static __SWUtil& getInstance();
 
-	unsigned int getMicroCount();
-
 	void* alloc( size_t size );
 	void  free( void* memory );
 
@@ -28,8 +26,6 @@ public:
 
 	bool utf8ToUTF16( const tstring& utf8, twstring& unicode );
 	bool utf16ToUTF8( const twstring& unicode, tstring& utf8 );
-
-	void consoleXY( int x, int y );
 
 	void copyStream( SWOutputStream* os, SWInputStream* is );
 
