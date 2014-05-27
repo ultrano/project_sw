@@ -106,16 +106,26 @@ public:
 
 			SWGameObject* go2 = swrtti_cast<SWGameObject>( go->clone()() );
 			go2->getComponent<SWTransform>()->setPosition( tvec3( 0, 100, 0 ) );
+
+			go2->getComponent<SWSpriteRenderer>()->setColor( tcolor( 1,0,0,1 ) );
 			
 			SWRigidBody2D* body = go2->addComponent<SWRigidBody2D>();
 			body->setGravityScale( tvec2::zero );
 		}
 	}
 
+	SWWeakRef<SWTransform> m_target;
 	void onUpdate()
 	{
-		if ( SWInput.getTouchState() != SW_TouchMove ) return;
 		SWCamera* cam = findGO( "mainCam" )->getComponent<SWCamera>();
+		if ( m_target.isValid() )
+		{
+			SWTransform* transform = cam->getComponent<SWTransform>();
+			tvec3 pos = m_target()->getPosition();
+			pos.z = -100;
+			transform->setPosition( pos );
+		}
+		if ( SWInput.getTouchState() != SW_TouchMove ) return;
 		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchXY().x, SWInput.getTouchXY().y, 500 ) );
 		
 		if ( SWCollider2D* collider = SWPhysics2D.overlapPoint( pos.xy() ) )
@@ -123,11 +133,11 @@ public:
 			tvec3 delta( SWInput.getDeltaX(), -SWInput.getDeltaY(), 0 );
 			
 			SWRigidBody2D* body = collider->getComponent<SWRigidBody2D>();
-			if ( body ) body->setVelocity( delta.xy().normal()*30 );
-			SWTransform* transform = cam->getComponent<SWTransform>();
-			tvec3 pos = collider->getComponent<SWTransform>()->getPosition();
-			pos.z = -100;
-			transform->setPosition( pos );
+			if ( body )
+			{
+				body->setVelocity( delta.xy().normal()*30 );
+				m_target = body->getComponent<SWTransform>();
+			}
 		}
 	}
 
