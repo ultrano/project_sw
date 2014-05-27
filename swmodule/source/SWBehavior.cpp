@@ -30,16 +30,32 @@ void SWBehavior::update()
 	onUpdate();
 }
 
+void SWBehavior::collision( SWObject* coll )
+{
+	onCollision( (SWCollision2D*)coll );
+}
+
 void SWBehavior::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( update ) );
+	setMessageDelegator( "onCollision", GetDelegator( collision ) );
 }
 
 void SWBehavior::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( update ) );
 	__super::onRemove();
+}
+
+void SWBehavior::onUpdate()
+{
+
+}
+
+void SWBehavior::onCollision( SWCollision2D* )
+{
+
 }
 
 void SWBehavior::setMessageDelegator( const tstring& msgName, const SWDelegator* del )

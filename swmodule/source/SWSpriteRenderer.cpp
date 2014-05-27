@@ -38,7 +38,7 @@ void SWSpriteRenderer::onAwake()
 
 void SWSpriteRenderer::render( SWCamera* camera )
 {
-	if ( m_material.isValid() )
+	if ( m_material.isValid() && m_sprite.isValid() )
 	{
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 		const TMatrix4x4& model = transform->getWorldMatrix();

@@ -60,7 +60,6 @@ void SWRigidBody2D::onRemove()
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
-#include "SWLog.h"
 void SWRigidBody2D::onUpdate()
 {
 	SWTransform* transform = getComponent<SWTransform>();
@@ -79,7 +78,6 @@ void SWRigidBody2D::onUpdate()
 	transform->setPosition( tvec3( m_center, depth ) );
 	transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
 
-	SWLog( "linearStep : %f, %f", linearStep.x, linearStep.y );
 	m_velocity -= linearStep * m_linearDrag;
 	m_torque   -= angularStep * m_angularDrag;
 }

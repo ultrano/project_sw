@@ -54,7 +54,10 @@ void __SWPhysics2D::simulate()
 			if ( getIgnoreLayer( layer1, layer2 ) ) continue;
 			if ( testCollide( collider1, collider2 ) )
 			{
-				SWLog( "collided!!" );
+				SWHardRef<SWCollision2D> coll = new SWCollision2D( collider2 );
+				collider1->gameObject()->sendMessage( "onCollision", coll() );
+				coll = new SWCollision2D( collider1 );
+				collider2->gameObject()->sendMessage( "onCollision", coll() );
 			}
 		}
 	}

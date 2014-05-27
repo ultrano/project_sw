@@ -15,6 +15,7 @@ class TVector2f;
 class SWCollisionInfo;
 class SWGameObject;
 class SWNotifyMessage;
+class SWCollision2D;
 
 /** 
  @brief 객체의 행동양식을 담당하는 컴포넌트.
@@ -30,17 +31,21 @@ public:
 	SWBehavior( factory_constructor );
     ~SWBehavior();
     
-    virtual void onUpdate() {};
-
 	void delegateMessage( const tstring& msgName, SWObject* param );
 	void setMessageDelegator( const tstring& msgName, const SWDelegator* del );
 	const SWDelegator* getMessageDelegator( const tstring& msgName );
 
 protected:
 
-	void onAwake();
-	void onRemove();
+	virtual void onAwake();
+	virtual void onRemove();
+	virtual void onUpdate();
+	virtual void onCollision( SWCollision2D* );
+
+private:
+
 	void update();
+	void collision( SWObject* );
 
 private:
 

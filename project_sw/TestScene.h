@@ -43,6 +43,7 @@
 #include "SWSprite.h"
 #include "SWSpriteSequence.h"
 #include "SWSpriteAnimation.h"
+#include "SWAssets.h"
 
 #include "SWRigidBody2D.h"
 #include "SWCollider2D.h"
@@ -52,12 +53,13 @@
 #include "WIFontChar.h"
 #include "WIFontData.h"
 #include "WIText.h"
-#include "SWAssets.h"
 
 #include "SWActAlphaTo.h"
 
 #include "SWObjectStream.h"
 #include "SWByteBufferStream.h"
+
+#include "Mouse.h"
 
 #include <stdio.h>
 #include <set>
@@ -81,6 +83,7 @@ public:
 	void onAwake()
 	{
 		SW_GC.registerFactory<TestScene>();
+		SW_GC.registerFactory<Mouse>();
 
 		//! set primary camera
 		{
@@ -95,73 +98,23 @@ public:
 		}
 
 		{
-			//! origin
 			SWGameObject* go = new SWGameObject();
-			go->setName( "origin" );
-			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			go->addComponent<Mouse>();
+		}
+		{
+			SWGameObject* go = new SWGameObject();
+
 			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "boom.png" );
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( atlas()->find( "boom_0" ) );
 
 			SWCircleCollider2D* collider = go->addComponent<SWCircleCollider2D>();
-			collider->setRadius( 25 );
-
-			//! clone
-			SWGameObject* go2 = swrtti_cast<SWGameObject>( go->clone()() );
-			go2->getComponent<SWTransform>()->setPosition( tvec3( 0, 100, 0 ) );
-
-			go2->getComponent<SWSpriteRenderer>()->setColor( tcolor( 1,0,0,1 ) );
-			
-			SWRigidBody2D* body = go2->addComponent<SWRigidBody2D>();
-			body->setGravityScale( tvec2::zero );
-			body->setLinearDrag( 0.9f );
-
-			SWHardRef<SWSpriteAnimation> spriteAnim = SWAssets.loadSpriteAnimation( "animation.txt" );
-			SWActAnimate* idle = new SWActAnimate( 1,spriteAnim()->getSequenceByName( "idle" ) );
-			SWActAnimate* run  = new SWActAnimate( 1,spriteAnim()->getSequenceByName( "run" ) );
-			SWAction* action = go2->addComponent<SWAction>();
-			action->setAct( "idle", new SWActRepeat( idle ) );
-			action->setAct( "run", new SWActRepeat( run ) );
-			action->play( "idle" );
+			collider->setRadius( 20 );
 		}
 	}
 
-	SWWeakRef<SWTransform> m_target;
 	void onUpdate()
 	{
-		SWCamera* cam = findGO( "mainCam" )->getComponent<SWCamera>();
-		if ( m_target.isValid() )
-		{
-			SWTransform* transform = cam->getComponent<SWTransform>();
-			tvec3 pos = m_target()->getPosition();
-			pos.z = -100;
-			transform->setPosition( pos );
-			
-			SWRigidBody2D* body = m_target()->getComponent<SWRigidBody2D>();
-			if ( body )
-			{
-				if ( body->getVelocity().length() < 1 )
-				{
-					SWAction* action = body->getComponent<SWAction>();
-					if ( !action->isPlaying( "idle" ) ) action->play( "idle" );
-				}
-			}
-		}
-		if ( SWInput.getTouchState() != SW_TouchMove ) return;
-		tvec3 pos = cam->screenToWorld( tvec3( SWInput.getTouchXY().x, SWInput.getTouchXY().y, 500 ) );
-		
-		if ( SWCollider2D* collider = SWPhysics2D.overlapPoint( pos.xy() ) )
-		{
-			tvec3 delta( SWInput.getDeltaX(), -SWInput.getDeltaY(), 0 );
-			
-			SWRigidBody2D* body = collider->getComponent<SWRigidBody2D>();
-			if ( body )
-			{
-				body->addForce( delta.xy().normal()*30 );
-				m_target = body->getComponent<SWTransform>();
-				SWAction* action = body->getComponent<SWAction>();
-				action->play( "run" );
-			}
-		}
 	}
 
 	void onPostDraw()

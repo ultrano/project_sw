@@ -15,6 +15,18 @@ public:
 	virtual void farthestPoint( tvec2& ret, const tvec2& worldDir ) = 0;
 };
 
+class SWCollision2D : public SWObject
+{
+	SW_RTTI( SWCollision2D, SWObject );
+public:
+	SWCollision2D( SWCollider2D* collider )
+		: m_collider( collider )
+	{}
+	SWCollider2D* getCollider() const { return m_collider(); }
+private:
+	SWWeakRef<SWCollider2D> m_collider;
+};
+
 class SWCircleCollider2D : public SWCollider2D
 {
 	SW_RTTI( SWCircleCollider2D, SWCollider2D );
