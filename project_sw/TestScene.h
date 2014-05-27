@@ -89,7 +89,7 @@ public:
 			go->setName( "mainCam" );
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
-			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -100 ) );
+			cam->getComponent<SWTransform>()->setPosition( tvec3( 0, 0, -100 ) );
 			cam->setClearFlags( SW_Clear_Color );
 			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
 		}
@@ -121,8 +121,13 @@ public:
 		if ( SWCollider2D* collider = SWPhysics2D.overlapPoint( pos.xy() ) )
 		{
 			tvec3 delta( SWInput.getDeltaX(), -SWInput.getDeltaY(), 0 );
-			SWTransform* transform = collider->getComponent<SWTransform>();
-			transform->move( delta );
+			
+			SWRigidBody2D* body = collider->getComponent<SWRigidBody2D>();
+			if ( body ) body->setVelocity( delta.xy().normal()*30 );
+			SWTransform* transform = cam->getComponent<SWTransform>();
+			tvec3 pos = collider->getComponent<SWTransform>()->getPosition();
+			pos.z = -100;
+			transform->setPosition( pos );
 		}
 	}
 

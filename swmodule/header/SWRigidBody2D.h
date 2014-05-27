@@ -16,6 +16,7 @@ public:
 	void addForce( const tvec2& force );
 	void addForce( const tvec2& force, const tvec2& pos );
 	void addAccel( const tvec2& accel );
+	void setVelocity( const tvec2& vel );
 	void setLinearDrag( float drag );
 	void setGravityScale( const tvec2& scale );
 	void setElastic( float elastic );

@@ -59,11 +59,6 @@ public:
 	void addUpdateDelegator( SWDelegator* dg );
 	void removeUpdateDelegator( SWDelegator* dg );
 
-	void defineProp( const tstring& name );
-	bool isDefinedProp( const tstring& name );
-	void setProp( const tstring& name, SWObject* value );
-	SWObject* getProp( const tstring& name );
-
 	void sendMessage( const tstring& msgName, SWObject* param );
 
 protected:
@@ -77,7 +72,6 @@ private:
 
 private:
 
-	typedef ttable< tstring,SWObject::Ref > ObjectMap;
 	
 	thashstr m_name;
 	thashstr m_layer;
@@ -89,8 +83,6 @@ private:
 	SWObject::List  m_addedComponents;
 	SWObject::List  m_updateDelegates;
 	SWObject::List  m_updates;
-
-	ObjectMap       m_propTable;
 };
 
 #endif

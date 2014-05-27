@@ -64,8 +64,6 @@ void SWGameObject::destroyNow()
 	SWGameObject::Ref holder = this;
 	removeComponentAll();
 
-	m_propTable.clear();
-
 	__super::destroy();
 }
 
@@ -189,36 +187,6 @@ void SWGameObject::removeUpdateDelegator( SWDelegator* dg )
 	m_updateDelegates.remove( dg );
 }
 
-void SWGameObject::defineProp( const tstring& name )
-{
-	if ( isDefinedProp(name) ) return;
-	m_propTable.insert( std::make_pair( name, new SWProperty ) );
-}
-
-bool SWGameObject::isDefinedProp( const tstring& name )
-{
-	return ( m_propTable.find( name ) != m_propTable.end() );
-}
-
-void SWGameObject::setProp( const tstring& name, SWObject* value )
-{
-	SWProperty* prop = NULL;
-	{
-		ObjectMap::iterator itor = m_propTable.find( name );
-		if ( itor == m_propTable.end() ) return;
-
-		prop = swrtti_cast<SWProperty>( (itor->second)() );
-	}
-}
-
-SWObject* SWGameObject::getProp( const tstring& name )
-{
-	ObjectMap::iterator itor = m_propTable.find( name );
-	if ( itor == m_propTable.end() ) return NULL;
-	SWProperty* prop = swrtti_cast<SWProperty>( (itor->second)() );
-	return prop->m_value();
-}
-
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 {
 	SWObject::Array copy = m_components;
@@ -243,15 +211,6 @@ void SWGameObject::serialize( SWObjectWriter* ow )
 		SWObject* object = (m_components[i])();
 		ow->writeObject( object );
 	}
-
-	ow->writeUInt( m_propTable.size() );
-	for ( ObjectMap::iterator itor = m_propTable.begin()
-		; itor != m_propTable.end() 
-		; ++itor )
-	{
-		ow->writeString( itor->first );
-		ow->writeObject( itor->second() );
-	}
 }
 
 void SWGameObject::deserialize( SWObjectReader* or )
@@ -275,15 +234,6 @@ void SWGameObject::deserialize( SWObjectReader* or )
 		registerComponent( comp );
 	}
 	m_loadedComponents.clear();
-
-	tuint count = or->readUInt();
-	while ( count-- )
-	{
-		tstring   name;
-		or->readString( name );
-		SWObject* prop = or->readObject();
-		m_propTable[ name ] = prop;
-	}
 }
 
 void SWGameObject::setActive( bool active )

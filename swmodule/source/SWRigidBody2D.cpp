@@ -105,6 +105,11 @@ void SWRigidBody2D::addAccel( const tvec2& accel )
 	m_velocity += accel;
 }
 
+void SWRigidBody2D::setVelocity( const tvec2& vel )
+{
+	m_velocity = vel;
+}
+
 void SWRigidBody2D::setLinearDrag( float drag )
 {
 	m_linearDrag = drag;
