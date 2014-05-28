@@ -1,11 +1,11 @@
 #ifndef SWCollider2D_h__
 #define SWCollider2D_h__
 
-#include "SWBehavior.h"
+#include "SWComponent.h"
 
-class SWCollider2D : public SWBehavior
+class SWCollider2D : public SWComponent
 {
-	SW_RTTI( SWCollider2D, SWBehavior );
+	SW_RTTI( SWCollider2D, SWComponent );
 public:
 
 	void onAwake();

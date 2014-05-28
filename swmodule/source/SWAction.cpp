@@ -19,9 +19,9 @@ SWAction::~SWAction()
 
 }
 
-void SWAction::onStart()
+void SWAction::onAwake()
 {
-	__super::onStart();
+	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 }
 

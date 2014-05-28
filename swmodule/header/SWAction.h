@@ -1,13 +1,13 @@
 #ifndef SWAction_h__
 #define SWAction_h__
 
-#include "SWBehavior.h"
+#include "SWComponent.h"
 
 class SWAct;
 class SWList;
-class SWAction : public SWBehavior
+class SWAction : public SWComponent
 {
-	SW_RTTI( SWAction, SWBehavior );
+	SW_RTTI( SWAction, SWComponent );
 
 public:
 
@@ -24,7 +24,7 @@ public:
 
 private:
 
-	void onStart();
+	void onAwake();
 	void onRemove();
 	void onUpdate();
 	

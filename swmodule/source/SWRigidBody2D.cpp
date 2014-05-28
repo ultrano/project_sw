@@ -62,24 +62,26 @@ void SWRigidBody2D::onRemove()
 }
 void SWRigidBody2D::onUpdate()
 {
+	float deltaTime = SWTime.getDeltaTime();
+	if ( deltaTime == 0 ) return;
+
 	SWTransform* transform = getComponent<SWTransform>();
 	
 	float depth = transform->getPosition().z;
-	float deltaTime = SWTime.getDeltaTime();
-	
+
 	addAccel( m_gravityScale * ( SWPhysics2D.getGravityForce() ) * deltaTime );
 	
 	tvec2  linearStep  = m_velocity* deltaTime;
 	tfloat angularStep = m_torque* deltaTime;
 	
+	m_velocity -= linearStep * m_linearDrag;
+	m_torque   -= angularStep * m_angularDrag;
+
 	m_center += linearStep;
 	m_angle  += angularStep;
 
 	transform->setPosition( tvec3( m_center, depth ) );
 	transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
-
-	m_velocity -= linearStep * m_linearDrag;
-	m_torque   -= angularStep * m_angularDrag;
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )

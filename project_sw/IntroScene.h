@@ -73,8 +73,7 @@ public:
 			SWActSequence* seq = new SWActSequence();
 			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,1 ) ) );
 			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,0 ) ) );
-			seq->addAct( new SWActSendMsg( "EndLogo" ) );
-			action->setMessageDelegator( "EndLogo", GetDelegator( onEndLogo ) );
+			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
 			action->setAct( "logo", seq );
 			action->play( "logo" );
 		}

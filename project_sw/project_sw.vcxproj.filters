@@ -32,12 +32,21 @@
     <ClInclude Include="Mouse.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Cheese.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="project_sw.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheese.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

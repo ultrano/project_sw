@@ -60,6 +60,7 @@
 #include "SWByteBufferStream.h"
 
 #include "Mouse.h"
+#include "Cheese.h"
 
 #include <stdio.h>
 #include <set>
@@ -84,6 +85,7 @@ public:
 	{
 		SW_GC.registerFactory<TestScene>();
 		SW_GC.registerFactory<Mouse>();
+		SW_GC.registerFactory<Cheese>();
 
 		//! set primary camera
 		{
@@ -94,6 +96,7 @@ public:
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setPosition( tvec3( 0, 0, -100 ) );
 			cam->setClearFlags( SW_Clear_Color );
+			cam->setClearColor( tcolor( 0.5f, 0.5f, 0.5f, 1 ) );
 			//cam->perspectiveMode( SWMath.angleToRadian(120), 1, 1, 1000 );
 		}
 
@@ -101,15 +104,12 @@ public:
 			SWGameObject* go = new SWGameObject();
 			go->addComponent<Mouse>();
 		}
+		
+		for ( tuint i = 0 ; i < 40 ; ++i )
 		{
 			SWGameObject* go = new SWGameObject();
-
-			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "boom.png" );
-			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( atlas()->find( "boom_0" ) );
-
-			SWCircleCollider2D* collider = go->addComponent<SWCircleCollider2D>();
-			collider->setRadius( 20 );
+			go->addComponent<Cheese>();
+			go->getComponent<SWTransform>()->setPosition( tvec3( SWMath.randomInt(-160,160),SWMath.randomInt(-240,240),0 ) );
 		}
 	}
 

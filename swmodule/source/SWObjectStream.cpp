@@ -15,6 +15,10 @@ SWObjectWriter::~SWObjectWriter()
 
 void SWObjectWriter::writeObject( SWObject* obj )
 {
+	bool isNULL = (obj == NULL);
+	writeBool( isNULL );
+	if ( isNULL ) return;
+
 	tuint objID = obj->getID();
 	writeUInt( objID );
 	if ( m_doneTable.find( objID ) == m_doneTable.end() )
@@ -112,6 +116,8 @@ SWObjectReader::~SWObjectReader()
 
 SWObject* SWObjectReader::readObject()
 {
+	if ( readBool() ) return NULL;
+
 	tuint objID = readUInt();
 	SWHardRef<SWObject> object = NULL;
 
