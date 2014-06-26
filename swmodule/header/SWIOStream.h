@@ -83,6 +83,8 @@ public:
 	bool readLine( tstring& str )
 	{
 		str.clear();
+		if ( !m_is.isValid() ) return false;
+
 		char c;
 		while( true )
 		{
