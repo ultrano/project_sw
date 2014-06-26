@@ -1,5 +1,0 @@
-Sheet4.png
-src1_fr 0.1 scr1_fr1,scr1_fr2
-scr1_bk 0.1 scr1_bk1,scr1_bk2
-src1_lf 0.1 scr1_lf1,scr1_lf2
-scr1_rt 0.1 scr1_rt1,scr1_rt2

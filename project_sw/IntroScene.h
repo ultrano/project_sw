@@ -9,14 +9,19 @@
 #include "WIImage.h"
 #include "SWAssets.h"
 #include "SWTime.h"
-#include "TestScene.h"
+
+#include "SWDefines.h"
 
 #include "SWActAlphaTo.h"
 #include "SWActDelegate.h"
 #include "SWActSequence.h"
 #include "SWActColor.h"
 #include "SWActSendMsg.h"
+#include "SWAction.h"
+#include "SWLog.h"
 
+#include "SWSpriteRenderer.h"
+#include "SWGameObject.h"
 #include "SWObjectStream.h"
 #include "SWByteBufferStream.h"
 #include "SWFileStream.h"
@@ -96,7 +101,7 @@ public:
 	}
 	void onEndLogo()
 	{
-		SW_GC.setNextScene( new TestScene );
+		//SW_GC.setNextScene( new TestScene );
 	}
 };
 

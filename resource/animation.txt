@@ -1,3 +1,0 @@
-mb.png
-idle 0.1 idle_00,idle_01,idle_02,idle_03,idle_04,idle_05,idle_06,idle_07,idle_08,idle_09,idle_10
-run 0.1 run_00,run_01,run_02,run_03,run_04,run_05,run_06,run_07

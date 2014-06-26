@@ -20,19 +20,7 @@
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="IntroScene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene2.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Cheese.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,12 +29,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="project_sw.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Cheese.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

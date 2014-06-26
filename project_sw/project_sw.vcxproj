@@ -87,17 +87,11 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cheese.h" />
     <ClInclude Include="IntroScene.h" />
-    <ClInclude Include="Mouse.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestScene.h" />
-    <ClInclude Include="TestScene2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cheese.cpp" />
-    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

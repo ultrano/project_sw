@@ -11,8 +11,6 @@
 
 //#include "CatAss.h"
 #include "IntroScene.h"
-#include "TestScene.h"
-#include "TestScene2.h"
 
 
 void callbackDisplay()
