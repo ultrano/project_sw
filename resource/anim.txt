@@ -1,0 +1,2 @@
+flappy_bird.png
+flying 0.1 bird_0,bird_1

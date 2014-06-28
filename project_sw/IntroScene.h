@@ -1,32 +1,7 @@
 #ifndef IntroScene_h__
 #define IntroScene_h__
 
-#include "SWGameScene.h"
-#include "SWGameContext.h"
-#include "SWGameObject.h"
-#include "SWCamera.h"
-#include "SWTransform.h"
-#include "WIImage.h"
-#include "SWAssets.h"
-#include "SWTime.h"
-
-#include "SWDefines.h"
-
-#include "SWActAlphaTo.h"
-#include "SWActDelegate.h"
-#include "SWActSequence.h"
-#include "SWActColor.h"
-#include "SWActSendMsg.h"
-#include "SWAction.h"
-#include "SWLog.h"
-
-#include "SWSpriteRenderer.h"
-#include "SWGameObject.h"
-#include "SWObjectStream.h"
-#include "SWByteBufferStream.h"
-#include "SWFileStream.h"
-
-#include "SWUtil.h"
+#include "SWHeaders.h"
 
 class IntroScene : public SWGameScene
 {
@@ -101,6 +76,7 @@ public:
 	}
 	void onEndLogo()
 	{
+		SW_GC.setNextScene( new PlayScene );
 		//SW_GC.setNextScene( new TestScene );
 	}
 };

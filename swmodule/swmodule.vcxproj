@@ -106,6 +106,7 @@
     <ClInclude Include="header\SWAnimationClip.h" />
     <ClInclude Include="header\SWAnimationLine.h" />
     <ClInclude Include="header\SWArray.h" />
+    <ClInclude Include="header\SWHeaders.h" />
     <ClInclude Include="header\SWResource.h" />
     <ClInclude Include="header\SWAssets.h" />
     <ClInclude Include="header\SWBehavior.h" />

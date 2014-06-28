@@ -4,14 +4,11 @@
 #include "stdafx.h"
 #include "glew.h"
 #include "glut.h"
-#include "SWTime.h"
-#include "SWInput.h"
-#include "SWType.h"
-#include "SWMath.h"
+
 
 //#include "CatAss.h"
+#include "PlayScene.h"
 #include "IntroScene.h"
-
 
 void callbackDisplay()
 {
