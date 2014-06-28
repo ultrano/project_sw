@@ -29,6 +29,12 @@
     <ClInclude Include="Bird.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PipeGen.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -38,6 +44,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Bird.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PipeGen.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

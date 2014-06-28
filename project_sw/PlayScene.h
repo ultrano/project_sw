@@ -2,6 +2,9 @@
 #define PlayScene_h__
 
 #include "SWHeaders.h"
+#include "Bird.h"
+#include "Pipe.h"
+#include "PipeGen.h"
 
 class PlayScene : public SWGameScene
 {
@@ -20,6 +23,9 @@ public:
 	void onAwake()
 	{
 		SW_GC.registerFactory<PlayScene>();
+		SW_GC.registerFactory<Bird>();
+		SW_GC.registerFactory<Pipe>();
+		SW_GC.registerFactory<PipeGen>();
 
 		//! camera
 		{
@@ -42,28 +48,43 @@ public:
 
 			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
 			renderer->setSprite( atlas()->find( "background" ) );
+
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( tvec3( 0, 0, -1 ) );
 		}
 
 		//! bird
 		{
 			SWGameObject* go = new SWGameObject;
-			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-
-			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
-			renderer->setSprite( atlas()->find( "bird_1" ) );
-
-			SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "anim.txt" );
-			SWAction* action = go->addComponent<SWAction>();
-			action->setAct( "flying", new SWActRepeat( new SWActAnimate( 1, anim()->getSequenceByName( "flying" ) ) ) ); 
-			action->play( "flying" );
-
-			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-			
+			m_bird = go->addComponent<Bird>();
 		}
+
+		//! pipe test
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<PipeGen>();
+		}
+
 		SWLog( "play scene awake test" );
 	}
 
+	void onUpdate()
+	{
+		if ( SWInput.getTouchState() == SW_TouchPress )
+		{
+			SWRigidBody2D* body = m_bird->getComponent<SWRigidBody2D>();
+			body->addForce( tvec2( 0, 50 ) );
+		}
+		if ( SWInput.getKey( 'p' ) )
+		{
+			SWHardRef<PlayScene> scene = SW_GC.newInstance<PlayScene>();
+			SW_GC.setNextScene( (SWGameScene*)scene() );
+		}
+	}
+
 private:
+
+	Bird* m_bird;
 
 };
 

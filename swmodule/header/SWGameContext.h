@@ -41,7 +41,18 @@ public:
 	void registerFactory( const SWRtti* rtti, const SWAbstractObjectFactory* factory );
 
 	template<typename T>
-	SWHardRef<T> newInstance() { return newInstance( T::getRtti() ); }
+	SWHardRef<T> newInstance()
+	{
+		SWHardRef<SWObject> inst = newInstance( T::getRtti() );
+		return swrtti_cast<T>( inst() );
+	}
+
+	template<typename T>
+	SWHardRef<T> newInstance( const tstring& name )
+	{
+		SWHardRef<SWObject> inst = newInstance( name );
+		return swrtti_cast<T>( inst() );
+	}
 
 	SWHardRef<SWObject> newInstance( const SWRtti* rtti );
 	SWHardRef<SWObject> newInstance( const tstring& name );

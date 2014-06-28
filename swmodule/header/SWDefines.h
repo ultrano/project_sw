@@ -69,5 +69,6 @@ enum SWDefines
 	SW_Clear_Depth = 1 << 2,
 };
 
+#define SW_PI (3.14f)
 
 #endif

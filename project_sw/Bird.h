@@ -9,12 +9,13 @@ class Bird : public SWBehavior
 
 public:
 
-
+	Bird( factory_constructor );
 
 protected:
 
 	void onAwake();
 	void onUpdate();
+	void onCollision( SWCollision2D* );
 
 private:
 
