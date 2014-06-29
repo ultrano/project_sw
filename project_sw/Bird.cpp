@@ -16,7 +16,7 @@ void Bird::onAwake()
 	SWAction* action = go->addComponent<SWAction>();
 	SWCircleCollider2D* collider = go->addComponent<SWCircleCollider2D>();
 
-	collider->setRadius( 10 );
+	collider->setRadius( 8 );
 
 	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
 	renderer->setSprite( atlas()->find( "bird_1" ) );

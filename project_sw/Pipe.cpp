@@ -18,8 +18,6 @@ void Pipe::onAwake()
 	action->setAct( "move", act1 );
 	action->play( "move" );
 
-	transform->setPosition( tvec3( 100, SWMath.randomInt( 60, 130 ) ,0 ) );
-
 	collider->setSize( tvec2( 28, 125 ) );
 	
 	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );

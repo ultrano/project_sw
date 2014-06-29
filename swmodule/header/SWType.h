@@ -20,6 +20,7 @@
 #include "TRect.h"
 #include "TRay.h"
 #include "TColorRGBA.h"
+#include "TAABB.h"
 
 typedef TVector2f   tvec2;
 typedef TVector3f   tvec3;
@@ -31,5 +32,7 @@ typedef TIndex3     tindex3;
 typedef TRect       trect;
 typedef TRay        tray;
 typedef TColorRGBA  tcolor;
+typedef TAABB2D     taabb2d;
+typedef TAABB3D     taabb3d;
 
 #endif //! sw_SWType_h

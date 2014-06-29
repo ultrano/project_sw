@@ -59,10 +59,21 @@ public:
 			m_bird = go->addComponent<Bird>();
 		}
 
-		//! pipe test
+		//! pipe generator
 		{
 			SWGameObject* go = new SWGameObject;
 			go->addComponent<PipeGen>();
+		}
+
+		//! down dead line
+		{
+			SWGameObject* go = new SWGameObject();
+			
+			SWRectCollider2D* collider = go->addComponent<SWRectCollider2D>();
+			collider->setSize( tvec2( 100, 10 ) );
+
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setPosition( tvec3( 0, -138,0 ) );
 		}
 
 		SWLog( "play scene awake test" );

@@ -295,6 +295,9 @@
     <Filter Include="SW\SWSpriteAtlas">
       <UniqueIdentifier>{8585b75e-6baf-4f2d-bbfe-c88fe4f8a42f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType\TAABB">
+      <UniqueIdentifier>{67e508e0-e79d-4ab1-a955-4aecf9732a4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -614,6 +617,9 @@
     </ClInclude>
     <ClInclude Include="header\SWHeaders.h">
       <Filter>SW\SWHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TAABB.h">
+      <Filter>SW\SWType\TAABB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

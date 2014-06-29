@@ -132,6 +132,7 @@
     <ClInclude Include="header\SWSpriteSequence.h" />
     <ClInclude Include="header\SWSpriteAtlas.h" />
     <ClInclude Include="header\SWTexture.h" />
+    <ClInclude Include="header\TAABB.h" />
     <ClInclude Include="header\TColorRGBA.h" />
     <ClInclude Include="header\TRay.h" />
     <ClInclude Include="header\TRect.h" />

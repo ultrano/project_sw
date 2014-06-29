@@ -56,6 +56,7 @@ private:
     tuint m_vaoID;
     tuint m_vboID;
     tuint m_iboID;
+	taabb3d m_aabb;
 };
 
 #endif // SWMesh_h__

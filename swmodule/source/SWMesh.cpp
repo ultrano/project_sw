@@ -103,6 +103,9 @@ void SWMesh::getTriangle( tuint index, TIndex3& val )
 void SWMesh::updateMesh()
 {
 	m_updateMesh = false;
+
+
+
     /*
 	//! this is for when using graphic buffer
     if ( m_vboID == 0 ) glGenBuffers( 1, &m_vboID );
