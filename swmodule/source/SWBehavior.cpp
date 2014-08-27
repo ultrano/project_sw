@@ -30,6 +30,11 @@ void SWBehavior::update()
 	onUpdate();
 }
 
+void SWBehavior::fixedFrameUpdate()
+{
+	onFixedFrameUpdate();
+}
+
 void SWBehavior::collision( SWObject* coll )
 {
 	onCollision( (SWCollision2D*)coll );
@@ -39,16 +44,23 @@ void SWBehavior::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( update ) );
+	gameObject()->addFixedFrameUpdateDelegator( GetDelegator( fixedFrameUpdate ) );
 	setMessageDelegator( "onCollision", GetDelegator( collision ) );
 }
 
 void SWBehavior::onRemove()
 {
+	gameObject()->removeFixedFrameUpdateDelegator( GetDelegator( fixedFrameUpdate ) );
 	gameObject()->removeUpdateDelegator( GetDelegator( update ) );
 	__super::onRemove();
 }
 
 void SWBehavior::onUpdate()
+{
+
+}
+
+void SWBehavior::onFixedFrameUpdate()
 {
 
 }

@@ -59,8 +59,17 @@ void callbackKeyboardUp( unsigned char key, int x, int y )
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	bool landScape = true;
 	float width = 320;
 	float height = 480;
+
+	if ( landScape )
+	{
+		float temp = height;
+		height = width;
+		width = temp;
+	}
+
 	// 디스플레이 버퍼를 RGB색상과 더블버퍼로 사용.
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 

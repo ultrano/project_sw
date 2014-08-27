@@ -48,6 +48,8 @@ void SWGameScene::reserveDestroy( const SWGameObject* go )
 
 void SWGameScene::awake()
 {
+	m_fixedMaxFrame = 30;
+	m_fixedFrameCount = 0;
 	SWInput.addInputDelegate( GetDelegator(handleEvent) );
 	onAwake();
 }
@@ -84,9 +86,8 @@ void SWGameScene::pause()
 
 void SWGameScene::update()
 {
-	onUpdate();
-
 	//! regular update
+	onUpdate();
 	{
 		m_updates = m_roots;
 		SWObject::List::iterator itor = m_updates.begin();
@@ -94,6 +95,28 @@ void SWGameScene::update()
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 			if ( go->isActiveSelf() ) go->udpate();
+		}
+	}
+
+	//! calculate count of fixed frame update
+	tuint countOfFixedFrameUpdate = 0;
+	m_fixedFrameCount += 1;
+	while ( m_fixedFrameCount >= m_fixedMaxFrame )
+	{
+		countOfFixedFrameUpdate += 1;
+		m_fixedFrameCount -= m_fixedMaxFrame;
+	}
+
+	//! fixed frame update
+	onFixedFrameUpdate();
+	while ( countOfFixedFrameUpdate-- )
+	{
+		m_updates = m_roots;
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
+		{
+			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+			if ( go->isActiveSelf() ) go->fixedFrameUpdate();
 		}
 	}
 

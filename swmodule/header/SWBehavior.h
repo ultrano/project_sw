@@ -40,17 +40,18 @@ protected:
 	virtual void onAwake();
 	virtual void onRemove();
 	virtual void onUpdate();
+	virtual void onFixedFrameUpdate();
 	virtual void onCollision( SWCollision2D* );
 
 private:
 
 	void update();
+	void fixedFrameUpdate();
 	void collision( SWObject* );
 
 private:
 
 	typedef ttable< tstring,SWHardRef<SWDelegator> > ReceiverTable;
-
 	ReceiverTable m_recvTable;
 };
 

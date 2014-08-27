@@ -26,13 +26,7 @@
     <ClInclude Include="PlayScene.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Bird.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PipeGen.h">
+    <ClInclude Include="Rider.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -43,13 +37,7 @@
     <ClCompile Include="project_sw.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Bird.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PipeGen.cpp">
+    <ClCompile Include="Rider.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

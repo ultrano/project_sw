@@ -31,6 +31,7 @@ public:
 	void destroyNow();
 
 	void udpate();
+	void fixedFrameUpdate();
 
 	void setName( const thashstr& name ) { m_name = name; }
 	const thashstr&  getName() const { return m_name; }
@@ -58,6 +59,9 @@ public:
 
 	void addUpdateDelegator( SWDelegator* dg );
 	void removeUpdateDelegator( SWDelegator* dg );
+	
+	void addFixedFrameUpdateDelegator( SWDelegator* dg );
+	void removeFixedFrameUpdateDelegator( SWDelegator* dg );
 
 	void sendMessage( const tstring& msgName, SWObject* param );
 
@@ -82,6 +86,7 @@ private:
 	
 	SWObject::List  m_addedComponents;
 	SWObject::List  m_updateDelegates;
+	SWObject::List  m_fixedFrameUpdateDelegates;
 	SWObject::List  m_updates;
 };
 
