@@ -29,6 +29,9 @@
     <ClInclude Include="Rider.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GasCloud.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -38,6 +41,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Rider.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GasCloud.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

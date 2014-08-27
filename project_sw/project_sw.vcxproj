@@ -87,6 +87,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GasCloud.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Rider.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GasCloud.cpp" />
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="Rider.cpp" />
     <ClCompile Include="stdafx.cpp" />

@@ -1,4 +1,5 @@
 #include "Rider.h"
+#include "GasCloud.h"
 
 Rider::Rider()
 {
@@ -21,6 +22,7 @@ void Rider::onAwake()
 	renderer()->setSprite( atlas()->find( "bird_0" ) );
 
 	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
+	body()->setGravityScale( -tvec2::axisY * 10 );
 
 }
 
@@ -35,10 +37,20 @@ void Rider::onUpdate()
 
 void Rider::onFixedFrameUpdate()
 {
+	SWHardRef<SWRigidBody2D> body = gameObject()->getComponent<SWRigidBody2D>();
+	body()->addForce( tvec2( 0.1f,0 ) );
 	if ( SWInput.getKey( ' ' ) )
 	{
-		SWHardRef<SWRigidBody2D> body = gameObject()->getComponent<SWRigidBody2D>();
-		body()->addForce( tvec2( 0, 1 ) );
+		body()->addForce( tvec2( 0, 30 ) );
+
+		SWGameObject* go = new SWGameObject();
+		go->addComponent<GasCloud>();
+		tvec3 pos = getComponent<SWTransform>()->getPosition();
+		pos.z = -1;
+		go->getComponent<SWTransform>()->setPosition( pos );
+
+		go->addComponent<SWRigidBody2D>()->addForce( tvec2( SWMath.randomInt( -100,100 )/20.0f, -30 ) );
+
 	}
 }
 
