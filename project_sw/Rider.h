@@ -34,6 +34,8 @@ protected:
 private:
 
 	State m_state;
+	SWHardRef<SWSpriteRenderer> m_renderer;
+	SWHardRef<SWSpriteAtlas> m_imgAtlas;
 
 };
 

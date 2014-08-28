@@ -4,6 +4,7 @@
 #include "SWHeaders.h"
 #include "Rider.h"
 #include "GasCloud.h"
+#include "Coin.h"
 
 class PlayScene : public SWGameScene
 {
@@ -13,6 +14,8 @@ public:
 
 	SWWeakRef<Rider> m_rider;
 	SWWeakRef<SWCamera> m_camera;
+
+	SWHardRef<SWGameObject> m_originCoin;
 
 	PlayScene()
 	{
@@ -39,6 +42,7 @@ public:
 	{
 		SW_GC.registerFactory<Rider>();
 		SW_GC.registerFactory<GasCloud>();
+		SW_GC.registerFactory<Coin>();
 
 		//! rider test
 		{
@@ -65,6 +69,36 @@ public:
 			m_camera = cam;
 			go->addUpdateDelegator( GetDelegator( CameraUpdate ) );
 		}
+
+		//! make coin test
+		{
+			SWGameObject* go = new SWGameObject();
+			SWHardRef<SWAction> action = go->addComponent<SWAction>();
+			SWActDelegate* act = new SWActDelegate( GetDelegator( MakeCoin ) );
+			SWActSequence* seq = new SWActSequence();
+			seq->addAct( new SWActDelay( 1 ) );
+			seq->addAct( act );
+			action()->setAct( "makeCoin", new SWActRepeat( seq ) );
+			action()->play( "makeCoin" );
+
+
+			m_originCoin = new SWGameObject();
+			m_originCoin()->addComponent<Coin>();
+			
+			SWHardRef<SWTransform> trans = m_originCoin()->getComponent<SWTransform>();
+			trans()->setPosition( tvec3(0, -100, 0) );
+		}
+	}
+
+	void MakeCoin()
+	{
+		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
+		tvec3 pos = riderTrans()->getPosition();
+		pos.x += 150;
+
+		SWHardRef<SWGameObject> go = m_originCoin()->clone<SWGameObject>();
+		SWHardRef<SWTransform> trans = go()->getComponent<SWTransform>();
+		trans()->setPosition( pos );
 	}
 
 	void onUpdate()

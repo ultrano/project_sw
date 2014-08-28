@@ -1,11 +1,6 @@
 #include "Rider.h"
 #include "GasCloud.h"
-
-static const float GroundY = 10;
-static const float RoofY = 120;
-static const float RunningForce = 0.1f;
-static const float JumpForce = 200;
-static const float BoostForce = 20;
+#include "GameValues.h"
 
 Rider::Rider()
 {
@@ -23,13 +18,15 @@ void Rider::onAwake()
 {
 	__super::onAwake();
 
-	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
-	SWHardRef<SWSpriteRenderer> renderer = gameObject()->addComponent<SWSpriteRenderer>();
-	renderer()->setSprite( atlas()->find( "bird_0" ) );
+	m_imgAtlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
+	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
+	m_renderer()->setSprite( m_imgAtlas()->find( "bird_0" ) );
 
 	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
 	body()->setGravityScale( -tvec2::axisY * 30 );
 
+	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
+	collider()->setRadius( 5 );
 }
 
 void Rider::onRemove()
@@ -89,6 +86,7 @@ void Rider::onFixedRateUpdate()
 
 	case  State::Gliding :
 		{
+			m_renderer()->setSprite( m_imgAtlas()->find( "bird_0" ) );
 			//SWLog( "Gliding" );
 			const tvec2& vel = body()->getVelocity();
 			if ( vel.y < 50 && isActivated ) m_state = Flying;
@@ -97,12 +95,13 @@ void Rider::onFixedRateUpdate()
 
 	case State::Flying :
 		{
+			m_renderer()->setSprite( m_imgAtlas()->find( "bird_1" ) );
 			//SWLog( "Flying" );
 			body()->addForce( tvec2( 0, BoostForce ) );
 			
 			if ( isActivated ) m_state = Flying;
 			else m_state = Gliding;
-
+			
 			SWGameObject* go = new SWGameObject();
 			go->addComponent<GasCloud>();
 			tvec3 pos = getComponent<SWTransform>()->getPosition();
@@ -116,4 +115,5 @@ void Rider::onFixedRateUpdate()
 
 void Rider::onCollision( SWCollision2D* )
 {
+	SWLog( "Hit Something!" );
 }

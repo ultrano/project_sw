@@ -45,6 +45,13 @@ public:
 	virtual void destroy();
 	virtual SWHardRef<SWObject> clone();
 
+	template<typename T>
+	SWHardRef<T> clone()
+	{
+		SWHardRef<SWObject> obj = clone();
+		return swrtti_cast<T>( obj() );
+	};
+
 protected:
 
 	friend class SWObjectWriter;

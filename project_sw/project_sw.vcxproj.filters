@@ -32,6 +32,12 @@
     <ClInclude Include="GasCloud.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameValues.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -44,6 +50,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GasCloud.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
