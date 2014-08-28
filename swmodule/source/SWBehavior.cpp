@@ -30,9 +30,9 @@ void SWBehavior::update()
 	onUpdate();
 }
 
-void SWBehavior::fixedFrameUpdate()
+void SWBehavior::fixedRateUpdate()
 {
-	onFixedFrameUpdate();
+	onFixedRateUpdate();
 }
 
 void SWBehavior::collision( SWObject* coll )
@@ -44,13 +44,13 @@ void SWBehavior::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( update ) );
-	gameObject()->addFixedFrameUpdateDelegator( GetDelegator( fixedFrameUpdate ) );
+	gameObject()->addFixedRateUpdateDelegator( GetDelegator( fixedRateUpdate ) );
 	setMessageDelegator( "onCollision", GetDelegator( collision ) );
 }
 
 void SWBehavior::onRemove()
 {
-	gameObject()->removeFixedFrameUpdateDelegator( GetDelegator( fixedFrameUpdate ) );
+	gameObject()->removeFixedRateUpdateDelegator( GetDelegator( fixedRateUpdate ) );
 	gameObject()->removeUpdateDelegator( GetDelegator( update ) );
 	__super::onRemove();
 }
@@ -60,7 +60,7 @@ void SWBehavior::onUpdate()
 
 }
 
-void SWBehavior::onFixedFrameUpdate()
+void SWBehavior::onFixedRateUpdate()
 {
 
 }

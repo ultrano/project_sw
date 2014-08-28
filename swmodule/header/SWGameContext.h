@@ -78,8 +78,8 @@ private:
 	FactoryTable m_factoryTable;
 
 	//! for physics2D
-	tuint m_physicsFrameCount;
-	tuint m_physicsSimulateFrame;
+	tfloat m_physicsFixedRate;
+	tfloat m_physicsFrameRate;
 };
 
 #endif // SWGameContext_h__

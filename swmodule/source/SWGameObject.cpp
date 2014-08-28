@@ -97,18 +97,18 @@ void SWGameObject::udpate()
 	}
 }
 
-void SWGameObject::fixedFrameUpdate()
+void SWGameObject::fixedRateUpdate()
 {
-	if ( m_fixedFrameUpdateDelegates.size() )
+	if ( m_fixedRateUpdateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
-		m_updates = m_fixedFrameUpdateDelegates;
+		m_updates = m_fixedRateUpdateDelegates;
 		SWObject::List::iterator itor = m_updates.end();
 		while ( itor != m_updates.begin() )
 		{
 			--itor;
 			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
-			if ( !itorDG || !itorDG->isValid() ) removeFixedFrameUpdateDelegator( itorDG );
+			if ( !itorDG || !itorDG->isValid() ) removeFixedRateUpdateDelegator( itorDG );
 			else itorDG->call( this );
 			if ( !vital.isValid() ) return;
 		}
@@ -205,22 +205,22 @@ void SWGameObject::removeUpdateDelegator( SWDelegator* dg )
 	m_updateDelegates.remove( dg );
 }
 
-void SWGameObject::addFixedFrameUpdateDelegator( SWDelegator* dg )
+void SWGameObject::addFixedRateUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	SWObject::List::iterator itor = m_fixedFrameUpdateDelegates.begin();
-	for ( ; itor != m_fixedFrameUpdateDelegates.end() ; ++itor )
+	SWObject::List::iterator itor = m_fixedRateUpdateDelegates.begin();
+	for ( ; itor != m_fixedRateUpdateDelegates.end() ; ++itor )
 	{
 		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( itorDG->isEqual( dg ) ) return;
 	}
-	m_fixedFrameUpdateDelegates.push_back( dg );
+	m_fixedRateUpdateDelegates.push_back( dg );
 }
 
-void SWGameObject::removeFixedFrameUpdateDelegator( SWDelegator* dg )
+void SWGameObject::removeFixedRateUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	m_fixedFrameUpdateDelegates.remove( dg );
+	m_fixedRateUpdateDelegates.remove( dg );
 }
 
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )

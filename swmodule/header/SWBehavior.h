@@ -40,13 +40,13 @@ protected:
 	virtual void onAwake();
 	virtual void onRemove();
 	virtual void onUpdate();
-	virtual void onFixedFrameUpdate();
+	virtual void onFixedRateUpdate();
 	virtual void onCollision( SWCollision2D* );
 
 private:
 
 	void update();
-	void fixedFrameUpdate();
+	void fixedRateUpdate();
 	void collision( SWObject* );
 
 private:

@@ -48,8 +48,8 @@ private:
     //! @breif 매프레임 갱신시에 호출
     virtual void onUpdate() {};
 
-	//! update processing for fixed frame
-	virtual void onFixedFrameUpdate() {};
+	//! update processing for fixed frame rate
+	virtual void onFixedRateUpdate() {};
     
     //! @breif 정해진 FPS 마다 화면 갱신시에 호출.
     virtual void onPostDraw() {};
@@ -81,9 +81,9 @@ private:
 	SWObject::List m_renderers;
 	SWObject::List m_destroyGOs;
 
-	//! for fixed frame
-	tuint m_fixedMaxFrame;
-	tuint m_fixedFrameCount;
+	//! for fixed frame rate update
+	tfloat m_fixedFrameRate;
+	tfloat m_accumFrameRate;
 };
 
 #endif

@@ -35,7 +35,7 @@ void Rider::onUpdate()
 {
 }
 
-void Rider::onFixedFrameUpdate()
+void Rider::onFixedRateUpdate()
 {
 	SWHardRef<SWRigidBody2D> body = gameObject()->getComponent<SWRigidBody2D>();
 	body()->addForce( tvec2( 0.1f,0 ) );

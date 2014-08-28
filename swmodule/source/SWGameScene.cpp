@@ -12,6 +12,7 @@
 #include "SWInput.h"
 #include "SWOpenGL.h"
 #include "SWDefines.h"
+#include "SWTime.h"
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
@@ -48,8 +49,8 @@ void SWGameScene::reserveDestroy( const SWGameObject* go )
 
 void SWGameScene::awake()
 {
-	m_fixedMaxFrame = 30;
-	m_fixedFrameCount = 0;
+	m_fixedFrameRate = 1.0f/30.0f;
+	m_accumFrameRate = 0;
 	SWInput.addInputDelegate( GetDelegator(handleEvent) );
 	onAwake();
 }
@@ -99,24 +100,24 @@ void SWGameScene::update()
 	}
 
 	//! calculate count of fixed frame update
-	tuint countOfFixedFrameUpdate = 0;
-	m_fixedFrameCount += 1;
-	while ( m_fixedFrameCount >= m_fixedMaxFrame )
+	tuint countOfFixedRateUpdate = 0;
+	m_accumFrameRate += SWTime.getDeltaTime();
+	while ( m_accumFrameRate >= m_fixedFrameRate )
 	{
-		countOfFixedFrameUpdate += 1;
-		m_fixedFrameCount -= m_fixedMaxFrame;
+		countOfFixedRateUpdate += 1;
+		m_accumFrameRate -= m_fixedFrameRate;
 	}
 
 	//! fixed frame update
-	onFixedFrameUpdate();
-	while ( countOfFixedFrameUpdate-- )
+	onFixedRateUpdate();
+	while ( countOfFixedRateUpdate-- )
 	{
 		m_updates = m_roots;
 		SWObject::List::iterator itor = m_updates.begin();
 		for ( ; itor != m_updates.end() ; ++itor )
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			if ( go->isActiveSelf() ) go->fixedFrameUpdate();
+			if ( go->isActiveSelf() ) go->fixedRateUpdate();
 		}
 	}
 

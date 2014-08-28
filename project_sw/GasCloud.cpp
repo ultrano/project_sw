@@ -44,7 +44,7 @@ void GasCloud::onUpdate()
 {
 }
 
-void GasCloud::onFixedFrameUpdate()
+void GasCloud::onFixedRateUpdate()
 {
 }
 

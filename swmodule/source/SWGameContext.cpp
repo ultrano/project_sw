@@ -158,8 +158,8 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 
 	//! initialize variables
 	{
-		m_physicsFrameCount = 0;
-		m_physicsSimulateFrame = 40;
+		m_physicsFixedRate = 1.0f/30.0f;
+		m_physicsFrameRate = 0;
 	}
 }
 
@@ -198,10 +198,10 @@ void SWGameContext::onFrameMove()
 		scene->update();
 	}
 
-	m_physicsFrameCount += 1;
-	while ( m_physicsFrameCount >= m_physicsSimulateFrame )
+	m_physicsFrameRate += SWTime.getDeltaTime();
+	while ( m_physicsFrameRate >= m_physicsFixedRate )
 	{
-		m_physicsFrameCount -= m_physicsSimulateFrame;
+		m_physicsFrameRate -= m_physicsFixedRate;
 		SWPhysics2D.simulate();
 	}
 
