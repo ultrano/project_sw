@@ -1,6 +1,5 @@
 #include "SWActSequence.h"
 #include "SWAction.h"
-#include "SWTime.h"
 #include "SWMath.h"
 #include "SWObjectStream.h"
 
@@ -44,7 +43,6 @@ void SWActSequence::onUpdate()
 {
 	if ( isDone() ) return;
 	
-	float delta = SWTime.getDeltaTime();
 	if ( m_current() != NULL )
 	{
 		m_current()->onUpdate();
@@ -54,7 +52,6 @@ void SWActSequence::onUpdate()
 			m_cursor += 1;
 		}
 	}
-	
 
 	if ( m_current() == NULL )
 	{

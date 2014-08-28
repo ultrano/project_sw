@@ -35,6 +35,7 @@
 #include "SWActRotate.h"
 #include "SWActScale.h"
 #include "SWActSequence.h"
+#include "SWActBunch.h"
 
 void registerBasicObjectFactories( SWGameContext* gc )
 {
@@ -57,6 +58,7 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<SWCircleCollider2D>();
 	gc->registerFactory<SWRectCollider2D>();
 
+	gc->registerFactory<SWActBunch>();
 	gc->registerFactory<SWActSequence>();
 	gc->registerFactory<SWActAnimate>();
 	gc->registerFactory<SWActRepeat>();

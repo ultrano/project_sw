@@ -11,6 +11,7 @@
 #include "SWActDelegate.h"
 #include "SWActDestroy.h"
 #include "SWActSequence.h"
+#include "SWActBunch.h"
 #include "SWActRepeat.h"
 #include "SWActColor.h"
 #include "SWAction.h"
@@ -66,6 +67,7 @@
 #include "SWTexture.h"
 #include "SWTransform.h"
 #include "SWType.h"
+#include "SWTime.h"
 #include "SWUtil.h"
 #include "SWValue.h"
 

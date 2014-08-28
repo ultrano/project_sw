@@ -298,6 +298,9 @@
     <Filter Include="SW\SWType\TAABB">
       <UniqueIdentifier>{67e508e0-e79d-4ab1-a955-4aecf9732a4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWAct\SWActBunch">
+      <UniqueIdentifier>{1bfc5f16-ee7c-43a7-9ef9-9384cf0956a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -621,6 +624,9 @@
     <ClInclude Include="header\TAABB.h">
       <Filter>SW\SWType\TAABB</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWActBunch.h">
+      <Filter>SW\SWAct\SWActBunch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -877,6 +883,9 @@
     </ClCompile>
     <ClCompile Include="source\SWSpriteAtlas.cpp">
       <Filter>SW\SWSpriteAtlas</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWActBunch.cpp">
+      <Filter>SW\SWAct\SWActBunch</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -27,8 +27,8 @@ public:
 		if ( m_camera.isValid() == false ) return;
 		if ( m_rider.isValid() == false ) return;
 		tvec3 pos = m_rider()->getComponent<SWTransform>()->getPosition();
-		pos.x += 100;
-		pos.y = 0;
+		pos.x += 80;
+		pos.y = 70;
 		pos.z = -500;
 
 		m_camera()->getComponent<SWTransform>()->setPosition( pos );

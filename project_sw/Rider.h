@@ -8,6 +8,16 @@ class Rider : public SWBehavior
 	SW_RTTI( Rider, SWBehavior );
 
 public:
+
+	enum State
+	{
+		Running,
+		Flying,
+		Gliding,
+		Landing,
+	};
+
+public:
 	
 	Rider();
 	Rider( factory_constructor );
@@ -23,7 +33,7 @@ protected:
 
 private:
 
-
+	State m_state;
 
 };
 

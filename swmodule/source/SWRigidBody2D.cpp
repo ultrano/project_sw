@@ -106,6 +106,16 @@ void SWRigidBody2D::addAccel( const tvec2& accel )
 	m_velocity += accel;
 }
 
+void SWRigidBody2D::setCenter( const tvec2& center )
+{
+	m_center = center;
+}
+
+const tvec2& SWRigidBody2D::getCenter() const
+{
+	return m_center;
+}
+
 void SWRigidBody2D::setVelocity( const tvec2& vel )
 {
 	m_velocity = vel;
