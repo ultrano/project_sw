@@ -16,11 +16,13 @@ public:
 protected:
 	
 	virtual void onAwake();
-	virtual void onUpdate();
 	virtual void onFixedRateUpdate();
 	virtual void onCollision( SWCollision2D* );
 
 private:
+
+	SWHardRef<SWGameObject> m_camera;
+
 };
 
 #endif //! Coin_h__

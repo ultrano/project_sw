@@ -87,6 +87,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackGround.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="GameValues.h" />
     <ClInclude Include="GasCloud.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="GasCloud.cpp" />
     <ClCompile Include="project_sw.cpp" />

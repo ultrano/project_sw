@@ -5,6 +5,8 @@
 #include "Rider.h"
 #include "GasCloud.h"
 #include "Coin.h"
+#include "GameValues.h"
+#include "BackGround.h"
 
 class PlayScene : public SWGameScene
 {
@@ -16,6 +18,7 @@ public:
 	SWWeakRef<SWCamera> m_camera;
 
 	SWHardRef<SWGameObject> m_originCoin;
+	SWHardRef<SWGameObject> m_background;
 
 	PlayScene()
 	{
@@ -30,8 +33,8 @@ public:
 		if ( m_camera.isValid() == false ) return;
 		if ( m_rider.isValid() == false ) return;
 		tvec3 pos = m_rider()->getComponent<SWTransform>()->getPosition();
-		pos.x += 80;
-		pos.y = 70;
+		pos.x += 150;
+		pos.y = WorldHeight/2;
 		pos.z = -500;
 
 		m_camera()->getComponent<SWTransform>()->setPosition( pos );
@@ -43,13 +46,18 @@ public:
 		SW_GC.registerFactory<Rider>();
 		SW_GC.registerFactory<GasCloud>();
 		SW_GC.registerFactory<Coin>();
+		SW_GC.registerFactory<BackGround>();
+
+		//! initialize values
+		{
+		}
 
 		//! rider test
 		{
 			SWGameObject* go = new SWGameObject();
 			Rider* rider = go->addComponent<Rider>();
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( 0,0,0 ) );
+			trans->setPosition( tvec3( 0,GroundY,0 ) );
 			m_rider = rider;
 		}
 
@@ -61,7 +69,7 @@ public:
 			go->setName( "camera" );
 
 			SWCamera* cam = go->addComponent<SWCamera>();
-			cam->orthoMode( 256, 140, 1, 1000 );
+			cam->orthoMode( WorldWidth, WorldHeight, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setClearColor( tcolor( 1,1,1,1 ) );
 			cam->setClearFlags( SW_Clear_Color );
@@ -80,13 +88,12 @@ public:
 			seq->addAct( act );
 			action()->setAct( "makeCoin", new SWActRepeat( seq ) );
 			action()->play( "makeCoin" );
+		}
 
-
-			m_originCoin = new SWGameObject();
-			m_originCoin()->addComponent<Coin>();
-			
-			SWHardRef<SWTransform> trans = m_originCoin()->getComponent<SWTransform>();
-			trans()->setPosition( tvec3(0, -100, 0) );
+		//! background test
+		{
+			m_background = new SWGameObject();
+			m_background()->addComponent<BackGround>();
 		}
 	}
 
@@ -94,9 +101,11 @@ public:
 	{
 		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
 		tvec3 pos = riderTrans()->getPosition();
-		pos.x += 150;
+		pos.x += 250;
 
-		SWHardRef<SWGameObject> go = m_originCoin()->clone<SWGameObject>();
+		SWHardRef<SWGameObject> go = new SWGameObject();
+		go()->addComponent<Coin>();
+
 		SWHardRef<SWTransform> trans = go()->getComponent<SWTransform>();
 		trans()->setPosition( pos );
 	}

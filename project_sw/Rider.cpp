@@ -18,15 +18,24 @@ void Rider::onAwake()
 {
 	__super::onAwake();
 
-	m_imgAtlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
+	m_imgAtlas = SWAssets.loadSpriteAtlas( "runner.png" );
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
-	m_renderer()->setSprite( m_imgAtlas()->find( "bird_0" ) );
 
 	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
 	body()->setGravityScale( -tvec2::axisY * 30 );
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
-	collider()->setRadius( 5 );
+	collider()->setRadius( 10 );
+
+	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "runner_anim.txt" );
+	SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );
+
+	SWAction* action = gameObject()->addComponent<SWAction>();
+	action->setAct( "run", new SWActRepeat( act ) );
+	action->play( "run" );
+
+	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
+	trans()->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
 }
 
 void Rider::onRemove()
@@ -58,7 +67,12 @@ void Rider::onUpdate()
 		pos.y -= (pos.y - GroundY)/2;
 		body()->setCenter( pos );
 
-		m_state = Running;
+		if ( m_state != Running )
+		{
+			m_state = Running;
+			SWAction* action = getComponent<SWAction>();
+			action->play( "run" );
+		}
 	}
 
 }
@@ -86,7 +100,7 @@ void Rider::onFixedRateUpdate()
 
 	case  State::Gliding :
 		{
-			m_renderer()->setSprite( m_imgAtlas()->find( "bird_0" ) );
+			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
 			//SWLog( "Gliding" );
 			const tvec2& vel = body()->getVelocity();
 			if ( vel.y < 50 && isActivated ) m_state = Flying;
@@ -95,7 +109,7 @@ void Rider::onFixedRateUpdate()
 
 	case State::Flying :
 		{
-			m_renderer()->setSprite( m_imgAtlas()->find( "bird_1" ) );
+			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
 			//SWLog( "Flying" );
 			body()->addForce( tvec2( 0, BoostForce ) );
 			

@@ -1,4 +1,5 @@
 #include "Coin.h"
+#include "GameValues.h"
 
 Coin::Coin()
 {
@@ -32,15 +33,19 @@ void Coin::onAwake()
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 5 );
 
-}
-
-void Coin::onUpdate()
-{
-
+	m_camera = SW_GC.getScene()->findGO( "camera" );
 }
 
 void Coin::onFixedRateUpdate()
 {
+	if ( m_camera.isValid() == false ) return;
+
+	tvec3 cameraPos = m_camera()->getComponent<SWTransform>()->getPosition();
+	tvec3 pos = getComponent<SWTransform>()->getPosition();
+	if ( (cameraPos.x - pos.x) >= WorldWidth )
+	{
+		gameObject()->destroy();
+	}
 }
 
 void Coin::onCollision( SWCollision2D* )
