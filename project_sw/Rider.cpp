@@ -25,7 +25,7 @@ void Rider::onAwake()
 	body()->setGravityScale( -tvec2::axisY * 30 );
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
-	collider()->setRadius( 10 );
+	collider()->setRadius( 20 );
 
 	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "runner_anim.txt" );
 	SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );

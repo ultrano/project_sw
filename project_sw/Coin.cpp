@@ -13,6 +13,11 @@ Coin::~Coin()
 {
 }
 
+void Coin::deposit()
+{
+	SWTransform* trans = SW_GC.getScene()->findGO( "bank" )->getComponent<SWTransform>();
+	getComponent<SWTransform>()->setParent( trans );
+}
 
 void Coin::onAwake()
 {
@@ -42,6 +47,5 @@ void Coin::onFixedRateUpdate()
 
 void Coin::onCollision( SWCollision2D* )
 {
-	SWTransform* trans = SW_GC.getScene()->findGO( "bank" )->getComponent<SWTransform>();
-	getComponent<SWTransform>()->setParent( trans );
+	deposit();
 }

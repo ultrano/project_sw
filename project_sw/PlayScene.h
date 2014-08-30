@@ -101,6 +101,12 @@ public:
 			SWGameObject* go = new SWGameObject();
 			go->setName( "bank" );
 			go->setActive( false );
+
+			int count = 150;
+			while ( count-- )
+			{
+				getCoin()->deposit();
+			}
 		}
 
 		//! make coin test
@@ -109,7 +115,7 @@ public:
 			SWHardRef<SWAction> action = go->addComponent<SWAction>();
 			SWActDelegate* act = new SWActDelegate( GetDelegator( MakeCoin ) );
 			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActDelay( 1 ) );
+			seq->addAct( new SWActDelay( 6 ) );
 			seq->addAct( act );
 			action()->setAct( "makeCoin", new SWActRepeat( seq ) );
 			action()->play( "makeCoin" );
@@ -122,35 +128,55 @@ public:
 		}
 	}
 
+	Coin* getCoin()
+	{
+		SWHardRef<SWGameObject> go = NULL;
+		SWTransform* bankTrans = findGO( "bank" )->getComponent<SWTransform>();
+
+		if ( bankTrans->getChildrenCount() > 0 )
+		{
+			SWLog( "reuse coin" );
+			SWTransform* coinTrans = bankTrans->getChildAt(0);
+			go = coinTrans->gameObject();
+			coinTrans->setParent( NULL );
+		}
+		else
+		{
+			SWLog( "make new coin" );
+			go = new SWGameObject();
+			go()->addComponent<Coin>();
+		}
+		return go()->getComponent<Coin>();
+	}
 	void MakeCoin()
 	{
 		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
 		tvec3 pos = riderTrans()->getPosition();
-		pos.x += WorldWidth;
+		float frontFromRider = pos.x + WorldWidth;
+		
+		char buf[256] = {0};
+		sprintf( &buf[0], "patterns/coinpattern%d.txt", SWMath.randomInt(1,26) );
 
-		SWTransform* bankTrans = findGO( "bank" )->getComponent<SWTransform>();
-
-		int count = 10;
-		while ( count-- )
+		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( &buf[0] );
+		SWInputStreamReader reader( is() );
+		
+		tvec2 step(0,RoofY);
+		tstring line;
+		while ( reader.readLine( line ) )
 		{
-			SWHardRef<SWGameObject> go = NULL;
-			pos.y = SWMath.randomInt( GroundY, RoofY );
-			if ( bankTrans->getChildrenCount() > 0 )
+			step.y -= 15;
+			step.x = frontFromRider;
+			for ( int i = 0 ; i < line.size() ; ++i )
 			{
-				SWLog( "reuse coin" );
-				SWTransform* coinTrans = bankTrans->getChildAt(0);
-				go = coinTrans->gameObject();
-				coinTrans->setParent( NULL );
+				step.x += 15;
+				char c = line[i];
+				if ( c == '1' )
+				{
+					Coin* coin = getCoin();
+					SWTransform* trans = coin->getComponent<SWTransform>();
+					trans->setPosition( tvec3( step.x, step.y, pos.z ) );
+				}
 			}
-			else
-			{
-				SWLog( "make new coin" );
-				go = new SWGameObject();
-				go()->addComponent<Coin>();
-			}
-
-			SWHardRef<SWTransform> trans = go()->getComponent<SWTransform>();
-			trans()->setPosition( pos );
 		}
 	}
 

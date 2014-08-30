@@ -13,6 +13,8 @@ public:
 	Coin( factory_constructor );
 	~Coin();
 
+	void deposit();
+
 protected:
 	
 	virtual void onAwake();
