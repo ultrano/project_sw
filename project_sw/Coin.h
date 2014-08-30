@@ -14,16 +14,13 @@ public:
 	~Coin();
 
 	void deposit();
+	void withDraw();
 
 protected:
 	
 	virtual void onAwake();
 	virtual void onFixedRateUpdate();
 	virtual void onCollision( SWCollision2D* );
-
-private:
-
-	SWHardRef<SWGameObject> m_camera;
 
 };
 

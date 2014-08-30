@@ -48,21 +48,24 @@ public:
 			SWGameObject* go = new SWGameObject;
 			go->setName( "logo" );
 
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( tvec3::zero );
-
 			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "logo5.png" );
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( atlas()->find( "logo" )  );
+			SWSprite* logoSprite = atlas()->find( "logo" );
+			tvec2 logoSize = logoSprite->getSize();
+			renderer->setSprite( logoSprite );
 			renderer->setColor( tcolor( 1,1,1,0 ) );
 
 			SWAction* action = go->addComponent<SWAction>();
 			SWActSequence* seq = new SWActSequence();
 			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,1 ) ) );
-			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,0 ) ) );
+			seq->addAct( new SWActColorTo( 2, tcolor( 1,1,1,0 ) ) );
 			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
 			action->setAct( "logo", seq );
 			action->play( "logo" );
+
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( tvec3::zero );
+			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
 
 		{

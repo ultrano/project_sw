@@ -29,7 +29,7 @@ public:
 	{
 	}
 
-	void CameraUpdate()
+	void cameraUpdate()
 	{
 		if ( m_camera.isValid() == false ) return;
 		if ( m_rider.isValid() == false ) return;
@@ -43,6 +43,26 @@ public:
 
 		pos.x -= WorldWidth/2;
 		m_coinBasket()->setCenter( pos.xy() );
+	}
+
+	void shadowUpdate( SWGameObject* go )
+	{
+		if ( m_rider.isValid() == false ) return;
+
+		SWTransform* riderTrans = m_rider()->getComponent<SWTransform>();
+		SWTransform* trans = go->getComponent<SWTransform>();
+
+		tvec3 pos = riderTrans->getPosition();
+		pos.y = GroundY - 20;
+		pos.z -= 1;
+
+		float rate = (RoofY - riderTrans->getPosition().y)/(RoofY - GroundY);
+
+		SWSpriteRenderer* renderer = go->getComponent<SWSpriteRenderer>();
+		renderer->setColor( tcolor( 1, 1, 1, (rate*rate*0.5f) + 0.2f ) );
+
+		trans->setLocalScale( tvec3( 0.4f, 0.4f,1 ) * rate );
+		trans->setPosition( pos );
 	}
 
 	void onAwake()
@@ -65,6 +85,17 @@ public:
 			m_rider = rider;
 		}
 
+		//! rider shadow
+		{
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "runner.png" );
+			SWGameObject* go = new SWGameObject;
+			
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( atlas()->find( "shadow" ) );
+			
+			go->addUpdateDelegator( GetDelegator( shadowUpdate ) );
+		}
+
 		//! camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
@@ -79,7 +110,7 @@ public:
 			cam->setClearFlags( SW_Clear_Color );
 			
 			m_camera = cam;
-			go->addUpdateDelegator( GetDelegator( CameraUpdate ) );
+			go->addUpdateDelegator( GetDelegator( cameraUpdate ) );
 		}
 
 		//! coin basket
@@ -109,7 +140,7 @@ public:
 			}
 		}
 
-		//! make coin test
+		//! timer for making coin patterns
 		{
 			SWGameObject* go = new SWGameObject();
 			SWHardRef<SWAction> action = go->addComponent<SWAction>();
@@ -121,7 +152,7 @@ public:
 			action()->play( "makeCoin" );
 		}
 
-		//! background test
+		//! background looper
 		{
 			m_background = new SWGameObject();
 			m_background()->addComponent<BackGround>();
@@ -140,19 +171,18 @@ public:
 		Coin* coin = NULL;
 		SWTransform* bankTrans = findGO( "bank" )->getComponent<SWTransform>();
 
-		if ( bankTrans->getChildrenCount() > 0 )
+		if ( SWTransform* coinTrans = bankTrans->getChildAt(0) )
 		{
-			SWLog( "reuse coin" );
-			SWTransform* coinTrans = bankTrans->getChildAt(0);
-			coinTrans->setParent( NULL );
 			coin = coinTrans->getComponent<Coin>();
 		}
 		else
 		{
 			coin = newCoin();
 		}
+		coin->withDraw();
 		return coin;
 	}
+
 	void MakeCoin()
 	{
 		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
@@ -160,7 +190,7 @@ public:
 		float frontFromRider = pos.x + WorldWidth;
 		
 		char buf[256] = {0};
-		sprintf( &buf[0], "patterns/coinpattern%d.txt", SWMath.randomInt(1,26) );
+		sprintf( &buf[0], "patterns/coinpattern%d.txt", SWMath.randomInt(1,27) );
 
 		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( &buf[0] );
 		SWInputStreamReader reader( is() );

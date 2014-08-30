@@ -19,6 +19,7 @@ void BackGround::onAwake()
 {
 	__super::onAwake();
 
+	m_camera = SW_GC.getScene()->findGO( "camera" );
 	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "background.png" );
 	SWHardRef<SWTransform> trans = gameObject()->getComponent<SWTransform>();
 	SWSprite* sprite = atlas()->find( "background" );
@@ -26,7 +27,9 @@ void BackGround::onAwake()
 
 	//! size scaling
 	{
-		trans()->setPosition( tvec3( WorldWidth/2, WorldHeight/2, -100 ) );
+		SWTransform* cameraTrans = m_camera()->getComponent<SWTransform>();
+		tvec3 pos = cameraTrans->getPosition();
+		trans()->setPosition( tvec3( pos.x, WorldHeight/2, -100 ) );
 		trans()->setLocalScale( tvec3( WorldWidth/spriteSize.x, WorldHeight/spriteSize.y, 1 ) );
 	}
 
@@ -55,7 +58,6 @@ void BackGround::onAwake()
 		imageTrans()->setPosition( tvec3( spriteSize.x, 0, 0 ) );
 	}
 
-	m_camera = SW_GC.getScene()->findGO( "camera" );
 }
 
 void BackGround::onUpdate()

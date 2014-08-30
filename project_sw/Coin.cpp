@@ -17,6 +17,17 @@ void Coin::deposit()
 {
 	SWTransform* trans = SW_GC.getScene()->findGO( "bank" )->getComponent<SWTransform>();
 	getComponent<SWTransform>()->setParent( trans );
+
+	SWAction* action = getComponent<SWAction>();
+	action->stop();
+}
+
+void Coin::withDraw()
+{
+	getComponent<SWTransform>()->setParent( NULL );
+
+	SWAction* action = getComponent<SWAction>();
+	action->play( "spin" );
 }
 
 void Coin::onAwake()
@@ -37,8 +48,6 @@ void Coin::onAwake()
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 5 );
-
-	m_camera = SW_GC.getScene()->findGO( "camera" );
 }
 
 void Coin::onFixedRateUpdate()
