@@ -175,7 +175,10 @@ void SWGameScene::draw()
 		{
 			SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
 			SWGameObject* go = renderer->gameObject();
-			layers[ go->getLayerName() ].push_back( renderer );
+			if ( go->isActiveInScene() )
+			{
+				layers[ go->getLayerName() ].push_back( renderer );
+			}
 		}
 	}
 	

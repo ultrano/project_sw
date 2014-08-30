@@ -84,6 +84,11 @@ void Rider::onFixedRateUpdate()
 	body()->addForce( tvec2( RunningForce,0 ) );
 
 	bool isActivated = SWInput.getKey( ' ' );
+	if ( isActivated )
+	{
+		SWAction* action = getComponent<SWAction>();
+		if ( action->isPlaying() ) action->stop();
+	}
 
 	switch ( m_state )
 	{

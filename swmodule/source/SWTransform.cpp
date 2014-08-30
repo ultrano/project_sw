@@ -270,6 +270,22 @@ SWTransform* SWTransform::find( const tstring& name )
 	return NULL;
 }
 
+SWTransform* SWTransform::getChildAt( tuint index ) const
+{
+	tuint count = m_children.size();
+	if ( index >= count ) return NULL;
+
+	SWObject::List::const_iterator itor = m_children.begin();
+	while ( index-- ) ++itor;
+	SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
+	return object->getComponent<SWTransform>();
+}
+
+tuint SWTransform::getChildrenCount() const
+{
+	return m_children.size();
+}
+
 void SWTransform::copyChildren( SWObject::List& transList )
 {
 	transList = m_children;
@@ -307,7 +323,7 @@ void SWTransform::onUpdate()
 
 	SWWeakRef<SWTransform> vital = this;
 	m_updates = m_children;
-	SWObject::List::iterator itor = m_updates.end();
+	SWObject::List::iterator itor = m_updates.begin();
 	for ( ; itor != m_updates.end() ;++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );

@@ -18,13 +18,13 @@ public:
 class SWCollision2D : public SWObject
 {
 	SW_RTTI( SWCollision2D, SWObject );
+
 public:
-	SWCollision2D( SWCollider2D* collider )
-		: m_collider( collider )
-	{}
-	SWCollider2D* getCollider() const { return m_collider(); }
-private:
-	SWWeakRef<SWCollider2D> m_collider;
+
+	SWCollision2D() : collider( NULL ) {};
+	SWCollision2D( SWCollider2D* _collider ) : collider( _collider ) {};
+	
+	SWWeakRef<SWCollider2D> collider;
 };
 
 class SWCircleCollider2D : public SWCollider2D

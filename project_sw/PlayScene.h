@@ -17,7 +17,8 @@ public:
 	SWWeakRef<Rider> m_rider;
 	SWWeakRef<SWCamera> m_camera;
 
-	SWHardRef<SWGameObject> m_originCoin;
+	SWWeakRef<SWRigidBody2D> m_coinBasket;
+
 	SWHardRef<SWGameObject> m_background;
 
 	PlayScene()
@@ -37,8 +38,11 @@ public:
 		pos.y = WorldHeight/2;
 		pos.z = -500;
 
-		m_camera()->getComponent<SWTransform>()->setPosition( pos );
+		SWTransform* trans = m_camera()->getComponent<SWTransform>();
+		trans->setPosition( pos );
 
+		pos.x -= WorldWidth/2;
+		m_coinBasket()->setCenter( pos.xy() );
 	}
 
 	void onAwake()
@@ -78,6 +82,27 @@ public:
 			go->addUpdateDelegator( GetDelegator( CameraUpdate ) );
 		}
 
+		//! coin basket
+		{
+			SWGameObject* go = new SWGameObject();
+			SWRectCollider2D* collider = go->addComponent<SWRectCollider2D>();
+			collider->setSize( tvec2( WorldWidth, WorldHeight*2 ) );
+			collider->setCenter( tvec2( -WorldWidth/2, 0 ) );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setLocalPosition( tvec3( 0, 0, 0 ) );
+			
+			m_coinBasket = go->addComponent<SWRigidBody2D>();
+			m_coinBasket()->setGravityScale( tvec2::zero );
+		}
+
+		//! coin bank (for pooling)
+		{
+			SWGameObject* go = new SWGameObject();
+			go->setName( "bank" );
+			go->setActive( false );
+		}
+
 		//! make coin test
 		{
 			SWGameObject* go = new SWGameObject();
@@ -101,13 +126,32 @@ public:
 	{
 		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
 		tvec3 pos = riderTrans()->getPosition();
-		pos.x += 250;
+		pos.x += WorldWidth;
 
-		SWHardRef<SWGameObject> go = new SWGameObject();
-		go()->addComponent<Coin>();
+		SWTransform* bankTrans = findGO( "bank" )->getComponent<SWTransform>();
 
-		SWHardRef<SWTransform> trans = go()->getComponent<SWTransform>();
-		trans()->setPosition( pos );
+		int count = 10;
+		while ( count-- )
+		{
+			SWHardRef<SWGameObject> go = NULL;
+			pos.y = SWMath.randomInt( GroundY, RoofY );
+			if ( bankTrans->getChildrenCount() > 0 )
+			{
+				SWLog( "reuse coin" );
+				SWTransform* coinTrans = bankTrans->getChildAt(0);
+				go = coinTrans->gameObject();
+				coinTrans->setParent( NULL );
+			}
+			else
+			{
+				SWLog( "make new coin" );
+				go = new SWGameObject();
+				go()->addComponent<Coin>();
+			}
+
+			SWHardRef<SWTransform> trans = go()->getComponent<SWTransform>();
+			trans()->setPosition( pos );
+		}
 	}
 
 	void onUpdate()

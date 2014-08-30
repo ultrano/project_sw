@@ -36,28 +36,39 @@ void __SWPhysics2D::simulate()
 		}
 	}
 	
-	if ( copy.size() != m_colliders.size() )copy = m_colliders;
+	if ( copy.size() != m_colliders.size() ) copy = m_colliders;
+
 	SWObject::WList::iterator itor1 = copy.begin();
 	for ( ; itor1 != copy.end() ; ++itor1 )
 	{
 		SWCollider2D* collider1 = swrtti_cast<SWCollider2D>( (*itor1)() );
-		
+
+		if ( !collider1->gameObject()->isActiveInScene() ) continue;
+
 		SWObject::WList::iterator itor2 = itor1;
 		for ( ; itor2 != copy.end() ; ++itor2 )
 		{
 			SWCollider2D* collider2 = swrtti_cast<SWCollider2D>( (*itor2)() );
+
 			if ( collider1 == collider2 ) continue;
+			if ( !collider2->gameObject()->isActiveInScene() ) continue;
 			if ( collider1->getComponent<SWRigidBody2D>() == NULL
 				&& collider2->getComponent<SWRigidBody2D>() == NULL ) continue;
+
 			const thashstr& layer1 = collider1->gameObject()->getLayerName();
 			const thashstr& layer2 = collider2->gameObject()->getLayerName();
+
 			if ( getIgnoreLayer( layer1, layer2 ) ) continue;
+
 			if ( testCollide( collider1, collider2 ) )
 			{
-				SWHardRef<SWCollision2D> coll = new SWCollision2D( collider2 );
-				collider1->gameObject()->sendMessage( "onCollision", coll() );
-				coll = new SWCollision2D( collider1 );
-				collider2->gameObject()->sendMessage( "onCollision", coll() );
+				if ( m_coll.isValid() == false ) m_coll = new SWCollision2D();
+				m_coll()->collider = collider2;
+				collider1->gameObject()->sendMessage( "onCollision", m_coll() );
+				
+				if ( m_coll.isValid() == false ) m_coll = new SWCollision2D();
+				m_coll()->collider = collider1;
+				collider2->gameObject()->sendMessage( "onCollision", m_coll() );
 			}
 		}
 	}

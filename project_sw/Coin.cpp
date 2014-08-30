@@ -38,17 +38,10 @@ void Coin::onAwake()
 
 void Coin::onFixedRateUpdate()
 {
-	if ( m_camera.isValid() == false ) return;
-
-	tvec3 cameraPos = m_camera()->getComponent<SWTransform>()->getPosition();
-	tvec3 pos = getComponent<SWTransform>()->getPosition();
-	if ( (cameraPos.x - pos.x) >= WorldWidth )
-	{
-		gameObject()->destroy();
-	}
 }
 
 void Coin::onCollision( SWCollision2D* )
 {
-	gameObject()->destroy();
+	SWTransform* trans = SW_GC.getScene()->findGO( "bank" )->getComponent<SWTransform>();
+	getComponent<SWTransform>()->setParent( trans );
 }

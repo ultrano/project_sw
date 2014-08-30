@@ -59,6 +59,8 @@ public:
 	void rotate( const tvec3& euler );
 
 	SWTransform* find( const tstring& name );
+	SWTransform* getChildAt( tuint index ) const;
+	tuint getChildrenCount() const;
 	void copyChildren( SWObject::List& transList );
 
 protected:

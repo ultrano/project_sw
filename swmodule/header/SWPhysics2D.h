@@ -37,6 +37,8 @@ private:
 	SWObject::WList m_colliders;
 	SWObject::WList m_bodies;
 	IgnoreTable m_ignoreTable;
+	
+	SWHardRef<SWCollision2D> m_coll;
 };
 
 #endif // SWPhysics_h__
