@@ -102,10 +102,10 @@ public:
 			go->setName( "bank" );
 			go->setActive( false );
 
-			int count = 150;
+			int count = 50;
 			while ( count-- )
 			{
-				getCoin()->deposit();
+				newCoin()->deposit();
 			}
 		}
 
@@ -128,25 +128,30 @@ public:
 		}
 	}
 
+	Coin* newCoin()
+	{
+		SWLog( "make new coin" );
+		SWGameObject* go = new SWGameObject();
+		return go->addComponent<Coin>();
+	}
+
 	Coin* getCoin()
 	{
-		SWHardRef<SWGameObject> go = NULL;
+		Coin* coin = NULL;
 		SWTransform* bankTrans = findGO( "bank" )->getComponent<SWTransform>();
 
 		if ( bankTrans->getChildrenCount() > 0 )
 		{
 			SWLog( "reuse coin" );
 			SWTransform* coinTrans = bankTrans->getChildAt(0);
-			go = coinTrans->gameObject();
 			coinTrans->setParent( NULL );
+			coin = coinTrans->getComponent<Coin>();
 		}
 		else
 		{
-			SWLog( "make new coin" );
-			go = new SWGameObject();
-			go()->addComponent<Coin>();
+			coin = newCoin();
 		}
-		return go()->getComponent<Coin>();
+		return coin;
 	}
 	void MakeCoin()
 	{
