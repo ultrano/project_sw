@@ -149,14 +149,13 @@ public:
 			while ( count-- ) newCoin()->deposit();
 		}
 
-		//! timer for making coin patterns
+		//! timer for making coin-patterns
 		{
 			SWGameObject* go = new SWGameObject();
 			SWHardRef<SWAction> action = go->addComponent<SWAction>();
-			SWActDelegate* act = new SWActDelegate( GetDelegator( makeCoinPattern ) );
 			SWActSequence* seq = new SWActSequence();
 			seq->addAct( new SWActDelay( 6 ) );
-			seq->addAct( act );
+			seq->addAct( new SWActDelegate( GetDelegator( makeCoinPattern ) ) );
 			action()->setAct( "makeCoin", new SWActRepeat( seq ) );
 			action()->play( "makeCoin" );
 		}
