@@ -83,6 +83,26 @@ public:
 			}
 		}
 
+		//! finding test
+		{
+			SWGameObject* go = new SWGameObject();
+			go->setName( "go" );
+			SWTransform* parent = go->getComponent<SWTransform>();
+
+			tuint count = 3;
+			while ( count-- )
+			{
+				go = new SWGameObject();
+				go->setName( "go" );
+				SWTransform* trans = go->getComponent<SWTransform>();
+				trans->setParent( parent );
+				parent = trans;
+			}
+
+			go = findGO( "go1/go/go1" );
+			parent = go->getComponent<SWTransform>();
+		}
+
 	}
 	void onEndLogo()
 	{

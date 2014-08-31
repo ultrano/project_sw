@@ -58,7 +58,7 @@ public:
 	void rotate( float radianX, float radianY, float radianZ );
 	void rotate( const tvec3& euler );
 
-	SWTransform* find( const tstring& name );
+	SWTransform* find( const tstring& name ) const;
 	SWTransform* getChildAt( tuint index ) const;
 	tuint getChildrenCount() const;
 	void copyChildren( SWObject::List& transList );
@@ -75,7 +75,7 @@ private:
 	void onUpdate();
 	void needUpdateMatrix();
 	void updateMatrix();
-
+	SWTransform* findImmadiate( const tstring& name ) const;
 private:
 
 	SWWeakRef<SWTransform> m_parent;

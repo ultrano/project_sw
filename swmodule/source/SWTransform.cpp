@@ -259,9 +259,37 @@ void SWTransform::rotate( const tvec3& euler )
 	setLocalRotate( m_euler + euler );
 }
 
-SWTransform* SWTransform::find( const tstring& name )
+SWTransform* SWTransform::find( const tstring& name ) const
 {
-	SWObject::List::iterator itor = m_children.begin();
+	const tuint count = name.size();
+	if ( count == 0 ) return NULL;
+
+	SWWeakRef<SWTransform> target = this;
+	tstring subName;
+	tuint offset1 = 0;
+	tuint offset2 = 0;
+
+	while ( offset2 < count )
+	{
+		offset2 += 1;
+		if ( name[offset2] == '/' || offset2 == count )
+		{
+			subName = name.substr( offset1, offset2 - offset1 );
+			target = target()->findImmadiate( subName );
+
+			offset1 = offset2 + 1;
+		}
+		if ( target.isValid() == false ) break;
+	}
+
+	return target();
+}
+
+SWTransform* SWTransform::findImmadiate( const tstring& name ) const
+{
+	if ( name.size() == 0 ) return NULL;
+
+	SWObject::List::const_iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )
 	{
 		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );

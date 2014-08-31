@@ -31,15 +31,28 @@ SWGameScene::~SWGameScene()
 	SWLog( "game scene", "deleted" );
 }
 
-SWGameObject* SWGameScene::findGO( const char *name )
+SWGameObject* SWGameScene::findGO( const tstring& name )
 {
+	tuint offset = name.find( '/' );
+	tstring subName = name.substr( 0, offset );
+	
+	SWGameObject* object = NULL;
 	SWObject::List::iterator itor = m_roots.begin();
 	for ( ; itor != m_roots.end() ; ++itor )
 	{
-		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
-		if ( object->getName() == name ) return object;
+		object = swrtti_cast<SWGameObject>( (*itor)() );
+		if ( object->getName() == subName ) break;
+		object = NULL;
 	}
-	return NULL;
+
+	if ( object != NULL )
+	{
+		offset += 1;
+		SWTransform* trans = object->getComponent<SWTransform>();
+		trans = trans->find( name.substr( offset, name.size() - offset ) );
+		object = ( trans != NULL )? trans->gameObject() : NULL;
+	}
+	return object;
 }
 
 void SWGameScene::reserveDestroy( const SWGameObject* go )

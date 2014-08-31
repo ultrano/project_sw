@@ -28,7 +28,7 @@ public:
     ~SWGameScene();
     
     //! 객체를 찾는다.
-    SWGameObject* findGO( const char* name );
+    SWGameObject* findGO( const tstring& name );
 	void reserveDestroy( const SWGameObject* go );
     
 private:
