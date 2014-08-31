@@ -52,6 +52,7 @@ public:
 	template<typename T>
 	T* getComponent() const { return (T*)getComponent( T::getRtti() ); };
 	SWComponent* getComponent( const SWRtti* rtti ) const;
+	SWComponent* getComponent( const tstring& typeName ) const;
 
 	template<typename T>
 	void removeComponent() { removeComponent( T::getRtti() ); };

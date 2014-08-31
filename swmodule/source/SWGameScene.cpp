@@ -34,7 +34,7 @@ SWGameScene::~SWGameScene()
 SWGameObject* SWGameScene::findGO( const tstring& name )
 {
 	tuint offset = name.find( '/' );
-	tstring subName = name.substr( 0, offset );
+	tstring subName = ( offset != tstring::npos )? name.substr( 0, offset ) : name;
 	
 	SWGameObject* object = NULL;
 	SWObject::List::iterator itor = m_roots.begin();
@@ -45,7 +45,7 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 		object = NULL;
 	}
 
-	if ( object != NULL )
+	if ( object != NULL && ( offset != tstring::npos ) )
 	{
 		offset += 1;
 		SWTransform* trans = object->getComponent<SWTransform>();

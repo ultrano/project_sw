@@ -162,6 +162,19 @@ SWComponent* SWGameObject::getComponent( const SWRtti* rtti ) const
 	return NULL;
 }
 
+SWComponent* SWGameObject::getComponent( const tstring& typeName ) const
+{
+	if ( typeName.size() == 0 ) return NULL;
+
+	for ( tuint i = 0 ; i < m_components.size() ; ++i )
+	{
+		SWComponent* comp = swrtti_cast<SWComponent>( (m_components[i])() );
+		const SWRtti* rtti = comp->queryRtti();
+		if ( rtti->name == typeName ) return comp; 
+	}
+	return NULL;
+}
+
 void SWGameObject::removeComponent( const SWRtti* rtti )
 {
 	if ( rtti == SWTransform::getRtti() ) return;

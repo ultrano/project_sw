@@ -2,11 +2,23 @@
 #define PlayScene_h__
 
 #include "SWHeaders.h"
+
+#include "GameValues.h"
+
 #include "Rider.h"
 #include "GasCloud.h"
 #include "Coin.h"
-#include "GameValues.h"
 #include "BackGround.h"
+#include "ScoreBoard.h"
+
+void registerGameAppFactories()
+{
+	SW_GC.registerFactory<Rider>();
+	SW_GC.registerFactory<GasCloud>();
+	SW_GC.registerFactory<Coin>();
+	SW_GC.registerFactory<BackGround>();
+	SW_GC.registerFactory<ScoreBoard>();
+}
 
 class PlayScene : public SWGameScene
 {
@@ -67,10 +79,7 @@ public:
 
 	void onAwake()
 	{
-		SW_GC.registerFactory<Rider>();
-		SW_GC.registerFactory<GasCloud>();
-		SW_GC.registerFactory<Coin>();
-		SW_GC.registerFactory<BackGround>();
+		registerGameAppFactories();
 
 		//! initialize values
 		{
@@ -133,7 +142,7 @@ public:
 		//! coin bank (for pooling)
 		{
 			SWGameObject* go = new SWGameObject();
-			go->setName( "bank" );
+			go->setName( "Bank" );
 			go->setActive( false );
 
 			int count = 100;
@@ -144,7 +153,7 @@ public:
 		{
 			SWGameObject* go = new SWGameObject();
 			SWHardRef<SWAction> action = go->addComponent<SWAction>();
-			SWActDelegate* act = new SWActDelegate( GetDelegator( MakeCoin ) );
+			SWActDelegate* act = new SWActDelegate( GetDelegator( makeCoinPattern ) );
 			SWActSequence* seq = new SWActSequence();
 			seq->addAct( new SWActDelay( 6 ) );
 			seq->addAct( act );
@@ -158,13 +167,12 @@ public:
 			m_background()->addComponent<BackGround>();
 		}
 
+
+
 		//! UI
 		{
-			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
 			SWGameObject* go = new SWGameObject;
-			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( atlas()->find( "bird_0" ) );
-			go->setLayerName( "UI" );
+			ScoreBoard* scoreBoard = go->addComponent<ScoreBoard>();
 		}
 		
 		//! UI camera
@@ -194,7 +202,7 @@ public:
 	Coin* getCoin()
 	{
 		Coin* coin = NULL;
-		SWTransform* bankTrans = findGO( "bank" )->getComponent<SWTransform>();
+		SWTransform* bankTrans = findGO( "Bank" )->getComponent<SWTransform>();
 
 		if ( SWTransform* coinTrans = bankTrans->getChildAt(0) )
 		{
@@ -208,7 +216,7 @@ public:
 		return coin;
 	}
 
-	void MakeCoin()
+	void makeCoinPattern()
 	{
 		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
 		tvec3 pos = riderTrans()->getPosition();

@@ -3,6 +3,8 @@
 
 #include "SWHeaders.h"
 
+class Rider;
+
 class ScoreBoard : public SWBehavior
 {
 	SW_RTTI( ScoreBoard, SWBehavior );
@@ -20,6 +22,7 @@ protected:
 
 private:
 
+	SWWeakRef<Rider> m_rider;
 };
 
 #endif // ScoreBoard_h__

@@ -120,7 +120,9 @@ public:
 	virtual SWHardRef<SWObject> newInstance() = 0;
 };
 
+//! it is just a symbol to be a constructor for the factory;
 static struct factory_constructor{} factory_arg;
+
 template<typename T>
 class SWTemplateObjectFactory : public SWAbstractObjectFactory
 {

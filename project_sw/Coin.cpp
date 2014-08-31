@@ -15,7 +15,7 @@ Coin::~Coin()
 
 void Coin::deposit()
 {
-	SWTransform* trans = SW_GC.getScene()->findGO( "bank" )->getComponent<SWTransform>();
+	SWTransform* trans = SW_GC.getScene()->findGO( "Bank" )->getComponent<SWTransform>();
 	getComponent<SWTransform>()->setParent( trans );
 
 	SWAction* action = getComponent<SWAction>();

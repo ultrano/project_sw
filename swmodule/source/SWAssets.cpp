@@ -30,7 +30,7 @@ SWHardRef<SWInputStream> __SWAssets::loadBuffer( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
 			return new SWByteBufferInputStream( itor->second() );
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -55,7 +55,7 @@ SWHardRef<SWTexture> __SWAssets::loadTexture( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -84,7 +84,7 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -113,7 +113,7 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" cache load", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -168,7 +168,7 @@ SWHardRef<SWSpriteAtlas> __SWAssets::loadSpriteAtlas( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" cache load", sheetFile.c_str() );
+			SWLog( "asset:\"%s\" is loaded in cache", sheetFile.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", sheetFile.c_str() );

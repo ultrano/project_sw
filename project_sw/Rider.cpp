@@ -145,5 +145,5 @@ void Rider::onCollision( SWCollision2D* coll )
 	if ( !isCoin ) return;
 
 	m_score += 1;
-	SWLog( "Hit Something!" );
+	SWLog( "scroe: %d", m_score );
 }

@@ -35,7 +35,7 @@ public:
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
 			
 			SWGameObject* go = new SWGameObject;
-			go->setName( "camera" );
+			go->setName( "Camera" );
 
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
@@ -46,7 +46,7 @@ public:
 
 		{
 			SWGameObject* go = new SWGameObject;
-			go->setName( "logo" );
+			go->setName( "Logo" );
 
 			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "logo5.png" );
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
