@@ -18,8 +18,9 @@ public:
 	SWWeakRef<SWCamera> m_camera;
 
 	SWWeakRef<SWRigidBody2D> m_coinBasket;
-
 	SWHardRef<SWGameObject> m_background;
+
+	bool m_coinPatternAD;
 
 	PlayScene()
 	{
@@ -29,23 +30,22 @@ public:
 	{
 	}
 
-	void cameraUpdate()
+	void riderCameraUpdate( SWGameObject* go )
 	{
-		if ( m_camera.isValid() == false ) return;
 		if ( m_rider.isValid() == false ) return;
 		tvec3 pos = m_rider()->getComponent<SWTransform>()->getPosition();
 		pos.x += 150;
 		pos.y = WorldHeight/2;
 		pos.z = -500;
 
-		SWTransform* trans = m_camera()->getComponent<SWTransform>();
+		SWTransform* trans = go->getComponent<SWTransform>();
 		trans->setPosition( pos );
 
 		pos.x -= WorldWidth/2;
 		m_coinBasket()->setCenter( pos.xy() );
 	}
 
-	void shadowUpdate( SWGameObject* go )
+	void riderShadowUpdate( SWGameObject* go )
 	{
 		if ( m_rider.isValid() == false ) return;
 
@@ -74,11 +74,14 @@ public:
 
 		//! initialize values
 		{
+			m_coinPatternAD = false;
 		}
 
-		//! rider test
+		//! rider 
 		{
 			SWGameObject* go = new SWGameObject();
+			go->setName( "Rider" );
+
 			Rider* rider = go->addComponent<Rider>();
 			SWTransform* trans = go->getComponent<SWTransform>();
 			trans->setPosition( tvec3( 0,GroundY,0 ) );
@@ -93,24 +96,24 @@ public:
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( atlas()->find( "shadow" ) );
 			
-			go->addUpdateDelegator( GetDelegator( shadowUpdate ) );
+			go->addUpdateDelegator( GetDelegator( riderShadowUpdate ) );
 		}
 
-		//! camera
+		//! rider camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
 			
 			SWGameObject* go = new SWGameObject;
-			go->setName( "camera" );
+			go->setName( "RiderCamera" );
 
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( WorldWidth, WorldHeight, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setClearColor( tcolor( 1,1,1,1 ) );
 			cam->setClearFlags( SW_Clear_Color );
+			cam->setDepth( 0 );
 			
-			m_camera = cam;
-			go->addUpdateDelegator( GetDelegator( cameraUpdate ) );
+			go->addUpdateDelegator( GetDelegator( riderCameraUpdate ) );
 		}
 
 		//! coin basket
@@ -133,11 +136,8 @@ public:
 			go->setName( "bank" );
 			go->setActive( false );
 
-			int count = 50;
-			while ( count-- )
-			{
-				newCoin()->deposit();
-			}
+			int count = 100;
+			while ( count-- ) newCoin()->deposit();
 		}
 
 		//! timer for making coin patterns
@@ -157,6 +157,31 @@ public:
 			m_background = new SWGameObject();
 			m_background()->addComponent<BackGround>();
 		}
+
+		//! UI
+		{
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
+			SWGameObject* go = new SWGameObject;
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( atlas()->find( "bird_0" ) );
+			go->setLayerName( "UI" );
+		}
+		
+		//! UI camera
+		{
+			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
+
+			SWGameObject* go = new SWGameObject;
+			go->setName( "UICamera" );
+
+			SWCamera* cam = go->addComponent<SWCamera>();
+			cam->orthoMode( WorldWidth, WorldHeight, 1, 1000 );
+			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
+			cam->setTargetLayerName( "UI" );
+			cam->setDepth( 1 );
+			//go->addUpdateDelegator( GetDelegator( cameraUpdate ) );
+		}
+
 	}
 
 	Coin* newCoin()
@@ -189,8 +214,15 @@ public:
 		tvec3 pos = riderTrans()->getPosition();
 		float frontFromRider = pos.x + WorldWidth;
 		
+		tuint patternNum = 1;
 		char buf[256] = {0};
-		sprintf( &buf[0], "patterns/coinpattern%d.txt", SWMath.randomInt(1,27) );
+		if ( !m_coinPatternAD )
+		{
+			patternNum = 27;
+			m_coinPatternAD = true;
+		}
+		else patternNum = SWMath.randomInt(1,27);
+		sprintf( &buf[0], "patterns/coinpattern%d.txt", patternNum );
 
 		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( &buf[0] );
 		SWInputStreamReader reader( is() );

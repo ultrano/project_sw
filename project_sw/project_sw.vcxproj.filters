@@ -41,6 +41,9 @@
     <ClInclude Include="BackGround.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreBoard.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -59,6 +62,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreBoard.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,12 +1,15 @@
 #include "Rider.h"
 #include "GasCloud.h"
 #include "GameValues.h"
+#include "Coin.h"
 
 Rider::Rider()
+	: m_score( 0 )
 {
 }
 
 Rider::Rider( factory_constructor )
+	: m_score( 0 )
 {
 }
 
@@ -22,7 +25,7 @@ void Rider::onAwake()
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
 
 	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
-	body()->setGravityScale( -tvec2::axisY * 30 );
+	body()->setGravityScale( -tvec2::axisY * 80 );
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 20 );
@@ -36,6 +39,8 @@ void Rider::onAwake()
 
 	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
 	trans()->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
+
+	m_score = 0;
 }
 
 void Rider::onRemove()
@@ -132,7 +137,13 @@ void Rider::onFixedRateUpdate()
 	}
 }
 
-void Rider::onCollision( SWCollision2D* )
+void Rider::onCollision( SWCollision2D* coll )
 {
+	if ( !coll->collider.isValid() ) return;
+	Coin* isCoin = coll->collider()->getComponent<Coin>();
+
+	if ( !isCoin ) return;
+
+	m_score += 1;
 	SWLog( "Hit Something!" );
 }

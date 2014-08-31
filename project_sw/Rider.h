@@ -23,6 +23,9 @@ public:
 	Rider( factory_constructor );
 	~Rider();
 
+	void setScore( tuint score ) { m_score = score; };
+	tuint getScore() const { return m_score; };
+
 protected:
 
 	virtual void onAwake();
@@ -36,6 +39,7 @@ private:
 	State m_state;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
+	tuint m_score;
 
 };
 

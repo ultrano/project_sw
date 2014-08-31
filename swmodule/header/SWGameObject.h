@@ -19,6 +19,7 @@ class SWGameObject : public SWObject
     SW_RTTI( SWGameObject, SWObject );
 	SW_REFERENCE( SWGameObject );
 	friend class SWGameScene;
+	friend class SWTransform;
 
 public:
 
@@ -27,11 +28,12 @@ public:
 	SWGameObject( const tstring& name );
     ~SWGameObject();
 
+	//! destroy this from scene
+	////! GO will be destroyed just before end of frame that calls this.
     void destroy();
+	////! GO will be destroyed just in time, but this is not recommended. 
+	////! you have to check using SWWeeakRef::isValid() or SWHardRef::isValid()
 	void destroyNow();
-
-	void udpate();
-	void fixedRateUpdate();
 
 	void setName( const thashstr& name ) { m_name = name; }
 	const thashstr&  getName() const { return m_name; }
@@ -73,6 +75,8 @@ protected:
 private:
 
 	void registerComponent( SWComponent* comp );
+	void udpate();
+	void fixedRateUpdate();
 
 private:
 
