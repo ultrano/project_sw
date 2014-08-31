@@ -17,11 +17,12 @@ public:
 
 	IntroScene(factory_constructor)
 	{
-		SW_GC.registerFactory<IntroScene>();
 	};
 
 	void onAwake()
 	{
+		SW_GC.registerFactory<IntroScene>();
+
 		//! convert test
 		{
 			twstring wstr = L"test";

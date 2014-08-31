@@ -33,7 +33,7 @@ SWObject::SWObject()
 SWObject::~SWObject()
 {
     --getObjectCount();
-    //SWLog( "SWObject deleted, remains: %d", getObjectCount() );
+    SWLog( "SWObject deleted, remains: %d", getObjectCount() );
 }
 
 SWDelegator* SWObject::getDelegator( const SWHandler& handler )

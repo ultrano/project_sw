@@ -167,7 +167,12 @@ public:
 			m_background()->addComponent<BackGround>();
 		}
 
-
+		//! gas cloud pool
+		{
+			SWGameObject* go = new SWGameObject();
+			go->setName( "GasCloudPool" );
+			go->setActive( false );
+		}
 
 		//! UI
 		{
@@ -257,6 +262,12 @@ public:
 
 	void onUpdate()
 	{
+		if ( SWInput.getKey( 'p' ) )
+		{
+			SWHardRef<SWObject> object = SW_GC.newInstance( "IntroScene" );
+			SWHardRef<SWGameScene> scene = swrtti_cast<SWGameScene>( object() );
+			SW_GC.setNextScene( scene() );
+		}
 	}
 
 private:

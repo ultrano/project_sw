@@ -123,15 +123,20 @@ void Rider::onFixedRateUpdate()
 			//SWLog( "Flying" );
 			body()->addForce( tvec2( 0, BoostForce ) );
 			
+			//! checking state
 			if ( isActivated ) m_state = Flying;
 			else m_state = Gliding;
 			
-			SWGameObject* go = new SWGameObject();
-			go->addComponent<GasCloud>();
-			tvec3 pos = getComponent<SWTransform>()->getPosition();
-			pos.z = -1;
-			go->getComponent<SWTransform>()->setPosition( pos );
-			go->addComponent<SWRigidBody2D>()->addForce( tvec2( SWMath.randomInt( -100,100 )/20.0f, -30 ) );
+			//! make gas cloud
+			{
+				SWGameObject* go = SW_GC.getScene()->findGO( "GasCloudPool/GasCloud" );;
+				if ( go == NULL ) go = new SWGameObject();
+
+				GasCloud* gas = go->addComponent<GasCloud>();
+				tvec3 pos = getComponent<SWTransform>()->getPosition();
+				pos.z = -1;
+				gas->reset( pos );
+			}
 		}
 		break;
 	}

@@ -13,15 +13,16 @@ public:
 	GasCloud( factory_constructor );
 	~GasCloud();
 
+	void reset( const tvec3& pos );
+
 protected:
 	
 	virtual void onAwake();
-	virtual void onRemove();
-	virtual void onUpdate();
-	virtual void onFixedRateUpdate();
-	virtual void onCollision( SWCollision2D* );
 
 private:
+
+	void goToPool();
+
 };
 
 #endif //! GasCloud_h__
