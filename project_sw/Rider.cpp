@@ -53,14 +53,14 @@ void Rider::onUpdate()
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
 
 	tvec2 vel = body()->getVelocity();
-	tvec2 pos = body()->getCenter();
+	tvec2 pos = body()->getPosition();
 	if ( pos.y > RoofY && vel.y > 0 )
 	{
 		vel.y = 0;
 		body()->setVelocity( vel );
 
 		pos.y -= (pos.y - RoofY)/1.5f;
-		body()->setCenter( pos );
+		body()->setPosition( pos );
 	}
 	else if ( pos.y < GroundY && vel.y < 0 )
 	{
@@ -70,7 +70,7 @@ void Rider::onUpdate()
 		body()->setVelocity( vel );
 
 		pos.y -= (pos.y - GroundY)/2;
-		body()->setCenter( pos );
+		body()->setPosition( pos );
 
 		if ( m_state != Running )
 		{

@@ -68,7 +68,7 @@ void GasCloud::reset( const tvec3& pos )
 	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
 
 	renderer()->setColor( tcolor( 1,1,1,1 ) );
-	body()->setCenter( pos.xy() );
+	body()->setPosition( pos.xy() );
 	trans()->setPosition( pos );
 	trans()->setLocalScale( tvec3( 0.1f, 0.1f, 1 ) * SWMath.randomInt( 100,200 )/100.0f );
 	trans()->setParent( NULL );

@@ -54,7 +54,7 @@ public:
 		trans->setPosition( pos );
 
 		pos.x -= WorldWidth/2;
-		m_coinBasket()->setCenter( pos.xy() );
+		m_coinBasket()->setPosition( pos.xy() );
 	}
 
 	void riderShadowUpdate( SWGameObject* go )

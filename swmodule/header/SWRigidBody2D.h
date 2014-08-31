@@ -13,7 +13,7 @@ public:
 	SWRigidBody2D( factory_constructor );
 	~SWRigidBody2D();
 
-	void setCenter( const tvec2& center );
+	void setPosition( const tvec2& center );
 	void addForce( const tvec2& force );
 	void addForce( const tvec2& force, const tvec2& pos );
 	void addAccel( const tvec2& accel );
@@ -24,7 +24,7 @@ public:
 	void setMass( tfloat mass );
 	void setInertia( tfloat inertia );
 	
-	const tvec2& getCenter() const;
+	const tvec2& getPosition() const;
 	const tvec2& getVelocity() const;
 	const float& getTorque() const;
 
