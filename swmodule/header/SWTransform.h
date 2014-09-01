@@ -73,6 +73,7 @@ private:
 	void onAwake();
 	void onRemove();
 	void onUpdate();
+	void onFixedRateUpdate();
 	void needUpdateMatrix();
 	void updateMatrix();
 	SWTransform* findImmadiate( const tstring& name ) const;

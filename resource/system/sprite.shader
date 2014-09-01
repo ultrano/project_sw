@@ -14,7 +14,7 @@ attribute vec2 a_tex;
 void main()
 {
    gl_Position = MATRIX_MVP * a_pos;
-   v_tex = (a_tex*SCALER.xy) + SCALER.zw;
+   v_tex = (a_tex*SCALER.zw) + SCALER.xy;
 }
 
 #endif

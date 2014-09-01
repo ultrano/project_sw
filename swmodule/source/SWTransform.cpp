@@ -324,6 +324,7 @@ void SWTransform::onAwake()
 	__super::onAwake();
 	SW_GC.getScene()->m_roots.push_back( gameObject.getRaw() );
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
+	gameObject()->addFixedRateUpdateDelegator( GetDelegator( onFixedRateUpdate ) );
 }
 
 void SWTransform::onRemove()
@@ -358,6 +359,22 @@ void SWTransform::onUpdate()
 		if ( go->isActiveSelf() )
 		{
 			go->udpate();
+			if ( !vital.isValid() ) break;
+		}
+	}
+}
+
+void SWTransform::onFixedRateUpdate()
+{
+	SWWeakRef<SWTransform> vital = this;
+	m_updates = m_children;
+	SWObject::List::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ;++itor )
+	{
+		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+		if ( go->isActiveSelf() )
+		{
+			go->fixedRateUpdate();
 			if ( !vital.isValid() ) break;
 		}
 	}

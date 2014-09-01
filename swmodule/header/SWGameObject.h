@@ -62,9 +62,11 @@ public:
 
 	void addUpdateDelegator( SWDelegator* dg );
 	void removeUpdateDelegator( SWDelegator* dg );
+	tuint getUpdateDelegatorCount() const;
 	
 	void addFixedRateUpdateDelegator( SWDelegator* dg );
 	void removeFixedRateUpdateDelegator( SWDelegator* dg );
+	tuint getFixedRateUpdateDelegator() const;
 
 	void sendMessage( const tstring& msgName, SWObject* param );
 

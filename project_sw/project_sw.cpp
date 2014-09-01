@@ -24,7 +24,7 @@ void callbackIdle()
 void callbackTimer( int value )
 {
 	glutPostRedisplay();
-	glutTimerFunc( (1.0f/40.0f)*1000 ,callbackTimer,0);
+	glutTimerFunc( (1.0f/60.0f)*1000 ,callbackTimer,0);
 }
 
 void callbackMouse( int button, int state, int x, int y )

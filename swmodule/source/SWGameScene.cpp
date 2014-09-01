@@ -101,8 +101,8 @@ void SWGameScene::pause()
 void SWGameScene::update()
 {
 	//! regular update
-	onUpdate();
 	{
+		onUpdate();
 		m_updates = m_roots;
 		SWObject::List::iterator itor = m_updates.begin();
 		for ( ; itor != m_updates.end() ; ++itor )
@@ -122,10 +122,12 @@ void SWGameScene::update()
 	}
 
 	//! fixed frame update
-	onFixedRateUpdate();
 	while ( countOfFixedRateUpdate-- )
 	{
-		m_updates = m_roots;
+		onFixedRateUpdate();
+		
+		if ( m_updates != m_roots ) m_updates = m_roots;
+
 		SWObject::List::iterator itor = m_updates.begin();
 		for ( ; itor != m_updates.end() ; ++itor )
 		{

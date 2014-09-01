@@ -107,6 +107,7 @@
     <ClInclude Include="header\SWAnimationClip.h" />
     <ClInclude Include="header\SWAnimationLine.h" />
     <ClInclude Include="header\SWArray.h" />
+    <ClInclude Include="header\SWFontInfo.h" />
     <ClInclude Include="header\SWHeaders.h" />
     <ClInclude Include="header\SWResource.h" />
     <ClInclude Include="header\SWAssets.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
     <ClCompile Include="source\SWFileStream.cpp" />
+    <ClCompile Include="source\SWFontInfo.cpp" />
     <ClCompile Include="source\SWGameContext.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />

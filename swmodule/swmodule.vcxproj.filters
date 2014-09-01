@@ -301,6 +301,9 @@
     <Filter Include="SW\SWAct\SWActBunch">
       <UniqueIdentifier>{1bfc5f16-ee7c-43a7-9ef9-9384cf0956a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWFontInfo">
+      <UniqueIdentifier>{fe652291-a029-4e4d-a248-2ff7067884f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -627,6 +630,9 @@
     <ClInclude Include="header\SWActBunch.h">
       <Filter>SW\SWAct\SWActBunch</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWFontInfo.h">
+      <Filter>SW\SWFontInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -886,6 +892,9 @@
     </ClCompile>
     <ClCompile Include="source\SWActBunch.cpp">
       <Filter>SW\SWAct\SWActBunch</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWFontInfo.cpp">
+      <Filter>SW\SWFontInfo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

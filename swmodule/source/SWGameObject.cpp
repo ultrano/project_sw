@@ -218,6 +218,11 @@ void SWGameObject::removeUpdateDelegator( SWDelegator* dg )
 	m_updateDelegates.remove( dg );
 }
 
+tuint SWGameObject::getUpdateDelegatorCount() const
+{
+	return m_updateDelegates.size();
+}
+
 void SWGameObject::addFixedRateUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
@@ -234,6 +239,11 @@ void SWGameObject::removeFixedRateUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
 	m_fixedRateUpdateDelegates.remove( dg );
+}
+
+tuint SWGameObject::getFixedRateUpdateDelegator() const
+{
+	return m_fixedRateUpdateDelegates.size();
 }
 
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )

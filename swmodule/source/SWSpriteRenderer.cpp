@@ -46,7 +46,7 @@ void SWSpriteRenderer::render( SWCamera* camera )
 		const tvec2& offset = m_sprite()->getScaledOffset();
 		const tvec2& size   = m_sprite()->getScaledSize();
 
-		tquat scaler( size.x, size.y, offset.x, offset.y );
+		tquat scaler( offset.x, offset.y, size.x, size.y );
 		tquat color( m_color.r, m_color.g, m_color.b, m_color.a );
 
 		m_material()->setTexture( "TEXTURE_0", m_sprite()->getTexture() );

@@ -59,7 +59,20 @@ public:
 		}
 
 		//! new font test
+
+		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "fonts/test.fnt" );
+		SWInputStreamReader reader( is() );
+
+		int id,x,y,w,h,xoffset,yoffset,xadvence,page,chnl;
+		tstring line;
+		reader.readLine( line );
+		reader.readLine( line );
+		reader.readLine( line );
+		reader.readLine( line );
+		while ( reader.readLine( line ) )
 		{
+			sscanf( line.c_str(), "char id=%d x=%d y=%d width=%d height=%d xoffset=%d yoffset=%d xadvance=%d page=%d chnl=%d"
+				, &id, &x, &y, &w, &h, &xoffset, &yoffset, &xadvence, &page, &chnl);
 		}
 	}
 	void onEndLogo()

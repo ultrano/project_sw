@@ -197,6 +197,32 @@ SWHardRef<SWSpriteAtlas> __SWAssets::loadSpriteAtlas( const tstring& filePath )
 	return sheet;
 }
 
+SWHardRef<SWFontInfo> __SWAssets::loadFontInfo( const tstring& filePath )
+{
+	if ( !m_accessor.isValid() ) return NULL;
+
+	FontInfoTable::iterator itor = m_fontInfoCache.find( filePath );
+	if ( itor != m_fontInfoCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
+			return itor->second();
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
+	}
+
+	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
+
+	SWHardRef<SWFontInfo> fontInfo = SWFontInfo::parse( ais() );
+	
+	m_fontInfoCache[ filePath ] = fontInfo();
+
+	return fontInfo();
+}
+
 bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )
 {
 	TextureTable::iterator itor = m_texCache.begin();
