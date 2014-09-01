@@ -26,6 +26,8 @@
 #include "SWCriticalSection.h"
 #include "SWDefines.h"
 #include "SWFileStream.h"
+#include "SWFontInfo.h"
+#include "SWFontRenderer.h"
 #include "SWGameContext.h"
 #include "SWGameObject.h"
 #include "SWGameScene.h"

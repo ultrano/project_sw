@@ -42,7 +42,10 @@ public:
 
 	Char* getChar( tuint32 id ) const;
 	Kerning* getKerning( tuint32 first, tuint32 second ) const;
-	//Kerning* getKerning(  );
+	
+	tuint getLineHeight() const { return m_lineHeight; };
+	tuint getScaleH() const { return m_scaleW; };
+	tuint getScaleW() const { return m_scaleH; };
 
 protected:
 
@@ -53,6 +56,8 @@ private:
 
 	CharTable m_charTable;
 	KerningTable m_kerningTable;
+	tuint m_lineHeight;
+	tuint m_scaleW, m_scaleH;
 
 };
 

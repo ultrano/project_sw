@@ -5,12 +5,26 @@ SWHardRef<SWFontInfo> SWFontInfo::parse( SWInputStream* is )
 {
 	SWHardRef<SWInputStream> vital = is;
 	if ( vital.isValid() == false ) return NULL;
-
+	
+	SWHardRef<SWFontInfo> fontInfo = new SWFontInfo();
 	tstring line;
 	SWInputStreamReader reader( is );
 
 	reader.readLine( line );
+
+	tuint lineHeight, base, scaleW, scaleH, pages, packed, alphaChnl, redChnl, greenChnl, blueChnl;
 	reader.readLine( line );
+	sscanf( line.c_str(), "common lineHeight=%d base=%d scaleW=%d scaleH=%d pages=%d packed=%d alphaChnl=%d redChnl=%d greenChnl=%d blueChnl=%d"
+		, &lineHeight
+		, &base
+		, &scaleW, &scaleH
+		, &pages, &packed
+		, &alphaChnl, &redChnl, &greenChnl, &blueChnl);
+	
+	fontInfo()->m_lineHeight = lineHeight;
+	fontInfo()->m_scaleW = scaleW;
+	fontInfo()->m_scaleH = scaleH;
+	
 	reader.readLine( line );
 
 	int count = 0;
@@ -20,7 +34,6 @@ SWHardRef<SWFontInfo> SWFontInfo::parse( SWInputStream* is )
 	reader.readLine( line );
 	sscanf( line.c_str(),"chars count=%d", &count );
 
-	SWHardRef<SWFontInfo> fontInfo = new SWFontInfo();
 	while ( count-- )
 	{
 		reader.readLine( line );

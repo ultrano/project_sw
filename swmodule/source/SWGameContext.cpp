@@ -36,6 +36,7 @@
 #include "SWActScale.h"
 #include "SWActSequence.h"
 #include "SWActBunch.h"
+#include "SWFontRenderer.h"
 
 void registerBasicObjectFactories( SWGameContext* gc )
 {
@@ -54,6 +55,8 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<SWMesh>();
 	gc->registerFactory<SWMaterial>();
 	
+	gc->registerFactory<SWFontRenderer>();
+
 	gc->registerFactory<SWRigidBody2D>();
 	gc->registerFactory<SWCircleCollider2D>();
 	gc->registerFactory<SWRectCollider2D>();

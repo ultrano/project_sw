@@ -304,6 +304,9 @@
     <Filter Include="SW\SWFontInfo">
       <UniqueIdentifier>{fe652291-a029-4e4d-a248-2ff7067884f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWFontRenderer">
+      <UniqueIdentifier>{bbf9ef53-d25f-42ad-b559-eeb24d6efc37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -633,6 +636,9 @@
     <ClInclude Include="header\SWFontInfo.h">
       <Filter>SW\SWFontInfo</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWFontRenderer.h">
+      <Filter>SW\SWFontRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -895,6 +901,9 @@
     </ClCompile>
     <ClCompile Include="source\SWFontInfo.cpp">
       <Filter>SW\SWFontInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWFontRenderer.cpp">
+      <Filter>SW\SWFontRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -34,6 +34,7 @@ public:
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
+		if (false)
 		{
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Logo" );
@@ -60,21 +61,40 @@ public:
 
 		//! new font test
 
-		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "fonts/test.fnt" );
-		SWInputStreamReader reader( is() );
-
-		int id,x,y,w,h,xoffset,yoffset,xadvence,page,chnl;
-		tstring line;
-		reader.readLine( line );
-		reader.readLine( line );
-		reader.readLine( line );
-		reader.readLine( line );
-		while ( reader.readLine( line ) )
+		SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
+		SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test.png" );
 		{
-			sscanf( line.c_str(), "char id=%d x=%d y=%d width=%d height=%d xoffset=%d yoffset=%d xadvance=%d page=%d chnl=%d"
-				, &id, &x, &y, &w, &h, &xoffset, &yoffset, &xadvence, &page, &chnl);
+			SWGameObject* go = new SWGameObject;
+			go->setName( "text" );
+
+			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+			renderer->setFontInfo( info() );
+			renderer->setFontTexture( texture() );
+			renderer->setText( "12341111s111111111" );
+			
+			SWTransform* transform = go->getComponent<SWTransform>();
+			transform->setLocalPosition( tvec3( -100,0,0 ) );
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWActSequence* seq = new SWActSequence();
+			seq->addAct( new SWActDelay(0.1f) );
+			seq->addAct( new SWActDelegate( GetDelegator( onCount ) ) );
+			action->setAct( "count", new SWActRepeat( seq ) );
+			action->play( "count" );
+
+			m_count = 0;
 		}
 	}
+
+	int m_count;
+	void onCount()
+	{
+		SWFontRenderer* renderer = findGO( "text" )->getComponent<SWFontRenderer>();
+		char buf[256] = {0};
+		sprintf( &buf[0], "%d", m_count++ );
+		renderer->setText( &buf[0] );
+	}
+
 	void onEndLogo()
 	{
 		SW_GC.setNextScene( new PlayScene );
