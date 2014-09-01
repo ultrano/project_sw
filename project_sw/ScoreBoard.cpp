@@ -25,7 +25,7 @@ void ScoreBoard::onAwake()
 	SWGameObject* go = SW_GC.getScene()->findGO( "Rider" );
 	m_rider = (Rider*)go->getComponent( "Rider" );
 
-	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
+	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/flappy_bird.png" );
 	SWSpriteRenderer* renderer = gameObject()->addComponent<SWSpriteRenderer>();
 	renderer->setSprite( atlas()->find( "bird_0" ) );
 

@@ -39,7 +39,7 @@ void Coin::onAwake()
 
 	gameObject()->addComponent<SWSpriteRenderer>();
 
-	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "coin_anim.txt" );
+	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/coin_anim.txt" );
 	SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );
 
 	SWAction* action = gameObject()->addComponent<SWAction>();

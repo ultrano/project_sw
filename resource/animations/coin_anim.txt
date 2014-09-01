@@ -1,2 +1,2 @@
-coin.png
+textures/coin.png
 spin 0.1 coin_0,coin_1,coin_2,coin_3,coin_4,coin_5,coin_6,coin_7,coin_8,coin_9,coin_10,coin_11,coin_12,coin_13,coin_14,coin_15,coin_16,coin_17,coin_18,coin_19,coin_20

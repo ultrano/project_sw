@@ -179,7 +179,14 @@ void SWGameScene::draw()
 	//! sort cameras
 	m_cameras.sort( cameraSorter );
 
-	ttable<thashstr,SWObject::List> layers;
+	//! clear layers
+	{
+		LayerTable::iterator itor = m_layers.begin();
+		for ( ; itor != m_layers.end() ; ++itor )
+		{
+			itor->second.clear();
+		}
+	}
 	
 	//! extract game objects in layer
 	{
@@ -190,7 +197,7 @@ void SWGameScene::draw()
 			SWGameObject* go = renderer->gameObject();
 			if ( go->isActiveInScene() )
 			{
-				layers[ go->getLayerName() ].push_back( renderer );
+				m_layers[ go->getLayerName() ].push_back( renderer );
 			}
 		}
 	}
@@ -209,7 +216,7 @@ void SWGameScene::draw()
 			if ( camera->getClearFlags() & SW_Clear_Depth ) clearMask |= GL_DEPTH_BUFFER_BIT;
 
 			//! sort objects from camera
-			SWObject::List& objectList = layers[ camera->getTargetLayerName() ];
+			SWObject::List& objectList = m_layers[ camera->getTargetLayerName() ];
 			objectList.sort( RendererSorter( transform->getPosition(), camera->getLookDir() ) );
 
 			//! clear buffer

@@ -74,12 +74,15 @@ private:
 
 private:
 
+	typedef ttable<thashstr,SWObject::List> LayerTable;
+
 	//! root game objects
 	SWObject::List m_roots;
 	SWObject::List m_updates;
 	SWObject::List m_cameras;
 	SWObject::List m_renderers;
 	SWObject::List m_destroyGOs;
+	LayerTable m_layers;
 
 	//! for fixed frame rate update
 	tfloat m_fixedFrameRate;

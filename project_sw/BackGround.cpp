@@ -20,7 +20,7 @@ void BackGround::onAwake()
 	__super::onAwake();
 
 	m_camera = SW_GC.getScene()->findGO( "RiderCamera" );
-	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "background.png" );
+	SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/background.png" );
 	SWHardRef<SWTransform> trans = gameObject()->getComponent<SWTransform>();
 	SWSprite* sprite = atlas()->find( "background" );
 	const tvec2& spriteSize = sprite->getSize();

@@ -21,7 +21,7 @@ void Rider::onAwake()
 {
 	__super::onAwake();
 
-	m_imgAtlas = SWAssets.loadSpriteAtlas( "runner.png" );
+	m_imgAtlas = SWAssets.loadSpriteAtlas( "textures/runner.png" );
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
 
 	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
@@ -30,7 +30,7 @@ void Rider::onAwake()
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 20 );
 
-	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "runner_anim.txt" );
+	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/runner_anim.txt" );
 	SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );
 
 	SWAction* action = gameObject()->addComponent<SWAction>();

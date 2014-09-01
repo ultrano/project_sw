@@ -99,7 +99,7 @@ public:
 
 		//! rider shadow
 		{
-			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "runner.png" );
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/runner.png" );
 			SWGameObject* go = new SWGameObject;
 			
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();

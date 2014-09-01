@@ -28,7 +28,7 @@ void GasCloud::onAwake()
 
 	//! setting renderer
 	{
-		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "cloud.png" );
+		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/cloud.png" );
 		renderer()->setSprite( atlas()->find( imgList[ SWMath.randomInt(0,7) ] ) );
 	}
 

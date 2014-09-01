@@ -6,9 +6,6 @@
 class IntroScene : public SWGameScene
 {
 	SW_RTTI( IntroScene, SWGameScene );
-
-	float m_time;
-	float m_remain;
 public:
 	
 	IntroScene()
@@ -22,14 +19,6 @@ public:
 	void onAwake()
 	{
 		SW_GC.registerFactory<IntroScene>();
-
-		//! convert test
-		{
-			twstring wstr = L"test";
-			tstring tstr = "";
-			SWUtil.utf16ToUTF8( wstr, tstr );
-			int a= 0;
-		}
 
 		//! set default camera
 		{
@@ -49,7 +38,7 @@ public:
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Logo" );
 
-			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "logo5.png" );
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/logo5.png" );
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			SWSprite* logoSprite = atlas()->find( "logo" );
 			tvec2 logoSize = logoSprite->getSize();
@@ -69,19 +58,8 @@ public:
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
 
+		//! new font test
 		{
-			m_time = 4;
-			m_remain = m_time;
-		}
-
-		{
-			SWHardRef<SWInputStream> fis = SWAssets.loadBuffer( "animation.txt" );
-			SWInputStreamReader reader( fis() );
-			tstring line;
-			while( reader.readLine( line ) )
-			{
-				SWLog( line.c_str() );
-			}
 		}
 	}
 	void onEndLogo()
