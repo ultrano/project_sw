@@ -34,7 +34,6 @@ public:
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
-		if (false)
 		{
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Logo" );
@@ -59,40 +58,6 @@ public:
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
 
-		//! new font test
-
-		SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
-		SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test.png" );
-		{
-			SWGameObject* go = new SWGameObject;
-			go->setName( "text" );
-
-			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
-			renderer->setFontInfo( info() );
-			renderer->setFontTexture( texture() );
-			renderer->setText( "12341111s111111111" );
-			
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setLocalPosition( tvec3( -100,0,0 ) );
-
-			SWAction* action = go->addComponent<SWAction>();
-			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActDelay(0.1f) );
-			seq->addAct( new SWActDelegate( GetDelegator( onCount ) ) );
-			action->setAct( "count", new SWActRepeat( seq ) );
-			action->play( "count" );
-
-			m_count = 0;
-		}
-	}
-
-	int m_count;
-	void onCount()
-	{
-		SWFontRenderer* renderer = findGO( "text" )->getComponent<SWFontRenderer>();
-		char buf[256] = {0};
-		sprintf( &buf[0], "%d", m_count++ );
-		renderer->setText( &buf[0] );
 	}
 
 	void onEndLogo()

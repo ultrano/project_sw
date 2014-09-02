@@ -151,4 +151,10 @@ void Rider::onCollision( SWCollision2D* coll )
 
 	m_score += 1;
 	SWLog( "scroe: %d", m_score );
+	char buf[64] = {0};
+	sprintf( &buf[0], "%d", m_score );
+
+	SWGameObject* coinScore = SW_GC.getScene()->findGO( "CoinScore" );
+	SWFontRenderer* renderer = coinScore->getComponent<SWFontRenderer>();
+	renderer->setText( &buf[0] );
 }

@@ -81,6 +81,8 @@ public:
 	{
 		registerGameAppFactories();
 
+		tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
+
 		//! initialize values
 		{
 			m_coinPatternAD = false;
@@ -110,8 +112,6 @@ public:
 
 		//! rider camera
 		{
-			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-			
 			SWGameObject* go = new SWGameObject;
 			go->setName( "RiderCamera" );
 
@@ -176,7 +176,18 @@ public:
 		//! UI
 		{
 			SWGameObject* go = new SWGameObject;
-			ScoreBoard* scoreBoard = go->addComponent<ScoreBoard>();
+			go->setName( "CoinScore" );
+			go->setLayerName( "UI" );
+
+			SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
+			SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test.png" );
+			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+			renderer->setFontInfo( info() );
+			renderer->setFontTexture( texture() );
+			renderer->setText( "111111111" );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2)-info()->getLineHeight(), 0 ) );
 		}
 		
 		//! UI camera
@@ -191,7 +202,6 @@ public:
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setTargetLayerName( "UI" );
 			cam->setDepth( 1 );
-			//go->addUpdateDelegator( GetDelegator( cameraUpdate ) );
 		}
 
 	}
