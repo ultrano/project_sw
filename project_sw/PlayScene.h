@@ -172,8 +172,8 @@ public:
 		}
 		
 		//! font info & texture
-		SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
-		SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test_0.png" );
+		SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/Jetpackia.fnt" );
+		SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/Jetpackia.png" );
 
 		//! UI Meter Score
 		{

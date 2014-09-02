@@ -3,7 +3,6 @@
 
 #include <locale>
 #include <stdlib.h>
-#include <iconv.h>
 
 
 __SWUtil::__SWUtil()
@@ -38,7 +37,7 @@ tnumber __SWUtil::strToNum( const tstring& str )
 	sscanf( str.c_str(), "%f", &num );
 	return num;
 }
-
+/*
 bool __SWUtil::utf8ToUTF16( const tstring& utf8, twstring& unicode )
 {
 	iconv_t cd = iconv_open( "UTF-16", "UTF-8" );
@@ -79,7 +78,8 @@ bool __SWUtil::utf16ToUTF8( const twstring& unicode, tstring& utf8 )
 	SWFree( (void*)outBuf );
 
 	return ( ret != (tuint)-1 );
-}
+	}
+	*/
 
 
 void __SWUtil::copyStream( SWOutputStream* os, SWInputStream* is )

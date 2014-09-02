@@ -24,8 +24,10 @@ public:
 
 	tnumber strToNum( const tstring& str );
 
+	/*
 	bool utf8ToUTF16( const tstring& utf8, twstring& unicode );
 	bool utf16ToUTF8( const twstring& unicode, tstring& utf8 );
+	*/
 
 	void copyStream( SWOutputStream* os, SWInputStream* is );
 

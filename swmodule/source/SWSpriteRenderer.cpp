@@ -95,6 +95,16 @@ const tcolor& SWSpriteRenderer::getColor() const
 	return m_color;
 }
 
+void SWSpriteRenderer::setMesh( const SWMesh* mesh )
+{
+	m_mesh = mesh;
+}
+
+const SWMesh* SWSpriteRenderer::getMesh() const
+{
+	return m_mesh();
+}
+
 void SWSpriteRenderer::serialize( SWObjectWriter* ow )
 {
 	ow->writeColor( m_color );

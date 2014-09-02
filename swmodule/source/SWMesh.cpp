@@ -6,7 +6,12 @@
 #include "SWDefines.h"
 #include "SWMath.h"
 #include "SWObjectStream.h"
-
+#include "SWLog.h"
+int& getCount()
+{
+	static int count = 0;
+	return count;
+}
 struct SWMeshVertex
 {
     tvec3 pos;
@@ -18,7 +23,8 @@ SWMesh::SWMesh()
 	, m_iboID( 0 )
 	, m_updateMesh( false )
 {
-    
+	++getCount();
+	SWLog( "mesh count: %d", getCount() );
 }
 
 SWMesh::SWMesh( factory_constructor )
@@ -26,11 +32,14 @@ SWMesh::SWMesh( factory_constructor )
 	, m_iboID( 0 )
 	, m_updateMesh( false )
 {
-
+	++getCount();
+	SWLog( "mesh count: %d", getCount() );
 }
 
 SWMesh::~SWMesh()
 {
+	--getCount();
+	SWLog( "mesh count: %d", getCount() );
     if ( m_vboID != 0 ) glDeleteBuffers( 1, &m_vboID );
     if ( m_iboID != 0 ) glDeleteBuffers( 1, &m_iboID );
 }

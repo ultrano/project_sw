@@ -37,7 +37,15 @@ void Coin::onAwake()
 	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
 	trans()->setLocalScale( tvec3( 0.5f, 0.5f, 1 ) );
 
-	gameObject()->addComponent<SWSpriteRenderer>();
+	SWSpriteRenderer* renderer = gameObject()->addComponent<SWSpriteRenderer>();
+
+	//! sharing mesh, coin is same appearance.
+	SWGameObject* coinGO = SW_GC.getScene()->findGO( "Bank/Coin" );
+	if ( coinGO )
+	{
+		SWSpriteRenderer* spriteRenderer = coinGO->getComponent<SWSpriteRenderer>();
+		renderer->setMesh( spriteRenderer->getMesh() );
+	}
 
 	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/coin_anim.txt" );
 	SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );

@@ -21,6 +21,9 @@ public:
 	void setColor( const tcolor& color );
 	const tcolor& getColor() const;
 
+	void setMesh( const SWMesh* mesh );
+	const SWMesh* getMesh() const;
+
 protected:
 
 	virtual void onAwake();
