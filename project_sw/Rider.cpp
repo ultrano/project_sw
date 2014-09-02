@@ -156,13 +156,13 @@ void Rider::onFixedRateUpdate()
 void Rider::onCollision( SWCollision2D* coll )
 {
 	if ( !coll->collider.isValid() ) return;
-	Coin* isCoin = coll->collider()->getComponent<Coin>();
+	SWGameObject* go = coll->collider()->gameObject();
+	if ( go->getName() == "Coin" )
+	{
+		m_score += 1;
+		char buf[64] = {0};
+		sprintf( &buf[0], "%d Coins", m_score );
 
-	if ( !isCoin ) return;
-
-	m_score += 1;
-	char buf[64] = {0};
-	sprintf( &buf[0], "%d Coins", m_score );
-
-	m_coinScore()->setText( &buf[0] );
+		m_coinScore()->setText( &buf[0] );
+	}
 }
