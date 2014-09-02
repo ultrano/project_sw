@@ -57,7 +57,22 @@ public:
 			transform->setLocalPosition( tvec3::zero );
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
+		
+		//! UI
+		{
+			SWGameObject* go = new SWGameObject;
 
+			SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
+			SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test_0.png" );
+			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+			renderer->setFontInfo( info() );
+			renderer->setFontTexture( texture() );
+			renderer->setText( "ABCDEFGHIJKLMNOPQRSTUVWXYZ" );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			//trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2)-info()->getLineHeight(), 0 ) );
+			trans->setPosition( tvec3::zero );
+		}
 	}
 
 	void onEndLogo()

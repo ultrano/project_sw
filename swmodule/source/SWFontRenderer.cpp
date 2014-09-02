@@ -116,27 +116,28 @@ void SWFontRenderer::updateMesh()
 
 		SWFontInfo::Kerning* kerning  = m_fontInfo()->getKerning( lastID, id );
 		cursor.x += (kerning != NULL)? kerning->amount : 0;
+		
 		lastID = id;
-
 		tuint base = i*4;
+
+		float left   = cursor.x + fontChar->xoffset;
+		float top    = cursor.y - fontChar->yoffset;
+		float right  = left + fontChar->width;
+		float bottom = top - fontChar->height;
+		cursor.x += fontChar->xadvence;
+		
 		mesh->setTriangle( (i*2)+0, tindex3( base+0, base+1, base+2 ) );
 		mesh->setTriangle( (i*2)+1, tindex3( base+3, base+2, base+1 ) );
-
-		float left = cursor.x + fontChar->xoffset;
-		float top  = cursor.y + fontChar->yoffset;
-		float right  = left + fontChar->width;
-		float bottom = top + fontChar->height;
 
 		mesh->setVertex( base+0, tvec3(  left, top, 0 ) );
 		mesh->setVertex( base+1, tvec3( right, top, 0 ) );
 		mesh->setVertex( base+2, tvec3(  left, bottom, 0 ) );
 		mesh->setVertex( base+3, tvec3( right, bottom, 0 ) );
-		cursor.x += fontChar->xadvence;
-
-		mesh->setTexCoord( base+0, tvec2(                     fontChar->x/scale.x, (fontChar->y + fontChar->height)/scale.y ) );
-		mesh->setTexCoord( base+1, tvec2( (fontChar->x + fontChar->width)/scale.x, (fontChar->y + fontChar->height)/scale.y ) );
-		mesh->setTexCoord( base+2, tvec2(                     fontChar->x/scale.x,                              fontChar->y ) );
-		mesh->setTexCoord( base+3, tvec2( (fontChar->x + fontChar->width)/scale.x,                              fontChar->y ) );
+		
+		mesh->setTexCoord( base+0, tvec2(                     fontChar->x/scale.x,                      fontChar->y/scale.y ) );
+		mesh->setTexCoord( base+1, tvec2( (fontChar->x + fontChar->width)/scale.x,                      fontChar->y/scale.y ) );
+		mesh->setTexCoord( base+2, tvec2(                     fontChar->x/scale.x, (fontChar->y + fontChar->height)/scale.y ) );
+		mesh->setTexCoord( base+3, tvec2( (fontChar->x + fontChar->width)/scale.x, (fontChar->y + fontChar->height)/scale.y ) );
 	}
 }
 

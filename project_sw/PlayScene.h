@@ -180,14 +180,15 @@ public:
 			go->setLayerName( "UI" );
 
 			SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
-			SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test.png" );
+			SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test_0.png" );
 			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
 			renderer->setFontInfo( info() );
 			renderer->setFontTexture( texture() );
-			renderer->setText( "111111111" );
+			renderer->setText( "ABCDEFGHIJKLMNOPQRSTUVWXYZ" );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
 			trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2)-info()->getLineHeight(), 0 ) );
+			//trans->setPosition( tvec3::zero );
 		}
 		
 		//! UI camera

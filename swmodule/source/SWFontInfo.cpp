@@ -31,30 +31,34 @@ SWHardRef<SWFontInfo> SWFontInfo::parse( SWInputStream* is )
 	tuint32 id;
 	int x,y,w,h,xoffset,yoffset,xadvence,page,chnl;
 	
-	reader.readLine( line );
-	sscanf( line.c_str(),"chars count=%d", &count );
-
-	while ( count-- )
+	if ( reader.readLine( line ) )
 	{
-		reader.readLine( line );
-		sscanf( line.c_str(), "char id=%d x=%d y=%d width=%d height=%d xoffset=%d yoffset=%d xadvance=%d page=%d chnl=%d"
-			, &id, &x, &y, &w, &h, &xoffset, &yoffset, &xadvence, &page, &chnl);
+		sscanf( line.c_str(),"chars count=%d", &count );
 
-		fontInfo()->m_charTable[ id ] = new Char( id, x, y, w, h, xoffset, yoffset, xadvence, page, chnl );
+		while ( count-- )
+		{
+			reader.readLine( line );
+			sscanf( line.c_str(), "char id=%d x=%d y=%d width=%d height=%d xoffset=%d yoffset=%d xadvance=%d page=%d chnl=%d"
+				, &id, &x, &y, &w, &h, &xoffset, &yoffset, &xadvence, &page, &chnl);
+
+			fontInfo()->m_charTable[ id ] = new Char( id, x, y, w, h, xoffset, yoffset, xadvence, page, chnl );
+		}
 	}
 	
-	reader.readLine( line );
-	sscanf( line.c_str(),"kernings count=%d", &count );
-
-	tuint32 first, second;
-	int amount;
-	while ( count-- )
+	if ( reader.readLine( line ) )
 	{
-		reader.readLine( line );
-		sscanf( line.c_str(), "kerning first=%d second=%d amount=%d", &first, &second, &amount );
-		tuint64 key = first;
-		key = (key << 32) | second;
-		fontInfo()->m_kerningTable[ key ] = new Kerning( first, second, amount );
+		sscanf( line.c_str(),"kernings count=%d", &count );
+
+		tuint32 first, second;
+		int amount;
+		while ( count-- )
+		{
+			reader.readLine( line );
+			sscanf( line.c_str(), "kerning first=%d second=%d amount=%d", &first, &second, &amount );
+			tuint64 key = first;
+			key = (key << 32) | second;
+			fontInfo()->m_kerningTable[ key ] = new Kerning( first, second, amount );
+		}
 	}
 
 	return fontInfo();
