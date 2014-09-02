@@ -2,21 +2,9 @@
 #define PlayScene_h__
 
 #include "SWHeaders.h"
-
 #include "GameValues.h"
+#include "GameHeaders.h"
 
-#include "Rider.h"
-#include "GasCloud.h"
-#include "Coin.h"
-#include "BackGround.h"
-
-void registerGameAppFactories()
-{
-	SW_GC.registerFactory<Rider>();
-	SW_GC.registerFactory<GasCloud>();
-	SW_GC.registerFactory<Coin>();
-	SW_GC.registerFactory<BackGround>();
-}
 
 class PlayScene : public SWGameScene
 {
@@ -220,7 +208,6 @@ public:
 			cam->setTargetLayerName( "UI" );
 			cam->setDepth( 1 );
 		}
-
 	}
 
 	Coin* newCoin()

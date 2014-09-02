@@ -89,9 +89,11 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="GameHeaders.h" />
     <ClInclude Include="GameValues.h" />
     <ClInclude Include="GasCloud.h" />
     <ClInclude Include="IntroScene.h" />
+    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Rider.h" />
     <ClInclude Include="stdafx.h" />
@@ -101,6 +103,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="GasCloud.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="Rider.cpp" />
     <ClCompile Include="stdafx.cpp" />

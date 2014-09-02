@@ -1,0 +1,2 @@
+textures/lightning.png
+lightning 0.1 lightning_0,lightning_1,lightning_2,lightning_3,lightning_4,lightning_5

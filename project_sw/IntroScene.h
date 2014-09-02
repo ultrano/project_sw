@@ -2,6 +2,7 @@
 #define IntroScene_h__
 
 #include "SWHeaders.h"
+#include "GameHeaders.h"
 
 class IntroScene : public SWGameScene
 {
@@ -19,6 +20,7 @@ public:
 	void onAwake()
 	{
 		SW_GC.registerFactory<IntroScene>();
+		registerGameAppFactories();
 
 		//! set default camera
 		{
@@ -50,7 +52,7 @@ public:
 			SWActSequence* seq = new SWActSequence();
 			seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,1 ) ) );
 			seq->addAct( new SWActColorTo( 2, tcolor( 1,1,1,0 ) ) );
-			seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
+			//seq->addAct( new SWActDelegate( GetDelegator( onEndLogo ) ) );
 			action->setAct( "logo", seq );
 			action->play( "logo" );
 
@@ -58,12 +60,32 @@ public:
 			transform->setLocalPosition( tvec3::zero );
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
+
+		//! obstacle test
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<Obstacle>();
+			go->setName( "Obstacle" );
+		}
 	}
 
 	void onEndLogo()
 	{
 		SW_GC.setNextScene( new PlayScene );
-		//SW_GC.setNextScene( new TestScene );
+	}
+
+	void onUpdate()
+	{
+		tvec2 touch = SWInput.getTouchXY();
+		SWCamera* camera = findGO( "Camera" )->getComponent<SWCamera>();
+		tvec3 worldPos = camera->screenToWorld( tvec3( touch.x, touch.y, 0 ) );
+
+		static int num = 0;
+		SWRectCollider2D* collider = findGO( "Obstacle" )->getComponent<SWRectCollider2D>();
+		if ( collider->containPoint( worldPos.xy() ) )
+		{
+			SWLog( "contained %d", num++ );
+		}
 	}
 };
 
