@@ -26,8 +26,10 @@ SWFontRenderer::~SWFontRenderer()
 
 void SWFontRenderer::setText( const tstring& text )
 {
-	m_text = text;
-	m_textChanged = true;
+	if ( m_textChanged = (m_text != text) )
+	{
+		m_text = text;
+	}
 }
 
 const tstring& SWFontRenderer::getText() const

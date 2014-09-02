@@ -94,7 +94,6 @@
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Rider.h" />
-    <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -104,7 +103,6 @@
     <ClCompile Include="GasCloud.cpp" />
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="Rider.cpp" />
-    <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>

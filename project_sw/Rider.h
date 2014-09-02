@@ -29,6 +29,7 @@ public:
 protected:
 
 	virtual void onAwake();
+	virtual void onStart();
 	virtual void onRemove();
 	virtual void onUpdate();
 	virtual void onFixedRateUpdate();
@@ -39,6 +40,8 @@ private:
 	State m_state;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
+	SWWeakRef<SWFontRenderer> m_meterScore;
+	SWWeakRef<SWFontRenderer> m_coinScore;
 	tuint m_score;
 
 };

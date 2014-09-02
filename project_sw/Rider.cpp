@@ -41,6 +41,14 @@ void Rider::onAwake()
 	trans()->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
 
 	m_score = 0;
+
+}
+
+void Rider::onStart()
+{
+	__super::onStart();
+	m_meterScore = SW_GC.getScene()->findGO( "MeterScore" )->getComponent<SWFontRenderer>();
+	m_coinScore  = SW_GC.getScene()->findGO( "CoinScore" )->getComponent<SWFontRenderer>();
 }
 
 void Rider::onRemove()
@@ -84,7 +92,6 @@ void Rider::onUpdate()
 
 void Rider::onFixedRateUpdate()
 {
-
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
 	body()->addForce( tvec2( RunningForce,0 ) );
 
@@ -140,6 +147,10 @@ void Rider::onFixedRateUpdate()
 		}
 		break;
 	}
+
+	char buf[32] = {0};
+	sprintf( &buf[0], "%d Meters", (tuint)getComponent<SWTransform>()->getPosition().x/100 );
+	m_meterScore()->setText( &buf[0] );
 }
 
 void Rider::onCollision( SWCollision2D* coll )
@@ -150,11 +161,8 @@ void Rider::onCollision( SWCollision2D* coll )
 	if ( !isCoin ) return;
 
 	m_score += 1;
-	SWLog( "scroe: %d", m_score );
 	char buf[64] = {0};
-	sprintf( &buf[0], "%d", m_score );
+	sprintf( &buf[0], "%d Coins", m_score );
 
-	SWGameObject* coinScore = SW_GC.getScene()->findGO( "CoinScore" );
-	SWFontRenderer* renderer = coinScore->getComponent<SWFontRenderer>();
-	renderer->setText( &buf[0] );
+	m_coinScore()->setText( &buf[0] );
 }

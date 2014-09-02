@@ -9,7 +9,6 @@
 #include "GasCloud.h"
 #include "Coin.h"
 #include "BackGround.h"
-#include "ScoreBoard.h"
 
 void registerGameAppFactories()
 {
@@ -17,7 +16,6 @@ void registerGameAppFactories()
 	SW_GC.registerFactory<GasCloud>();
 	SW_GC.registerFactory<Coin>();
 	SW_GC.registerFactory<BackGround>();
-	SW_GC.registerFactory<ScoreBoard>();
 }
 
 class PlayScene : public SWGameScene
@@ -172,26 +170,44 @@ public:
 			go->setName( "GasCloudPool" );
 			go->setActive( false );
 		}
+		
+		//! font info & texture
+		SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
+		SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test_0.png" );
 
-		//! UI
+		//! UI Meter Score
+		{
+			SWGameObject* go = new SWGameObject;
+			go->setName( "MeterScore" );
+			go->setLayerName( "UI" );
+
+			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+			renderer->setFontInfo( info() );
+			renderer->setFontTexture( texture() );
+			renderer->setColor( tcolor( 1, 0, 1, 1 ) );
+			renderer->setText( "0 Meters" );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2), 0 ) );
+		}
+
+		//! UI Coin Score
 		{
 			SWGameObject* go = new SWGameObject;
 			go->setName( "CoinScore" );
 			go->setLayerName( "UI" );
 
-			SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
-			SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test_0.png" );
 			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
 			renderer->setFontInfo( info() );
 			renderer->setFontTexture( texture() );
-			renderer->setText( "ABCDEFGHIJKLMNOPQRSTUVWXYZ" );
+			renderer->setColor( tcolor( 1, 1, 0, 1 ) );
+			renderer->setText( "0 Coins" );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2)-info()->getLineHeight(), 0 ) );
-			//trans->setPosition( tvec3::zero );
+			trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2) - info()->getLineHeight(), 0 ) );
 		}
 		
-		//! UI camera
+		//! UI Camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
 
@@ -211,17 +227,16 @@ public:
 	{
 		SWLog( "make new coin" );
 		SWGameObject* go = new SWGameObject();
+		go->setName( "Coin" );
 		return go->addComponent<Coin>();
 	}
 
 	Coin* getCoin()
 	{
 		Coin* coin = NULL;
-		SWTransform* bankTrans = findGO( "Bank" )->getComponent<SWTransform>();
-
-		if ( SWTransform* coinTrans = bankTrans->getChildAt(0) )
+		if ( SWGameObject* coinGO = findGO( "Bank/Coin" ) )
 		{
-			coin = coinTrans->getComponent<Coin>();
+			coin = coinGO->getComponent<Coin>();
 		}
 		else
 		{

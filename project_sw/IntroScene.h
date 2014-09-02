@@ -30,10 +30,11 @@ public:
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
-			cam->setClearColor( tcolor( 1,1,1,1 ) );
+			cam->setClearColor( tcolor( 0,0,0,1 ) );
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
+		//! set logo sprite
 		{
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Logo" );
@@ -56,22 +57,6 @@ public:
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( tvec3::zero );
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
-		}
-		
-		//! UI
-		{
-			SWGameObject* go = new SWGameObject;
-
-			SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/test.fnt" );
-			SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/test_0.png" );
-			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
-			renderer->setFontInfo( info() );
-			renderer->setFontTexture( texture() );
-			renderer->setText( "ABCDEFGHIJKLMNOPQRSTUVWXYZ" );
-
-			SWTransform* trans = go->getComponent<SWTransform>();
-			//trans->setPosition( tvec3( -screenSize.x/2, (screenSize.y/2)-info()->getLineHeight(), 0 ) );
-			trans->setPosition( tvec3::zero );
 		}
 	}
 
