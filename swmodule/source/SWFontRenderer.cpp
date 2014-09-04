@@ -10,11 +10,14 @@
 #include "SWAssets.h"
 #include "SWMesh.h"
 #include "SWFontInfo.h"
+#include "SWDefines.h"
 
 SWFontRenderer::SWFontRenderer( factory_constructor )
 	: m_mesh( new SWMesh() )
 	, m_color( 1,1,1,1 )
 	, m_textChanged( false )
+	, m_alignH( SW_Align_Left )
+	, m_alignV( SW_Align_Top )
 {
 	SWHardRef<SWShader> shader = SWAssets.loadShader( "system/font.shader" );
 	m_material = new SWMaterial( shader() );
@@ -67,6 +70,34 @@ const tcolor& SWFontRenderer::getColor() const
 	return m_color;
 }
 
+void SWFontRenderer::setAlignH( int align )
+{
+	if ( align == SW_Align_Center || align == SW_Align_Left || align == SW_Align_Right )
+	{
+		m_alignH = align;
+		m_textChanged = true;
+	}
+}
+
+int  SWFontRenderer::getAlignH() const
+{
+	return m_alignH;
+}
+
+void SWFontRenderer::setAlignV( int align )
+{
+	if ( align == SW_Align_Center || align == SW_Align_Top || align == SW_Align_Bottom )
+	{
+		m_alignV = align;
+		m_textChanged = true;
+	}
+}
+
+int  SWFontRenderer::getAlignV() const
+{
+	return m_alignV;
+}
+
 void SWFontRenderer::onAwake()
 {
 	__super::onAwake();
@@ -107,12 +138,40 @@ void SWFontRenderer::updateMesh()
 	mesh->resizeTexCoordStream( m_text.size() * 4 );
 	mesh->resizeTriangleStream( m_text.size() * 2 );
 
-	tuint32 lastID = 0;
-	tvec2 cursor(0,0);
+	tuint32 lastID = '\r';
+	tvec2 cursor( 0, 0 );
 	tvec2 scale( m_fontInfo()->getScaleW(), m_fontInfo()->getScaleH() );
+
+	float lineHeight = getLinesHeight( m_text );
+	switch ( m_alignV )
+	{
+	case SW_Align_Top    : cursor.y = 0; break;
+	case SW_Align_Bottom : cursor.y = lineHeight; break;
+	case SW_Align_Center : cursor.y = lineHeight/2.0f; break;
+	}
+
 	for ( tuint i = 0 ; i < m_text.size() ; ++i )
 	{
 		tuint32 id = m_text[i];
+
+		if ( lastID == (int)'\n' || lastID == (int)'\r' )
+		{
+			float lineWidth = (float)getLineWidth( m_text, i );
+			switch ( m_alignH )
+			{
+			case SW_Align_Left   : cursor.x = 0; break;
+			case SW_Align_Right  : cursor.x = -lineWidth; break;
+			case SW_Align_Center : cursor.x = -lineWidth/2.0f; break;
+			}
+			cursor.y -= m_fontInfo()->getLineHeight();
+		}
+
+		if ( id == (int)'\n' || id == (int)'\r' )
+		{
+			lastID = id;
+			continue;
+		}
+
 		SWFontInfo::Char*    fontChar = m_fontInfo()->getChar( id );
 		if ( fontChar == NULL ) continue;
 
@@ -141,6 +200,36 @@ void SWFontRenderer::updateMesh()
 		mesh->setTexCoord( base+2, tvec2(                     fontChar->x/scale.x, (fontChar->y + fontChar->height)/scale.y ) );
 		mesh->setTexCoord( base+3, tvec2( (fontChar->x + fontChar->width)/scale.x, (fontChar->y + fontChar->height)/scale.y ) );
 	}
+}
+
+tuint SWFontRenderer::getLineWidth( const tstring& text, tuint offset ) const
+{
+	tuint length = 0;
+	tint32 lastID = 0;
+	for ( tuint i = offset ; i < text.size() ; ++i )
+	{
+		tint32 id = text[i];
+		if ( id == (int)'\n' || id == (int)'\r' ) break;
+
+		SWFontInfo::Char* fonstChar = m_fontInfo()->getChar( id );
+		SWFontInfo::Kerning* kerning = m_fontInfo()->getKerning( lastID, id );
+
+		length += fonstChar? fonstChar->xadvence : 0;
+		length += kerning? kerning->amount : 0;
+	}
+
+	return length;
+}
+
+tuint SWFontRenderer::getLinesHeight( const tstring& text ) const
+{
+	tuint lineCount = (text.size() > 0);
+	for ( tuint i = 0 ; i < text.size() ; ++i )
+	{
+		char id = text[i];
+		if ( id == '\n' || id == '\r' ) ++lineCount;
+	}
+	return lineCount * m_fontInfo()->getLineHeight();
 }
 
 void SWFontRenderer::serialize( SWObjectWriter* ow )

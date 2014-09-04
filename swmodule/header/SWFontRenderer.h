@@ -28,6 +28,12 @@ public:
 	void setColor( const tcolor& color );
 	const tcolor& getColor() const;
 
+	void setAlignH( int align );
+	int  getAlignH() const;
+
+	void setAlignV( int align );
+	int  getAlignV() const;
+
 protected:
 
 	virtual void onAwake();
@@ -38,11 +44,15 @@ protected:
 private:
 
 	void updateMesh();
+	tuint getLineWidth( const tstring& text, tuint offset ) const;
+	tuint getLinesHeight( const tstring& text ) const;
 
 private:
 	
 	SWHardRef<SWMesh>     m_mesh;
 	SWHardRef<SWMaterial> m_material;
+	int m_alignH;
+	int m_alignV;
 	bool m_textChanged;
 	
 	tstring m_text;
