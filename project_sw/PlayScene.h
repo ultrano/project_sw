@@ -159,7 +159,7 @@ public:
 			go->setActive( false );
 		}
 		
-		//! font info & texture
+		//! font info & font texture
 		SWHardRef<SWFontInfo> info = SWAssets.loadFontInfo( "fonts/Jetpackia.fnt" );
 		SWHardRef<SWTexture> texture = SWAssets.loadTexture( "fonts/Jetpackia.png" );
 
