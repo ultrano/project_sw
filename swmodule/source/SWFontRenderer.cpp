@@ -163,12 +163,12 @@ void SWFontRenderer::updateMesh()
 			case SW_Align_Right  : cursor.x = -lineWidth; break;
 			case SW_Align_Center : cursor.x = -lineWidth/2.0f; break;
 			}
-			cursor.y -= m_fontInfo()->getLineHeight();
 		}
 
 		if ( id == (int)'\n' || id == (int)'\r' )
 		{
 			lastID = id;
+			cursor.y -= m_fontInfo()->getLineHeight();
 			continue;
 		}
 

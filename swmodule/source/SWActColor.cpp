@@ -4,6 +4,7 @@
 #include "SWAction.h"
 #include "SWTime.h"
 #include "SWSpriteRenderer.h"
+#include "SWFontRenderer.h"
 #include "SWObjectStream.h"
 
 SWActColor::SWActColor( float duration, const tcolor& from, const tcolor& to )
@@ -41,17 +42,24 @@ void SWActColor::onUpdate()
 	}
 
 	m_spendTime += delta;
-
-	SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
-	if ( renderer == NULL ) return;
 	
 	float rate = (m_spendTime/m_duration);
 	float r = m_from.r + ((m_to.r - m_from.r) * rate);
 	float g = m_from.g + ((m_to.g - m_from.g) * rate);
 	float b = m_from.b + ((m_to.b - m_from.b) * rate);
 	float a = m_from.a + ((m_to.a - m_from.a) * rate);
-
-	renderer->setColor( tcolor( r, g, b, a ) );
+	
+	//! check sprite renderer
+	{
+		SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
+		if ( renderer ) renderer->setColor( tcolor( r, g, b, a ) );
+	}
+	
+	//! check fonst renderer
+	{
+		SWFontRenderer* renderer = getAction()->getComponent<SWFontRenderer>();
+		if ( renderer ) renderer->setColor( tcolor( r, g, b, a ) );
+	}
 }
 
 void SWActColor::serialize( SWObjectWriter* ow )
@@ -89,9 +97,18 @@ SWActColorTo::~SWActColorTo()
 void SWActColorTo::onStart()
 {
 	__super::onStart();
-	SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
-	if ( renderer == NULL ) return;
-	m_from = renderer->getColor();
+
+	//! check sprite renderer
+	{
+		SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
+		if ( renderer ) m_from = renderer->getColor();
+	}
+	
+	//! check fonst renderer
+	{
+		SWFontRenderer* renderer = getAction()->getComponent<SWFontRenderer>();
+		if ( renderer ) m_from = renderer->getColor();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,9 +130,18 @@ SWActColorFrom::~SWActColorFrom()
 void SWActColorFrom::onStart()
 {
 	__super::onStart();
-	SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
-	if ( renderer == NULL ) return;
-	m_to = renderer->getColor();
+	
+	//! check sprite renderer
+	{
+		SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
+		if ( renderer ) m_to = renderer->getColor();
+	}
+	
+	//! check fonst renderer
+	{
+		SWFontRenderer* renderer = getAction()->getComponent<SWFontRenderer>();
+		if ( renderer ) m_to = renderer->getColor();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -137,9 +163,19 @@ SWActColorBy::~SWActColorBy()
 void SWActColorBy::onStart()
 {
 	__super::onStart();
-	SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
-	if ( renderer == NULL ) return;
-	m_from = renderer->getColor();
+
+	//! check sprite renderer
+	{
+		SWSpriteRenderer* renderer = getAction()->getComponent<SWSpriteRenderer>();
+		if ( renderer ) m_from = renderer->getColor();
+	}
+	
+	//! check fonst renderer
+	{
+		SWFontRenderer* renderer = getAction()->getComponent<SWFontRenderer>();
+		if ( renderer ) m_from = renderer->getColor();
+	}
+
 	m_to.r = m_from.r + (m_by.r* m_duration);
 	m_to.g = m_from.g + (m_by.g* m_duration);
 	m_to.b = m_from.b + (m_by.b* m_duration);

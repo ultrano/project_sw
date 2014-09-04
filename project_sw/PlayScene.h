@@ -21,8 +21,9 @@ public:
 		SettingRiderShadow,
 		SettingRiderCamera,
 		PlacingCoinBasket,
-		Play,
-		ReadyToPlay,
+		SettingUIs,
+		Standby,
+		Playing,
 	};
 
 	State m_state;
@@ -152,6 +153,22 @@ public:
 					go->setName( "GasCloudPool" );
 					go->setActive( false );
 				}
+
+				//! timer for making coin-patterns
+				{
+					SWGameObject* go = new SWGameObject();
+					go->setName( "CoinTimer" );
+					go->setActive( false );
+
+					SWHardRef<SWAction> action = go->addComponent<SWAction>();
+					SWActSequence* seq = new SWActSequence();
+					seq->addAct( new SWActDelay( 6 ) );
+					seq->addAct( new SWActDelegate( GetDelegator( makeCoinPattern ) ) );
+					action()->setAct( "makeCoin", new SWActRepeat( seq ) );
+					action()->play( "makeCoin" );
+				}
+
+				changeState( LoaningCoins );
 			}
 			break;
 		case LoaningCoins :
@@ -241,10 +258,87 @@ public:
 					m_coinBasket()->setGravityScale( tvec2::zero );
 				}
 
-				changeState( State::ReadyToPlay );
+				changeState( State::SettingUIs );
 			}
 			break;
-		case Ready :
+			
+		case SettingUIs :
+			{
+				//! Background Looper
+				{
+					m_background = new SWGameObject();
+					m_background()->addComponent<BackGround>();
+				}
+
+				//! UI Meter Score
+				{
+					SWGameObject* go = new SWGameObject;
+					go->setName( "MeterScore" );
+					go->setLayerName( "UI" );
+
+					SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+					renderer->setFontInfo( m_fontInfo() );
+					renderer->setFontTexture( m_fontTexture() );
+					renderer->setColor( tcolor( 1, 0, 1, 1 ) );
+					renderer->setText( "0 Meters" );
+
+					SWTransform* trans = go->getComponent<SWTransform>();
+					trans->setPosition( tvec3( -m_screenSize.x/2, (m_screenSize.y/2), 0 ) );
+				}
+
+				//! UI Coin Score
+				{
+					SWGameObject* go = new SWGameObject;
+					go->setName( "CoinScore" );
+					go->setLayerName( "UI" );
+
+					SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+					renderer->setFontInfo( m_fontInfo() );
+					renderer->setFontTexture( m_fontTexture() );
+					renderer->setColor( tcolor( 1, 1, 0, 1 ) );
+					renderer->setText( "0 Coins" );
+
+					SWTransform* trans = go->getComponent<SWTransform>();
+					trans->setPosition( tvec3( -m_screenSize.x/2, (m_screenSize.y/2) - m_fontInfo()->getLineHeight(), 0 ) );
+				}
+
+				//! World UI "TOUCH ANYWHERE TO PLAY"
+				{
+					SWGameObject* go = new SWGameObject;
+					go->setName( "TATP" );
+
+					SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+					renderer->setFontInfo( m_fontInfo() );
+					renderer->setFontTexture( m_fontTexture() );
+					renderer->setColor( tcolor( 1, 1, 1, 1 ) );
+					renderer->setText( "TOUCH ANYWHERE TO PLAY" );
+
+					SWTransform* trans = go->getComponent<SWTransform>();
+					trans->setPosition( tvec3( 0, GroundY, 0 ) );
+
+					SWAction* action = go->addComponent<SWAction>();
+					//! act removing
+					{
+						SWActSequence* seq = new SWActSequence();
+						seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,1 ) ) );
+						seq->addAct( new SWActDelay( 4 ) );
+						seq->addAct( new SWActDestroy() );
+						action->setAct( "removing", seq );
+					}
+					//! act blinking
+					{
+						SWActSequence* seq = new SWActSequence();
+						seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,1 ) ) );
+						seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,0 ) ) );
+						action->setAct( "blinking", new SWActRepeat( seq ) );
+					}
+				}
+
+				changeState( Standby );
+			}
+			break;
+
+		case Standby :
 			{
 				if ( SWInput.getTouchState() == SW_TouchPress )
 				{
@@ -252,8 +346,9 @@ public:
 					findGO( "Rider" )->setActive( true );
 					findGO( "RiderShadow" )->setActive( true );
 					findGO( "CoinTimer" )->setActive( true );
-					SWAction* action = findGO( "TATP" )->getComponent<SWAction>();
-					action->play( "remove" );
+					findGO( "TATP" )->getComponent<SWAction>()->play( "removing" );
+
+					changeState( Playing );
 				}
 			}
 			break;
@@ -266,7 +361,11 @@ public:
 			//! state pause processing
 			switch ( m_state )
 			{
-
+			case SettingUIs :
+				{
+					findGO( "TATP" )->getComponent<SWAction>()->play( "blinking" );
+				}
+				break;
 			}
 			
 			m_state = m_nextState;
@@ -304,6 +403,13 @@ public:
 					renderer->setText( "PLACING COIN BASKET" );
 				}
 				break;
+			case Standby :
+				{
+					findGO( "RiderCamera" )->setActive( true );
+					findGO( "Logo" )->destroy();
+					findGO( "InitState" )->destroy();
+				}
+				break;
 			}
 		}
 	}
@@ -312,82 +418,6 @@ public:
 	{
 		m_nextState = state;
 		m_stateChanged = true;
-	}
-
-	void readyToPlay()
-	{
-		//! timer for making coin-patterns
-		{
-			SWGameObject* go = new SWGameObject();
-			go->setName( "CoinTimer" );
-			go->setActive( false );
-
-			SWHardRef<SWAction> action = go->addComponent<SWAction>();
-			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActDelay( 6 ) );
-			seq->addAct( new SWActDelegate( GetDelegator( makeCoinPattern ) ) );
-			action()->setAct( "makeCoin", new SWActRepeat( seq ) );
-			action()->play( "makeCoin" );
-		}
-
-		//! background looper
-		{
-			m_background = new SWGameObject();
-			m_background()->addComponent<BackGround>();
-		}
-
-		//! UI Meter Score
-		{
-			SWGameObject* go = new SWGameObject;
-			go->setName( "MeterScore" );
-			go->setLayerName( "UI" );
-
-			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
-			renderer->setFontInfo( m_fontInfo() );
-			renderer->setFontTexture( m_fontTexture() );
-			renderer->setColor( tcolor( 1, 0, 1, 1 ) );
-			renderer->setText( "0 Meters" );
-
-			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( -m_screenSize.x/2, (m_screenSize.y/2), 0 ) );
-		}
-
-		//! UI Coin Score
-		{
-			SWGameObject* go = new SWGameObject;
-			go->setName( "CoinScore" );
-			go->setLayerName( "UI" );
-
-			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
-			renderer->setFontInfo( m_fontInfo() );
-			renderer->setFontTexture( m_fontTexture() );
-			renderer->setColor( tcolor( 1, 1, 0, 1 ) );
-			renderer->setText( "0 Coins" );
-
-			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( -m_screenSize.x/2, (m_screenSize.y/2) - m_fontInfo()->getLineHeight(), 0 ) );
-		}
-		
-		//! World UI "TOUCH ANYWHERE TO PLAY"
-		{
-			SWGameObject* go = new SWGameObject;
-			go->setName( "TATP" );
-			
-			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
-			renderer->setFontInfo( m_fontInfo() );
-			renderer->setFontTexture( m_fontTexture() );
-			renderer->setColor( tcolor( 1, 1, 1, 1 ) );
-			renderer->setText( "TOUCH ANYWHERE TO PLAY" );
-
-			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( 0, GroundY, 0 ) );
-
-			SWAction* action = go->addComponent<SWAction>();
-			SWActSequence* seq = new SWActSequence();
-			seq->addAct( new SWActDelay( 6 ) );
-			seq->addAct( new SWActDestroy() );
-			action->setAct( "remove", seq );
-		}
 	}
 
 	void riderCameraUpdate( SWGameObject* go )

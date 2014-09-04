@@ -52,7 +52,6 @@ void Coin::onAwake()
 
 	SWAction* action = gameObject()->addComponent<SWAction>();
 	action->setAct( "spin", new SWActRepeat( act ) );
-	action->play( "spin" );
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 5 );
