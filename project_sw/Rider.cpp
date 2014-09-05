@@ -40,6 +40,22 @@ void Rider::onAwake()
 	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
 	trans()->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
 
+	//! jump effect test
+	{
+		SWGameObject* go = new SWGameObject();
+		m_jumpEffect = go;
+		SWHardRef<SWSpriteAnimation> aniData = SWAssets.loadSpriteAnimation( "animations/effects_anim.txt" );
+
+		go->addComponent<SWSpriteRenderer>();
+
+		SWAction* action = go->addComponent<SWAction>();
+		SWActAnimate* anim = new SWActAnimate( 1.5f, aniData()->getSequenceByName( "jump_effect" ) );
+		SWActSequence* seq = new SWActSequence();
+		seq->addAct( anim );
+		seq->addAct( new SWActDelegate( GetDelegator( collectJumpEffect ) ) );
+		action->setAct( "jump_effect", seq );
+	}
+
 	m_score = 0;
 
 }
@@ -111,6 +127,15 @@ void Rider::onFixedRateUpdate()
 			{
 				body()->addForce( tvec2( 0, JumpForce ) );
 				m_state = Gliding;
+				
+				m_jumpEffect()->setActive( true );
+				SWAction* action = m_jumpEffect()->getComponent<SWAction>();
+				action->play( "jump_effect" );
+
+				SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
+				tvec3 pos = getComponent<SWTransform>()->getPosition();
+				pos.y = GroundY;
+				trans->setPosition( pos );
 			}
 		}
 		break;
@@ -148,21 +173,22 @@ void Rider::onFixedRateUpdate()
 		break;
 	}
 
-	char buf[32] = {0};
-	sprintf( &buf[0], "%d Meters", (tuint)getComponent<SWTransform>()->getPosition().x/100 );
-	m_meterScore()->setText( &buf[0] );
+	tuint meters = (tuint)getComponent<SWTransform>()->getPosition().x/100;
+	m_meterScore()->setText( "%d Meters", meters );
 }
 
 void Rider::onCollision( SWCollision2D* coll )
 {
 	if ( !coll->collider.isValid() ) return;
+	
 	SWGameObject* go = coll->collider()->gameObject();
 	if ( go->getName() == "Coin" )
 	{
-		m_score += 1;
-		char buf[64] = {0};
-		sprintf( &buf[0], "%d Coins", m_score );
-
-		m_coinScore()->setText( &buf[0] );
+		m_coinScore()->setText( "%d Coins", ++m_score );
 	}
+}
+
+void Rider::collectJumpEffect()
+{
+	m_jumpEffect()->setActive( false );
 }

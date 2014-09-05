@@ -173,11 +173,8 @@ public:
 			break;
 		case LoaningCoins :
 			{
-				char buf[64] = {0};
-				sprintf( &buf[0], "THE BANK IS LOANING COINS[%d/%d]", m_loanedCoins, LoanCoins );
-
 				SWFontRenderer* renderer = findGO( "InitState" )->getComponent<SWFontRenderer>();
-				renderer->setText( &buf[0] );
+				renderer->setText( "THE BANK IS LOANING COINS[%d/%d]", m_loanedCoins, LoanCoins );
 
 				newCoin()->deposit();
 				if ( ++m_loanedCoins >= LoanCoins ) changeState( State::SettingRider );

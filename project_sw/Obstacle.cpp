@@ -25,7 +25,6 @@ void Obstacle::onAwake()
 	bunch->addAct( new SWActRepeat( act ) );
 	bunch->addAct( new SWActRepeat( rot ) );
 	action->setAct( "lightning", bunch );
-	action->play( "lightning" );
 
 	SWTransform* trans = getComponent<SWTransform>();
 	trans->setPosition( tvec3( 100, 0, 0 ) );

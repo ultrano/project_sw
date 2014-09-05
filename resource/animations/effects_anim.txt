@@ -1,0 +1,2 @@
+textures/effects.png
+jump_effect 0.1 jump_effect_0,jump_effect_1,jump_effect_2,jump_effect_3,jump_effect_4

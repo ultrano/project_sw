@@ -37,11 +37,16 @@ protected:
 
 private:
 
+	void collectJumpEffect();
+
+private:
+
 	State m_state;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
 	SWWeakRef<SWFontRenderer> m_meterScore;
 	SWWeakRef<SWFontRenderer> m_coinScore;
+	SWWeakRef<SWGameObject> m_jumpEffect;
 	tuint m_score;
 
 };

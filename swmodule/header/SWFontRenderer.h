@@ -16,6 +16,7 @@ public:
 	SWFontRenderer( factory_constructor );
 	~SWFontRenderer();
 	
+	void setText( const char* format, ... );
 	void setText( const tstring& text );
 	const tstring& getText() const;
 

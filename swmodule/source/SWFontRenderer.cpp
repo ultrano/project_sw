@@ -1,4 +1,5 @@
 #include "SWFontRenderer.h"
+#include <stdarg.h>
 #include "SWGameObject.h"
 #include "SWTransform.h"
 #include "SWMaterial.h"
@@ -25,6 +26,33 @@ SWFontRenderer::SWFontRenderer( factory_constructor )
 
 SWFontRenderer::~SWFontRenderer()
 {
+}
+
+void SWFontRenderer::setText( const char* format, ... )
+{
+	const int size = 256;
+    char stack[size];
+	char* buffer = &stack[0];
+
+    va_list args;
+    va_start( args, format );
+    int ret = vsprintf( buffer,format, args );
+	if ( ret < 0 )
+	{
+		tstring heap;
+		do
+		{
+			heap.resize( heap.size() + size );
+			ret = vsprintf( &heap[0],format, args );
+		} while ( ret < 0 );
+		buffer = &heap[0];
+	}
+    va_end( args );
+	
+	if ( m_textChanged = (m_text != buffer) )
+	{
+		m_text = buffer;
+	}
 }
 
 void SWFontRenderer::setText( const tstring& text )
