@@ -40,7 +40,7 @@ void Rider::onAwake()
 	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
 	trans()->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
 
-	//! jump effect test
+	//! jump effect
 	{
 		SWGameObject* go = new SWGameObject();
 		m_jumpEffect = go;

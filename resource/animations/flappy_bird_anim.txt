@@ -1,0 +1,2 @@
+textures/flappy_bird.png
+flapping 0.1 bird_0,bird_1,bird_0,bird_2,bird_0

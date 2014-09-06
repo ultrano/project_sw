@@ -494,7 +494,7 @@ public:
 		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( &buf[0] );
 		SWInputStreamReader reader( is() );
 		
-		tvec2 step(0,RoofY);
+		tvec2 step(0, SWMath.randomInt( (RoofY+GroundY)/2, RoofY) );
 		tstring line;
 		while ( reader.readLine( line ) )
 		{
