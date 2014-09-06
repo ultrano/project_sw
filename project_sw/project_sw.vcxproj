@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="GameHeaders.h" />
     <ClInclude Include="GameValues.h" />
@@ -96,16 +97,19 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Rider.h" />
+    <ClInclude Include="CharacterState.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="GasCloud.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="project_sw.cpp" />
     <ClCompile Include="Rider.cpp" />
+    <ClCompile Include="CharacterState.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ Coin::~Coin()
 
 void Coin::deposit()
 {
-	SWTransform* trans = SW_GC.getScene()->findGO( "Bank" )->getComponent<SWTransform>();
+	SWTransform* trans = SW_GC.getScene()->findGO( "Pool" )->getComponent<SWTransform>();
 	getComponent<SWTransform>()->setParent( trans );
 
 	SWAction* action = getComponent<SWAction>();
@@ -24,7 +24,8 @@ void Coin::deposit()
 
 void Coin::withDraw()
 {
-	getComponent<SWTransform>()->setParent( NULL );
+	SWTransform* trans = SW_GC.getScene()->findGO( "Coins" )->getComponent<SWTransform>();
+	getComponent<SWTransform>()->setParent( trans );
 
 	SWAction* action = getComponent<SWAction>();
 	action->play( "spin" );
@@ -40,7 +41,7 @@ void Coin::onAwake()
 	SWSpriteRenderer* renderer = gameObject()->addComponent<SWSpriteRenderer>();
 
 	//! sharing mesh, coin is same appearance.
-	SWGameObject* coinGO = SW_GC.getScene()->findGO( "Bank/Coin" );
+	SWGameObject* coinGO = SW_GC.getScene()->findGO( "Pool/Coin" );
 	if ( coinGO )
 	{
 		SWSpriteRenderer* spriteRenderer = coinGO->getComponent<SWSpriteRenderer>();
@@ -55,6 +56,8 @@ void Coin::onAwake()
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 5 );
+
+	deposit();
 }
 
 void Coin::onFixedRateUpdate()

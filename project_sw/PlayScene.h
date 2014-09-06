@@ -17,9 +17,9 @@ public:
 		Ready,
 		ReadyPools,
 		LoaningCoins,
-		SettingRider,
-		SettingRiderShadow,
-		SettingRiderCamera,
+		SettingCharacter,
+		SettingCharacterShadow,
+		SettingWorldCamera,
 		PlacingCoinBasket,
 		SettingUIs,
 		Standby,
@@ -30,7 +30,7 @@ public:
 	State m_nextState;
 	bool  m_stateChanged;
 
-	SWWeakRef<Rider> m_rider;
+	SWWeakRef<SWTransform> m_charTrans;
 	SWWeakRef<SWCamera> m_camera;
 
 	SWWeakRef<SWRigidBody2D> m_coinBasket;
@@ -140,18 +140,17 @@ public:
 		case None : changeState( ReadyPools ); break;
 		case ReadyPools :
 			{
-				//! coin bank (for pooling)
+				//! pool for game objects
 				{
 					SWGameObject* go = new SWGameObject();
-					go->setName( "Bank" );
+					go->setName( "Pool" );
 					go->setActive( false );
 				}
 
-				//! gas cloud pool
+				//! coins parent object when it is activated
 				{
 					SWGameObject* go = new SWGameObject();
-					go->setName( "GasCloudPool" );
-					go->setActive( false );
+					go->setName( "Coins" );
 				}
 
 				//! timer for making coin-patterns
@@ -177,53 +176,53 @@ public:
 				renderer->setText( "THE BANK IS LOANING COINS[%d/%d]", m_loanedCoins, LoanCoins );
 
 				newCoin()->deposit();
-				if ( ++m_loanedCoins >= LoanCoins ) changeState( State::SettingRider );
+				if ( ++m_loanedCoins >= LoanCoins ) changeState( State::SettingCharacter );
 			}
 			break;
 
-		case SettingRider :
+		case SettingCharacter :
 			{
-				//! rider 
+				//! character 
 				{
 					SWGameObject* go = new SWGameObject();
-					go->setName( "Rider" );
+					go->setName( "Character" );
 					go->setActive( false );
 
-					Rider* rider = go->addComponent<Rider>();
+					go->addComponent<Character>();
 					SWTransform* trans = go->getComponent<SWTransform>();
 					trans->setPosition( tvec3( 0,GroundY,0 ) );
-					m_rider = rider;
+					m_charTrans = trans;
 				}
 
-				changeState( State::SettingRiderShadow );
+				changeState( State::SettingCharacterShadow );
 			}
 			break;
 
-		case SettingRiderShadow :
+		case SettingCharacterShadow :
 			{
-				//! rider shadow
+				//! character shadow
 				{
 					SWGameObject* go = new SWGameObject;
-					go->setName( "RiderShadow" );
+					go->setName( "CharacterShadow" );
 					go->setActive( false );
 
 					SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/runner.png" );	
 					SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 					renderer->setSprite( atlas()->find( "shadow" ) );
 
-					go->addUpdateDelegator( GetDelegator( riderShadowUpdate ) );
+					go->addUpdateDelegator( GetDelegator( characterShadowUpdate ) );
 				}
 				
-				changeState( State::SettingRiderCamera );
+				changeState( State::SettingWorldCamera );
 			}
 			break;			
 
-		case SettingRiderCamera :
+		case SettingWorldCamera :
 			{
-				//! rider camera
+				//! world camera
 				{
 					SWGameObject* go = new SWGameObject;
-					go->setName( "RiderCamera" );
+					go->setName( "WorldCamera" );
 					go->setActive( false );
 
 					SWCamera* cam = go->addComponent<SWCamera>();
@@ -233,7 +232,7 @@ public:
 					cam->setClearFlags( SW_Clear_Color );
 					cam->setDepth( 0 );
 
-					go->addUpdateDelegator( GetDelegator( riderCameraUpdate ) );
+					go->addUpdateDelegator( GetDelegator( worldCameraUpdate ) );
 				}
 				
 				changeState( State::PlacingCoinBasket );
@@ -339,9 +338,8 @@ public:
 			{
 				if ( SWInput.getTouchState() == SW_TouchPress )
 				{
-					//m_state = State::SettingRiderShadow;
-					findGO( "Rider" )->setActive( true );
-					findGO( "RiderShadow" )->setActive( true );
+					findGO( "Character" )->setActive( true );
+					findGO( "CharacterShadow" )->setActive( true );
 					findGO( "CoinTimer" )->setActive( true );
 					findGO( "TATP" )->getComponent<SWAction>()->play( "removing" );
 
@@ -376,22 +374,22 @@ public:
 					renderer->setText( "READY POOLS" );
 				}
 				break;
-			case State::SettingRider :
+			case State::SettingCharacter :
 				{
 					SWFontRenderer* renderer = findGO( "InitState" )->getComponent<SWFontRenderer>();
-					renderer->setText( "SETTING A RIDER" );
+					renderer->setText( "SETTING A CHARACTER" );
 				}
 				break;
-			case State::SettingRiderShadow :
+			case State::SettingCharacterShadow :
 				{
 					SWFontRenderer* renderer = findGO( "InitState" )->getComponent<SWFontRenderer>();
-					renderer->setText( "SETTING A SHADOW FOR THE RIDER" );
+					renderer->setText( "SETTING A SHADOW FOR THE CHARACTER" );
 				}
 				break;
-			case State::SettingRiderCamera :
+			case State::SettingWorldCamera :
 				{
 					SWFontRenderer* renderer = findGO( "InitState" )->getComponent<SWFontRenderer>();
-					renderer->setText( "SETTING A CAMERA FOR THE RIDER" );
+					renderer->setText( "SETTING A CAMERA" );
 				}
 				break;
 			case PlacingCoinBasket :
@@ -402,7 +400,7 @@ public:
 				break;
 			case Standby :
 				{
-					findGO( "RiderCamera" )->setActive( true );
+					findGO( "WorldCamera" )->setActive( true );
 					findGO( "Logo" )->destroy();
 					findGO( "InitState" )->destroy();
 				}
@@ -417,10 +415,10 @@ public:
 		m_stateChanged = true;
 	}
 
-	void riderCameraUpdate( SWGameObject* go )
+	void worldCameraUpdate( SWGameObject* go )
 	{
-		if ( m_rider.isValid() == false ) return;
-		tvec3 pos = m_rider()->getComponent<SWTransform>()->getPosition();
+		if ( m_charTrans.isValid() == false ) return;
+		tvec3 pos = m_charTrans()->getPosition();
 		pos.x += 150;
 		pos.y = WorldHeight/2;
 		pos.z = -500;
@@ -432,18 +430,17 @@ public:
 		m_coinBasket()->setPosition( pos.xy() );
 	}
 
-	void riderShadowUpdate( SWGameObject* go )
+	void characterShadowUpdate( SWGameObject* go )
 	{
-		if ( m_rider.isValid() == false ) return;
+		if ( m_charTrans.isValid() == false ) return;
 
-		SWTransform* riderTrans = m_rider()->getComponent<SWTransform>();
 		SWTransform* trans = go->getComponent<SWTransform>();
 
-		tvec3 pos = riderTrans->getPosition();
+		tvec3 pos = m_charTrans()->getPosition();
 		pos.y = GroundY - 20;
 		pos.z -= 1;
 
-		float rate = (RoofY - riderTrans->getPosition().y)/(RoofY - GroundY);
+		float rate = (RoofY - m_charTrans()->getPosition().y)/(RoofY - GroundY);
 
 		SWSpriteRenderer* renderer = go->getComponent<SWSpriteRenderer>();
 		renderer->setColor( tcolor( 1, 1, 1, (rate*rate*0.5f) + 0.2f ) );
@@ -463,7 +460,7 @@ public:
 	Coin* getCoin()
 	{
 		Coin* coin = NULL;
-		if ( SWGameObject* coinGO = findGO( "Bank/Coin" ) )
+		if ( SWGameObject* coinGO = findGO( "Pool/Coin" ) )
 		{
 			coin = coinGO->getComponent<Coin>();
 		}
@@ -477,9 +474,8 @@ public:
 
 	void makeCoinPattern()
 	{
-		SWHardRef<SWTransform> riderTrans = m_rider()->getComponent<SWTransform>();
-		tvec3 pos = riderTrans()->getPosition();
-		float frontFromRider = pos.x + WorldWidth;
+		tvec3 pos = m_charTrans()->getPosition();
+		float frontFromChar = pos.x + WorldWidth;
 		
 		tuint patternNum = 1;
 		char buf[256] = {0};
@@ -499,7 +495,7 @@ public:
 		while ( reader.readLine( line ) )
 		{
 			step.y -= 15;
-			step.x = frontFromRider;
+			step.x = frontFromChar;
 			for ( int i = 0 ; i < line.size() ; ++i )
 			{
 				step.x += 15;

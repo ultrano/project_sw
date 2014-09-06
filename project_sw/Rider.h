@@ -14,7 +14,6 @@ public:
 		Running,
 		Flying,
 		Gliding,
-		Landing,
 	};
 
 public:
@@ -44,9 +43,10 @@ private:
 	State m_state;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
+	SWWeakRef<SWGameObject> m_jumpEffect;
+
 	SWWeakRef<SWFontRenderer> m_meterScore;
 	SWWeakRef<SWFontRenderer> m_coinScore;
-	SWWeakRef<SWGameObject> m_jumpEffect;
 	tuint m_score;
 
 };

@@ -56,7 +56,7 @@ void GasCloud::onAwake()
 
 void GasCloud::goToPool()
 {
-	SWTransform* poolTrans = SW_GC.getScene()->findGO( "GasCloudPool" )->getComponent<SWTransform>();
+	SWTransform* poolTrans = SW_GC.getScene()->findGO( "Pool" )->getComponent<SWTransform>();
 	getComponent<SWTransform>()->setParent( poolTrans );
 }
 

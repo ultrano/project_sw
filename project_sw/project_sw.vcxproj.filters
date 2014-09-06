@@ -47,6 +47,12 @@
     <ClInclude Include="GameHeaders.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterState.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -68,6 +74,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
