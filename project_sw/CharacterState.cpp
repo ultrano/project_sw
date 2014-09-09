@@ -219,7 +219,7 @@ void Bird::onFixedRateUpdate()
 		SWTransform* child = parent->getChildAt( count );
 		tvec3 pos = child->getPosition();
 		tvec3 delta = trans->getPosition() - pos;
-		pos += (delta)/10.0f;
+		//pos += (delta)/10.0f;
 		pos += delta.normal() * 5;
 		if ( delta.xy().length() < 100 ) child->setPosition( pos );
 	}
@@ -228,6 +228,4 @@ void Bird::onFixedRateUpdate()
 
 void Bird::onCollision( SWCollision2D* )
 {
-	gameObject()->addComponent<Runner>();
-	destroy();
 }
