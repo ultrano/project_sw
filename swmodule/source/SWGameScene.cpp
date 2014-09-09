@@ -57,6 +57,11 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 
 void SWGameScene::reserveDestroy( const SWGameObject* go )
 {
+	SWObject::List::iterator itor = m_destroyGOs.begin();
+	for ( ; itor != m_destroyGOs.end() ; ++itor )
+	{
+		if ( go == (*itor)() ) return;
+	}
 	m_destroyGOs.push_back( go );
 }
 

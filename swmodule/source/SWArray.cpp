@@ -31,7 +31,8 @@ void SWArray::add( const SWObject* object )
 void SWArray::remove( unsigned int index )
 {
 	if ( index >= count() ) return;
-	std::remove( m_value.begin(), m_value.end(), m_value[ index ] );
+	Type::iterator last = std::remove( m_value.begin(), m_value.end(), m_value[ index ] );
+	m_value.erase( last, m_value.end() );
 }
 
 void SWArray::clear()

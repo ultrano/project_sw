@@ -43,7 +43,8 @@ void SWAnimationLine::removeKey( int index )
 	while ( ++index < count ) m_keyFrames[ index-1 ] = m_keyFrames[ index ];
 
 	m_keyFrames.resize( count-1 );
-	std::remove( m_aligned.begin(), m_aligned.end(), index );
+	AlignedIndices::iterator last = std::remove( m_aligned.begin(), m_aligned.end(), index );
+	m_aligned.erase( last, m_aligned.end() );
 }
 
 float SWAnimationLine::evaluate( float time )

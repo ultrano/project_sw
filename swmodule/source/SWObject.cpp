@@ -32,6 +32,7 @@ SWObject::SWObject()
 
 SWObject::~SWObject()
 {
+	__this::destroy();
     --getObjectCount();
     SWLog( "SWObject deleted, remains: %d", getObjectCount() );
 }
@@ -63,6 +64,7 @@ void SWObject::destroy()
 	SWObject::List::iterator itor = m_delegates.begin();
 	for ( ; itor != m_delegates.end() ; ++itor )
 	{
+		if ( (*itor).isValid() == false ) continue;
 		SWDelegator* dg = swrtti_cast<SWDelegator>( (*itor)() );
 		dg->destroy();
 	}

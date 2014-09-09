@@ -23,54 +23,50 @@ __SWPhysics2D::~__SWPhysics2D()
 
 void __SWPhysics2D::simulate()
 {
-	SWObject::WList copy;
+	typedef tpair<SWCollider2D*,SWCollider2D*> SuspectPair;
+	typedef tlist<SuspectPair> SuspectPairList;
+	SuspectPairList suspectsList;
 
-	//! filtering invalid colliders
+	SWObject::WList::iterator bodyItor = m_bodies.begin();
+	for ( ; bodyItor != m_bodies.end() ; ++bodyItor )
 	{
-		copy = m_colliders;
-		SWObject::WList::iterator itor = copy.begin();
-		for ( ; itor != copy.end() ; ++itor )
+		SWRigidBody2D* body = swrtti_cast<SWRigidBody2D>( (*bodyItor)() );
+		if ( !body->gameObject()->isActiveInScene() ) continue;
+
+		SWCollider2D* collider1 = body->getComponent<SWCollider2D>();
+		if ( collider1 == NULL ) continue;
+
+		SWObject::WList::iterator colliderItor = m_colliders.begin();
+		for ( ; colliderItor != m_colliders.end() ; ++colliderItor )
 		{
-			SWWeakRef<SWCollider2D> collider = swrtti_cast<SWCollider2D>( (*itor)() );
-			if ( !collider.isValid() ) m_colliders.remove( collider() );
-		}
-	}
-	
-	if ( copy.size() != m_colliders.size() ) copy = m_colliders;
-
-	SWObject::WList::iterator itor1 = copy.begin();
-	for ( ; itor1 != copy.end() ; ++itor1 )
-	{
-		SWCollider2D* collider1 = swrtti_cast<SWCollider2D>( (*itor1)() );
-
-		if ( !collider1->gameObject()->isActiveInScene() ) continue;
-
-		SWObject::WList::iterator itor2 = itor1;
-		for ( ; itor2 != copy.end() ; ++itor2 )
-		{
-			SWCollider2D* collider2 = swrtti_cast<SWCollider2D>( (*itor2)() );
-
-			if ( collider1 == collider2 ) continue;
+			SWCollider2D* collider2 = swrtti_cast<SWCollider2D>( (*colliderItor)() );
 			if ( !collider2->gameObject()->isActiveInScene() ) continue;
-			if ( collider1->getComponent<SWRigidBody2D>() == NULL
-				&& collider2->getComponent<SWRigidBody2D>() == NULL ) continue;
+			if ( collider1->gameObject() == collider2->gameObject() ) continue;
 
 			const thashstr& layer1 = collider1->gameObject()->getLayerName();
 			const thashstr& layer2 = collider2->gameObject()->getLayerName();
 
 			if ( getIgnoreLayer( layer1, layer2 ) ) continue;
 
-			if ( testCollide( collider1, collider2 ) )
-			{
-				if ( m_coll.isValid() == false ) m_coll = new SWCollision2D();
-				m_coll()->collider = collider2;
-				collider1->gameObject()->sendMessage( "onCollision", m_coll() );
-				
-				if ( m_coll.isValid() == false ) m_coll = new SWCollision2D();
-				m_coll()->collider = collider1;
-				collider2->gameObject()->sendMessage( "onCollision", m_coll() );
-			}
+			if ( testCollide( collider1, collider2 ) ) suspectsList.push_back( std::make_pair( collider1, collider2 ) );
 		}
+	}
+
+	SuspectPairList::iterator itor = suspectsList.begin();
+	for ( ; itor != suspectsList.end() ; ++itor )
+	{
+		const SuspectPair& suspects = *itor;
+
+		SWCollider2D* collider1 = suspects.first;
+		SWCollider2D* collider2 = suspects.second;
+
+		if ( m_coll.isValid() == false ) m_coll = new SWCollision2D();
+		m_coll()->collider = collider2;
+		collider1->gameObject()->sendMessage( "onCollision", m_coll() );
+
+		if ( m_coll.isValid() == false ) m_coll = new SWCollision2D();
+		m_coll()->collider = collider1;
+		collider2->gameObject()->sendMessage( "onCollision", m_coll() );
 	}
 }
 

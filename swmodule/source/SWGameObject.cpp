@@ -157,7 +157,11 @@ SWComponent* SWGameObject::getComponent( const SWRtti* rtti ) const
 	for ( tuint i = 0 ; i < m_components.size() ; ++i )
 	{
 		SWComponent* comp = swrtti_cast<SWComponent>( (m_components[i])() );
-		if ( comp->queryRtti() == rtti ) return comp; 
+		const SWRtti* queryRtti = comp->queryRtti();
+		for ( ; queryRtti ; queryRtti = queryRtti->super )
+		{
+			if ( queryRtti == rtti ) return comp;
+		}
 	}
 	return NULL;
 }
@@ -169,19 +173,25 @@ SWComponent* SWGameObject::getComponent( const tstring& typeName ) const
 	for ( tuint i = 0 ; i < m_components.size() ; ++i )
 	{
 		SWComponent* comp = swrtti_cast<SWComponent>( (m_components[i])() );
-		const SWRtti* rtti = comp->queryRtti();
-		if ( rtti->name == typeName ) return comp; 
+		const SWRtti* queryRtti = comp->queryRtti();
+		for ( ; queryRtti ; queryRtti = queryRtti->super )
+		{
+			if ( queryRtti->name == typeName ) return comp;
+		}
 	}
 	return NULL;
 }
 
 void SWGameObject::removeComponent( const SWRtti* rtti )
 {
-	if ( rtti == SWTransform::getRtti() ) return;
-
 	SWComponent* comp = getComponent( rtti );
-	if ( comp ) comp->onRemove();
-	std::remove( m_components.begin(), m_components.end(), comp );
+	if ( !comp ) return;
+	if ( comp->queryRtti() == SWTransform::getRtti() ) return;
+	
+	comp->onRemove();
+
+	SWObject::Array::iterator last = std::remove( m_components.begin(), m_components.end(), comp );
+	m_components.erase( last, m_components.end() );
 }
 
 void SWGameObject::removeComponentAll()
