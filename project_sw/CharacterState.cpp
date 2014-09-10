@@ -3,6 +3,7 @@
 #include "GameHeaders.h"
 
 Runner::Runner( factory_constructor )
+	: m_activate( false )
 {
 }
 
@@ -76,36 +77,41 @@ void Runner::onUpdate()
 			action->play( "run" );
 		}
 	}
+
+	m_activate = (SWInput.getTouchState() == SW_TouchPress);
+	if ( !m_activate && isButtonPushed() ) m_activate = true;
 }
 
 void Runner::onFixedRateUpdate()
 {
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
 
-	bool isActivated = isButtonPushed();
-	if ( isActivated )
-	{
-		SWAction* action = getComponent<SWAction>();
-		if ( action->isPlaying() ) action->stop();
-	}
-
 	switch ( m_state )
 	{
 	case State::Running :
 		{
-			if ( isActivated )
+			if ( m_activate )
 			{
-				body()->addForce( tvec2( 0, JumpForce ) );
-				m_state = Gliding;
-				
-				m_jumpEffect()->setActive( true );
-				SWAction* action = m_jumpEffect()->getComponent<SWAction>();
-				action->play( "jump_effect" );
+				//! character state
+				{
+					body()->addForce( tvec2( 0, JumpForce ) );
+					m_state = Gliding;
 
-				SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
-				tvec3 pos = getComponent<SWTransform>()->getPosition();
-				pos.y = GroundY;
-				trans->setPosition( pos );
+					SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
+					tvec3 pos = getComponent<SWTransform>()->getPosition();
+					pos.y = GroundY;
+					trans->setPosition( pos );
+
+					SWAction* action = getComponent<SWAction>();
+					action->stop();
+				}
+				
+				//! jump effect
+				{
+					m_jumpEffect()->setActive( true );
+					SWAction* action = m_jumpEffect()->getComponent<SWAction>();
+					action->play( "jump_effect" );
+				}
 			}
 		}
 		break;
@@ -114,7 +120,7 @@ void Runner::onFixedRateUpdate()
 		{
 			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
 			const tvec2& vel = body()->getVelocity();
-			if ( vel.y < 50 && isActivated ) m_state = Flying;
+			if ( vel.y < 50 && m_activate ) m_state = Flying;
 		}
 		break;
 
@@ -124,7 +130,7 @@ void Runner::onFixedRateUpdate()
 			body()->addForce( tvec2( 0, BoostForce ) );
 			
 			//! checking state
-			if ( isActivated ) m_state = Flying;
+			if ( m_activate ) m_state = Flying;
 			else m_state = Gliding;
 			
 			//! make gas cloud
@@ -141,6 +147,7 @@ void Runner::onFixedRateUpdate()
 		break;
 	}
 
+	m_activate = false;
 }
 
 void Runner::onCollision( SWCollision2D* )

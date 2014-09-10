@@ -39,6 +39,7 @@ protected:
 private:
 	
 	State m_state;
+	bool m_activate;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
 	SWWeakRef<SWGameObject> m_jumpEffect;

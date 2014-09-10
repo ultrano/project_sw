@@ -98,11 +98,11 @@ const tcolor& SWFontRenderer::getColor() const
 	return m_color;
 }
 
-void SWFontRenderer::setAlignH( int align )
+void SWFontRenderer::setAlignH( int LCR )
 {
-	if ( align == SW_Align_Center || align == SW_Align_Left || align == SW_Align_Right )
+	if ( LCR == SW_Align_Center || LCR == SW_Align_Left || LCR == SW_Align_Right )
 	{
-		m_alignH = align;
+		m_alignH = LCR;
 		m_textChanged = true;
 	}
 }
@@ -112,11 +112,11 @@ int  SWFontRenderer::getAlignH() const
 	return m_alignH;
 }
 
-void SWFontRenderer::setAlignV( int align )
+void SWFontRenderer::setAlignV( int TCB )
 {
-	if ( align == SW_Align_Center || align == SW_Align_Top || align == SW_Align_Bottom )
+	if ( TCB == SW_Align_Center || TCB == SW_Align_Top || TCB == SW_Align_Bottom )
 	{
-		m_alignV = align;
+		m_alignV = TCB;
 		m_textChanged = true;
 	}
 }

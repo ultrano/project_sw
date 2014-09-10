@@ -29,10 +29,10 @@ public:
 	void setColor( const tcolor& color );
 	const tcolor& getColor() const;
 
-	void setAlignH( int align );
+	void setAlignH( int LCR );
 	int  getAlignH() const;
 
-	void setAlignV( int align );
+	void setAlignV( int TCB );
 	int  getAlignV() const;
 
 protected:

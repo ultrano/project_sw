@@ -212,7 +212,6 @@ void SWGameContext::onFrameMove()
 
 	SWInput.m_deltaX = 0;
 	SWInput.m_deltaY = 0;
-	SWInput.m_touchState = SW_TouchNone;
 
 	SWLogCenter::getInstance().present();
 }
@@ -269,7 +268,7 @@ void SWGameContext::onKeyChange( tuint key, bool press )
 	SWInput.m_lastKey = key;
 	SWInput.m_keyDownCount += press? +1:-1;
 
-	SWLog( "key:%d is %s", key, press?"pressed":"released" );
+	//SWLog( "key:%d is %s", key, press?"pressed":"released" );
 
 	//////////////////////////////////////////////////////////////////////////
 	{

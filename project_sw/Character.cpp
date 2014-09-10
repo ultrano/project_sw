@@ -13,7 +13,7 @@ Character::~Character()
 void Character::onAwake()
 {
 	__super::onAwake();
-	gameObject()->addComponent<Bird>();
+	gameObject()->addComponent<Runner>();
 }
 
 void Character::onStart()

@@ -298,7 +298,7 @@ public:
 					trans->setPosition( tvec3( -m_screenSize.x/2, (m_screenSize.y/2) - m_fontInfo()->getLineHeight(), 0 ) );
 				}
 
-				//! World UI "TOUCH ANYWHERE TO PLAY"
+				//! World UI "PUSH SPACE OR TOUCH ANYWHERE TO PLAY"
 				{
 					SWGameObject* go = new SWGameObject;
 					go->setName( "TATP" );
@@ -307,10 +307,11 @@ public:
 					renderer->setFontInfo( m_fontInfo() );
 					renderer->setFontTexture( m_fontTexture() );
 					renderer->setColor( tcolor( 1, 1, 1, 1 ) );
-					renderer->setText( "TOUCH ANYWHERE TO PLAY" );
+					renderer->setAlignV( SW_Align_Center );
+					renderer->setText( "PUSH SPACE OR \nTOUCH ANYWHERE TO PLAY" );
 
 					SWTransform* trans = go->getComponent<SWTransform>();
-					trans->setPosition( tvec3( 0, GroundY, 0 ) );
+					trans->setPosition( tvec3( 0, GroundY, 5 ) );
 
 					SWAction* action = go->addComponent<SWAction>();
 					//! act removing
@@ -336,7 +337,7 @@ public:
 
 		case Standby :
 			{
-				if ( SWInput.getTouchState() == SW_TouchPress )
+				if ( isButtonPushed() )
 				{
 					findGO( "Character" )->setActive( true );
 					findGO( "CharacterShadow" )->setActive( true );
