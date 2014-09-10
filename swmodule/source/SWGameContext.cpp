@@ -231,8 +231,8 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 	SWInput.m_touchState = type;
 	if ( type == SW_TouchPress )
 	{
-		SWInput.m_deltaX = param1;
-		SWInput.m_deltaY = param2;
+		SWInput.m_deltaX = 0;
+		SWInput.m_deltaY = 0;
 	}
 	else if ( type == SW_TouchMove )
 	{
@@ -241,6 +241,14 @@ void SWGameContext::onTouch( int type, int param1, int param2 )
 	}
 	SWInput.m_touchXY = tvec2( param1, param2 );
 
+	/*/
+	switch ( type )
+	{
+	case SW_TouchPress   : SWLog( "pressed" ); break;
+	case SW_TouchRelease : SWLog( "released" ); break;
+	case SW_TouchMove    : SWLog( "moved" ); break;
+	}
+	//*/
 	//////////////////////////////////////////////////////////////////////////
 	{
 		SWList::Type copy = SWInput.m_listeners;
@@ -260,6 +268,8 @@ void SWGameContext::onKeyChange( tuint key, bool press )
 	SWInput.m_keyFlags[ key ] = press;
 	SWInput.m_lastKey = key;
 	SWInput.m_keyDownCount += press? +1:-1;
+
+	SWLog( "key:%d is %s", key, press?"pressed":"released" );
 
 	//////////////////////////////////////////////////////////////////////////
 	{

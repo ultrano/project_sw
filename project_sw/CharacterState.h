@@ -62,6 +62,10 @@ protected:
 	virtual void onFixedRateUpdate();
 	virtual void onCollision( SWCollision2D* );
 
+private:
+
+	bool m_wasPressed;
+	bool m_doFlapping;
 };
 
 #endif //! CharacterState_h__

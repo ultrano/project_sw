@@ -154,6 +154,8 @@ void Runner::inactivate( SWActDelegate* del )
 
 
 Bird::Bird( factory_constructor )
+	: m_doFlapping( false )
+	, m_wasPressed( false )
 {
 }
 
@@ -168,7 +170,7 @@ void Bird::onAwake()
 	gameObject()->addComponent<SWSpriteRenderer>();
 
 	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
-	body()->setGravityScale( -tvec2::axisY * 80 );
+	body()->setGravityScale( -tvec2::axisY * 50 );
 
 	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider()->setRadius( 20 );
@@ -195,6 +197,19 @@ void Bird::onUpdate()
 	SWTransform* trans = getComponent<SWTransform>();
 
 	trans->setLocalRotate( tvec3( 0, 0, body->getVelocity().y/900 ) );
+
+	if ( isButtonPushed() )
+	{
+		if ( !m_wasPressed )
+		{
+			m_wasPressed = true;
+			m_doFlapping = true;
+		}
+	}
+	else
+	{
+		m_wasPressed = false;
+	}
 }
 
 void Bird::onFixedRateUpdate()
@@ -202,9 +217,10 @@ void Bird::onFixedRateUpdate()
 	SWRigidBody2D* body = getComponent<SWRigidBody2D>();
 	SWTransform* trans = getComponent<SWTransform>();
 
-	if ( isButtonPushed() )
+	if ( m_doFlapping )
 	{
-		body->addForce( tvec2( 0, 200 ) );
+		m_doFlapping = false;
+		body->addForce( tvec2( 0, 300 ) );
 
 		SWAction* action = gameObject()->addComponent<SWAction>();
 		action->play( "flapping" );
