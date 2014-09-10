@@ -18,6 +18,7 @@ SWRigidBody2D::SWRigidBody2D()
 	, m_linearDrag( 0.1f )
 	, m_angularDrag( 0.1f )
 	, m_gravityScale( -tvec2::axisY )
+	, m_fixedAngle( false )
 {
 }
 
@@ -32,6 +33,7 @@ SWRigidBody2D::SWRigidBody2D( factory_constructor )
 	, m_linearDrag( 0.1f )
 	, m_angularDrag( 0.1f )
 	, m_gravityScale( -tvec2::axisY )
+	, m_fixedAngle( false )
 {
 
 }
@@ -71,17 +73,18 @@ void SWRigidBody2D::onUpdate()
 
 	addAccel( m_gravityScale * ( SWPhysics2D.getGravityForce() ) * deltaTime );
 	
-	tvec2  linearStep  = m_velocity* deltaTime;
-	tfloat angularStep = m_torque* deltaTime;
-	
+	tvec2 linearStep = m_velocity* deltaTime;
 	m_velocity -= linearStep * m_linearDrag;
-	m_torque   -= angularStep * m_angularDrag;
-
-	m_center += linearStep;
-	m_angle  += angularStep;
-
+	m_center   += linearStep;
 	transform->setPosition( tvec3( m_center, depth ) );
-	transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
+	
+	if ( !m_fixedAngle )
+	{
+		tfloat angularStep = m_torque* deltaTime;
+		m_torque -= angularStep * m_angularDrag;
+		m_angle  += angularStep;
+		transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
+	}
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )
@@ -148,6 +151,11 @@ void SWRigidBody2D::setInertia( tfloat inertia )
 	else m_inertia = FLT_EPSILON;
 }
 
+void SWRigidBody2D::setFixedAngle( bool isFixed )
+{
+	m_fixedAngle = isFixed;
+}
+
 const tvec2& SWRigidBody2D::getVelocity() const
 {
 	return m_velocity;
@@ -156,6 +164,11 @@ const tvec2& SWRigidBody2D::getVelocity() const
 const float& SWRigidBody2D::getTorque() const
 {
 	return m_torque;
+}
+
+bool SWRigidBody2D::getFixedAngle() const
+{
+	return m_fixedAngle;
 }
 
 void SWRigidBody2D::serialize( SWObjectWriter* ow )

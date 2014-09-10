@@ -3,11 +3,13 @@
 #include "SWMath.h"
 #include "SWObjectStream.h"
 
-SWActSequence::SWActSequence()
+SWActSequence::SWActSequence( SWAct* act1, SWAct* act2, SWAct* act3 )
 	: m_current( NULL )
 	, m_cursor(0)
 {
-
+	if ( act1 ) addAct( act1 );
+	if ( act2 ) addAct( act2 );
+	if ( act3 ) addAct( act3 );
 }
 
 SWActSequence::SWActSequence( factory_constructor )

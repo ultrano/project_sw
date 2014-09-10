@@ -1,10 +1,12 @@
 #include "SWActBunch.h"
 #include "SWObjectStream.h"
 
-SWActBunch::SWActBunch()
+SWActBunch::SWActBunch( SWAct* act1, SWAct* act2, SWAct* act3 )
 	: m_countOfDone(0)
 {
-
+	if ( act1 ) addAct( act1 );
+	if ( act2 ) addAct( act2 );
+	if ( act3 ) addAct( act3 );
 }
 
 SWActBunch::SWActBunch( factory_constructor )

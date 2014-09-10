@@ -9,7 +9,7 @@ class SWActSequence : public SWAct
 
 public:
 
-	SWActSequence();
+	SWActSequence( SWAct* act1 = NULL, SWAct* act2 = NULL, SWAct* act3 = NULL );
 	SWActSequence( factory_constructor );
 	~SWActSequence();
 

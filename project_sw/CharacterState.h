@@ -28,7 +28,7 @@ public:
 
 protected:
 
-	virtual void onAwake();
+	virtual void onStart();
 	virtual void onRemove();
 	virtual void onUpdate();
 	virtual void onFixedRateUpdate();
@@ -56,7 +56,7 @@ public:
 
 protected:
 
-	virtual void onAwake();
+	virtual void onStart();
 	virtual void onRemove();
 	virtual void onUpdate();
 	virtual void onFixedRateUpdate();

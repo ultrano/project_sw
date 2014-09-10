@@ -10,19 +10,21 @@ Runner::~Runner()
 {
 }
 
-void Runner::onAwake()
+void Runner::onStart()
 {
-	__super::onAwake();
+	__super::onStart();
 	
 	m_state = State::Running;
 	m_imgAtlas = SWAssets.loadSpriteAtlas( "textures/runner.png" );
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
 
-	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
-	body()->setGravityScale( -tvec2::axisY * 80 );
+	SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
+	body->setGravityScale( -tvec2::axisY * 80 );
+	body->setFixedAngle( true );
+	body->setVelocity( body->getVelocity().scale( 1,0 ) );
 
-	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
-	collider()->setRadius( 20 );
+	SWCircleCollider2D* collider = gameObject()->addComponent<SWCircleCollider2D>();
+	collider->setRadius( 20 );
 
 	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/runner_anim.txt" );
 	SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );
@@ -31,8 +33,9 @@ void Runner::onAwake()
 	action->setAct( "run", new SWActRepeat( act ) );
 	action->play( "run" );
 
-	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
-	trans()->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
+	SWTransform* trans = getComponent<SWTransform>();
+	trans->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
+	trans->setRotate( tquat( tvec3::zero, 0 ));
 
 	//! jump effect
 	{
@@ -142,6 +145,13 @@ void Runner::onFixedRateUpdate()
 
 void Runner::onCollision( SWCollision2D* )
 {
+	tuint score = getComponent<Character>()->getScore();
+	score /= 10;
+	if ( (score % 2) == 0 )
+	{
+		gameObject()->addComponent<Bird>();
+		destroy();
+	}
 }
 
 void Runner::inactivate( SWActDelegate* del )
@@ -163,32 +173,62 @@ Bird::~Bird()
 {
 }
 
-void Bird::onAwake()
+void Bird::onStart()
 {
-	__super::onAwake();
+	__super::onStart();
 
-	gameObject()->addComponent<SWSpriteRenderer>();
+	//! components
+	{
+		gameObject()->addComponent<SWSpriteRenderer>();
 
-	SWHardRef<SWRigidBody2D> body = gameObject()->addComponent<SWRigidBody2D>();
-	body()->setGravityScale( -tvec2::axisY * 50 );
+		SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
+		body->setGravityScale( -tvec2::axisY * 50 );
+		body->setFixedAngle( true );
+		body->setVelocity( body->getVelocity().scale( 1,0 ) );
 
-	SWHardRef<SWCircleCollider2D> collider = gameObject()->addComponent<SWCircleCollider2D>();
-	collider()->setRadius( 20 );
+		SWCircleCollider2D* collider = gameObject()->addComponent<SWCircleCollider2D>();
+		collider->setRadius( 20 );
 
-	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/flappy_bird_anim.txt" );
-	SWActAnimate* act = new SWActAnimate( 1.5f, anim()->getSequenceAt(0) );
+		SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/flappy_bird_anim.txt" );
+		SWActAnimate* act = new SWActAnimate( 1.5f, anim()->getSequenceAt(0) );
 
-	SWAction* action = gameObject()->addComponent<SWAction>();
-	action->setAct( "flapping", act );
-	action->play( "flapping" );
+		SWAction* action = gameObject()->addComponent<SWAction>();
+		action->setAct( "flapping", act );
+		action->play( "flapping" );
 
-	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
-	trans()->setLocalScale( tvec3( 2, 2, 1 ) );
+		SWTransform* trans = getComponent<SWTransform>();
+		trans->setLocalScale( tvec3( 2, 2, 1 ) );
+	}
+
+	//! magnetic effect
+	{
+		SWGameObject* go = new SWGameObject;
+		go->setName( "magnetic" );
+
+		SWTransform* trans = go->getComponent<SWTransform>();
+		trans->setParent( getComponent<SWTransform>() );
+		trans->setLocalScale( tvec3( 0,0,0 ) );
+
+		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/effects.png" );
+
+		SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+		renderer->setSprite( atlas()->find( "circle_0" ) );
+		renderer->setColor( tcolor( 1,1,1,0 ) );
+
+		SWAction* action = go->addComponent<SWAction>();
+		SWActBunch* bunch1 = new SWActBunch();
+		bunch1->addAct( new SWActScaleFrom( 0.5f, tvec3( 1,1,1 ) ) );
+		bunch1->addAct( new SWActColorFrom( 0.5f, tcolor( 1,1,1,1 ) ) );
+		action->setAct( "magnetic", bunch1 );
+	}
 }
 
 void Bird::onRemove()
 {
 	__super::onRemove();
+
+	SWTransform* magneticTrans = getComponent<SWTransform>()->find( "magnetic" );
+	magneticTrans->gameObject()->destroy();
 }
 
 void Bird::onUpdate()
@@ -229,6 +269,7 @@ void Bird::onFixedRateUpdate()
 	SWGameObject* coins = SW_GC.getScene()->findGO( "Coins" );
 	SWTransform* parent = coins->getComponent<SWTransform>();
 
+	bool playEffect = false;
 	tuint count = parent->getChildrenCount();
 	while ( count-- )
 	{
@@ -237,11 +278,28 @@ void Bird::onFixedRateUpdate()
 		tvec3 delta = trans->getPosition() - pos;
 		//pos += (delta)/10.0f;
 		pos += delta.normal() * 5;
-		if ( delta.xy().length() < 100 ) child->setPosition( pos );
+		if ( delta.xy().length() < 100 )
+		{
+			child->setPosition( pos );
+			if ( playEffect == false ) playEffect = true;
+		}
+	}
+
+	if ( playEffect )
+	{
+		SWAction* action = trans->find( "magnetic" )->getComponent<SWAction>();
+		if ( !action->isPlaying() ) action->play( "magnetic" );
 	}
 
 }
 
 void Bird::onCollision( SWCollision2D* )
 {
+	tuint score = getComponent<Character>()->getScore();
+	score /= 10;
+	if ( (score % 2) == 1 )
+	{
+		gameObject()->addComponent<Runner>();
+		destroy();
+	}
 }

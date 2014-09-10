@@ -9,7 +9,7 @@ class SWActBunch : public SWAct
 
 public:
 
-	SWActBunch();
+	SWActBunch( SWAct* act1 = NULL, SWAct* act2 = NULL, SWAct* act3 = NULL );
 	SWActBunch( factory_constructor );
 	~SWActBunch();
 

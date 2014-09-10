@@ -85,6 +85,16 @@ TVector2f   TVector2f::normal() const
     return pt;
 }
 
+TVector2f TVector2f::scale( float kx, float ky ) const
+{
+	return TVector2f( x*kx, y*ky );
+}
+
+TVector2f TVector2f::scale( const TVector2f& pt ) const
+{
+	return TVector2f( x*pt.x, y*pt.y );
+}
+
 void TVector2f::rotateZ( float radian )
 {
 	float cosR = SWMath.cos( radian );
