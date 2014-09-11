@@ -14,13 +14,23 @@ __SWTime::__SWTime()
 	, m_accumFrame(0)
 	, m_accumTime(0)
 	, m_FPS(0)
+    , m_startTime(0)
 {
+#ifdef _MSC_VER
 
+	m_startTime = GetTickCount();
+
+#else
+
+    struct timeval tick;
+    gettimeofday(&tick, 0);
+    m_startTime = tick.tv_sec;
+
+#endif
 }
 
 __SWTime::~__SWTime()
 {
-
 }
 
 __SWTime& __SWTime::getInstance()
@@ -32,15 +42,19 @@ __SWTime& __SWTime::getInstance()
 float __SWTime::getTime()
 {
 #ifdef _MSC_VER
-	unsigned int count = GetTickCount();
+
+	unsigned int count = GetTickCount() - m_startTime;
 	float time = ((float)count)/1000.0f;
 	return time;
+
 #else
+
     struct timeval tick;
     gettimeofday(&tick, 0);
-    float sec  = ((float)tick.tv_sec)*1000.0f;
-    float usec = ((float)tick.tv_usec)/1000.0f;
-    return (sec + usec)/1000.0f;
+    float second  = (float)(tick.tv_sec - m_startTime);
+    second += ((float)tick.tv_usec)/1000000.0f;
+    return second;
+
 #endif
 }
 

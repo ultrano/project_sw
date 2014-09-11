@@ -105,42 +105,37 @@ void SWGameScene::pause()
 
 void SWGameScene::update()
 {
-	//! regular update
+	onUpdate();
+
+	m_updates = m_roots;
+	SWObject::List::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ; ++itor )
 	{
-		onUpdate();
-		m_updates = m_roots;
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
-		{
-			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			if ( go->isActiveSelf() ) go->udpate();
-		}
+		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+		if ( go == NULL ) continue;
+		if ( go->isActiveSelf() ) go->udpate();
 	}
+	
+	postUpdate();
+}
 
-	//! calculate count of fixed frame update
-	tuint countOfFixedRateUpdate = 0;
-	m_accumFrameRate += SWTime.getDeltaTime();
-	while ( m_accumFrameRate >= m_fixedFrameRate )
+void SWGameScene::fixedRateUpdate()
+{
+	onFixedRateUpdate();
+	
+	m_updates = m_roots;
+	SWObject::List::iterator itor = m_updates.begin();
+	for ( ; itor != m_updates.end() ; ++itor )
 	{
-		countOfFixedRateUpdate += 1;
-		m_accumFrameRate -= m_fixedFrameRate;
+		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+		if ( go == NULL ) continue;
+		if ( go->isActiveSelf() ) go->fixedRateUpdate();
 	}
+	postUpdate();
+}
 
-	//! fixed frame update
-	while ( countOfFixedRateUpdate-- )
-	{
-		onFixedRateUpdate();
-		
-		if ( m_updates != m_roots ) m_updates = m_roots;
-
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
-		{
-			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			if ( go->isActiveSelf() ) go->fixedRateUpdate();
-		}
-	}
-
+void SWGameScene::postUpdate()
+{
 	//! post destroy game objects
 	do
 	{

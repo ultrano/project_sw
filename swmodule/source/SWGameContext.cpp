@@ -198,16 +198,16 @@ void SWGameContext::onFrameMove()
 		if ( m_currentScene.isValid() ) m_currentScene()->awake();
 	}
 
-	if ( SWGameScene* scene = m_currentScene() )
-	{
-		scene->update();
-	}
+	SWGameScene* scene = m_currentScene();
+	if ( scene ) scene->update();
 
 	m_physicsFrameRate += SWTime.getDeltaTime();
 	while ( m_physicsFrameRate >= m_physicsFixedRate )
 	{
 		m_physicsFrameRate -= m_physicsFixedRate;
+		
 		SWPhysics2D.simulate();
+		if ( scene ) scene->fixedRateUpdate();
 	}
 
 	SWInput.m_deltaX = 0;

@@ -4,9 +4,27 @@
 #include "SWMemory.h"
 
 #define SWTime ( __SWTime::getInstance() )
+
 class __SWTime : public SWMemory
 {
+
 	friend class SWGameContext;
+
+public:
+
+	static __SWTime& getInstance();
+
+	float getTime();
+	float getDeltaTime();
+	float getFPS();
+	float getDPS();
+
+private:
+
+	__SWTime();
+	~__SWTime();
+
+private:
 
 	float m_lastFrameTime;
 	float m_deltaFrameTime;
@@ -17,18 +35,7 @@ class __SWTime : public SWMemory
 
 	float m_FPS;
 	float m_DPS;
-
-	__SWTime();
-	~__SWTime();
-
-public:
-
-	static __SWTime& getInstance();
-
-	float getTime();
-	float getDeltaTime();
-	float getFPS();
-	float getDPS();
+    long  m_startTime;
 };
 
 #endif // SWTime_h__

@@ -69,6 +69,8 @@ private:
 	void resume();
 	void pause();
 	void update();
+	void fixedRateUpdate();
+	void postUpdate();
 	void draw();
 	void handleEvent();
 
