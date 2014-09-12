@@ -15,14 +15,18 @@ void Runner::onStart()
 {
 	__super::onStart();
 	
-	m_state = State::Running;
+	m_state = State::None;
+	m_newState = State::None;
+	m_isChanged = false;
+	setState( Running );
+
 	m_imgAtlas = SWAssets.loadSpriteAtlas( "textures/runner.png" );
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
 
-	SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
-	body->setGravityScale( -tvec2::axisY * 80 );
-	body->setFixedAngle( true );
-	body->setVelocity( body->getVelocity().scale( 1,0 ) );
+	m_body = gameObject()->addComponent<SWRigidBody2D>();
+	m_body()->setGravityScale( -tvec2::axisY * 80 );
+	m_body()->setFixedAngle( true );
+	m_body()->setVelocity( m_body()->getVelocity().scale( 1,0 ) );
 
 	SWCircleCollider2D* collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider->setRadius( 20 );
@@ -64,75 +68,55 @@ void Runner::onRemove()
 
 void Runner::onUpdate()
 {
-	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
-
-	if ( m_state != Running )
-	{
-		tvec2 vel = body()->getVelocity();
-		tvec2 pos = body()->getPosition();
-		if ( pos.y <= GroundY && vel.y <= 0 )
-		{
-			m_state = Running;
-			SWAction* action = getComponent<SWAction>();
-			action->play( "run" );
-		}
-	}
-
-	m_activate = (SWInput.getTouchState() == SW_TouchPress);
-	if ( !m_activate && isButtonPushed() ) m_activate = true;
 }
 
 void Runner::onFixedRateUpdate()
 {
-	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
+	m_activate = isButtonPushed();
 
-	switch ( m_state )
+	changeState();
+	updateState();
+}
+
+void Runner::updateState()
+{
+	//! update state
+	switch ( getState() )
 	{
 	case State::Running :
 		{
-			if ( m_activate )
-			{
-				//! character state
-				{
-					body()->addForce( tvec2( 0, JumpForce ) );
-					m_state = Gliding;
+			tvec2 pos = m_body()->getPosition();
+			if ( pos.y > GroundY && pos.y < RoofY ) setState( Gliding );
 
-					SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
-					tvec3 pos = getComponent<SWTransform>()->getPosition();
-					pos.y = GroundY;
-					trans->setPosition( pos );
-
-					SWAction* action = getComponent<SWAction>();
-					action->stop();
-				}
-				
-				//! jump effect
-				{
-					m_jumpEffect()->setActive( true );
-					SWAction* action = m_jumpEffect()->getComponent<SWAction>();
-					action->play( "jump_effect" );
-				}
-			}
+			if ( m_activate ) setState( Jumping );
 		}
 		break;
-
+	case State::Jumping :
+		{
+			tvec2 vel = m_body()->getVelocity();
+			tvec2 pos = m_body()->getPosition();
+			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
+			if ( pos.y > GroundY && pos.y < RoofY ) setState( Gliding );
+		}
+		break;
 	case  State::Gliding :
 		{
-			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
-			const tvec2& vel = body()->getVelocity();
-			if ( vel.y < 50 && m_activate ) m_state = Flying;
+			tvec2 vel = m_body()->getVelocity();
+			tvec2 pos = m_body()->getPosition();
+			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
+			if ( m_activate && vel.y <= 50 ) setState( Boosting );
 		}
 		break;
-
-	case State::Flying :
+	case State::Boosting :
 		{
-			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
-			body()->addForce( tvec2( 0, BoostForce ) );
-			
-			//! checking state
-			if ( m_activate ) m_state = Flying;
-			else m_state = Gliding;
-			
+			tvec2 vel = m_body()->getVelocity();
+			tvec2 pos = m_body()->getPosition();
+			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
+			if ( pos.y > GroundY && pos.y < RoofY ) setState( Gliding );
+			if ( m_activate ) setState( Boosting );
+
+			m_body()->addForce( tvec2( 0, BoostForce ) );
+
 			//! make gas cloud
 			{
 				SWGameObject* go = SW_GC.getScene()->findGO( "Pool/GasCloud" );;
@@ -146,25 +130,95 @@ void Runner::onFixedRateUpdate()
 		}
 		break;
 	}
+}
 
-	m_activate = false;
+void Runner::changeState()
+{
+	if ( !m_isChanged ) return;
+	m_isChanged = false;
+
+	State newState = m_newState;
+
+	//! pause state
+	switch ( getState() )
+	{
+	case State::Running :
+		{
+			tvec2 pos = m_body()->getPosition();
+			pos.y = GroundY;
+			m_body()->setPosition( pos );
+
+			SWAction* action = getComponent<SWAction>();
+			action->stop();
+		}
+		break;
+	case State::Jumping :break;
+	case  State::Gliding :break;
+	case State::Boosting : break;
+		
+	}
+
+	m_state = newState;
+
+	//! resume state
+	switch ( getState() )
+	{
+	case State::Running :
+		{
+			SWAction* action = getComponent<SWAction>();
+			action->play( "run" );
+		}
+		break;
+	case State::Jumping :
+		{
+			//! jump effect
+			{
+				SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
+				tvec3 pos = getComponent<SWTransform>()->getPosition();
+				pos.y = GroundY;
+				trans->setPosition( pos );
+
+				m_jumpEffect()->setActive( true );
+				SWAction* action = m_jumpEffect()->getComponent<SWAction>();
+				action->play( "jump_effect" );
+			}
+
+			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
+			m_body()->addForce( tvec2( 0, JumpForce ) );
+		}
+		break;
+	case  State::Gliding :
+		{
+			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
+		}
+		break;
+	case State::Boosting :
+		{
+			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
+			m_body()->addForce( tvec2( 0, BoostForce ) );
+		}
+		break;
+	}
+}
+
+void Runner::setState( State state )
+{
+	m_isChanged = true;
+	m_newState = state;
+}
+
+Runner::State Runner::getState() const
+{
+	return m_state;
 }
 
 void Runner::onCollision( SWCollision2D* )
 {
-	tuint score = getComponent<Character>()->getScore();
-	score /= 10;
-	if ( (score % 2) == 0 )
-	{
-		gameObject()->addComponent<Bird>();
-		destroy();
-	}
 }
 
 void Runner::inactivate( SWActDelegate* del )
 {
 	del->getAction()->gameObject()->setActive( false );
-	//go->setActive( false );
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,11 +359,4 @@ void Bird::onFixedRateUpdate()
 
 void Bird::onCollision( SWCollision2D* )
 {
-	tuint score = getComponent<Character>()->getScore();
-	score /= 10;
-	if ( (score % 2) == 1 )
-	{
-		gameObject()->addComponent<Runner>();
-		destroy();
-	}
 }

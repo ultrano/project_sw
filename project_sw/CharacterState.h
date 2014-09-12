@@ -16,9 +16,11 @@ public:
 	
 	enum State
 	{
+		None,
 		Running,
-		Flying,
+		Boosting,
 		Gliding,
+		Jumping,
 	};
 
 public:
@@ -37,9 +39,20 @@ protected:
 	void inactivate( SWActDelegate* del );
 
 private:
+
+	void updateState();
+	void changeState();
+	void setState( State state );
+	State getState() const;
+
+private:
 	
 	State m_state;
+	State m_newState;
+	bool  m_isChanged;
+
 	bool m_activate;
+	SWHardRef<SWRigidBody2D> m_body;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
 	SWWeakRef<SWGameObject> m_jumpEffect;

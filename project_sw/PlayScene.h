@@ -482,7 +482,10 @@ public:
 			patternNum = 27;
 			m_coinPatternAD = true;
 		}
-		else patternNum = SWMath.randomInt(1,27);
+		else
+		{
+			patternNum = SWMath.randomInt(1,27);
+		}
 		sprintf( &buf[0], "patterns/coinpattern%d.txt", patternNum );
 
 		SWHardRef<SWInputStream> is = SWAssets.loadBuffer( &buf[0] );
