@@ -1,4 +1,5 @@
 #include "GasCloud.h"
+#include "GameValues.h"
 
 GasCloud::GasCloud()
 {
@@ -34,20 +35,23 @@ void GasCloud::onAwake()
 
 	//! setting rigid body
 	body()->addForce( tvec2( SWMath.randomInt( -100,100 )/20.0f, -30 ) );
+	body()->setGravityScale( tvec2::zero );
+	body()->setLinearDrag( 0.2f );
 
 	//! setting transform
 	trans()->setLocalScale( tvec3( 0.1f, 0.1f, 1 ) * SWMath.randomInt( 100,200 )/100.0f );
 	
 	//! setting action
 	{
+		float time = 0.5f;
 		SWActSequence* seq = new SWActSequence();
-		seq->addAct( new SWActColorTo( 1, tcolor( 1,1,1,0 ) ) );
+		seq->addAct( new SWActColorTo( time, tcolor( 1,1,1,0 ) ) );
 		seq->addAct( new SWActDelegate( GetDelegator( goToPool ) ) );
 
 		SWActBunch* bunch = new SWActBunch;
 		bunch->addAct( seq );
-		bunch->addAct( new SWActRotateTo(1, tvec3(0, 0, 3.14f)) );
-		bunch->addAct( new SWActScaleBy(1, tvec3(0.1f, 0.1f, 0) ) );
+		bunch->addAct( new SWActRotateTo( time, tvec3(0, 0, 3.14f)) );
+		bunch->addAct( new SWActScaleBy( time, tvec3(0.1f, 0.1f, 0) ) );
 
 		action()->setAct( "fadeout", bunch );
 		action()->play( "fadeout" );
@@ -69,6 +73,7 @@ void GasCloud::reset( const tvec3& pos )
 
 	renderer()->setColor( tcolor( 1,1,1,1 ) );
 	body()->setPosition( pos.xy() );
+	body()->setVelocity( tvec2(SWMath.randomInt(-50,0)/100.0f,-1) * SWMath.randomInt(200,0)/10.0f );
 	trans()->setPosition( pos );
 	trans()->setLocalScale( tvec3( 0.1f, 0.1f, 1 ) * SWMath.randomInt( 100,200 )/100.0f );
 	trans()->setParent( NULL );
