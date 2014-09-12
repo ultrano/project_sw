@@ -59,23 +59,23 @@ void SWActAnimate::changeSpriteWithAt( tuint index )
 	renderer->setSprite( sprite );
 }
 
-void SWActAnimate::serialize( SWObjectWriter* ow )
+void SWActAnimate::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
+	__super::serialize( writer );
 	
-	ow->writeFloat( m_speed );
-	ow->writeFloat( m_spendTime );
-	ow->writeFloat( m_totalTime );
-	ow->writeUInt( m_lastIndex );
-	ow->writeObject( swrtti_cast<SWObject>( m_sequence() ) );
+	writer->writeFloat( m_speed );
+	writer->writeFloat( m_spendTime );
+	writer->writeFloat( m_totalTime );
+	writer->writeUInt( m_lastIndex );
+	writer->writeObject( swrtti_cast<SWObject>( m_sequence() ) );
 }
 
-void SWActAnimate::deserialize( SWObjectReader* or )
+void SWActAnimate::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_speed = or->readFloat();
-	m_spendTime = or->readFloat();
-	m_totalTime = or->readFloat();
-	m_lastIndex = or->readUInt();
-	m_sequence = swrtti_cast<SWSpriteSequence>( or->readObject() );
+	__super::deserialize( reader );
+	m_speed = reader->readFloat();
+	m_spendTime = reader->readFloat();
+	m_totalTime = reader->readFloat();
+	m_lastIndex = reader->readUInt();
+	m_sequence = swrtti_cast<SWSpriteSequence>( reader->readObject() );
 }

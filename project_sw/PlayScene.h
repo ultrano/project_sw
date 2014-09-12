@@ -69,7 +69,7 @@ public:
 			m_fontInfo    = SWAssets.loadFontInfo( "fonts/Jetpackia.fnt" );
 			m_fontTexture = SWAssets.loadTexture( "fonts/Jetpackia.png" );
 		}
-		
+
 		//! UI Camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
@@ -83,13 +83,13 @@ public:
 			cam->setTargetLayerName( "UI" );
 			cam->setDepth( 1 );
 		}
-		
+
 		//! set logo sprite
 		{
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Logo" );
 			go->setLayerName( "UI" );
-			
+
 			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/logo5.png" );
 			SWSprite* logoSprite = atlas()->find( "logo" );
 			tvec2 logoSize = logoSprite->getSize();
@@ -97,14 +97,11 @@ public:
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( logoSprite );
 
-			SWAction* action = go->addComponent<SWAction>();
-			SWActSequence* seq = new SWActSequence();
-
 			SWTransform* transform = go->getComponent<SWTransform>();
 			transform->setLocalPosition( tvec3::zero );
 			transform->setLocalScale( tvec3( WorldWidth/logoSize.x, WorldHeight/logoSize.y, 1 ) );
 		}
-		
+
 		//! UI State Sentences
 		{
 			SWGameObject* go = new SWGameObject;

@@ -399,31 +399,31 @@ void SWTransform::updateMatrix()
 	m_worldMat.inverse( m_invWorldMat );
 }
 
-void SWTransform::serialize( SWObjectWriter* ow )
+void SWTransform::serialize( SWObjectWriter* writer )
 {
-	ow->writeUInt( m_children.size() );
+	writer->writeUInt( m_children.size() );
 	SWObject::List::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ; ++itor )
 	{
-		ow->writeObject( (*itor)() );
+		writer->writeObject( (*itor)() );
 	}
 	
-	ow->writeVec3( m_scale );
-	ow->writeQuat( m_rotate );
-	ow->writeVec3( m_euler );
-	ow->writeVec3( m_position );
+	writer->writeVec3( m_scale );
+	writer->writeQuat( m_rotate );
+	writer->writeVec3( m_euler );
+	writer->writeVec3( m_position );
 }
 
-void SWTransform::deserialize( SWObjectReader* or )
+void SWTransform::deserialize( SWObjectReader* reader )
 {
-	m_children.resize( or->readUInt() );
+	m_children.resize( reader->readUInt() );
 	for ( tuint i = 0 ; i < m_children.size() ; ++i )
 	{
-		m_children.push_back( or->readObject() );
+		m_children.push_back( reader->readObject() );
 	}
 
-	or->readVec3( m_scale );
-	or->readQuat( m_rotate );
-	or->readVec3( m_euler );
-	or->readVec3( m_position );
+	reader->readVec3( m_scale );
+	reader->readQuat( m_rotate );
+	reader->readVec3( m_euler );
+	reader->readVec3( m_position );
 }

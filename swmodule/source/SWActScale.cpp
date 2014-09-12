@@ -55,22 +55,22 @@ void SWActScale::onUpdate()
 	transform->setLocalScale( pos );
 }
 
-void SWActScale::serialize( SWObjectWriter* ow )
+void SWActScale::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeFloat( m_duration );
-	ow->writeFloat( m_spendTime );
-	ow->writeVec3( m_from );
-	ow->writeVec3( m_to );
+	__super::serialize( writer );
+	writer->writeFloat( m_duration );
+	writer->writeFloat( m_spendTime );
+	writer->writeVec3( m_from );
+	writer->writeVec3( m_to );
 }
 
-void SWActScale::deserialize( SWObjectReader* or )
+void SWActScale::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_duration = or->readFloat();
-	m_spendTime = or->readFloat();
-	or->readVec3( m_from );
-	or->readVec3( m_to );
+	__super::deserialize( reader );
+	m_duration = reader->readFloat();
+	m_spendTime = reader->readFloat();
+	reader->readVec3( m_from );
+	reader->readVec3( m_to );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -160,14 +160,14 @@ void SWActScaleBy::onStart()
 	m_to = m_from + (m_by * m_duration);
 }
 
-void SWActScaleBy::serialize( SWObjectWriter* ow )
+void SWActScaleBy::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeVec3( m_by );
+	__super::serialize( writer );
+	writer->writeVec3( m_by );
 }
 
-void SWActScaleBy::deserialize( SWObjectReader* or )
+void SWActScaleBy::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	or->readVec3( m_by );
+	__super::deserialize( reader );
+	reader->readVec3( m_by );
 }

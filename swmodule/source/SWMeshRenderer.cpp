@@ -66,12 +66,12 @@ SWMaterial* SWMeshRenderer::getMaterial() const
 	return m_material();
 }
 
-void SWMeshRenderer::serialize( SWObjectWriter* ow )
+void SWMeshRenderer::serialize( SWObjectWriter* writer )
 {
-	ow->writeObject( m_material() );
+	writer->writeObject( m_material() );
 }
 
-void SWMeshRenderer::deserialize( SWObjectReader* or )
+void SWMeshRenderer::deserialize( SWObjectReader* reader )
 {
-	m_material = swrtti_cast<SWMaterial>( or->readObject() );
+	m_material = swrtti_cast<SWMaterial>( reader->readObject() );
 }

@@ -56,8 +56,8 @@ protected:
 
 	friend class SWObjectWriter;
 	friend class SWObjectReader;
-	virtual void serialize( SWObjectWriter* ow ) {};
-	virtual void deserialize( SWObjectReader* or ) {};
+	virtual void serialize( SWObjectWriter* writer ) {};
+	virtual void deserialize( SWObjectReader* reader ) {};
 
 private:
 	tuint m_id;        //< 객체의 유일성을 위한 ID

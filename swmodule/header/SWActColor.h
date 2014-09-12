@@ -18,8 +18,8 @@ protected:
 	virtual void onStart();
 	virtual void onUpdate();
 	
-	void serialize( SWObjectWriter* ow );
-	void deserialize( SWObjectReader* or );
+	void serialize( SWObjectWriter* writer );
+	void deserialize( SWObjectReader* reader );
 
 protected:
 
@@ -74,8 +74,8 @@ protected:
 
 	virtual void onStart();
 	
-	void serialize( SWObjectWriter* ow );
-	void deserialize( SWObjectReader* or );
+	void serialize( SWObjectWriter* writer );
+	void deserialize( SWObjectReader* reader );
 
 private:
 

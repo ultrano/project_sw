@@ -28,8 +28,8 @@ protected:
 
 	virtual void onAwake();
 	virtual void render( SWCamera* camera );
-	void serialize( SWObjectWriter* ow );
-	void deserialize( SWObjectReader* or );
+	void serialize( SWObjectWriter* writer );
+	void deserialize( SWObjectReader* reader );
 
 private:
 

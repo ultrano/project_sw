@@ -46,12 +46,12 @@ SWMesh* SWMeshFilter::getMesh() const
 	return m_mesh();
 }
 
-void SWMeshFilter::serialize( SWObjectWriter* ow )
+void SWMeshFilter::serialize( SWObjectWriter* writer )
 {
-	ow->writeObject( m_mesh() );
+	writer->writeObject( m_mesh() );
 }
 
-void SWMeshFilter::deserialize( SWObjectReader* or )
+void SWMeshFilter::deserialize( SWObjectReader* reader )
 {
-	m_mesh = swrtti_cast<SWMesh>( or->readObject() );
+	m_mesh = swrtti_cast<SWMesh>( reader->readObject() );
 }

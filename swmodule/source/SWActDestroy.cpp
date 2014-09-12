@@ -41,19 +41,19 @@ void SWActDestroy::onUpdate()
 	go->destroy();
 }
 
-void SWActDestroy::serialize( SWObjectWriter* ow )
+void SWActDestroy::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeFloat( m_accum );
-	ow->writeFloat( m_delay );
-	ow->writeBool( m_destroied );
+	__super::serialize( writer );
+	writer->writeFloat( m_accum );
+	writer->writeFloat( m_delay );
+	writer->writeBool( m_destroied );
 
 }
 
-void SWActDestroy::deserialize( SWObjectReader* or )
+void SWActDestroy::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_accum = or->readFloat();
-	m_delay = or->readFloat();
-	m_destroied = or->readBool();
+	__super::deserialize( reader );
+	m_accum = reader->readFloat();
+	m_delay = reader->readFloat();
+	m_destroied = reader->readBool();
 }

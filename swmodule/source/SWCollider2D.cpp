@@ -65,16 +65,16 @@ void SWCircleCollider2D::farthestPoint( tvec2& ret, const tvec2& worldDir )
 	ret = center + (worldDir * radius);
 }
 
-void SWCircleCollider2D::serialize( SWObjectWriter* ow )
+void SWCircleCollider2D::serialize( SWObjectWriter* writer )
 {
-	ow->writeVec2( m_center );
-	ow->writeFloat( m_radius );
+	writer->writeVec2( m_center );
+	writer->writeFloat( m_radius );
 }
 
-void SWCircleCollider2D::deserialize( SWObjectReader* or )
+void SWCircleCollider2D::deserialize( SWObjectReader* reader )
 {
-	or->readVec2( m_center );
-	m_radius = or->readFloat();
+	reader->readVec2( m_center );
+	m_radius = reader->readFloat();
 }
 
 ////////////////////////////////////////////////////////////////
@@ -154,14 +154,14 @@ void SWRectCollider2D::farthestPoint( tvec2& ret, const tvec2& worldDir )
 	}
 }
 
-void SWRectCollider2D::serialize( SWObjectWriter* ow )
+void SWRectCollider2D::serialize( SWObjectWriter* writer )
 {
-	ow->writeVec2( m_center );
-	ow->writeVec2( m_size );
+	writer->writeVec2( m_center );
+	writer->writeVec2( m_size );
 }
 
-void SWRectCollider2D::deserialize( SWObjectReader* or )
+void SWRectCollider2D::deserialize( SWObjectReader* reader )
 {
-	or->readVec2( m_center );
-	or->readVec2( m_size );
+	reader->readVec2( m_center );
+	reader->readVec2( m_size );
 }

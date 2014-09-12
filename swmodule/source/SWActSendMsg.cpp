@@ -40,14 +40,14 @@ void SWActSendMsg::onUpdate()
 {
 }
 
-void SWActSendMsg::serialize( SWObjectWriter* ow )
+void SWActSendMsg::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeString( m_eventName );
+	__super::serialize( writer );
+	writer->writeString( m_eventName );
 }
 
-void SWActSendMsg::deserialize( SWObjectReader* or )
+void SWActSendMsg::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	or->readString( m_eventName );
+	__super::deserialize( reader );
+	reader->readString( m_eventName );
 }

@@ -47,8 +47,8 @@ public:
 
 protected:
 
-	void serialize( SWObjectWriter* ow );
-	void deserialize( SWObjectReader* or );
+	void serialize( SWObjectWriter* writer );
+	void deserialize( SWObjectReader* reader );
 
 private:
 

@@ -205,38 +205,38 @@ void WIImage::setUVRect( float x, float y, float width, float height )
 	m_updateTex = true;
 }
 
-void WIImage::serialize( SWObjectWriter* ow )
+void WIImage::serialize( SWObjectWriter* writer )
 {
-	ow->writeFloat( m_width );
-	ow->writeFloat( m_height );
-	ow->writeInt( m_alignV );
-	ow->writeInt( m_alignH );
-	ow->writeRect( m_uvRect );
-	ow->writeColor( m_color );
+	writer->writeFloat( m_width );
+	writer->writeFloat( m_height );
+	writer->writeInt( m_alignV );
+	writer->writeInt( m_alignH );
+	writer->writeRect( m_uvRect );
+	writer->writeColor( m_color );
 
 	tstring path;
 	bool isAsset = SWAssets.findPathOfTexture( m_texture(), path );
-	ow->writeBool( isAsset );
+	writer->writeBool( isAsset );
 	if ( isAsset )
 	{
-		ow->writeString( path );
+		writer->writeString( path );
 	}
 }
 
-void WIImage::deserialize( SWObjectReader* or )
+void WIImage::deserialize( SWObjectReader* reader )
 {
-	m_width = or->readFloat();
-	m_height = or->readFloat();
-	m_alignV = or->readInt();
-	m_alignH = or->readInt();
-	or->readRect( m_uvRect );
-	or->readColor( m_color );
+	m_width = reader->readFloat();
+	m_height = reader->readFloat();
+	m_alignV = reader->readInt();
+	m_alignH = reader->readInt();
+	reader->readRect( m_uvRect );
+	reader->readColor( m_color );
 
-	bool isAsset = or->readBool();
+	bool isAsset = reader->readBool();
 	if ( isAsset )
 	{
 		tstring path;
-		or->readString( path );
+		reader->readString( path );
 		setTexture( SWAssets.loadTexture( path ) );
 	}
 

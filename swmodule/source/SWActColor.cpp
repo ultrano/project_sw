@@ -62,22 +62,22 @@ void SWActColor::onUpdate()
 	}
 }
 
-void SWActColor::serialize( SWObjectWriter* ow )
+void SWActColor::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeFloat( m_duration );
-	ow->writeFloat( m_spendTime );
-	ow->writeColor( m_from );
-	ow->writeColor( m_to );
+	__super::serialize( writer );
+	writer->writeFloat( m_duration );
+	writer->writeFloat( m_spendTime );
+	writer->writeColor( m_from );
+	writer->writeColor( m_to );
 }
 
-void SWActColor::deserialize( SWObjectReader* or )
+void SWActColor::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_duration = or->readFloat();
-	m_spendTime = or->readFloat();
-	or->readColor( m_from );
-	or->readColor( m_to );
+	__super::deserialize( reader );
+	m_duration = reader->readFloat();
+	m_spendTime = reader->readFloat();
+	reader->readColor( m_from );
+	reader->readColor( m_to );
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -182,14 +182,14 @@ void SWActColorBy::onStart()
 	m_to.a = m_from.a + (m_by.a* m_duration);
 }
 
-void SWActColorBy::serialize( SWObjectWriter* ow )
+void SWActColorBy::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeColor( m_by );
+	__super::serialize( writer );
+	writer->writeColor( m_by );
 }
 
-void SWActColorBy::deserialize( SWObjectReader* or )
+void SWActColorBy::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	or->readColor( m_by );
+	__super::deserialize( reader );
+	reader->readColor( m_by );
 }

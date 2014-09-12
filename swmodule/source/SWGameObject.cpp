@@ -205,7 +205,6 @@ void SWGameObject::removeComponentAll()
 {
 	SWObject::Array copy = m_components;
 	SWObject::Array::iterator itor = copy.end();
-	m_components.clear();
 
 	do
 	{
@@ -215,6 +214,7 @@ void SWGameObject::removeComponentAll()
 		comp->destroy();
 	} while ( itor != copy.begin() );
 
+	m_components.clear();
 }
 
 void SWGameObject::addUpdateDelegator( SWDelegator* dg )
@@ -276,32 +276,32 @@ void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 	}
 }
 
-void SWGameObject::serialize( SWObjectWriter* ow )
+void SWGameObject::serialize( SWObjectWriter* writer )
 {
-	ow->writeString( m_name.str() );
-	ow->writeBool( m_active );
+	writer->writeString( m_name.str() );
+	writer->writeBool( m_active );
 
-	ow->writeUInt( m_components.size() );
+	writer->writeUInt( m_components.size() );
 	for ( tuint i = 0 ; i < m_components.size() ; ++i )
 	{
 		SWObject* object = (m_components[i])();
-		ow->writeObject( object );
+		writer->writeObject( object );
 	}
 }
 
-void SWGameObject::deserialize( SWObjectReader* or )
+void SWGameObject::deserialize( SWObjectReader* reader )
 {
 	{
 		tstring name;
-		or->readString( name );
+		reader->readString( name );
 		m_name = name;
-		m_active = or->readBool();
+		m_active = reader->readBool();
 	}
 
-	m_loadedComponents.resize( or->readUInt() );
+	m_loadedComponents.resize( reader->readUInt() );
 	for ( tuint i = 0 ; i < m_loadedComponents.size() ; ++i )
 	{
-		m_loadedComponents[i] = or->readObject();
+		m_loadedComponents[i] = reader->readObject();
 	}
 
 	for ( tuint i = 0 ; i < m_loadedComponents.size() ; ++i )

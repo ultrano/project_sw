@@ -245,24 +245,24 @@ void SWMaterial::setDefaultShader( SWShader* shader )
 	m_defaultShader = shader;
 }
 
-void SWMaterial::serialize( SWObjectWriter* ow )
+void SWMaterial::serialize( SWObjectWriter* writer )
 {
 	tstring path;
 	bool isAsset = SWAssets.findPathOfShader( m_shader(), path );
-	ow->writeBool( isAsset );
+	writer->writeBool( isAsset );
 	if ( isAsset )
 	{
-		ow->writeString( path );
+		writer->writeString( path );
 	}
 }
 
-void SWMaterial::deserialize( SWObjectReader* or )
+void SWMaterial::deserialize( SWObjectReader* reader )
 {
-	bool isAsset = or->readBool();
+	bool isAsset = reader->readBool();
 	if ( isAsset )
 	{
 		tstring path;
-		or->readString( path );
+		reader->readString( path );
 		m_shader = SWAssets.loadShader( path );
 	}
 	else

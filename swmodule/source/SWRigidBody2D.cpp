@@ -171,30 +171,30 @@ bool SWRigidBody2D::getFixedAngle() const
 	return m_fixedAngle;
 }
 
-void SWRigidBody2D::serialize( SWObjectWriter* ow )
+void SWRigidBody2D::serialize( SWObjectWriter* writer )
 {
-	ow->writeVec2( m_center );
-	ow->writeVec2( m_velocity );
-	ow->writeVec2( m_gravityScale );
-	ow->writeFloat( m_angle );
-	ow->writeFloat( m_torque );
-	ow->writeFloat( m_mass );
-	ow->writeFloat( m_inertia );
-	ow->writeFloat( m_elastic );
-	ow->writeFloat( m_linearDrag );
-	ow->writeFloat( m_angularDrag );
+	writer->writeVec2( m_center );
+	writer->writeVec2( m_velocity );
+	writer->writeVec2( m_gravityScale );
+	writer->writeFloat( m_angle );
+	writer->writeFloat( m_torque );
+	writer->writeFloat( m_mass );
+	writer->writeFloat( m_inertia );
+	writer->writeFloat( m_elastic );
+	writer->writeFloat( m_linearDrag );
+	writer->writeFloat( m_angularDrag );
 }
 
-void SWRigidBody2D::deserialize( SWObjectReader* or )
+void SWRigidBody2D::deserialize( SWObjectReader* reader )
 {
-	or->readVec2( m_center );
-	or->readVec2( m_velocity );
-	or->readVec2( m_gravityScale );
-	m_angle   = or->readFloat();
-	m_torque  = or->readFloat();
-	m_mass    = or->readFloat();
-	m_inertia = or->readFloat();
-	m_elastic = or->readFloat();
-	m_linearDrag  = or->readFloat();
-	m_angularDrag = or->readFloat();
+	reader->readVec2( m_center );
+	reader->readVec2( m_velocity );
+	reader->readVec2( m_gravityScale );
+	m_angle   = reader->readFloat();
+	m_torque  = reader->readFloat();
+	m_mass    = reader->readFloat();
+	m_inertia = reader->readFloat();
+	m_elastic = reader->readFloat();
+	m_linearDrag  = reader->readFloat();
+	m_angularDrag = reader->readFloat();
 }

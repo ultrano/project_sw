@@ -55,22 +55,22 @@ void SWActRotate::onUpdate()
 	transform->setLocalRotate( euler );
 }
 
-void SWActRotate::serialize( SWObjectWriter* ow )
+void SWActRotate::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeFloat( m_duration );
-	ow->writeFloat( m_spendTime );
-	ow->writeVec3( m_from );
-	ow->writeVec3( m_to );
+	__super::serialize( writer );
+	writer->writeFloat( m_duration );
+	writer->writeFloat( m_spendTime );
+	writer->writeVec3( m_from );
+	writer->writeVec3( m_to );
 }
 
-void SWActRotate::deserialize( SWObjectReader* or )
+void SWActRotate::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_duration = or->readFloat();
-	m_spendTime = or->readFloat();
-	or->readVec3( m_from );
-	or->readVec3( m_to );
+	__super::deserialize( reader );
+	m_duration = reader->readFloat();
+	m_spendTime = reader->readFloat();
+	reader->readVec3( m_from );
+	reader->readVec3( m_to );
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -159,14 +159,14 @@ void SWActRotateBy::onStart()
 	m_to = m_from + (m_by * m_duration);
 }
 
-void SWActRotateBy::serialize( SWObjectWriter* ow )
+void SWActRotateBy::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeVec3( m_by );
+	__super::serialize( writer );
+	writer->writeVec3( m_by );
 }
 
-void SWActRotateBy::deserialize( SWObjectReader* or )
+void SWActRotateBy::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	or->readVec3( m_by );
+	__super::deserialize( reader );
+	reader->readVec3( m_by );
 }

@@ -60,32 +60,32 @@ const tvec2& SWSprite::getScaledSize() const
 	return m_scaledSize;
 }
 
-void SWSprite::serialize( SWObjectWriter* ow )
+void SWSprite::serialize( SWObjectWriter* writer )
 {
 	tstring path;
 	bool isAsset = SWAssets.findPathOfTexture( m_texture(), path );
 
-	ow->writeBool( isAsset );
-	if ( isAsset ) ow->writeString( path );
+	writer->writeBool( isAsset );
+	if ( isAsset ) writer->writeString( path );
 
-	ow->writeVec2( m_offset );
-	ow->writeVec2( m_size );
-	ow->writeVec2( m_scaledOffset );
-	ow->writeVec2( m_scaledSize );
+	writer->writeVec2( m_offset );
+	writer->writeVec2( m_size );
+	writer->writeVec2( m_scaledOffset );
+	writer->writeVec2( m_scaledSize );
 }
 
-void SWSprite::deserialize( SWObjectReader* or )
+void SWSprite::deserialize( SWObjectReader* reader )
 {
-	bool isAsset = or->readBool();
+	bool isAsset = reader->readBool();
 	if ( isAsset )
 	{
 		tstring path;
-		or->readString( path );
+		reader->readString( path );
 		m_texture = SWAssets.loadTexture( path );
 	}
 
-	or->readVec2( m_offset );
-	or->readVec2( m_size );
-	or->readVec2( m_scaledOffset );
-	or->readVec2( m_scaledSize );
+	reader->readVec2( m_offset );
+	reader->readVec2( m_size );
+	reader->readVec2( m_scaledOffset );
+	reader->readVec2( m_scaledSize );
 }

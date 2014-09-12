@@ -105,18 +105,18 @@ const SWMesh* SWSpriteRenderer::getMesh() const
 	return m_mesh();
 }
 
-void SWSpriteRenderer::serialize( SWObjectWriter* ow )
+void SWSpriteRenderer::serialize( SWObjectWriter* writer )
 {
-	ow->writeColor( m_color );
-	ow->writeObject( m_mesh() );
-	ow->writeObject( m_sprite() );
-	ow->writeObject( m_material() );
+	writer->writeColor( m_color );
+	writer->writeObject( m_mesh() );
+	writer->writeObject( m_sprite() );
+	writer->writeObject( m_material() );
 }
 
-void SWSpriteRenderer::deserialize( SWObjectReader* or )
+void SWSpriteRenderer::deserialize( SWObjectReader* reader )
 {
-	or->readColor( m_color );
-	m_mesh   = swrtti_cast<SWMesh>( or->readObject() );
-	m_sprite = swrtti_cast<SWSprite>( or->readObject() );
-	m_material = swrtti_cast<SWMaterial>( or->readObject() );
+	reader->readColor( m_color );
+	m_mesh   = swrtti_cast<SWMesh>( reader->readObject() );
+	m_sprite = swrtti_cast<SWSprite>( reader->readObject() );
+	m_material = swrtti_cast<SWMaterial>( reader->readObject() );
 }

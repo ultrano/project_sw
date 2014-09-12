@@ -36,17 +36,17 @@ void SWActDelay::onUpdate()
 
 }
 
-void SWActDelay::serialize( SWObjectWriter* ow )
+void SWActDelay::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeFloat( m_accum );
-	ow->writeFloat( m_delay );
+	__super::serialize( writer );
+	writer->writeFloat( m_accum );
+	writer->writeFloat( m_delay );
 
 }
 
-void SWActDelay::deserialize( SWObjectReader* or )
+void SWActDelay::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_accum = or->readFloat();
-	m_delay = or->readFloat();
+	__super::deserialize( reader );
+	m_accum = reader->readFloat();
+	m_delay = reader->readFloat();
 }

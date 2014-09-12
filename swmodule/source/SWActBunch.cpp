@@ -60,24 +60,24 @@ void SWActBunch::onUpdate()
 	}
 }
 
-void SWActBunch::serialize( SWObjectWriter* ow )
+void SWActBunch::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeUInt( m_acts.size() );
+	__super::serialize( writer );
+	writer->writeUInt( m_acts.size() );
 	for ( tuint i = 0 ; i < m_acts.size() ; ++i )
 	{
-		ow->writeObject( m_acts[i]() );
+		writer->writeObject( m_acts[i]() );
 	}
 }
 
-void SWActBunch::deserialize( SWObjectReader* or )
+void SWActBunch::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	tuint count = or->readUInt();
+	__super::deserialize( reader );
+	tuint count = reader->readUInt();
 	m_acts.reserve( count );
 	for ( tuint i = 0 ; i < count ; ++i )
 	{
-		SWAct* act = swrtti_cast<SWAct>( or->readObject() );
+		SWAct* act = swrtti_cast<SWAct>( reader->readObject() );
 		m_acts.push_back( act );
 	}
 }

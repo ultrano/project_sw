@@ -14,6 +14,7 @@ void Character::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addComponent<Runner>();
+	gameObject()->setName( "Character" );
 }
 
 void Character::onStart()

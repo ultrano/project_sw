@@ -167,29 +167,29 @@ void SWCamera::setTargetLayerName( const thashstr& name )
 	m_layerName = name;
 }
 
-void SWCamera::serialize( SWObjectWriter* ow )
+void SWCamera::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeFloat( m_clearDepth );
-	ow->writeFloat( m_near );
-	ow->writeFloat( m_far );
-	ow->writeInt( m_depth );
-	ow->writeInt( m_clearFlags );
-	ow->writeColor( m_clearColor );
-	ow->writeString( m_layerName.str() );
+	__super::serialize( writer );
+	writer->writeFloat( m_clearDepth );
+	writer->writeFloat( m_near );
+	writer->writeFloat( m_far );
+	writer->writeInt( m_depth );
+	writer->writeInt( m_clearFlags );
+	writer->writeColor( m_clearColor );
+	writer->writeString( m_layerName.str() );
 }
 
-void SWCamera::deserialize( SWObjectReader* or )
+void SWCamera::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_clearDepth = or->readFloat();
-	m_near  = or->readFloat();
-	m_far   = or->readFloat();
-	m_depth = or->readInt();
-	m_clearFlags = or->readInt();
-	or->readColor( m_clearColor );
+	__super::deserialize( reader );
+	m_clearDepth = reader->readFloat();
+	m_near  = reader->readFloat();
+	m_far   = reader->readFloat();
+	m_depth = reader->readInt();
+	m_clearFlags = reader->readInt();
+	reader->readColor( m_clearColor );
 
 	tstring layerName;
-	or->readString( layerName );
+	reader->readString( layerName );
 	m_layerName = layerName;
 }

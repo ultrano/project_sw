@@ -260,10 +260,10 @@ tuint SWFontRenderer::getLinesHeight( const tstring& text ) const
 	return lineCount * m_fontInfo()->getLineHeight();
 }
 
-void SWFontRenderer::serialize( SWObjectWriter* ow )
+void SWFontRenderer::serialize( SWObjectWriter* writer )
 {
 }
 
-void SWFontRenderer::deserialize( SWObjectReader* or )
+void SWFontRenderer::deserialize( SWObjectReader* reader )
 {
 }

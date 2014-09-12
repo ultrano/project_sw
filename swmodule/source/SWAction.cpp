@@ -108,28 +108,28 @@ bool SWAction::isPlaying( const tstring& name ) const
 	return false;
 }
 
-void SWAction::serialize( SWObjectWriter* ow )
+void SWAction::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
+	__super::serialize( writer );
 	
-	ow->writeUInt( m_actTable.size() );
+	writer->writeUInt( m_actTable.size() );
 	ActTable::iterator itor = m_actTable.begin();
 	for ( ; itor != m_actTable.end() ; ++itor )
 	{
-		ow->writeString( itor->first.str() );
-		ow->writeObject( itor->second() );
+		writer->writeString( itor->first.str() );
+		writer->writeObject( itor->second() );
 	}
 }
 
-void SWAction::deserialize( SWObjectReader* or )
+void SWAction::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	tuint count = or->readUInt();
+	__super::deserialize( reader );
+	tuint count = reader->readUInt();
 	for ( tuint i = 0 ; i < count ; ++i )
 	{
 		tstring key;
-		or->readString( key );
-		m_actTable[ key ] = swrtti_cast<SWAct>( or->readObject() );
+		reader->readString( key );
+		m_actTable[ key ] = swrtti_cast<SWAct>( reader->readObject() );
 	}
 }
 

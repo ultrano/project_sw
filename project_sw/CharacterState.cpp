@@ -57,9 +57,9 @@ void Runner::onStart()
 
 void Runner::onRemove()
 {
-	__super::onRemove();
+	if ( m_jumpEffect.isValid() ) m_jumpEffect()->destroy();
 
-	m_jumpEffect()->destroy();
+	__super::onRemove();
 }
 
 void Runner::onUpdate()
@@ -233,9 +233,12 @@ void Bird::onStart()
 void Bird::onRemove()
 {
 	__super::onRemove();
-
-	SWTransform* magneticTrans = getComponent<SWTransform>()->find( "magnetic" );
-	magneticTrans->gameObject()->destroy();
+	SWTransform* trans = getComponent<SWTransform>();
+	SWTransform* magneticTrans = trans->find( "magnetic" );
+	if ( magneticTrans )
+	{
+		magneticTrans->gameObject()->destroy();
+	}
 }
 
 void Bird::onUpdate()

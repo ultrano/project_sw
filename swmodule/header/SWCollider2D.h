@@ -50,8 +50,8 @@ public:
 
 protected:
 
-	void serialize( SWObjectWriter* ow );
-	void deserialize( SWObjectReader* or );
+	void serialize( SWObjectWriter* writer );
+	void deserialize( SWObjectReader* reader );
 
 private:
 
@@ -80,8 +80,8 @@ protected:
 
 	void getSREdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const;
 
-	void serialize( SWObjectWriter* ow );
-	void deserialize( SWObjectReader* or );
+	void serialize( SWObjectWriter* writer );
+	void deserialize( SWObjectReader* reader );
 
 private:
 	tvec2 m_size;

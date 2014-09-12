@@ -47,19 +47,19 @@ void SWActRepeat::onUpdate()
 	}
 }
 
-void SWActRepeat::serialize( SWObjectWriter* ow )
+void SWActRepeat::serialize( SWObjectWriter* writer )
 {
-	__super::serialize( ow );
-	ow->writeObject( m_act() );
-	ow->writeUInt( m_limitCount );
-	ow->writeUInt( m_repeatCount );
+	__super::serialize( writer );
+	writer->writeObject( m_act() );
+	writer->writeUInt( m_limitCount );
+	writer->writeUInt( m_repeatCount );
 }
 
-void SWActRepeat::deserialize( SWObjectReader* or )
+void SWActRepeat::deserialize( SWObjectReader* reader )
 {
-	__super::deserialize( or );
-	m_act = swrtti_cast<SWAct>( or->readObject() );
-	m_limitCount = or->readUInt();
-	m_repeatCount = or->readUInt();
+	__super::deserialize( reader );
+	m_act = swrtti_cast<SWAct>( reader->readObject() );
+	m_limitCount = reader->readUInt();
+	m_repeatCount = reader->readUInt();
 
 }
