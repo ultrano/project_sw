@@ -13,7 +13,7 @@ Character::~Character()
 void Character::onAwake()
 {
 	__super::onAwake();
-	gameObject()->addComponent<Runner>();
+	gameObject()->addComponent<Bird>();
 	gameObject()->setName( "Character" );
 }
 
@@ -26,17 +26,25 @@ void Character::onStart()
 
 void Character::onUpdate()
 {
-	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
+	if ( SWInput.getKey( 't' ) )
+	{
+		if ( Runner* runner = getComponent<Runner>() )
+		{
+			runner->destroy();
+			gameObject()->addComponent<Bird>();
+		}
+		else if ( Bird* bird = getComponent<Bird>() )
+		{
+			bird->destroy();
+			gameObject()->addComponent<Runner>();
+		}
+	}
 }
 
 void Character::onFixedRateUpdate()
 {
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
 	body()->addForce( tvec2( RunningForce,0 ) );
-
-	SWTransform* trans = getComponent<SWTransform>();
-	tuint meters = (tuint)trans->getPosition().x/100;
-	m_meterScore()->setText( "%d Meters", meters );
 
 	tvec2 vel = body()->getVelocity();
 	tvec2 pos = body()->getPosition();
@@ -45,7 +53,7 @@ void Character::onFixedRateUpdate()
 		vel.y = 0;
 		body()->setVelocity( vel );
 
-		pos.y -= (pos.y - RoofY)/1.5f;
+		pos.y -= (pos.y - RoofY)/2;
 		body()->setPosition( pos );
 	}
 	else if ( pos.y < GroundY && vel.y < 0 )
@@ -58,6 +66,10 @@ void Character::onFixedRateUpdate()
 		pos.y -= (pos.y - GroundY)/2;
 		body()->setPosition( pos );
 	}
+
+	SWTransform* trans = getComponent<SWTransform>();
+	tuint meters = (tuint)trans->getPosition().x/100;
+	m_meterScore()->setText( "%d Meters", meters );
 }
 
 void Character::onCollision( SWCollision2D* coll )

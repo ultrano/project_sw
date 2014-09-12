@@ -24,7 +24,6 @@ void Runner::onStart()
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
 
 	m_body = gameObject()->addComponent<SWRigidBody2D>();
-	m_body()->setGravityScale( -tvec2::axisY * 80 );
 	m_body()->setFixedAngle( true );
 	m_body()->setVelocity( m_body()->getVelocity().scale( 1,0 ) );
 
@@ -104,7 +103,7 @@ void Runner::updateState()
 			tvec2 vel = m_body()->getVelocity();
 			tvec2 pos = m_body()->getPosition();
 			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
-			if ( m_activate && vel.y <= 50 ) setState( Boosting );
+			if ( m_activate && vel.y <= 0 ) setState( Boosting );
 		}
 		break;
 	case State::Boosting :
@@ -112,8 +111,9 @@ void Runner::updateState()
 			tvec2 vel = m_body()->getVelocity();
 			tvec2 pos = m_body()->getPosition();
 			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
-			if ( pos.y > GroundY && pos.y < RoofY ) setState( Gliding );
+
 			if ( m_activate ) setState( Boosting );
+			else setState( Gliding );
 
 			m_body()->addForce( tvec2( 0, BoostForce ) );
 
@@ -144,10 +144,6 @@ void Runner::changeState()
 	{
 	case State::Running :
 		{
-			tvec2 pos = m_body()->getPosition();
-			pos.y = GroundY;
-			m_body()->setPosition( pos );
-
 			SWAction* action = getComponent<SWAction>();
 			action->stop();
 		}
@@ -243,7 +239,7 @@ void Bird::onStart()
 		gameObject()->addComponent<SWSpriteRenderer>();
 
 		SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
-		body->setGravityScale( -tvec2::axisY * 50 );
+		//body->setGravityScale( -tvec2::axisY * 50 );
 		body->setFixedAngle( true );
 		body->setVelocity( body->getVelocity().scale( 1,0 ) );
 
@@ -300,7 +296,8 @@ void Bird::onUpdate()
 	SWRigidBody2D* body = getComponent<SWRigidBody2D>();
 	SWTransform* trans = getComponent<SWTransform>();
 
-	trans->setLocalRotate( tvec3( 0, 0, body->getVelocity().y/900 ) );
+	trans->setLocalRotate( tvec3( 0, 0, body->getVelocity().y/20 ) );
+	//trans->setLocalRotate( tvec3( 0, 0, SWMath.pingPong( SWTime.getTime(), SWMath.pi*2 ) ) );
 
 	if ( isButtonPushed() )
 	{
@@ -324,7 +321,7 @@ void Bird::onFixedRateUpdate()
 	if ( m_doFlapping )
 	{
 		m_doFlapping = false;
-		body->addForce( tvec2( 0, 300 ) );
+		body->addForce( tvec2( 0, 15 ) );
 
 		SWAction* action = gameObject()->addComponent<SWAction>();
 		action->play( "flapping" );

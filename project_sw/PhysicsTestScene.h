@@ -27,7 +27,7 @@ public:
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-			screenSize = screenSize * 3;
+			screenSize = screenSize * 2;
 
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Camera" );
@@ -54,22 +54,17 @@ public:
 			transform->setLocalScale( tvec3::one*2 );
 
 			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-			body->setGravityScale( -tvec2::axisY*0.001f);
+			body->setGravityScale( -tvec2::axisY * 0.1f );
 		}
 
 		m_startTIme = SWTime.getTime();
+
+		m_lastState = SW_None;
 	}
 
 	void onGOUpdate( SWGameObject* go )
 	{
-		tvec3 pos = go->getComponent<SWTransform>()->getPosition();
-		//SWLog( "pos: %f, %f, %f", pos.x, pos.y, pos.z );
-	
-		if ( pos.length() >= 30 )
-		{
-			SWLog( "time : %f", SWTime.getTime() - m_startTIme );
-			go->destroy();
-		}
+		
 	}
 
 	void onEndLogo()
@@ -82,6 +77,19 @@ public:
 		{
 			SW_GC.setNextScene( new __this() );
 		}
+
+		if ( SWInput.getTouchState() == SW_TouchPress && m_lastState == SW_TouchRelease )
+		{
+			SWRigidBody2D* body = findGO( "Logo" )->getComponent<SWRigidBody2D>();
+			body->addForce( tvec2( 0, 20 ) );
+		}
+		m_lastState = SWInput.getTouchState();
+	}
+
+	tuint m_lastState;
+	void onFixedRateUpdate()
+	{
+
 	}
 };
 

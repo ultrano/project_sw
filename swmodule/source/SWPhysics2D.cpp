@@ -13,7 +13,7 @@ __SWPhysics2D& __SWPhysics2D::instance()
 
 
 __SWPhysics2D::__SWPhysics2D()
-	: m_gravityForce( 9.85f )
+	: m_gravityForce( 0.985f )
 {
 }
 
@@ -104,7 +104,7 @@ SWCollider2D* __SWPhysics2D::overlapPoint( const tvec2& point )
 
 float __SWPhysics2D::getFixedInterval()
 {
-	static const float interval = 1.0f/50.0f;
+	static const float interval = 1.0f/30.0f;
 	return interval;
 }
 

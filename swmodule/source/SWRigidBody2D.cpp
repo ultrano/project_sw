@@ -69,20 +69,17 @@ void SWRigidBody2D::onFixedRateUpdate()
 	
 	float depth = transform->getPosition().z;
 	float gravityForce = SWPhysics2D.getGravityForce();
-	float interval = SWPhysics2D.getFixedInterval();//nowTime - m_lastTime;
 
-	addAccel( m_gravityScale * gravityForce * interval );
-	
-	tvec2 linearStep = m_velocity * interval;
-	m_velocity -= linearStep * m_linearDrag;
-	m_center   += linearStep;
+	addAccel( m_gravityScale * gravityForce );
+	m_center += m_velocity;
+	addAccel( -m_velocity * m_linearDrag );
+
 	transform->setPosition( tvec3( m_center, depth ) );
 	
 	if ( !m_fixedAngle )
 	{
-		tfloat angularStep = m_torque * interval;
-		m_torque -= angularStep * m_angularDrag;
-		m_angle  += angularStep;
+		m_torque -= m_torque * m_angularDrag;
+		m_angle  += m_torque;
 		transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
 	}
 }
@@ -91,7 +88,7 @@ void SWRigidBody2D::addForce( const tvec2& force )
 {
 	if ( m_mass == 0 ) return;
 
-	m_velocity += force/m_mass;
+	addAccel( force/m_mass );
 }
 
 void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
@@ -100,7 +97,7 @@ void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
 	tvec2 radius = (pos - m_center);
 	float torque = radius.cross( force );
 
-	m_velocity += force/m_mass;
+	addAccel( force/m_mass );
 	m_torque   += torque/m_inertia;
 }
 
