@@ -6,8 +6,8 @@ static const float RoofY   = 280;
 static const float WorldWidth  = 480;
 static const float WorldHeight = 320;
 
-static const float RunningForce = 1.0f;
-static const float JumpForce  = 20.0f;
+static const float RunningForce = 0.1f;
+static const float JumpForce  = 15.0f;
 static const float BoostForce = 1.0f;
 static const tuint LoanCoins  = 0;
 

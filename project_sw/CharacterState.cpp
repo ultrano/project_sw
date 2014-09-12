@@ -242,6 +242,7 @@ void Bird::onStart()
 		//body->setGravityScale( -tvec2::axisY * 50 );
 		body->setFixedAngle( true );
 		body->setVelocity( body->getVelocity().scale( 1,0 ) );
+		body->setLinearDrag(0.01f);
 
 		SWCircleCollider2D* collider = gameObject()->addComponent<SWCircleCollider2D>();
 		collider->setRadius( 20 );
