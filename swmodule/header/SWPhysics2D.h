@@ -27,6 +27,9 @@ public:
 	void ignoreLayer( const thashstr& layer1, const thashstr& layer2, bool ignore );
 
 	SWCollider2D* overlapPoint( const tvec2& point );
+
+	float getFixedInterval();
+
 private:
 
 	typedef ttable<thash64,bool> IgnoreTable;

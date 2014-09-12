@@ -160,12 +160,6 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 	{
 		registerBasicObjectFactories( this );
 	}
-
-	//! initialize variables
-	{
-		m_physicsFixedRate = 1.0f/30.0f;
-		m_physicsFrameRate = 0;
-	}
 }
 
 void SWGameContext::onFrameMove()
@@ -197,18 +191,8 @@ void SWGameContext::onFrameMove()
 		m_nextScene = NULL;
 		if ( m_currentScene.isValid() ) m_currentScene()->awake();
 	}
-
-	SWGameScene* scene = m_currentScene();
-	if ( scene ) scene->update();
-
-	m_physicsFrameRate += SWTime.getDeltaTime();
-	while ( m_physicsFrameRate >= m_physicsFixedRate )
-	{
-		m_physicsFrameRate -= m_physicsFixedRate;
-		
-		SWPhysics2D.simulate();
-		if ( scene ) scene->fixedRateUpdate();
-	}
+	
+	if ( SWGameScene* scene = m_currentScene() ) scene->update();
 
 	SWInput.m_deltaX = 0;
 	SWInput.m_deltaY = 0;

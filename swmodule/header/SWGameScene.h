@@ -69,8 +69,6 @@ private:
 	void resume();
 	void pause();
 	void update();
-	void fixedRateUpdate();
-	void postUpdate();
 	void draw();
 	void handleEvent();
 
@@ -89,6 +87,9 @@ private:
 	//! for fixed frame rate update
 	tfloat m_fixedFrameRate;
 	tfloat m_accumFrameRate;
+
+	//! for physics2D
+	tfloat m_physicsFrameRate;
 };
 
 #endif

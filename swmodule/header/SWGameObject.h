@@ -80,6 +80,7 @@ private:
 	void registerComponent( SWComponent* comp );
 	void udpate();
 	void fixedRateUpdate();
+	void preUpdate();
 
 private:
 

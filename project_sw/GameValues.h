@@ -8,6 +8,6 @@ static const float WorldHeight = 320;
 static const float RunningForce = 1.0f;
 static const float JumpForce  = 400;
 static const float BoostForce = 60;
-static const tuint LoanCoins  = 150;
+static const tuint LoanCoins  = 0;
 
 #endif //! GameValues_h__

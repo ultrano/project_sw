@@ -13,6 +13,7 @@
 #include "SWOpenGL.h"
 #include "SWDefines.h"
 #include "SWTime.h"
+#include "SWPhysics2D.h"
 
 #include "SWTransform.h"
 #include "SWBehavior.h"
@@ -69,6 +70,7 @@ void SWGameScene::awake()
 {
 	m_fixedFrameRate = 1.0f/30.0f;
 	m_accumFrameRate = 0;
+	m_physicsFrameRate = 0;
 	SWInput.addInputDelegate( GetDelegator(handleEvent) );
 	onAwake();
 }
@@ -105,37 +107,62 @@ void SWGameScene::pause()
 
 void SWGameScene::update()
 {
-	onUpdate();
-
-	m_updates = m_roots;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ; ++itor )
+	//! calculate count of fixed rate update
+	tuint fixedCount = 0;
+	m_physicsFrameRate += SWTime.getDeltaTime();
+	while ( m_physicsFrameRate >= SWPhysics2D.getFixedInterval() )
 	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		if ( go == NULL ) continue;
-		if ( go->isActiveSelf() ) go->udpate();
+		m_physicsFrameRate -= SWPhysics2D.getFixedInterval();		
+		fixedCount += 1;
+	}
+
+	//! copy objects to update
+	m_updates = m_roots;
+	
+	/*//! pre-updates
+	{	
+		onUpdate();
+
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
+		{
+			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+			if ( go == NULL ) continue;
+			if ( go->isActiveSelf() ) go->preUpdate();
+		}
+	}
+	/*/
+	
+	//! fixed rate updates
+	while ( fixedCount-- )
+	{
+		onFixedRateUpdate();
+
+		m_updates = m_roots;
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
+		{
+			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+			if ( go == NULL ) continue;
+			if ( go->isActiveSelf() ) go->fixedRateUpdate();
+		}
+
+		SWPhysics2D.simulate();
+	}
+
+	//! regular updates
+	{	
+		onUpdate();
+
+		SWObject::List::iterator itor = m_updates.begin();
+		for ( ; itor != m_updates.end() ; ++itor )
+		{
+			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+			if ( go == NULL ) continue;
+			if ( go->isActiveSelf() ) go->udpate();
+		}
 	}
 	
-	postUpdate();
-}
-
-void SWGameScene::fixedRateUpdate()
-{
-	onFixedRateUpdate();
-	
-	m_updates = m_roots;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ; ++itor )
-	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		if ( go == NULL ) continue;
-		if ( go->isActiveSelf() ) go->fixedRateUpdate();
-	}
-	postUpdate();
-}
-
-void SWGameScene::postUpdate()
-{
 	//! post destroy game objects
 	do
 	{

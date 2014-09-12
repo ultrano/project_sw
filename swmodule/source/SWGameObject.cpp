@@ -67,7 +67,7 @@ void SWGameObject::destroyNow()
 	__super::destroy();
 }
 
-void SWGameObject::udpate()
+void SWGameObject::preUpdate()
 {
 	if ( m_addedComponents.size() )
 	{
@@ -80,6 +80,11 @@ void SWGameObject::udpate()
 			comp->onStart();
 		}
 	}
+}
+
+void SWGameObject::udpate()
+{
+	preUpdate();
 
 	if ( m_updateDelegates.size() )
 	{
@@ -99,6 +104,8 @@ void SWGameObject::udpate()
 
 void SWGameObject::fixedRateUpdate()
 {
+	preUpdate();
+
 	if ( m_fixedRateUpdateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;

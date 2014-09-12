@@ -40,7 +40,7 @@ private:
 	void onAwake();
 	void onStart();
 	void onRemove();
-	void onUpdate();
+	void onFixedRateUpdate();
 
 private:
 

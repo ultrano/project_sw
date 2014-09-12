@@ -51,7 +51,7 @@ void SWRigidBody2D::onAwake()
 void SWRigidBody2D::onStart()
 {
 	__super::onStart();
-	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
+	gameObject()->addFixedRateUpdateDelegator( GetDelegator( onFixedRateUpdate ) );
 	SWTransform* transform = getComponent<SWTransform>();
 	m_center = transform->getPosition().xy();
 }
@@ -59,28 +59,28 @@ void SWRigidBody2D::onStart()
 void SWRigidBody2D::onRemove()
 {
 	SWPhysics2D.m_bodies.remove( this );
-	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
+	gameObject()->removeFixedRateUpdateDelegator( GetDelegator( onFixedRateUpdate ) );
 	__super::onRemove();
 }
-void SWRigidBody2D::onUpdate()
-{
-	float deltaTime = SWTime.getDeltaTime();
-	if ( deltaTime == 0 ) return;
 
+void SWRigidBody2D::onFixedRateUpdate()
+{
 	SWTransform* transform = getComponent<SWTransform>();
 	
 	float depth = transform->getPosition().z;
+	float gravityForce = SWPhysics2D.getGravityForce();
+	float interval = SWPhysics2D.getFixedInterval();//nowTime - m_lastTime;
 
-	addAccel( m_gravityScale * ( SWPhysics2D.getGravityForce() ) * deltaTime );
+	addAccel( m_gravityScale * gravityForce * interval );
 	
-	tvec2 linearStep = m_velocity* deltaTime;
+	tvec2 linearStep = m_velocity * interval;
 	m_velocity -= linearStep * m_linearDrag;
 	m_center   += linearStep;
 	transform->setPosition( tvec3( m_center, depth ) );
 	
 	if ( !m_fixedAngle )
 	{
-		tfloat angularStep = m_torque* deltaTime;
+		tfloat angularStep = m_torque * interval;
 		m_torque -= angularStep * m_angularDrag;
 		m_angle  += angularStep;
 		transform->setRotate( tquat().rotate( 0, 0, m_angle ) );

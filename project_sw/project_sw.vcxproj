@@ -95,6 +95,7 @@
     <ClInclude Include="GasCloud.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="PhysicsTestScene.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Rider.h" />
     <ClInclude Include="CharacterState.h" />

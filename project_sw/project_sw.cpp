@@ -9,6 +9,7 @@
 //#include "CatAss.h"
 #include "PlayScene.h"
 #include "IntroScene.h"
+#include "PhysicsTestScene.h"
 
 void callbackDisplay()
 {

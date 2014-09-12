@@ -76,10 +76,6 @@ private:
 	SWCriticalSection m_idleSection;
 
 	FactoryTable m_factoryTable;
-
-	//! for physics2D
-	tfloat m_physicsFixedRate;
-	tfloat m_physicsFrameRate;
 };
 
 #endif // SWGameContext_h__

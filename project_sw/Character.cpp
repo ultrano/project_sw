@@ -26,6 +26,16 @@ void Character::onStart()
 void Character::onUpdate()
 {
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
+}
+
+void Character::onFixedRateUpdate()
+{
+	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
+	body()->addForce( tvec2( RunningForce,0 ) );
+
+	SWTransform* trans = getComponent<SWTransform>();
+	tuint meters = (tuint)trans->getPosition().x/100;
+	m_meterScore()->setText( "%d Meters", meters );
 
 	tvec2 vel = body()->getVelocity();
 	tvec2 pos = body()->getPosition();
@@ -47,16 +57,6 @@ void Character::onUpdate()
 		pos.y -= (pos.y - GroundY)/2;
 		body()->setPosition( pos );
 	}
-}
-
-void Character::onFixedRateUpdate()
-{
-	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
-	body()->addForce( tvec2( RunningForce,0 ) );
-
-	SWTransform* trans = getComponent<SWTransform>();
-	tuint meters = (tuint)trans->getPosition().x/100;
-	m_meterScore()->setText( "%d Meters", meters );
 }
 
 void Character::onCollision( SWCollision2D* coll )
