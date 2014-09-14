@@ -13,7 +13,7 @@ SWHardRef<SWInputStream> SWWIN32AssetsAccessor::access( const tstring& filePath 
 #include "SWFileStream.h"
 SWHardRef<SWInputStream> SWIOSAssetsAccessor::access( const tstring& filePath )
 {
-    NSString* manifest_string = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:filePath.c_str()]
+    NSString* manifest_string = [m_bundle pathForResource:[NSString stringWithUTF8String:filePath.c_str()]
                                                                 ofType:nil];
     const char* manifest_path = [manifest_string fileSystemRepresentation];
     
