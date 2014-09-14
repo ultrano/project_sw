@@ -7,10 +7,10 @@ SWFileOutputStream::SWFileOutputStream()
 
 }
 
-SWFileOutputStream::SWFileOutputStream( const tstring& file )
+SWFileOutputStream::SWFileOutputStream( const tstring& file, int mode )
 	: m_file(NULL)
 {
-	open(file);
+	open(file, mode);
 }
 
 SWFileOutputStream::~SWFileOutputStream()
@@ -20,24 +20,40 @@ SWFileOutputStream::~SWFileOutputStream()
 
 void SWFileOutputStream::write( tbyte* b, tuint len )
 {
-
 	if ( m_file ) fwrite( b, len, 1, m_file );
 }
 
-bool SWFileOutputStream::open( const tstring& file )
+bool SWFileOutputStream::open( const tstring& file, int mode )
 {
+	int index = 0;
+	char buf[3] = {0};
+
+	if ( mode & SW_File_Refresh ) buf[index++] = 'w';
+	else if ( mode & SW_File_Append )  buf[index++] = 'a';
+
+	if ( mode & SW_File_Binary ) buf[index++] = 'b';
+	else if ( mode & SW_File_Text )  buf[index++] = 't';
+
+	buf[index++] = '\0';
+
 	close();
-	m_file = fopen( file.c_str(),"wb" );
+	m_file = fopen( file.c_str(), &buf[0] );
 	return !!m_file;
 }
 
 void SWFileOutputStream::close()
 {
+	flush();
 	if (m_file)
 	{
 		fclose(m_file);
 		m_file = NULL;
 	}
+}
+
+void SWFileOutputStream::flush()
+{
+	if (m_file) fflush( m_file );
 }
 
 tuint SWFileOutputStream::size()

@@ -2,27 +2,33 @@
 #define SWFileStream_h__
 
 #include "SWIOStream.h"
+#include "SWDefines.h"
 
 class SWFileOutputStream : public SWOutputStream
 {
-	FILE* m_file;
 public:
 	SWFileOutputStream();
-	SWFileOutputStream( const tstring& file );
+	SWFileOutputStream( const tstring& file, int mode = SW_File_Refresh | SW_File_Binary );
 	~SWFileOutputStream();
+	
 	void write(tbyte* b, tuint len) ;
 
-	bool open( const tstring& file );
+	bool open( const tstring& file, int mode );
 	void close();
+	void flush();
 	tuint size();
 	void setPos( tuint pos );
 	tuint getPos();
 	FILE* getFile();
+
+private:	
+	
+	FILE* m_file;
+
 };
 
 class SWFileInputStream : public SWInputStream
 {
-	FILE* m_file;
 public:
 	SWFileInputStream();
 	SWFileInputStream( FILE* file ) : m_file( file ) {};
@@ -39,6 +45,11 @@ public:
 	void setPos( tuint pos );
 	tuint getPos();
 	FILE* getFile();
+
+private:	
+	
+	FILE* m_file;
+
 };
 
 #endif // SWFileStream_h__

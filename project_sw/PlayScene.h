@@ -144,24 +144,48 @@ public:
 					go->setActive( false );
 				}
 
-				//! coins parent object when it is activated
+				//! parent object of coins when it is activated
 				{
 					SWGameObject* go = new SWGameObject();
 					go->setName( "Coins" );
 				}
 
-				//! timer for making coin-patterns
+				//! parent object of obstacles when it is activated
 				{
 					SWGameObject* go = new SWGameObject();
-					go->setName( "CoinTimer" );
+					go->setName( "Obstacles" );
+				}
+
+				//! timer for making coin-patterns and obstacles
+				{
+					SWGameObject* go = new SWGameObject();
+					go->setName( "Timer" );
 					go->setActive( false );
 
+					//! acts bunch
+					SWActBunch* bunch = new SWActBunch();
+
+					//! timer for coins
+					{
+						SWActSequence* seq = new SWActSequence();
+						seq->addAct( new SWActDelay( 6 ) );
+						seq->addAct( new SWActDelegate( GetDelegator( makeCoinPattern ) ) );
+						
+						bunch->addAct( new SWActRepeat( seq ) );
+					}
+
+					//! timer for obstacles
+					{
+						SWActSequence* seq = new SWActSequence();
+						seq->addAct( new SWActDelay( 2 ) );
+						seq->addAct( new SWActDelegate( GetDelegator( makeObstacle ) ) );
+						
+						bunch->addAct( new SWActRepeat( seq ) );
+					}
+
 					SWHardRef<SWAction> action = go->addComponent<SWAction>();
-					SWActSequence* seq = new SWActSequence();
-					seq->addAct( new SWActDelay( 6 ) );
-					seq->addAct( new SWActDelegate( GetDelegator( makeCoinPattern ) ) );
-					action()->setAct( "makeCoin", new SWActRepeat( seq ) );
-					action()->play( "makeCoin" );
+					action()->setAct( "startTimer", bunch );
+					action()->play( "startTimer" );
 				}
 
 				changeState( LoaningCoins );
@@ -240,6 +264,8 @@ public:
 				//! coin basket
 				{
 					SWGameObject* go = new SWGameObject();
+					go->setName( "Basket" );
+
 					SWRectCollider2D* collider = go->addComponent<SWRectCollider2D>();
 					collider->setSize( tvec2( WorldWidth, WorldHeight*2 ) );
 					collider->setCenter( tvec2( -WorldWidth/2, 0 ) );
@@ -338,7 +364,7 @@ public:
 				{
 					findGO( "Character" )->setActive( true );
 					findGO( "CharacterShadow" )->setActive( true );
-					findGO( "CoinTimer" )->setActive( true );
+					findGO( "Timer" )->setActive( true );
 					findGO( "TATP" )->getComponent<SWAction>()->play( "removing" );
 
 					changeState( Playing );
@@ -493,7 +519,7 @@ public:
 		
 		tvec2 step(0, SWMath.randomInt( (RoofY+GroundY)/2, RoofY) );
 		tstring line;
-		while ( reader.readLine( line ) )
+		while ( reader.readLine( line ) > 0 )
 		{
 			step.y -= 15;
 			step.x = frontFromChar;
@@ -509,6 +535,17 @@ public:
 				}
 			}
 		}
+	}
+
+	void makeObstacle()
+	{
+		SWGameObject* go = new SWGameObject();
+		SWTransform* trans = go->addComponent<Obstacle>()->getComponent<SWTransform>();;
+
+		trans->setPosition( m_charTrans()->getPosition() + tvec3( WorldWidth, 0, 0 ) );
+
+		trans->setParent( findGO( "Obstacles" )->getComponent<SWTransform>() );
+
 	}
 
 private:

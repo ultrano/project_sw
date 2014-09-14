@@ -125,13 +125,13 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 
 	SWInputStreamReader reader( ais() );
 	tstring line;
-	if ( !reader.readLine( line ) ) return NULL;
+	if ( reader.readLine( line ) <= 0 ) return NULL;
 
 	SWHardRef<SWSpriteAtlas> atlas = loadSpriteAtlas( line );
 	if ( !atlas.isValid() ) return NULL;
 	
 	SWHardRef<SWSpriteAnimation> animation = new SWSpriteAnimation();
-	while ( reader.readLine( line ) )
+	while ( reader.readLine( line ) > 0 )
 	{
 		char name[125] = {0};
 		float delay = 0;
@@ -185,7 +185,7 @@ SWHardRef<SWSpriteAtlas> __SWAssets::loadSpriteAtlas( const tstring& filePath )
 	SWInputStreamReader reader( ais() );
 
 	tstring line;
-	while( reader.readLine( line ) )
+	while( reader.readLine( line ) > 0 )
 	{
 		char name[128] = {0};
 		int x, y, w, h;

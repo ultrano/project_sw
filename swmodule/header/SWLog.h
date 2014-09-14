@@ -8,7 +8,10 @@
 
 #ifndef sw_SWLog_h
 #define sw_SWLog_h
+
 #include "SWType.h"
+#include "SWPlatform.h"
+
 /**
  @brief CS_knlPrintk 튜닝 로그 함수
  자동 줄넘긴 추가
@@ -20,17 +23,31 @@
 #define SWLog( ... ) do{SWLogCenter::getInstance().write( (__FILE__), (__LINE__), __VA_ARGS__ );}while(0)
 #define SWNullLog( var ) do{ if( var == NULL ) SWLog( "null variable : "#var ) }while(false)
 
+class SWFileOutputStream;
+
 class SWLogCenter
 {
-	typedef tpair<const char*,unsigned int> LogKey;
-	typedef ttable<LogKey, tstring> LogTable;
-	LogTable m_logTable;
-	SWLogCenter();
-	~SWLogCenter();
 public:
+	
 	static SWLogCenter& getInstance();
 	void write( const char* file, unsigned int line, const char* format, ... );
 	void present();
+	
+private:
+	
+	SWLogCenter();
+	~SWLogCenter();
+
+private:
+	
+	typedef tpair<const char*,unsigned int> LogKey;
+	typedef ttable<LogKey, tstring> LogTable;
+	LogTable m_logTable;
+
+#ifdef PLATFORM_WIN32
+	SWHardRef<SWFileOutputStream> m_fos;
+#endif
+
 };
 
 

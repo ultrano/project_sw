@@ -31,7 +31,7 @@ SWHardRef<SWFontInfo> SWFontInfo::parse( SWInputStream* is )
 	tuint32 id;
 	int x,y,w,h,xoffset,yoffset,xadvence,page,chnl;
 	
-	if ( reader.readLine( line ) )
+	if ( reader.readLine( line ) > 0 )
 	{
 		sscanf( line.c_str(),"chars count=%d", &count );
 
@@ -45,7 +45,7 @@ SWHardRef<SWFontInfo> SWFontInfo::parse( SWInputStream* is )
 		}
 	}
 	
-	if ( reader.readLine( line ) )
+	if ( reader.readLine( line ) > 0 )
 	{
 		sscanf( line.c_str(),"kernings count=%d", &count );
 

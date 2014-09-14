@@ -10,7 +10,7 @@ class SWOutputStream : public SWRefCountable
 	SW_RTTI_ROOT( SWOutputStream );
 public:
 	virtual void write(tbyte* b, tuint len) = 0;
-	void write(tbyte b) { write(&b,1); };
+	void writeByte(tbyte b) { write(&b,1); };
 };
 
 class SWInputStream : public SWRefCountable
@@ -25,7 +25,7 @@ public:
 	virtual int skip( tuint len ) = 0;
 	virtual int available() = 0;
 	virtual int read(tbyte* b, tuint len) = 0;
-	int read() { tbyte b; return ( read(&b,1) > 0 )? (int)b : -1; }
+	int readByte() { tbyte b; return ( read(&b,1) > 0 )? (int)b : -1; }
 };
 
 class SWOutputStreamWriter : public SWMemory
@@ -43,13 +43,23 @@ public:
 
 	void writeString(const tstring& str)
 	{
-		if (m_os.isValid())
-		{
-			tstring::size_type sz = str.size();
-			write(sz);
-			if (sz) m_os()->write((tbyte*)&str[0], sz);
-		}
+		if ( !m_os.isValid() ) return ;
+
+		tuint size = str.size();
+		if ( size ) m_os()->write( (tbyte*)&str[0], size );
+		m_os()->writeByte( '\0' );
 	};
+
+	void wirteLine(const tstring& str)
+	{
+		if ( !m_os.isValid() ) return ;
+		
+		tuint size = str.find( '\n' );
+		if ( size == tstring::npos ) size = str.size();
+
+		if ( size ) m_os()->write( (tbyte*)&str[0], size );
+		m_os()->writeByte( '\n' );
+	}
 
 };
 
@@ -66,34 +76,39 @@ public:
 		return m_is()->read((tbyte*)&t, sizeof(T));
 	};
 
-	void readString(tstring& str)
-	{
-		if (m_is.isValid())
-		{
-			tstring::size_type sz = 0;
-			read(sz);
-			if (sz)
-			{
-				str.resize(sz);
-				m_is()->read((tbyte*)&str[0], sz);
-			}
-		}
-	};
-
-	bool readLine( tstring& str )
+	int readString(tstring& str)
 	{
 		str.clear();
-		if ( !m_is.isValid() ) return false;
+		if ( !m_is.isValid() ) return -1;
 
-		char c;
+		int c;
+		while ( true )
+		{
+			c = m_is()->readByte();
+			if ( c <= 0 ) break;
+			str += (char)c;
+		}
+
+		tuint size = str.size();
+		return (size > 0)? size : c;
+	};
+
+	int readLine( tstring& str )
+	{
+		str.clear();
+		if ( !m_is.isValid() ) return -1;
+
+		int c;
 		while( true )
 		{
-			c = m_is()->read();
+			c = m_is()->readByte();
 			if ( c == '\r' ) continue;
 			if ( c <= 0 || c == '\n' ) break;
-			str += c;
+			str += (char)c;
 		}
-		return str.size() > 0;
+
+		tuint size = str.size();
+		return (size > 0)? size : c;
 	}
 
 };

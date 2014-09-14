@@ -20,6 +20,7 @@
 #include "SWBehavior.h"
 #include "SWBoolean.h"
 #include "SWByteBuffer.h"
+#include "SWByteBufferStream.h"
 #include "SWCamera.h"
 #include "SWCollider2D.h"
 #include "SWComponent.h"

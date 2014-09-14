@@ -69,6 +69,12 @@ enum SWDefines
 	SW_Dont_Clear  = 1 << 0,
 	SW_Clear_Color = 1 << 1,
 	SW_Clear_Depth = 1 << 2,
+
+	//! file mode
+	SW_File_Text    = 1 << 0,
+	SW_File_Binary  = 1 << 1,
+	SW_File_Append  = 1 << 2,
+	SW_File_Refresh = 1 << 3,
 };
 
 #define SW_PI (3.14f)
