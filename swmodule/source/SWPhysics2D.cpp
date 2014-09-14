@@ -132,7 +132,16 @@ bool __SWPhysics2D::testCollide( SWCollider2D* collider1, SWCollider2D* collider
 			tvec2 center2 = rect->getWorldCenter();
 			tvec2 pos = center2 - center1;
 			pos = center1 + (circle->getWorldRadius() * pos.normal());
-			return ( rect->containPoint( pos ) );
+			if ( rect->containPoint( pos ) ) return true;
+			
+			tvec2 edge1, edge2, edge3, edge4;
+			rect->getWorldEdges( edge1, edge2, edge3, edge4 );
+			if ( circle->containPoint( edge1 ) )return true;
+			if ( circle->containPoint( edge2 ) )return true;
+			if ( circle->containPoint( edge3 ) )return true;
+			if ( circle->containPoint( edge4 ) )return true;
+
+			return false;
 		}
 		static bool Rects( SWCollider2D* collider1, SWCollider2D* collider2 )
 		{
@@ -140,25 +149,33 @@ bool __SWPhysics2D::testCollide( SWCollider2D* collider1, SWCollider2D* collider
 			SWRectCollider2D* rect2 = swrtti_cast<SWRectCollider2D>( collider2 );
 			tvec2 edge1, edge2, edge3, edge4;
 			rect1->getWorldEdges( edge1, edge2, edge3, edge4 );
-			if ( rect2->containPoint( edge1 ) ) return true;
-			if ( rect2->containPoint( edge2 ) ) return true;
-			if ( rect2->containPoint( edge3 ) ) return true;
-			if ( rect2->containPoint( edge4 ) ) return true;
+			if ( rect2->containPoint( edge1 ) )return true;
+			if ( rect2->containPoint( edge2 ) )return true;
+			if ( rect2->containPoint( edge3 ) )return true;
+			if ( rect2->containPoint( edge4 ) )return true;
 			return false;
 		}
 	};
 
-	if ( swrtti_cast<SWCircleCollider2D>( collider1 ) 
-		&& swrtti_cast<SWCircleCollider2D>( collider2 ) ) return Tester::Circles( collider1, collider2 );
+	if ( swrtti_cast<SWCircleCollider2D>( collider1 ) && swrtti_cast<SWCircleCollider2D>( collider2 ) )
+	{
+		return Tester::Circles( collider1, collider2 );
+	}
 	
-	if ( swrtti_cast<SWCircleCollider2D>( collider1 ) 
-		&& swrtti_cast<SWRectCollider2D>( collider2 ) ) return Tester::CircleAndRect( collider1, collider2 );
+	if ( swrtti_cast<SWCircleCollider2D>( collider1 ) && swrtti_cast<SWRectCollider2D>( collider2 ) )
+	{
+		return Tester::CircleAndRect( collider1, collider2 );
+	}
 	
-	if ( swrtti_cast<SWRectCollider2D>( collider1 ) 
-		&& swrtti_cast<SWCircleCollider2D>( collider2 ) ) return Tester::CircleAndRect( collider2, collider1 );
+	if ( swrtti_cast<SWRectCollider2D>( collider1 ) && swrtti_cast<SWCircleCollider2D>( collider2 ) )
+	{
+		return Tester::CircleAndRect( collider2, collider1 );
+	}
 	
-	if ( swrtti_cast<SWRectCollider2D>( collider1 ) 
-		&& swrtti_cast<SWRectCollider2D>( collider2 ) ) return Tester::Rects( collider1, collider2 );
+	if ( swrtti_cast<SWRectCollider2D>( collider1 ) && swrtti_cast<SWRectCollider2D>( collider2 ) )
+	{
+		return Tester::Rects( collider1, collider2 ) || Tester::Rects( collider2, collider1 );
+	}
 
 	return false;
 }

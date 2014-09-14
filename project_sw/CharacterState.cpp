@@ -26,6 +26,7 @@ void Runner::onStart()
 	m_body = gameObject()->addComponent<SWRigidBody2D>();
 	m_body()->setFixedAngle( true );
 	m_body()->setVelocity( m_body()->getVelocity().scale( 1,0 ) );
+	m_body()->setLinearDrag(0.01f);
 
 	SWCircleCollider2D* collider = gameObject()->addComponent<SWCircleCollider2D>();
 	collider->setRadius( 20 );

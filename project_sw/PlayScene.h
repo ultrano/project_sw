@@ -477,7 +477,6 @@ public:
 	{
 		SWLog( "make new coin" );
 		SWGameObject* go = new SWGameObject();
-		go->setName( "Coin" );
 		return go->addComponent<Coin>();
 	}
 
@@ -539,7 +538,11 @@ public:
 
 	void makeObstacle()
 	{
-		SWGameObject* go = new SWGameObject();
+
+		SWGameObject* go = findGO( "Pool/Obstacle" );
+
+		if ( go == NULL ) (go = new SWGameObject())->addComponent<Obstacle>();
+
 		SWTransform* trans = go->addComponent<Obstacle>()->getComponent<SWTransform>();;
 
 		trans->setPosition( m_charTrans()->getPosition() + tvec3( WorldWidth, 0, 0 ) );

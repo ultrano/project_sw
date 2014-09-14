@@ -13,7 +13,7 @@ Character::~Character()
 void Character::onAwake()
 {
 	__super::onAwake();
-	gameObject()->addComponent<Bird>();
+	gameObject()->addComponent<Runner>();
 	gameObject()->setName( "Character" );
 }
 
@@ -43,8 +43,12 @@ void Character::onUpdate()
 
 void Character::onFixedRateUpdate()
 {
+	SWTransform* trans = getComponent<SWTransform>();
+	tuint meters = (tuint)trans->getPosition().x/100;
+	m_meterScore()->setText( "%d Meters", meters );
+
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
-	body()->addForce( tvec2( RunningForce,0 ) );
+	body()->addForce( tvec2( RunningForce + ((float)meters/5000),0 ) );
 
 	tvec2 vel = body()->getVelocity();
 	tvec2 pos = body()->getPosition();
@@ -66,10 +70,6 @@ void Character::onFixedRateUpdate()
 		pos.y -= (pos.y - GroundY)/2;
 		body()->setPosition( pos );
 	}
-
-	SWTransform* trans = getComponent<SWTransform>();
-	tuint meters = (tuint)trans->getPosition().x/100;
-	m_meterScore()->setText( "%d Meters", meters );
 }
 
 void Character::onCollision( SWCollision2D* coll )

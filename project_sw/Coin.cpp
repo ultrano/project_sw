@@ -35,6 +35,8 @@ void Coin::onAwake()
 {
 	__super::onAwake();
 
+	gameObject()->setName( "Coin" );
+
 	SWHardRef<SWTransform> trans = getComponent<SWTransform>();
 	trans()->setLocalScale( tvec3( 0.5f, 0.5f, 1 ) );
 
