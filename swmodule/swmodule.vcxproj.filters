@@ -307,6 +307,12 @@
     <Filter Include="SW\SWFontRenderer">
       <UniqueIdentifier>{bbf9ef53-d25f-42ad-b559-eeb24d6efc37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWObjectFactory">
+      <UniqueIdentifier>{036db565-6a00-487d-b85b-5f36f9092992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWPlatform">
+      <UniqueIdentifier>{33f2da2d-fece-49f3-828b-60ccebf588b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -639,6 +645,12 @@
     <ClInclude Include="header\SWFontRenderer.h">
       <Filter>SW\SWFontRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWObjectFactory.h">
+      <Filter>SW\SWObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWPlatform.h">
+      <Filter>SW\SWPlatform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -904,6 +916,9 @@
     </ClCompile>
     <ClCompile Include="source\SWFontRenderer.cpp">
       <Filter>SW\SWFontRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWObjectFactory.cpp">
+      <Filter>SW\SWObjectFactory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

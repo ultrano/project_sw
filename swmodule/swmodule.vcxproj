@@ -110,6 +110,7 @@
     <ClInclude Include="header\SWFontInfo.h" />
     <ClInclude Include="header\SWFontRenderer.h" />
     <ClInclude Include="header\SWHeaders.h" />
+    <ClInclude Include="header\SWPlatform.h" />
     <ClInclude Include="header\SWResource.h" />
     <ClInclude Include="header\SWAssets.h" />
     <ClInclude Include="header\SWBehavior.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="header\SWTexture.h" />
     <ClInclude Include="header\TAABB.h" />
     <ClInclude Include="header\TColorRGBA.h" />
+    <ClInclude Include="header\SWObjectFactory.h" />
     <ClInclude Include="header\TRay.h" />
     <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />
@@ -227,6 +229,7 @@
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
     <ClCompile Include="source\SWLayer.cpp" />
+    <ClCompile Include="source\SWObjectFactory.cpp" />
     <ClCompile Include="source\SWObjectStream.cpp" />
     <ClCompile Include="source\SWOpenGL.cpp" />
     <ClCompile Include="source\SWPhysics2D.cpp" />

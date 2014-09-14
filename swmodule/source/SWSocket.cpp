@@ -1,9 +1,11 @@
 #include "SWSocket.h"
 #include "SWMath.h"
 #include "SWLog.h"
+#include "SWPlatform.h"
 #include <fcntl.h>
 
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
+
 #pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h>
 #include <io.h>
@@ -17,7 +19,9 @@ struct _WinSockHolder
 	~_WinSockHolder() { WSACleanup(); }
 };
 #define WINSOCKHOLDER static _WinSockHolder _winsockholder;
+
 #else
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -26,6 +30,7 @@ struct _WinSockHolder
 #include <sys/uio.h>
 #include <unistd.h>
 #define WINSOCKHOLDER 1;
+
 #endif
 
 class SWSocket::Pimpl : public SWRefCountable
@@ -120,7 +125,7 @@ SWSocket::SWSocket()
 }
 SWSocket::~SWSocket()
 {
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
 	closesocket( pimpl()->sock );
 #else
     close( pimpl()->sock );
@@ -145,7 +150,7 @@ SWHardRef<SWSocket> SWSocket::connect( const tstring& ip, int port, bool blockin
 	else
 	{
 		bool ret = false;
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
 		unsigned long mode = blocking ? 0 : 1;
 		ret = (ioctlsocket(pimpl->sock, FIONBIO, &mode) == 0);
 #else

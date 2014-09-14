@@ -3,9 +3,7 @@
 
 #include "SWRefCounter.h"
 #include "SWIOStream.h"
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#endif
+#include "SWPlatform.h"
 
 class SWPlatformAssetsAccessor : public SWRefCountable
 {
@@ -13,7 +11,8 @@ public:
 	virtual SWHardRef<SWInputStream> access( const tstring& filePath ) = 0;
 };
 
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
+
 class SWWIN32AssetsAccessor : public SWPlatformAssetsAccessor
 {
 public:
@@ -22,7 +21,9 @@ public:
 private:
 	tstring m_assetPath;
 };
-#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+
+#elif PLATFORM_IOS
+
 class SWIOSAssetsAccessor : public SWPlatformAssetsAccessor
 {
 public:
@@ -31,7 +32,9 @@ public:
 private:
     NSBundle* m_bundle;
 };
-#elif ANDROID
+
+#elif PLATFORM_ANDROID
+
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
 class SWAndroidAssetsAccessor : public SWPlatformAssetsAccessor
@@ -42,6 +45,7 @@ public:
 private:
 	AAssetManager* m_assetMgr;
 };
+
 #endif
 
 #endif //! __SWPlatformAssetsAccessor_h__

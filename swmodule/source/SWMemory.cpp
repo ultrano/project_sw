@@ -7,9 +7,10 @@
 //
 
 #include "SWMemory.h"
+#include "SWPlatform.h"
 #include <stdlib.h>
 
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
 #pragma pack(push,1)
 #endif
 
@@ -127,7 +128,7 @@ struct MemRod
 		cursor = &original;
 	}
 };
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
 #pragma pack(pop)
 #endif
 

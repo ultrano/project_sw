@@ -7,13 +7,17 @@
 //
 
 #include "SWLog.h"
+#include "SWPlatform.h"
 #include <stdio.h>
 #include <stdarg.h>
-#ifdef ANDROID
-#include <android/log.h>
-#endif
 #include "SWProfiler.h"
 #include "SWUtil.h"
+
+
+#ifdef PLATFORM_ANDROID
+#include <android/log.h>
+#endif
+
 /*
 void SWLog( const char* tag, const char* format, ... )
 {
@@ -51,7 +55,7 @@ void SWLogCenter::write( const char* file, unsigned int line, const char* format
     vsprintf( &buf[0],format, args );
     va_end( args );
 
-#ifdef ANDROID
+#ifdef PLATFORM_ANDROID
     __android_log_print( ANDROID_LOG_INFO, "game log", &buf[0] );
 #else
     printf( "%s\n", &buf[0] );

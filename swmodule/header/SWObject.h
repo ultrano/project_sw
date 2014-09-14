@@ -13,6 +13,7 @@
 #include "SWRefCounter.h"
 #include "SWRtti.h"
 #include "SWType.h"
+#include "SWObjectFactory.h"
 
 //! 상호 작용의 기본 단위이자 객체성을 띄는 클레스의 뿌리.
 //! 객체간 상호작용은 SWHandler 라고 지정한 포맷의
@@ -20,6 +21,8 @@
 class SWObject;
 class SWDelegator;
 class SWHandler;
+class SWObjectWriter;
+class SWObjectReader;
 
 class SWObject : public SWRefCountable
 {
@@ -112,24 +115,6 @@ public:
 	bool isEqual( SWObject* object, const SWHandler& handler ) const;
 	SWObject* getObject() const { return m_object(); };
 	const SWHandler& getHandler() const { return m_handler; };
-};
-
-class SWAbstractObjectFactory : public SWRefCountable
-{
-public:
-	virtual SWHardRef<SWObject> newInstance() = 0;
-};
-
-//! it is just a symbol to be a constructor for the factory;
-static struct factory_constructor{} factory_arg;
-
-template<typename T>
-class SWTemplateObjectFactory : public SWAbstractObjectFactory
-{
-	SWHardRef<SWObject> newInstance()
-	{
-		return new T( factory_arg );
-	}
 };
 
 #endif

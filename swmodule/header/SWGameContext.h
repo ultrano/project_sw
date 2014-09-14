@@ -5,6 +5,7 @@
 #include "SWCriticalSection.h"
 #include "SWPlatformAssetsAccessor.h"
 #include "SWType.h"
+#include "SWObjectFactory.h"
 
 #define SW_GC ( SWGameContext::getInstance() )
 

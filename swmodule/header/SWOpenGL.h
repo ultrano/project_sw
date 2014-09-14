@@ -1,21 +1,20 @@
 #ifndef SWOpenGL_h__
 #define SWOpenGL_h__
 
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#endif
+#include "SWPlatform.h"
 
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
 # include "glew.h"
-#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#elif PLATFORM_IOS
 # include <OpenGLES/ES2/gl.h>
 # include <OpenGLES/ES2/glext.h>
-#elif TARGET_OS_MAC
+# define glClearDepth glClearDepthf
+#elif PLATFORM_OSX
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
 # include <OpenGL/glext.h>
 # include <GLUT/glut.h>
-#elif ANDROID
+#elif PLATFORM_ANDROID
 # include <jni.h>
 # include <GLES2/gl2.h>
 # include <GLES2/gl2ext.h>

@@ -1,6 +1,6 @@
 #include "SWPlatformAssetsAccessor.h"
 
-#ifdef WIN32
+#ifdef PLATFORM_WIN32
 
 #include "SWFileStream.h"
 SWHardRef<SWInputStream> SWWIN32AssetsAccessor::access( const tstring& filePath )
@@ -8,7 +8,7 @@ SWHardRef<SWInputStream> SWWIN32AssetsAccessor::access( const tstring& filePath 
 	return new SWFileInputStream( m_assetPath + filePath );
 }
 
-#elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#elif PLATFORM_IOS
 
 #include "SWFileStream.h"
 SWHardRef<SWInputStream> SWIOSAssetsAccessor::access( const tstring& filePath )
@@ -21,7 +21,7 @@ SWHardRef<SWInputStream> SWIOSAssetsAccessor::access( const tstring& filePath )
 	return new SWFileInputStream( file );
 }
 
-#elif ANDROID
+#elif PLATFORM_ANDROID
 
 #include "SWFileStream.h"
 #include <errno.h>
