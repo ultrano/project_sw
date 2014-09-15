@@ -314,9 +314,16 @@ tuint SWTransform::getChildrenCount() const
 	return m_children.size();
 }
 
-void SWTransform::copyChildren( SWObject::List& transList )
+void SWTransform::copyChildren( SWObject::List& transList ) const
 {
-	transList = m_children;
+	transList.clear();
+
+	SWObject::List::const_iterator itor = m_children.begin();
+	for ( ; itor != m_children.end() ; ++itor )
+	{
+		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
+		transList.push_back( object->getComponent<SWTransform>() );
+	}
 }
 
 void SWTransform::onAwake()

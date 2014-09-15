@@ -61,7 +61,7 @@ public:
 	SWTransform* find( const tstring& name ) const;
 	SWTransform* getChildAt( tuint index ) const;
 	tuint getChildrenCount() const;
-	void copyChildren( SWObject::List& transList );
+	void copyChildren( SWObject::List& transList ) const;
 
 protected:
 

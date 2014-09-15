@@ -26,19 +26,6 @@ void Character::onStart()
 
 void Character::onUpdate()
 {
-	if ( SWInput.getKey( 't' ) )
-	{
-		if ( Runner* runner = getComponent<Runner>() )
-		{
-			runner->destroy();
-			gameObject()->addComponent<Bird>();
-		}
-		else if ( Bird* bird = getComponent<Bird>() )
-		{
-			bird->destroy();
-			gameObject()->addComponent<Runner>();
-		}
-	}
 }
 
 void Character::onFixedRateUpdate()
@@ -48,7 +35,7 @@ void Character::onFixedRateUpdate()
 	m_meterScore()->setText( "%d Meters", meters );
 
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
-	body()->addForce( tvec2( RunningForce + ((float)meters/5000),0 ) );
+	if ( !body()->isFixedPosition() ) body()->addForce( tvec2( RunningForce + ((float)meters/5000),0 ) );
 
 	tvec2 vel = body()->getVelocity();
 	tvec2 pos = body()->getPosition();
@@ -79,6 +66,11 @@ void Character::onCollision( SWCollision2D* coll )
 	SWGameObject* go = coll->collider()->gameObject();
 	if ( go->getName() == "Coin" )
 	{
-		m_coinScore()->setText( "%d Coins", ++m_score );
+		m_coinScore()->setText( "%d %c", ++m_score, (char)169 );
+	}
+	else if ( go->getName() == "VehicleItem" )
+	{
+		gameObject()->removeComponent<Runner>();
+		gameObject()->addComponent<Bird>();
 	}
 }

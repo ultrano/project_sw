@@ -1,67 +1,21 @@
 
 #include "SWGameContext.h"
-#include "SWOpenGL.h"
-#include "SWDefines.h"
+#include "SWHeaders.h"
 
-#include "SWPhysics2D.h"
-#include "SWTime.h"
-#include "SWInput.h"
-#include "SWLog.h"
-#include "SWAssets.h"
-
-#include "SWGameScene.h"
-#include "SWShader.h"
-#include "SWMaterial.h"
-#include "SWCamera.h"
-#include "SWAction.h"
-#include "SWAnimation.h"
-#include "SWCamera.h"
-#include "SWMeshFilter.h"
-#include "SWRigidBody2D.h"
-#include "SWTransform.h"
-#include "WIImage.h"
-#include "WIText.h"
-#include "SWMeshRenderer.h"
-#include "SWSprite.h"
-#include "SWSpriteRenderer.h"
-#include "SWSpriteSequence.h"
-#include "SWGameObject.h"
-#include "SWMesh.h"
-#include "SWMaterial.h"
-#include "SWCollider2D.h"
-#include "SWActRepeat.h"
-#include "SWActAnimate.h"
-#include "SWActMove.h"
-#include "SWActRotate.h"
-#include "SWActScale.h"
-#include "SWActSequence.h"
-#include "SWActBunch.h"
-#include "SWFontRenderer.h"
+#include <memory>
+#include <stdio.h>
+#include <fstream>
 
 void registerBasicObjectFactories( SWGameContext* gc )
 {
 	gc->registerFactory<SWAction>();
-	gc->registerFactory<SWAnimation>();
-	gc->registerFactory<SWCamera>();
-	gc->registerFactory<SWTransform>();
-
-	gc->registerFactory<SWMeshFilter>();
-	gc->registerFactory<SWMeshRenderer>();
-	
-	gc->registerFactory<SWSprite>();
-	gc->registerFactory<SWSpriteRenderer>();
-	gc->registerFactory<SWSpriteSequence>();
-	gc->registerFactory<SWGameObject>();
-	gc->registerFactory<SWMesh>();
-	gc->registerFactory<SWMaterial>();
-	
-	gc->registerFactory<SWFontRenderer>();
-
-	gc->registerFactory<SWRigidBody2D>();
-	gc->registerFactory<SWCircleCollider2D>();
-	gc->registerFactory<SWRectCollider2D>();
-
+	gc->registerFactory<SWActDelay>();
+	gc->registerFactory<SWActDestroy>();
 	gc->registerFactory<SWActBunch>();
+	gc->registerFactory<SWActColor>();
+	gc->registerFactory<SWActColorTo>();
+	gc->registerFactory<SWActColorFrom>();
+	gc->registerFactory<SWActColorBy>();
 	gc->registerFactory<SWActSequence>();
 	gc->registerFactory<SWActAnimate>();
 	gc->registerFactory<SWActRepeat>();
@@ -77,14 +31,28 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<SWActScaleTo>();
 	gc->registerFactory<SWActScaleFrom>();
 	gc->registerFactory<SWActScaleBy>();
+	
+	gc->registerFactory<SWCamera>();
+	gc->registerFactory<SWCircleCollider2D>();
+	
+	gc->registerFactory<SWFontRenderer>();
 
-	gc->registerFactory<WIImage>();
-	gc->registerFactory<WIText>();
+	gc->registerFactory<SWGameObject>();
+	
+	gc->registerFactory<SWMeshFilter>();
+	gc->registerFactory<SWMeshRenderer>();
+	gc->registerFactory<SWMesh>();
+	gc->registerFactory<SWMaterial>();
+	
+	gc->registerFactory<SWRigidBody2D>();
+	gc->registerFactory<SWRectCollider2D>();
+	
+	gc->registerFactory<SWSprite>();
+	gc->registerFactory<SWSpriteRenderer>();
+	gc->registerFactory<SWSpriteSequence>();
+
+	gc->registerFactory<SWTransform>();
 }
-
-#include <memory>
-#include <stdio.h>
-#include <fstream>
 
 SWGameContext::SWGameContext()
 {

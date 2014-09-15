@@ -246,7 +246,7 @@ void Bird::onStart()
 		body->setLinearDrag(0.01f);
 
 		SWCircleCollider2D* collider = gameObject()->addComponent<SWCircleCollider2D>();
-		collider->setRadius( 20 );
+		collider->setRadius( 10 );
 
 		SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/flappy_bird_anim.txt" );
 		SWActAnimate* act = new SWActAnimate( 1.5f, anim()->getSequenceAt(0) );
@@ -339,13 +339,14 @@ void Bird::onFixedRateUpdate()
 		SWTransform* child = parent->getChildAt( count );
 		tvec3 pos = child->getPosition();
 		tvec3 delta = trans->getPosition() - pos;
-		//pos += (delta)/10.0f;
-		pos += delta.normal() * 5;
-		if ( delta.xy().length() < 100 )
-		{
-			child->setPosition( pos );
-			if ( playEffect == false ) playEffect = true;
-		}
+		
+		if ( delta.xy().length() >= 100 ) continue;
+		
+		pos += (delta)/10.0f;
+		pos += delta.normal()*body->getVelocity().length();
+		child->setPosition( pos );
+
+		if ( playEffect == false ) playEffect = true;
 	}
 
 	if ( playEffect )

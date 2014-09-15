@@ -28,7 +28,6 @@ private:
 	tuint m_score;
 	SWWeakRef<SWFontRenderer> m_meterScore;
 	SWWeakRef<SWFontRenderer> m_coinScore;
-
 };
 
 #endif //! Character_h__

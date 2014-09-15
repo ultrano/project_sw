@@ -9,6 +9,7 @@
 #include "Obstacle.h"
 #include "Character.h"
 #include "CharacterState.h"
+#include "VehicleItem.h"
 
 inline void registerGameAppFactories()
 {
@@ -20,6 +21,7 @@ inline void registerGameAppFactories()
 	SW_GC.registerFactory<Coin>();
 	SW_GC.registerFactory<BackGround>();
 	SW_GC.registerFactory<Obstacle>();
+	SW_GC.registerFactory<VehicleItem>();
 };
 
 inline bool isButtonPushed()

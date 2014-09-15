@@ -16,6 +16,14 @@ SWActColor::SWActColor( float duration, const tcolor& from, const tcolor& to )
 
 }
 
+SWActColor::SWActColor( factory_constructor )
+	: m_duration( 0 )
+	, m_spendTime( 0 )
+	, m_from( tcolor( 0,0,0,0 ) )
+	, m_to( m_from )
+{
+}
+
 SWActColor::~SWActColor()
 {
 
@@ -89,6 +97,11 @@ SWActColorTo::SWActColorTo( float duration, const tcolor& to )
 
 }
 
+SWActColorTo::SWActColorTo( factory_constructor arg )
+	: SWActColor( arg )
+{
+}
+
 SWActColorTo::~SWActColorTo()
 {
 
@@ -122,6 +135,11 @@ SWActColorFrom::SWActColorFrom( float duration, const tcolor& from )
 
 }
 
+SWActColorFrom::SWActColorFrom( factory_constructor arg )
+	: SWActColor( arg )
+{
+}
+
 SWActColorFrom::~SWActColorFrom()
 {
 
@@ -153,6 +171,11 @@ SWActColorBy::SWActColorBy( float duration, const tcolor& by )
 	, m_by( by )
 {
 
+}
+
+SWActColorBy::SWActColorBy( factory_constructor arg )
+	: SWActColor( arg )
+{
 }
 
 SWActColorBy::~SWActColorBy()

@@ -1,4 +1,4 @@
-#ifndef IntroScene_h__
+﻿#ifndef IntroScene_h__
 #define IntroScene_h__
 
 #include "SWHeaders.h"
@@ -60,7 +60,10 @@ public:
 			transform->setLocalPosition( tvec3::zero );
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
+
+
 	}
+
 
 	void onEndLogo()
 	{

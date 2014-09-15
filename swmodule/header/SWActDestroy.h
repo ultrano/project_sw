@@ -10,6 +10,7 @@ class SWActDestroy : public SWAct
 public:
 
 	SWActDestroy( float delay = 0 );
+	SWActDestroy( factory_constructor );
 	~SWActDestroy();
 
 	virtual bool isDone();

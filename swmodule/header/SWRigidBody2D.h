@@ -24,11 +24,13 @@ public:
 	void setMass( tfloat mass );
 	void setInertia( tfloat inertia );
 	void setFixedAngle( bool isFixed );
+	void setFixedPosition( bool isFixed );
 
 	const tvec2& getPosition() const;
 	const tvec2& getVelocity() const;
 	const float& getTorque() const;
-	bool getFixedAngle() const;
+	bool  isFixedAngle() const;
+	bool  isFixedPosition() const;
 
 protected:
 
@@ -60,6 +62,7 @@ private:
 	tvec2  m_gravityScale;
 
 	bool   m_fixedAngle;
+	bool   m_fixedPosition;
 };
 
 #endif // SWRigidBody2D_h__

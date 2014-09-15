@@ -10,6 +10,7 @@ class SWActColor : public SWAct
 public:
 
 	SWActColor( float duration, const tcolor& from, const tcolor& to );
+	SWActColor( factory_constructor );
 	~SWActColor();
 
 protected:
@@ -37,6 +38,7 @@ class SWActColorTo : public SWActColor
 public:
 
 	SWActColorTo( float duration, const tcolor& to );
+	SWActColorTo( factory_constructor );
 	~SWActColorTo();
 
 protected:
@@ -52,6 +54,7 @@ class SWActColorFrom : public SWActColor
 public:
 
 	SWActColorFrom( float duration, const tcolor& from );
+	SWActColorFrom( factory_constructor );
 	~SWActColorFrom();
 
 protected:
@@ -68,6 +71,7 @@ class SWActColorBy : public SWActColor
 public:
 
 	SWActColorBy( float duration, const tcolor& by );
+	SWActColorBy( factory_constructor );
 	~SWActColorBy();
 
 protected:

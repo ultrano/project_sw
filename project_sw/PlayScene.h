@@ -130,6 +130,10 @@ public:
 			SWHardRef<SWGameScene> scene = swrtti_cast<SWGameScene>( object() );
 			SW_GC.setNextScene( scene() );
 		}
+		else if ( SWInput.getKey( 't' ) )
+		{
+			showPannel();
+		}
 
 		//! state update processing
 		switch ( m_state )
@@ -177,8 +181,17 @@ public:
 					//! timer for obstacles
 					{
 						SWActSequence* seq = new SWActSequence();
-						seq->addAct( new SWActDelay( 2 ) );
+						seq->addAct( new SWActDelay( 2.5f ) );
 						seq->addAct( new SWActDelegate( GetDelegator( makeObstacle ) ) );
+						
+						bunch->addAct( new SWActRepeat( seq ) );
+					}
+
+					//! timer for vehicle item
+					{
+						SWActSequence* seq = new SWActSequence();
+						seq->addAct( new SWActDelay( 3 ) );
+						seq->addAct( new SWActDelegate( GetDelegator( makeVehicleItem ) ) );
 						
 						bunch->addAct( new SWActRepeat( seq ) );
 					}
@@ -538,16 +551,144 @@ public:
 
 	void makeObstacle()
 	{
-
 		SWGameObject* go = findGO( "Pool/Obstacle" );
 
 		if ( go == NULL ) (go = new SWGameObject())->addComponent<Obstacle>();
 
 		SWTransform* trans = go->addComponent<Obstacle>()->getComponent<SWTransform>();;
-
-		trans->setPosition( m_charTrans()->getPosition() + tvec3( WorldWidth, 0, 0 ) );
-
+		tvec3 pos = m_charTrans()->getPosition();
+		pos.y = SWMath.randomInt( GroundY, RoofY );
+		trans->setPosition( pos + tvec3( WorldWidth, 0, 0 ) );
 		trans->setParent( findGO( "Obstacles" )->getComponent<SWTransform>() );
+
+		SWAction* action = go->getComponent<SWAction>();
+		
+		if ( SWMath.randomInt(0,100) % 2 == 0 ) action->play( "pattern1" );
+		else action->play( "pattern2" );
+	}
+
+	void makeVehicleItem()
+	{
+		CharacterState* charState = m_charTrans()->getComponent<CharacterState>();
+		if ( charState->queryRtti() != Runner::getRtti() ) return;
+
+		SWGameObject* go = findGO( "Pool/VehicleItem" );
+
+		if ( go == NULL ) (go = new SWGameObject)->addComponent<VehicleItem>();
+
+		SWTransform* trans = go->getComponent<SWTransform>();
+		tvec3 pos = m_charTrans()->getPosition();
+		pos.y = SWMath.randomInt( GroundY, RoofY );
+		trans->setPosition( pos + tvec3( WorldWidth, 0, 0 ) );
+		trans->setParent( NULL );
+	}
+
+	void showPannel()
+	{
+		//! holding character for showing
+		{
+			SWRigidBody2D* body = m_charTrans()->getComponent<SWRigidBody2D>();
+			body->setFixedPosition( true );
+		}
+
+		//! pause timer for showing
+		{
+			findGO( "Timer" )->setActive( false );
+		}
+
+		//! removing all obstacles in field
+		{
+			SWTransform* poolTrans = findGO( "Pool" )->getComponent<SWTransform>();
+
+			SWTransform* trans = findGO( "Obstacles" )->getComponent<SWTransform>();
+			SWObject::List children;
+			trans->copyChildren( children );
+			
+			SWObject::List::iterator itor = children.begin();
+			for ( ; itor != children.end() ; ++itor )
+			{
+				SWTransform* child = swrtti_cast<SWTransform>( (*itor)() );
+				child->setParent( poolTrans );
+			}
+		}
+
+		//! right pannel
+		{
+			SWGameObject* go = new SWGameObject();
+			go->setLayerName( "UI" );
+			go->addFixedRateUpdateDelegator( GetDelegator( onUpdatePannel ) );
+
+			SWHardRef<SWFontInfo> fontInfo    = SWAssets.loadFontInfo( "fonts/Jetpackia.fnt" );
+			SWHardRef<SWTexture>  fontTexture = SWAssets.loadTexture( "fonts/Jetpackia.png" );
+
+			SWFontRenderer* renderer = go->addComponent<SWFontRenderer>();
+			renderer->setFontInfo( fontInfo() );
+			renderer->setFontTexture( fontTexture() );
+			renderer->setText( "FLAPPY BIRD" );
+			renderer->setColor( tcolor( 169.0f/256,169.0f/256,169.0f/256,1 ) );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setPosition( tvec3( WorldWidth*2, 0, 0 ) );
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWHardRef<SWActSequence> seq = new SWActSequence();
+			seq()->addAct( new SWActDelay(1) );
+			seq()->addAct( new SWActColorTo( 0.5f, tcolor( 1,1,1,0 ) ) );
+			seq()->addAct( new SWActDelegate( GetDelegator( showOver ) ) );
+			seq()->addAct( new SWActDestroy() );
+			action->setAct( "action", seq() );
+			action->play( "action" );
+		}
+
+		//! left pannel
+		{
+			SWGameObject* go = new SWGameObject();
+			go->setLayerName( "UI" );
+			go->addFixedRateUpdateDelegator( GetDelegator( onUpdatePannel ) );
+
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/flappy_bird.png" );
+
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( atlas()->find( "bird_gray" ) );
+			
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setPosition( tvec3( WorldWidth*-2, 0, 0 ) );
+			trans->setLocalScale( tvec3( 4, 4, 1 ) );
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWHardRef<SWActSequence> seq = new SWActSequence();
+			seq()->addAct( new SWActDelay(1) );
+			seq()->addAct( new SWActColorTo( 0.5f, tcolor( 1,1,1,0 ) ) );
+			seq()->addAct( new SWActDestroy() );
+			action->setAct( "action", seq() );
+			action->play( "action" );
+		}
+	}
+
+	void showOver()
+	{
+		SWRigidBody2D* body = m_charTrans()->getComponent<SWRigidBody2D>();
+		if ( !body->isFixedPosition() ) return;
+		
+		body->setFixedPosition( false );
+		body->setVelocity( body->getVelocity() / 2 );
+
+		findGO( "Timer" )->setActive( true );
+	}
+
+	void onUpdatePannel( SWGameObject* go )
+	{
+		tvec3 dest( 0, 0, 0 );
+
+		SWTransform* trans = go->getComponent<SWTransform>();
+
+		tvec3 pos = trans->getPosition();
+
+		tvec3 delta = (dest - pos);
+		pos += (delta/5);
+		pos -= delta.normal() * 10;
+
+		trans->setPosition( pos );
 
 	}
 

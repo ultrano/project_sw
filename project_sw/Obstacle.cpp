@@ -1,4 +1,5 @@
 #include "Obstacle.h"
+#include "GameHeaders.h"
 
 Obstacle::Obstacle( factory_constructor )
 {
@@ -6,6 +7,11 @@ Obstacle::Obstacle( factory_constructor )
 }
 
 Obstacle::~Obstacle()
+{
+
+}
+
+void Obstacle::reset()
 {
 
 }
@@ -20,18 +26,17 @@ void Obstacle::onAwake()
 	
 	SWAction* action = gameObject()->addComponent<SWAction>();
 
-	SWHardRef<SWSpriteAnimation> anim = SWAssets.loadSpriteAnimation( "animations/lightning_anim.txt" );
-	SWSpriteSequence* animSeq = anim()->getSequenceAt(0);
-	SWActAnimate* act = new SWActAnimate( 1, animSeq );
-	SWActRotateBy* rot = new SWActRotateBy( 1, tvec3( 0, 0, 1 ) );
+	SWHardRef<SWSpriteAnimation> spriteAnim = SWAssets.loadSpriteAnimation( "animations/lightning_anim.txt" );
+	
+	SWHardRef<SWActAnimate>  anim = new SWActAnimate( 1, spriteAnim()->getSequenceAt(0) );
+	SWHardRef<SWActRotateBy> rot  = new SWActRotateBy( 1, tvec3( 0, 0, 1 ) );
 
-	renderer->setSprite( animSeq->getSpriteAt(0) );
+	action->setAct( "pattern1", new SWActBunch( new SWActRepeat( anim() ), new SWActRepeat( rot() ) ) );
 
-	SWActBunch* bunch = new SWActBunch;
-	bunch->addAct( new SWActRepeat( act ) );
-	bunch->addAct( new SWActRepeat( rot ) );
-	action->setAct( "lightning", bunch );
-	action->play( "lightning" );
+	anim = anim()->clone<SWActAnimate>();
+	action->setAct( "pattern2", new SWActRepeat( anim() ) );
+	
+	action->play( "pattern1" );
 
 	SWTransform* trans = getComponent<SWTransform>();
 	trans->setLocalScale( tvec3::one * 0.5f );
@@ -52,9 +57,12 @@ void Obstacle::onCollision( SWCollision2D* coll )
 	}
 	else if ( go->getName() == "Character" )
 	{
-		//SWHardRef<SWObject> object = SW_GC.newInstance( "IntroScene" );
-		//SWHardRef<SWGameScene> scene = swrtti_cast<SWGameScene>( object() );
-		//SW_GC.setNextScene( scene() );
+		CharacterState* charState = go->getComponent<CharacterState>();
+		if ( charState->queryRtti() != Runner::getRtti() )
+		{
+			go->removeComponent( charState->queryRtti() );
+			go->addComponent<Runner>();
+		}
 	}
 
 }

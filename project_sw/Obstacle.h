@@ -12,6 +12,8 @@ public:
 	Obstacle( factory_constructor );
 	~Obstacle();
 
+	void reset();
+
 protected:
 
 	virtual void onAwake();

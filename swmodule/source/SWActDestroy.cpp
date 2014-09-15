@@ -11,6 +11,12 @@ SWActDestroy::SWActDestroy( float delay /*= 0 */ )
 
 }
 
+SWActDestroy::SWActDestroy( factory_constructor )
+	: m_delay( 0 )
+	, m_destroied( false )
+{
+}
+
 SWActDestroy::~SWActDestroy()
 {
 

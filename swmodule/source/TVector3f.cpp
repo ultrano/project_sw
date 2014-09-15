@@ -47,6 +47,11 @@ TVector3f TVector3f::normal() const
 	return out;
 }
 
+TVector3f	TVector3f::scale( const TVector3f& v ) const
+{
+	return TVector3f( x*v.x, y*v.y, z*v.z );
+}
+
 void        TVector3f::rotateX( float radian )
 {
 	float cosR = SWMath.cos( radian );

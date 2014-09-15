@@ -25,6 +25,7 @@ public:
 	float		dot( const TVector3f& v ) const;
 	TVector3f   cross( const TVector3f& v ) const;
 	TVector3f	normal() const;
+	TVector3f	scale( const TVector3f& v ) const;
 	const TVector2f&   xy() const { return *((TVector2f*)this); };
 
 	void        rotateX( float radian );

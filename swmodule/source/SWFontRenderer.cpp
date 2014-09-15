@@ -180,7 +180,10 @@ void SWFontRenderer::updateMesh()
 
 	for ( tuint i = 0 ; i < m_text.size() ; ++i )
 	{
-		tuint32 id = m_text[i];
+		//! convert character to unsigned char id
+		tbyte byteID = m_text[i];
+
+		tuint32 id = byteID;
 
 		if ( lastID == (int)'\n' || lastID == (int)'\r' )
 		{
