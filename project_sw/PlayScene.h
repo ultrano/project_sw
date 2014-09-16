@@ -626,9 +626,11 @@ public:
 			renderer->setFontTexture( fontTexture() );
 			renderer->setText( "FLAPPY BIRD" );
 			renderer->setColor( tcolor( 169.0f/256,169.0f/256,169.0f/256,1 ) );
+			renderer->setAlignH( SW_Align_Center );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( WorldWidth*2, 0, 0 ) );
+			trans->setPosition( tvec3( WorldWidth*2, -WorldHeight/4, 0 ) );
+			trans->setLocalScale( tvec3::one * 1.5f );
 
 			SWAction* action = go->addComponent<SWAction>();
 			SWHardRef<SWActSequence> seq = new SWActSequence();
@@ -652,8 +654,32 @@ public:
 			renderer->setSprite( atlas()->find( "bird_gray" ) );
 			
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3( WorldWidth*-2, 0, 0 ) );
+			trans->setPosition( tvec3( WorldWidth*-2, -WorldHeight/4, 0 ) );
 			trans->setLocalScale( tvec3( 4, 4, 1 ) );
+
+			SWAction* action = go->addComponent<SWAction>();
+			SWHardRef<SWActSequence> seq = new SWActSequence();
+			seq()->addAct( new SWActDelay(1) );
+			seq()->addAct( new SWActColorTo( 0.5f, tcolor( 1,1,1,0 ) ) );
+			seq()->addAct( new SWActDestroy() );
+			action->setAct( "action", seq() );
+			action->play( "action" );
+		}
+
+		//! bar pannel
+		{
+			SWGameObject* go = new SWGameObject();
+			go->setLayerName( "UI" );
+			go->addFixedRateUpdateDelegator( GetDelegator( onUpdatePannel ) );
+
+			SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "textures/flappy_bird.png" );
+
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( atlas()->find( "bar" ) );
+			
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setPosition( tvec3( WorldWidth*-10, -WorldHeight/4, -1 ) );
+			trans->setLocalScale( tvec3( 8, 8, 1 ) );
 
 			SWAction* action = go->addComponent<SWAction>();
 			SWHardRef<SWActSequence> seq = new SWActSequence();
@@ -685,8 +711,8 @@ public:
 		tvec3 pos = trans->getPosition();
 
 		tvec3 delta = (dest - pos);
-		pos += (delta/5);
-		pos -= delta.normal() * 10;
+		pos.x += (delta.x/5);
+		pos.x -= delta.normal().x * 20;
 
 		trans->setPosition( pos );
 

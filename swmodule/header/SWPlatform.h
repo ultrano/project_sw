@@ -7,19 +7,19 @@
 
 #ifdef WIN32
 
-# define PLATFORM_WIN32
+# define PLATFORM_WIN32 (1)
 
 #elif TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 
-# define PLATFORM_IOS
+# define PLATFORM_IOS (1)
 
 #elif TARGET_OS_MAC
 
-# define PLATFORM_OSX
+# define PLATFORM_OSX (1)
 
 #elif ANDROID
 
-# define PLATFORM_ANDROID
+# define PLATFORM_ANDROID (1)
 
 #endif
 
