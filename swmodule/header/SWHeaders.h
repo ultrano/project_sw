@@ -81,6 +81,7 @@
 #include "SWResource.h"
 #include "SWRigidBody2D.h"
 #include "SWRtti.h"
+#include "SWRawBufferStream.h"
 
 //! S~ headers
 #include "SWShader.h"

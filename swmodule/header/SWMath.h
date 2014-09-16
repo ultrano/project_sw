@@ -25,9 +25,12 @@ public:
 	const T& min( const T& a, const T& b) const { return (a<b)? a:b; };
 
 	template<typename T>
-	const T& clamp( const T& kMin, const T& kMax, const T& val ) const
+	const T& clamp( const T& val, const T& edge1, const T& edge2 ) const
 	{
-		return ( val < kMin )? kMin : ( val > kMax )? kMax : val;
+		if ( edge2 > edge1 ) return (val < edge1)? edge1 : (val > edge2)? edge2 : val;
+		else if ( edge2 < edge1 ) (val < edge2)? edge2 : (val > edge1)? edge1 : val;
+
+		return edge1;
 	};
 
 	inline float repeat( float t, float length ) const

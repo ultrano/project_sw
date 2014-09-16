@@ -30,8 +30,8 @@ class SWRawBufferInputStream : public SWInputStream
 
 public:
 
-	SWByteBufferInputStream();
-	SWByteBufferInputStream( tbyte* buffer, tuint size );
+	SWRawBufferInputStream();
+	SWRawBufferInputStream( tbyte* buffer, tuint size );
 	
 	/* return : read byte count. return -1 if there is no more */
 	int read(tbyte* b, tuint len);

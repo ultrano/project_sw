@@ -1,4 +1,5 @@
 #include "SWRawBufferStream.h"
+#include "SWMath.h"
 
 SWRawBufferOutputStream::SWRawBufferOutputStream()
 	: m_buffer( NULL )
@@ -15,12 +16,18 @@ SWRawBufferOutputStream::SWRawBufferOutputStream( tbyte* buffer, tuint size )
 
 void SWRawBufferOutputStream::write(tbyte* b, tuint len)
 {
-	tuint capacity = m_cursor + len;
-	if ( m_buffer()->size() < capacity ) m_buffer()->resize( capacity );
+	if ( m_buffer == NULL ) return;
+	if ( m_size == 0 ) return;
 
-	tbyte* dst = &(m_buffer()->getRaw())[m_cursor];
-	memcpy( dst, (void*)b, len );
-	m_cursor = capacity;
+	if ( b == NULL ) return;
+	if ( len == 0 ) return;
+
+	tuint remain = m_size - m_cursor;
+	len = SWMath.min( len, remain );
+	if ( len == 0 ) return;
+
+	memcpy( m_buffer + m_cursor, (void*)b, len );
+	m_cursor += len;
 }
 
 ////////////////////////////////////////////////////
@@ -41,30 +48,34 @@ SWRawBufferInputStream::SWRawBufferInputStream( tbyte* buffer, tuint size )
 
 int SWRawBufferInputStream::read(tbyte* b, tuint len)
 {
+	if ( m_buffer == NULL ) return -1;
+	if ( m_size == 0 ) return -1;
+
+	if ( b == NULL ) return 0;
+	if ( len == 0 ) return 0;
+
 	tuint remain = available() - m_cursor;
 	if ( remain <= 0 ) return -1;
 
-	tbyte* src = &(m_buffer()->getRaw())[m_cursor];
 	len = SWMath.min( len, remain );
 
-	memcpy( b, (void*)src, len );
+	memcpy( b, m_buffer + m_cursor, len );
 
-	m_cursor = SWMath.min<tuint>( m_cursor += len, available() );
+	m_cursor += len;
 	return len;
 }
 
 int SWRawBufferInputStream::available()
 {
-	if ( m_buffer.isValid() == false ) return -1;
-	return m_buffer()->size();
+	if ( m_buffer == NULL ) return -1;
+	return m_size;
 }
 
 int SWRawBufferInputStream::skip( tuint len )
 {
 	tuint remain = available() - m_cursor;
-	len = SWMath.min<tuint>( remain, len );
-
-	m_cursor = SWMath.min<tuint>( m_cursor += len, available() );
+	len = SWMath.min( remain, len );
+	m_cursor += len;
 
 	return len;
 }
