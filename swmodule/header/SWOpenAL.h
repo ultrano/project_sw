@@ -8,7 +8,8 @@
 # include "al.h"
 # include "alc.h"
 #elif PLATFORM_IOS
-
+# include <OpenAl/al.h>
+# include <OpenAl/alc.h>
 #elif PLATFORM_OSX
 
 #elif PLATFORM_ANDROID
