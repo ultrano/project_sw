@@ -7,7 +7,6 @@
 #ifdef PLATFORM_WIN32
 # include "al.h"
 # include "alc.h"
-//# include "alext.h"
 #elif PLATFORM_IOS
 
 #elif PLATFORM_OSX

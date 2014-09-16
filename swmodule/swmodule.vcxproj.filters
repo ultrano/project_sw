@@ -938,5 +938,8 @@
     <ClCompile Include="source\SWRawBufferStream.cpp">
       <Filter>SW\SWRawBufferStream</Filter>
     </ClCompile>
+    <ClCompile Include="source\SWIOStream.cpp">
+      <Filter>SW\SWIOStream</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

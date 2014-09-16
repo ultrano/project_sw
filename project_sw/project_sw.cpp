@@ -4,7 +4,8 @@
 #include "stdafx.h"
 #include "glew.h"
 #include "glut.h"
-
+#include "al.h"
+#include "alc.h"
 
 //#include "CatAss.h"
 #include "PlayScene.h"
@@ -92,6 +93,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutKeyboardFunc( callbackKeyboard );
 	glutKeyboardUpFunc( callbackKeyboardUp );
 	glewInit();
+
+	if ( ALCdevice* device = alcOpenDevice( NULL ) )
+	{
+		ALCcontext* context = alcCreateContext( device, NULL );;
+		alcMakeContextCurrent( context );
+	}
 
 	SW_GC.onStart( new IntroScene, new SWWIN32AssetsAccessor( "../resource/" ), width, height );
 

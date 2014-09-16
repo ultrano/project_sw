@@ -42,8 +42,11 @@ SWByteBufferInputStream::SWByteBufferInputStream( SWInputStream* is )
 	: m_buffer( new SWByteBuffer() )
 	, m_cursor(0)
 {
-	m_buffer()->resize( is->available() );
-	is->read( &(m_buffer()->getRaw())[0], m_buffer()->size() );
+	if ( is )
+	{
+		m_buffer()->resize( is->available() );
+		is->read( &(m_buffer()->getRaw())[0], m_buffer()->size() );
+	}
 }
 
 int SWByteBufferInputStream::read(tbyte* b, tuint len)

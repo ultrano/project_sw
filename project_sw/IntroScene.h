@@ -3,6 +3,7 @@
 
 #include "SWHeaders.h"
 #include "GameHeaders.h"
+#include "SWOpanAL.h"
 
 class IntroScene : public SWGameScene
 {
@@ -11,6 +12,7 @@ public:
 	
 	IntroScene()
 	{
+
 	};
 
 	IntroScene(factory_constructor)
@@ -19,6 +21,22 @@ public:
 
 	void onAwake()
 	{
+		{
+			SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "sounds/Jump.wav" );
+
+			SWHardRef<SWByteBufferInputStream> bbis = new SWByteBufferInputStream( is() );
+			SWByteBuffer* buffer = bbis()->getBuffer();
+
+			tuint bufferID = alGenWaveBuffer( buffer->getRaw(), buffer->size() );
+
+			tuint sourceID = 0;
+			alGenSources( 1, &sourceID );
+			alSourcei( sourceID, AL_BUFFER, bufferID );
+
+			alSourcePlay( sourceID );
+		}
+
+
 		SW_GC.registerFactory<IntroScene>();
 		registerGameAppFactories();
 

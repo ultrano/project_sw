@@ -30,86 +30,44 @@ public:
 
 class SWOutputStreamWriter : public SWMemory
 {
-	SWWeakRef<SWOutputStream> m_os;
 public:
 
-	SWOutputStreamWriter(SWOutputStream* os) : m_os( os ) {};
+	SWOutputStreamWriter(SWOutputStream* os);;
 
-	template<typename T>
-	void write(const T& t)
+	void writeBytes(tbyte* buffer, tuint size);
+	void writeString(const tstring& str);;
+	void wirteLine(const tstring& str);
+
+	template<typename T> void write(const T& t)
 	{
 		if ( m_os.isValid()) m_os()->write((tbyte*)&t, sizeof(T));
 	};
 
-	void writeString(const tstring& str)
-	{
-		if ( !m_os.isValid() ) return ;
-
-		tuint size = str.size();
-		if ( size ) m_os()->write( (tbyte*)&str[0], size );
-		m_os()->writeByte( '\0' );
-	};
-
-	void wirteLine(const tstring& str)
-	{
-		if ( !m_os.isValid() ) return ;
-		
-		tuint size = str.find( '\n' );
-		if ( size == tstring::npos ) size = str.size();
-
-		if ( size ) m_os()->write( (tbyte*)&str[0], size );
-		m_os()->writeByte( '\n' );
-	}
+private:
+	
+	SWWeakRef<SWOutputStream> m_os;
 
 };
 
 class SWInputStreamReader : public SWMemory
 {
-	SWWeakRef<SWInputStream> m_is;
 public:
-	SWInputStreamReader(SWInputStream* is) : m_is(is) {};
 
-	template<typename T>
-	int read(T& t)
+	SWInputStreamReader(SWInputStream* is);;
+
+	int readBytes( tbyte* buffer, tuint size );
+	int readString(tstring& str);
+	int readLine( tstring& str );
+
+	template<typename T> int read(T& t)
 	{
 		if (!m_is.isValid()) return -1;
 		return m_is()->read((tbyte*)&t, sizeof(T));
 	};
 
-	int readString(tstring& str)
-	{
-		str.clear();
-		if ( !m_is.isValid() ) return -1;
-
-		int c;
-		while ( true )
-		{
-			c = m_is()->readByte();
-			if ( c <= 0 ) break;
-			str += (char)c;
-		}
-
-		tuint size = str.size();
-		return (size > 0)? size : c;
-	};
-
-	int readLine( tstring& str )
-	{
-		str.clear();
-		if ( !m_is.isValid() ) return -1;
-
-		int c;
-		while( true )
-		{
-			c = m_is()->readByte();
-			if ( c == '\r' ) continue;
-			if ( c <= 0 || c == '\n' ) break;
-			str += (char)c;
-		}
-
-		tuint size = str.size();
-		return (size > 0)? size : c;
-	}
+private:
+	
+	SWWeakRef<SWInputStream> m_is;
 
 };
 #endif // SWIOStream_h__
