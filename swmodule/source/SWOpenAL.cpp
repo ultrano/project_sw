@@ -1,7 +1,8 @@
-#include "SWOpanAL.h"
+#include "SWOpenAL.h"
 #include "SWRawBufferStream.h"
+#include "SWLog.h"
 
-unsigned int alGenWaveBuffer( tbyte* buf, tuint bufSize )
+tuint alGenWaveBuffer( tbyte* buf, tuint bufSize )
 {
 	SWHardRef<SWRawBufferInputStream> rbis = new SWRawBufferInputStream( buf, bufSize );
 	SWInputStreamReader reader( rbis() );
@@ -67,7 +68,16 @@ unsigned int alGenWaveBuffer( tbyte* buf, tuint bufSize )
 	}
 
 	alGenBuffers(1, &bufferID);
+	alErrorLog();
 	alBufferData(bufferID, format, subChunk2Data, subChunk2Size, sampleRate);
+	alErrorLog();
 
 	return bufferID;
+}
+
+bool alErrorLog()
+{
+	tuint error = alGetError();
+	if ( error != AL_NO_ERROR ) SWLog( "audio error: %d", error );
+	return ( error == AL_NO_ERROR );
 }

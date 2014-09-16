@@ -30,7 +30,7 @@ SWHardRef<SWInputStream> __SWAssets::loadBuffer( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded from cache", filePath.c_str() );
 			return new SWByteBufferInputStream( itor->second() );
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -55,7 +55,7 @@ SWHardRef<SWTexture> __SWAssets::loadTexture( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded from cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -84,7 +84,7 @@ SWHardRef<SWShader> __SWAssets::loadShader( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded from cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -113,7 +113,7 @@ SWHardRef<SWSpriteAnimation> __SWAssets::loadSpriteAnimation( const tstring& fil
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded from cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -168,7 +168,7 @@ SWHardRef<SWSpriteAtlas> __SWAssets::loadSpriteAtlas( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" is loaded in cache", sheetFile.c_str() );
+			SWLog( "asset:\"%s\" is loaded from cache", sheetFile.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", sheetFile.c_str() );
@@ -206,7 +206,7 @@ SWHardRef<SWFontInfo> __SWAssets::loadFontInfo( const tstring& filePath )
 	{
 		if ( itor->second.isValid() )
 		{
-			SWLog( "asset:\"%s\" is loaded in cache", filePath.c_str() );
+			SWLog( "asset:\"%s\" is loaded from cache", filePath.c_str() );
 			return itor->second();
 		}
 		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
@@ -221,6 +221,34 @@ SWHardRef<SWFontInfo> __SWAssets::loadFontInfo( const tstring& filePath )
 	m_fontInfoCache[ filePath ] = fontInfo();
 
 	return fontInfo();
+}
+
+SWHardRef<SWAudioClip> __SWAssets::loadAudioClip( const tstring& filePath )
+{
+	if ( !m_accessor.isValid() ) return NULL;
+
+	AudioClipTable::iterator itor = m_audioClipCache.find( filePath );
+	if ( itor != m_audioClipCache.end() )
+	{
+		if ( itor->second.isValid() )
+		{
+			SWLog( "asset:\"%s\" is loaded from cache", filePath.c_str() );
+			return itor->second();
+		}
+		SWLog( "asset:\"%s\" unloaded, trying reload", filePath.c_str() );
+	}
+
+	SWHardRef<SWInputStream> ais = m_accessor()->access( filePath );
+	if ( ais.isValid() == false ) return NULL;
+	if ( ais()->available() <= 0 ) return NULL;
+
+	SWHardRef<SWByteBufferInputStream> bbis = new SWByteBufferInputStream( ais() );
+	SWByteBuffer* buffer = bbis()->getBuffer();
+
+	SWHardRef<SWAudioClip> audioClip = SWAudioClip::create( buffer->getRaw(), buffer->size() );
+
+	m_audioClipCache[ filePath ] = audioClip();
+	return audioClip;
 }
 
 bool __SWAssets::findPathOfTexture( SWTexture* texture, tstring& path )

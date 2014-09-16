@@ -3,7 +3,7 @@
 
 #include "SWHeaders.h"
 #include "GameHeaders.h"
-#include "SWOpanAL.h"
+#include "SWOpenAL.h"
 
 class IntroScene : public SWGameScene
 {
@@ -19,8 +19,15 @@ public:
 	{
 	};
 
+	SWHardRef<SWAudioClip::Source> m_clipSource;
 	void onAwake()
 	{
+		{
+			SWHardRef<SWAudioClip> audioClip = SWAssets.loadAudioClip( "sounds/Jump.wav" );
+			m_clipSource = audioClip()->createSource();
+
+		}
+		/*/
 		{
 			SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "sounds/Jump.wav" );
 
@@ -35,7 +42,7 @@ public:
 
 			alSourcePlay( sourceID );
 		}
-
+		//*/
 
 		SW_GC.registerFactory<IntroScene>();
 		registerGameAppFactories();
@@ -85,7 +92,7 @@ public:
 
 	void onEndLogo()
 	{
-		SW_GC.setNextScene( new PlayScene );
+		//SW_GC.setNextScene( new PlayScene );
 	}
 
 	void onUpdate()

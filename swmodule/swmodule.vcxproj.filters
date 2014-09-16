@@ -313,11 +313,14 @@
     <Filter Include="SW\SWPlatform">
       <UniqueIdentifier>{33f2da2d-fece-49f3-828b-60ccebf588b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWOpanAL">
-      <UniqueIdentifier>{50fc4611-1234-4d92-9ae2-3b28cf8cc239}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWRawBufferStream">
       <UniqueIdentifier>{b3dbe35c-7702-45c3-a07a-4dccf22e47cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWAudioClip">
+      <UniqueIdentifier>{11faf1e3-30f7-4b17-bdd3-4b2f6eb0521b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWOpenAL">
+      <UniqueIdentifier>{50fc4611-1234-4d92-9ae2-3b28cf8cc239}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -657,11 +660,14 @@
     <ClInclude Include="header\SWPlatform.h">
       <Filter>SW\SWPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWOpanAL.h">
-      <Filter>SW\SWOpanAL</Filter>
-    </ClInclude>
     <ClInclude Include="header\SWRawBufferStream.h">
       <Filter>SW\SWRawBufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWAudioClip.h">
+      <Filter>SW\SWAudioClip</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWOpenAL.h">
+      <Filter>SW\SWOpenAL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -932,14 +938,17 @@
     <ClCompile Include="source\SWObjectFactory.cpp">
       <Filter>SW\SWObjectFactory</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWOpanAL.cpp">
-      <Filter>SW\SWOpanAL</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWRawBufferStream.cpp">
       <Filter>SW\SWRawBufferStream</Filter>
     </ClCompile>
     <ClCompile Include="source\SWIOStream.cpp">
       <Filter>SW\SWIOStream</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWAudioClip.cpp">
+      <Filter>SW\SWAudioClip</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWOpenAL.cpp">
+      <Filter>SW\SWOpenAL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

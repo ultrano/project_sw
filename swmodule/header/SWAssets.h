@@ -10,6 +10,7 @@
 #include "SWSpriteAtlas.h"
 #include "SWSpriteAnimation.h"
 #include "SWFontInfo.h"
+#include "SWAudioClip.h"
 
 class __SWAssets
 {
@@ -23,6 +24,7 @@ public:
 	SWHardRef<SWSpriteAnimation> loadSpriteAnimation( const tstring& filePath );
 	SWHardRef<SWSpriteAtlas> loadSpriteAtlas( const tstring& filePath );
 	SWHardRef<SWFontInfo> loadFontInfo( const tstring& filePath );
+	SWHardRef<SWAudioClip> loadAudioClip( const tstring& filePath );
 
 	bool findPathOfTexture( SWTexture* texture, tstring& path );
 	bool findPathOfShader( SWShader* shader, tstring& path );
@@ -40,6 +42,7 @@ private:
 	typedef ttable< thashstr, SWWeakRef<SWSpriteAtlas> >  AtlasTable;
 	typedef ttable< thashstr, SWWeakRef<SWSpriteAnimation> >  AnimationTable;
 	typedef ttable< thashstr, SWWeakRef<SWFontInfo> >  FontInfoTable;
+	typedef ttable< thashstr, SWWeakRef<SWAudioClip> >  AudioClipTable;
 
 	SWHardRef<SWPlatformAssetsAccessor> m_accessor;
 	BufferTable   m_bufferCache;
@@ -48,6 +51,7 @@ private:
 	AtlasTable    m_atlasCache;
 	AnimationTable m_animCache;
 	FontInfoTable m_fontInfoCache;
+	AudioClipTable m_audioClipCache;
 };
 
 

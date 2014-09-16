@@ -18,6 +18,7 @@
 #include "SWAction.h"
 #include "SWArray.h"
 #include "SWAssets.h"
+#include "SWAudioClip.h"
 
 //! B~ headers
 #include "SWBehavior.h"
@@ -67,6 +68,7 @@
 #include "SWObject.h"
 #include "SWObjectStream.h"
 #include "SWOpenGL.h"
+#include "SWOpenAL.h"
 
 //! P~ headers
 #include "SWParam.h"

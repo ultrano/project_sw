@@ -107,10 +107,11 @@
     <ClInclude Include="header\SWAnimationClip.h" />
     <ClInclude Include="header\SWAnimationLine.h" />
     <ClInclude Include="header\SWArray.h" />
+    <ClInclude Include="header\SWAudioClip.h" />
     <ClInclude Include="header\SWFontInfo.h" />
     <ClInclude Include="header\SWFontRenderer.h" />
     <ClInclude Include="header\SWHeaders.h" />
-    <ClInclude Include="header\SWOpanAL.h" />
+    <ClInclude Include="header\SWOpenAL.h" />
     <ClInclude Include="header\SWPlatform.h" />
     <ClInclude Include="header\SWRawBufferStream.h" />
     <ClInclude Include="header\SWResource.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="source\SWAnimationLine.cpp" />
     <ClCompile Include="source\SWArray.cpp" />
     <ClCompile Include="source\SWAssets.cpp" />
+    <ClCompile Include="source\SWAudioClip.cpp" />
     <ClCompile Include="source\SWBehavior.cpp" />
     <ClCompile Include="source\SWBoolean.cpp" />
     <ClCompile Include="source\SWByteBuffer.cpp" />
@@ -234,7 +236,7 @@
     <ClCompile Include="source\SWLayer.cpp" />
     <ClCompile Include="source\SWObjectFactory.cpp" />
     <ClCompile Include="source\SWObjectStream.cpp" />
-    <ClCompile Include="source\SWOpanAL.cpp" />
+    <ClCompile Include="source\SWOpenAL.cpp" />
     <ClCompile Include="source\SWOpenGL.cpp" />
     <ClCompile Include="source\SWPhysics2D.cpp" />
     <ClCompile Include="source\SWPlatformAssetsAccessor.cpp" />

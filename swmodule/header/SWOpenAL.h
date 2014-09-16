@@ -1,5 +1,5 @@
-#ifndef SWOpanAL_h__
-#define SWOpanAL_h__
+#ifndef SWOpenAL_h__
+#define SWOpenAL_h__
 
 #include "SWPlatform.h"
 #include "SWPrimaryType.h"
@@ -16,5 +16,5 @@
 #endif
 
 tuint alGenWaveBuffer( tbyte* buf, tuint bufSize );
-
-#endif //! SWOpanAL_h__
+bool alErrorLog();
+#endif //! SWOpenAL_h__
