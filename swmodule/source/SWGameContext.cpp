@@ -128,6 +128,15 @@ void SWGameContext::onStart( SWGameScene* firstScene, const SWPlatformAssetsAcce
 	{
 		registerBasicObjectFactories( this );
 	}
+
+	//! initialize audio system
+	if ( ALCdevice* device = alcOpenDevice( NULL ) )
+	{
+		ALCcontext* context = alcCreateContext( device, NULL );;
+		alcMakeContextCurrent( context );
+		alListenerf( AL_GAIN, 1 );
+		alListener3f( AL_POSITION, 0, 0, 0 );
+	}
 }
 
 void SWGameContext::onFrameMove()

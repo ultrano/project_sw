@@ -22,6 +22,7 @@ public:
 		SettingWorldCamera,
 		PlacingCoinBasket,
 		SettingUIs,
+		LoadingAudios,
 		Standby,
 		Playing,
 	};
@@ -42,6 +43,10 @@ public:
 	SWHardRef<SWTexture>  m_fontTexture;
 
 	bool m_coinPatternAD;
+
+	SWHardRef<SWAudioClip::Source> m_readyBGM;
+	SWHardRef<SWAudioClip::Source> m_playBGM;
+	SWHardRef<SWAudioClip::Source> m_powerUpBGM;
 
 	PlayScene()
 	{
@@ -367,6 +372,27 @@ public:
 					}
 				}
 
+				changeState( LoadingAudios );
+			}
+			break;
+
+		case LoadingAudios :
+			{
+				SWHardRef<SWAudioClip> audioClip = NULL;
+
+				audioClip = SWAssets.loadAudioClip( "audios/powerup_collect.wav" );
+				m_powerUpBGM = audioClip()->createSource();
+				m_powerUpBGM()->setLooping( false );
+
+				audioClip = SWAssets.loadAudioClip( "audios/menu_amb_lp.wav" );
+				m_readyBGM = audioClip()->createSource();
+				m_readyBGM()->setLooping( true );
+
+				audioClip = SWAssets.loadAudioClip( "audios/music_level.wav" );
+				m_playBGM = audioClip()->createSource();
+				m_playBGM()->setLooping( true );
+
+				m_readyBGM()->play();
 				changeState( Standby );
 			}
 			break;
@@ -379,6 +405,9 @@ public:
 					findGO( "CharacterShadow" )->setActive( true );
 					findGO( "Timer" )->setActive( true );
 					findGO( "TATP" )->getComponent<SWAction>()->play( "removing" );
+
+					m_readyBGM()->stop();
+					m_playBGM()->play();
 
 					changeState( Playing );
 				}
@@ -433,6 +462,12 @@ public:
 				{
 					SWFontRenderer* renderer = findGO( "InitState" )->getComponent<SWFontRenderer>();
 					renderer->setText( "PLACING COIN BASKET" );
+				}
+				break;
+			case LoadingAudios :
+				{
+					SWFontRenderer* renderer = findGO( "InitState" )->getComponent<SWFontRenderer>();
+					renderer->setText( "FINDING GOOD MUSICS" );
 				}
 				break;
 			case Standby :
@@ -688,6 +723,11 @@ public:
 			seq()->addAct( new SWActDestroy() );
 			action->setAct( "action", seq() );
 			action->play( "action" );
+		}
+
+		//! play sound
+		{
+			m_powerUpBGM()->play();
 		}
 	}
 

@@ -94,14 +94,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutKeyboardUpFunc( callbackKeyboardUp );
 	glewInit();
 
-	if ( ALCdevice* device = alcOpenDevice( NULL ) )
-	{
-		ALCcontext* context = alcCreateContext( device, NULL );;
-		alcMakeContextCurrent( context );
-		alListenerf( AL_GAIN, 1 );
-		alListener3f( AL_POSITION, 0, 0, 0 );
-	}
-
 	SW_GC.onStart( new IntroScene, new SWWIN32AssetsAccessor( "../resource/" ), width, height );
 
 	glutMainLoop();

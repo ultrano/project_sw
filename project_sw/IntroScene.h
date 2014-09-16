@@ -19,31 +19,8 @@ public:
 	{
 	};
 
-	SWHardRef<SWAudioClip::Source> m_clipSource;
 	void onAwake()
 	{
-		{
-			SWHardRef<SWAudioClip> audioClip = SWAssets.loadAudioClip( "sounds/Jump.wav" );
-			m_clipSource = audioClip()->createSource();
-
-		}
-		/*/
-		{
-			SWHardRef<SWInputStream> is = SWAssets.loadBuffer( "sounds/Jump.wav" );
-
-			SWHardRef<SWByteBufferInputStream> bbis = new SWByteBufferInputStream( is() );
-			SWByteBuffer* buffer = bbis()->getBuffer();
-
-			tuint bufferID = alGenWaveBuffer( buffer->getRaw(), buffer->size() );
-
-			tuint sourceID = 0;
-			alGenSources( 1, &sourceID );
-			alSourcei( sourceID, AL_BUFFER, bufferID );
-
-			alSourcePlay( sourceID );
-		}
-		//*/
-
 		SW_GC.registerFactory<IntroScene>();
 		registerGameAppFactories();
 
@@ -92,7 +69,7 @@ public:
 
 	void onEndLogo()
 	{
-		//SW_GC.setNextScene( new PlayScene );
+		SW_GC.setNextScene( new PlayScene );
 	}
 
 	void onUpdate()
