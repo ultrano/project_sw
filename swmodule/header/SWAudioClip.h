@@ -29,6 +29,7 @@ public:
 
 		void play();
 		void stop();
+		bool isPlaying();
 
 		~Source();
 	private:

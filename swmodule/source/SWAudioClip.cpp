@@ -129,3 +129,12 @@ void SWAudioClip::Source::stop()
 	alErrorLog();
 }
 
+bool SWAudioClip::Source::isPlaying()
+{
+	tint state = AL_NONE;
+	alGetSourcei( m_sourceID, AL_SOURCE_STATE, &state );
+	
+	return ( state == AL_PLAYING );
+}
+
+

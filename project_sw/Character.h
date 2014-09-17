@@ -28,6 +28,7 @@ private:
 	tuint m_score;
 	SWWeakRef<SWFontRenderer> m_meterScore;
 	SWWeakRef<SWFontRenderer> m_coinScore;
+	SWHardRef<SWAudioClip::Source> m_coinSound[3];
 };
 
 #endif //! Character_h__

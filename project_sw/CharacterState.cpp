@@ -57,6 +57,41 @@ void Runner::onStart()
 		seq->addAct( new SWActDelegate( GetDelegator( inactivate ) ) );
 		action->setAct( "jump_effect", seq );
 	}
+
+	//! load sound
+	{
+		SWHardRef<SWAudioClip> audioClip = NULL;
+
+		audioClip = SWAssets.loadAudioClip( "audios/boots_jump.wav");
+		m_jumpSound = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/boots_land.wav");
+		m_landSound = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/jetpack_steam_lp.wav");
+		m_steamSound = audioClip()->createSource();
+		m_steamSound()->setLooping( true );
+
+		audioClip = SWAssets.loadAudioClip( "audios/player_bones.wav");
+		m_shockSound = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/boots_step_left_1.wav");
+		m_stepLSound[0] = audioClip()->createSource();
+		audioClip = SWAssets.loadAudioClip( "audios/boots_step_left_2.wav");
+		m_stepLSound[1] = audioClip()->createSource();
+		audioClip = SWAssets.loadAudioClip( "audios/boots_step_left_3.wav");
+		m_stepLSound[2] = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_1.wav");
+		m_stepRSound[0] = audioClip()->createSource();
+		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_2.wav");
+		m_stepRSound[1] = audioClip()->createSource();
+		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_3.wav");
+		m_stepRSound[2] = audioClip()->createSource();
+
+		m_stepSound = NULL;
+		m_whichStep = false;
+	}
 }
 
 void Runner::onRemove()
@@ -151,8 +186,11 @@ void Runner::changeState()
 		break;
 	case State::Jumping :break;
 	case  State::Gliding :break;
-	case State::Boosting : break;
-		
+	case State::Boosting :
+		{
+			m_steamSound()->stop();
+		}
+		break;
 	}
 
 	m_state = newState;
@@ -164,6 +202,7 @@ void Runner::changeState()
 		{
 			SWAction* action = getComponent<SWAction>();
 			action->play( "run" );
+			m_landSound()->play();
 		}
 		break;
 	case State::Jumping :
@@ -182,6 +221,8 @@ void Runner::changeState()
 
 			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
 			m_body()->addForce( tvec2( 0, JumpForce ) );
+
+			m_jumpSound()->play();
 		}
 		break;
 	case  State::Gliding :
@@ -193,6 +234,8 @@ void Runner::changeState()
 		{
 			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
 			m_body()->addForce( tvec2( 0, BoostForce ) );
+			
+			if ( !m_steamSound()->isPlaying() ) m_steamSound()->play();
 		}
 		break;
 	}
@@ -280,6 +323,20 @@ void Bird::onStart()
 		bunch1->addAct( new SWActColorFrom( 0.5f, tcolor( 1,1,1,1 ) ) );
 		action->setAct( "magnetic", bunch1 );
 	}
+
+	//! load flapping sound
+	{
+		SWHardRef<SWAudioClip> audioClip = NULL;
+
+		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_1.wav");
+		m_flapSound[0] = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_2.wav");
+		m_flapSound[1] = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_3.wav");
+		m_flapSound[2] = audioClip()->createSource();
+	}
 }
 
 void Bird::onRemove()
@@ -327,6 +384,9 @@ void Bird::onFixedRateUpdate()
 
 		SWAction* action = gameObject()->addComponent<SWAction>();
 		action->play( "flapping" );
+
+		tuint index = SWMath.randomInt(0,2);
+		m_flapSound[index]()->play();
 	}
 
 	SWGameObject* coins = SW_GC.getScene()->findGO( "Coins" );

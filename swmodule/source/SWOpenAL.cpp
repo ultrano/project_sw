@@ -47,11 +47,22 @@ tuint alGenWaveBuffer( tbyte* buf, tuint bufSize )
 
 		if (strncmp( subChunk1ID, "fmt ", 4 ) != 0) return 0;
 
-		reader.read( subChunk2ID );
-		reader.read( subChunk2Size );
-		subChunk2Data = (buf + 44);
+		subChunk2Data = (buf + 36);
 
-		if (strncmp( subChunk2ID, "data", 4 ) != 0) return 0;
+		do 
+		{
+			reader.read( subChunk2ID );
+			reader.read( subChunk2Size );
+			subChunk2Data += 8;
+
+			if ( strncmp( subChunk2ID, "LIST", 4 ) == 0 )
+			{
+				rbis()->skip( subChunk2Size );
+				subChunk2Data += subChunk2Size;
+			}
+			else if (strncmp( subChunk2ID, "data", 4 ) == 0) break;
+
+		} while ( true );
 	}
 
 	tuint bufferID = 0;

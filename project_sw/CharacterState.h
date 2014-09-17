@@ -57,6 +57,15 @@ private:
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
 	SWWeakRef<SWGameObject> m_jumpEffect;
 
+	SWHardRef<SWAudioClip::Source> m_jumpSound;
+	SWHardRef<SWAudioClip::Source> m_landSound;
+	SWHardRef<SWAudioClip::Source> m_steamSound;
+	SWHardRef<SWAudioClip::Source> m_shockSound;
+	SWHardRef<SWAudioClip::Source> m_stepRSound[3];
+	SWHardRef<SWAudioClip::Source> m_stepLSound[3];
+	SWAudioClip::Source* m_stepSound;
+	bool m_whichStep;
+
 };
 
 class Bird : public CharacterState
@@ -80,6 +89,8 @@ private:
 
 	bool m_wasPressed;
 	bool m_doFlapping;
+
+	SWHardRef<SWAudioClip::Source> m_flapSound[3];
 };
 
 #endif //! CharacterState_h__

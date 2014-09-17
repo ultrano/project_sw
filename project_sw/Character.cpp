@@ -15,6 +15,17 @@ void Character::onAwake()
 	__super::onAwake();
 	gameObject()->addComponent<Runner>();
 	gameObject()->setName( "Character" );
+
+	SWHardRef<SWAudioClip> audioClip = NULL;
+
+	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_1.wav");
+	m_coinSound[0] = audioClip()->createSource();
+	
+	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_2.wav");
+	m_coinSound[1] = audioClip()->createSource();
+
+	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_3.wav");
+	m_coinSound[2] = audioClip()->createSource();
 }
 
 void Character::onStart()
@@ -67,6 +78,9 @@ void Character::onCollision( SWCollision2D* coll )
 	if ( go->getName() == "Coin" )
 	{
 		m_coinScore()->setText( "%d %c", ++m_score, (char)169 );
+
+		tuint index = SWMath.randomInt(0,2);
+		m_coinSound[index]()->play();
 	}
 	else if ( go->getName() == "VehicleItem" )
 	{
