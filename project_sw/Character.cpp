@@ -26,6 +26,8 @@ void Character::onAwake()
 
 	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_3.wav");
 	m_coinSound[2] = audioClip()->createSource();
+
+	m_state = None;
 }
 
 void Character::onStart()
@@ -48,25 +50,65 @@ void Character::onFixedRateUpdate()
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
 	if ( !body()->isFixedPosition() ) body()->addForce( tvec2( RunningForce + ((float)meters/5000),0 ) );
 
-	tvec2 vel = body()->getVelocity();
-	tvec2 pos = body()->getPosition();
+	updateCondition();
+}
+
+void Character::updateCondition()
+{
+	SWRigidBody2D* body = getComponent<SWRigidBody2D>();
+	tvec2 vel = body->getVelocity();
+	tvec2 pos = body->getPosition();
+
 	if ( pos.y > RoofY && vel.y > 0 )
 	{
-		vel.y = 0;
-		body()->setVelocity( vel );
-
-		pos.y -= (pos.y - RoofY)/2;
-		body()->setPosition( pos );
+		if ( m_state != GotRoof && m_state != UnderRoof )
+		{
+			m_state = GotRoof;
+		}
+		else if ( m_state != UnderRoof )
+		{
+			m_state = UnderRoof;
+		}
 	}
 	else if ( pos.y < GroundY && vel.y < 0 )
 	{
-		tvec2 vel = body()->getVelocity();
+		if ( m_state != Landing && m_state != OnGround )
+		{
+			m_state = Landing;
+		}
+		else if ( m_state != OnGround )
+		{
+			m_state = OnGround;
+		}
+	}
+	else if ( (isState(GotRoof) || isState(UnderRoof)) && vel.y < 0  )
+	{
+		m_state = LeaveRoof;
+	}
+	else if ( (isState(Landing) || isState(OnGround)) && vel.y > 0  )
+	{
+		m_state = TakeOff;
+	}
+	else if ( pos.y > GroundY && pos.y < RoofY )
+	{
+		m_state = AirBorne;
+	}
 
+	if ( isState(GotRoof) || isState(UnderRoof) )
+	{
 		vel.y = 0;
-		body()->setVelocity( vel );
+		body->setVelocity( vel );
+
+		pos.y -= (pos.y - RoofY)/2;   
+		body->setPosition( pos );
+	}
+	else if ( isState(Landing) || isState(OnGround) )
+	{
+		vel.y = 0;
+		body->setVelocity( vel );
 
 		pos.y -= (pos.y - GroundY)/2;
-		body()->setPosition( pos );
+		body->setPosition( pos );
 	}
 }
 

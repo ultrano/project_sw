@@ -26,7 +26,7 @@ inline void registerGameAppFactories()
 
 inline bool isButtonPushed()
 {
-	return SWInput.getKey( ' ' ) || SWInput.getTouchState() == SW_TouchPress;
+	return SWInput.getKey( ' ' ) || SWInput.getTouchState() == SW_TouchPress || SWInput.getTouchState() == SW_TouchMove;
 };
 
 #endif // GameHeaders_h__

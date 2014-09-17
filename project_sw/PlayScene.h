@@ -407,7 +407,7 @@ public:
 					findGO( "TATP" )->getComponent<SWAction>()->play( "removing" );
 
 					m_readyBGM()->stop();
-					m_playBGM()->play();
+					//m_playBGM()->play();
 
 					changeState( Playing );
 				}

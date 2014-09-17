@@ -13,17 +13,6 @@ class Runner : public CharacterState
 	SW_RTTI( Runner, CharacterState );
 
 public:
-	
-	enum State
-	{
-		None,
-		Running,
-		Boosting,
-		Gliding,
-		Jumping,
-	};
-
-public:
 
 	Runner( factory_constructor );
 	~Runner();
@@ -40,18 +29,8 @@ protected:
 
 private:
 
-	void updateState();
-	void changeState();
-	void setState( State state );
-	State getState() const;
-
-private:
-	
-	State m_state;
-	State m_newState;
-	bool  m_isChanged;
-
 	bool m_activate;
+	tint m_boostDelayFrame;
 	SWHardRef<SWRigidBody2D> m_body;
 	SWHardRef<SWSpriteRenderer> m_renderer;
 	SWHardRef<SWSpriteAtlas> m_imgAtlas;
@@ -91,6 +70,8 @@ private:
 	bool m_doFlapping;
 
 	SWHardRef<SWAudioClip::Source> m_flapSound[3];
+	SWHardRef<SWAudioClip::Source> m_landSound;
+	SWHardRef<SWAudioClip::Source> m_slideSound;
 };
 
 #endif //! CharacterState_h__

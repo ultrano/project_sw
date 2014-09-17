@@ -14,14 +14,11 @@ Runner::~Runner()
 void Runner::onStart()
 {
 	__super::onStart();
-	
-	m_state = State::None;
-	m_newState = State::None;
-	m_isChanged = false;
-	setState( Running );
 
+	m_boostDelayFrame = 0;
 	m_imgAtlas = SWAssets.loadSpriteAtlas( "textures/runner.png" );
 	m_renderer = gameObject()->addComponent<SWSpriteRenderer>();
+	m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
 
 	m_body = gameObject()->addComponent<SWRigidBody2D>();
 	m_body()->setFixedAngle( true );
@@ -36,7 +33,6 @@ void Runner::onStart()
 
 	SWAction* action = gameObject()->addComponent<SWAction>();
 	action->setAct( "run", new SWActRepeat( act ) );
-	action->play( "run" );
 
 	SWTransform* trans = getComponent<SWTransform>();
 	trans->setLocalScale( tvec3( 0.3f, 0.3f, 1 ) );
@@ -107,149 +103,81 @@ void Runner::onUpdate()
 
 void Runner::onFixedRateUpdate()
 {
+	tuint state = getComponent<Character>()->getState();
+
 	m_activate = isButtonPushed();
 
-	changeState();
-	updateState();
-}
-
-void Runner::updateState()
-{
-	//! update state
-	switch ( getState() )
+	switch ( state )
 	{
-	case State::Running :
-		{
-			tvec2 pos = m_body()->getPosition();
-			if ( pos.y > GroundY && pos.y < RoofY ) setState( Gliding );
-
-			if ( m_activate ) setState( Jumping );
-		}
-		break;
-	case State::Jumping :
-		{
-			tvec2 vel = m_body()->getVelocity();
-			tvec2 pos = m_body()->getPosition();
-			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
-			if ( pos.y > GroundY && pos.y < RoofY ) setState( Gliding );
-		}
-		break;
-	case  State::Gliding :
-		{
-			tvec2 vel = m_body()->getVelocity();
-			tvec2 pos = m_body()->getPosition();
-			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
-			if ( m_activate && vel.y <= 0 ) setState( Boosting );
-		}
-		break;
-	case State::Boosting :
-		{
-			tvec2 vel = m_body()->getVelocity();
-			tvec2 pos = m_body()->getPosition();
-			if ( pos.y <= GroundY && vel.y <= 0 ) setState( Running );
-
-			if ( m_activate ) setState( Boosting );
-			else setState( Gliding );
-
-			m_body()->addForce( tvec2( 0, BoostForce ) );
-
-			//! make gas cloud
-			{
-				SWGameObject* go = SW_GC.getScene()->findGO( "Pool/GasCloud" );;
-				if ( go == NULL ) go = new SWGameObject();
-
-				GasCloud* gas = go->addComponent<GasCloud>();
-				tvec3 pos = getComponent<SWTransform>()->getPosition();
-				pos.z = -1;
-				gas->reset( pos );
-			}
-		}
-		break;
-	}
-}
-
-void Runner::changeState()
-{
-	if ( !m_isChanged ) return;
-	m_isChanged = false;
-
-	State newState = m_newState;
-
-	//! pause state
-	switch ( getState() )
-	{
-	case State::Running :
-		{
-			SWAction* action = getComponent<SWAction>();
-			action->stop();
-		}
-		break;
-	case State::Jumping :break;
-	case  State::Gliding :break;
-	case State::Boosting :
-		{
-			m_steamSound()->stop();
-		}
-		break;
-	}
-
-	m_state = newState;
-
-	//! resume state
-	switch ( getState() )
-	{
-	case State::Running :
+	case Character::Landing :
 		{
 			SWAction* action = getComponent<SWAction>();
 			action->play( "run" );
 			m_landSound()->play();
 		}
 		break;
-	case State::Jumping :
+	case Character::OnGround :
 		{
-			//! jump effect
+			SWAction* action = getComponent<SWAction>();
+			if ( !action->isPlaying() ) action->play("run");
+
+			if ( m_activate )
 			{
-				SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
-				tvec3 pos = getComponent<SWTransform>()->getPosition();
-				pos.y = GroundY;
-				trans->setPosition( pos );
+				//! jump effect
+				{
+					SWTransform* trans = m_jumpEffect()->getComponent<SWTransform>();
+					tvec3 pos = getComponent<SWTransform>()->getPosition();
+					pos.y = GroundY;
+					trans->setPosition( pos );
 
-				m_jumpEffect()->setActive( true );
-				SWAction* action = m_jumpEffect()->getComponent<SWAction>();
-				action->play( "jump_effect" );
+					m_jumpEffect()->setActive( true );
+					SWAction* action = m_jumpEffect()->getComponent<SWAction>();
+					action->play( "jump_effect" );
+				}
+
+				m_body()->addForce( tvec2( 0, JumpForce ) );
+				m_jumpSound()->play();
 			}
-
-			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
-			m_body()->addForce( tvec2( 0, JumpForce ) );
-
-			m_jumpSound()->play();
 		}
 		break;
-	case  State::Gliding :
+	case Character::TakeOff :
 		{
-			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
+			m_boostDelayFrame = 10;
 		}
 		break;
-	case State::Boosting :
+	case Character::AirBorne :
 		{
+			SWAction* action = getComponent<SWAction>();
+			action->stop();
 			m_renderer()->setSprite( m_imgAtlas()->find( "jump_0" ) );
-			m_body()->addForce( tvec2( 0, BoostForce ) );
-			
-			if ( !m_steamSound()->isPlaying() ) m_steamSound()->play();
+
+			m_boostDelayFrame -= 1;
+
+			if ( m_activate && m_boostDelayFrame <= 0 )
+			{
+				m_boostDelayFrame = 0;
+				if ( !m_steamSound()->isPlaying() ) m_steamSound()->play();
+
+				m_body()->addForce( tvec2( 0, BoostForce ) );
+
+				//! make gas cloud
+				{
+					SWGameObject* go = SW_GC.getScene()->findGO( "Pool/GasCloud" );;
+					if ( go == NULL ) go = new SWGameObject();
+
+					GasCloud* gas = go->addComponent<GasCloud>();
+					tvec3 pos = getComponent<SWTransform>()->getPosition();
+					pos.z = -1;
+					gas->reset( pos );
+				}
+			}
+			else
+			{
+				m_steamSound()->stop();
+			}
 		}
 		break;
 	}
-}
-
-void Runner::setState( State state )
-{
-	m_isChanged = true;
-	m_newState = state;
-}
-
-Runner::State Runner::getState() const
-{
-	return m_state;
 }
 
 void Runner::onCollision( SWCollision2D* )
@@ -336,6 +264,13 @@ void Bird::onStart()
 
 		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_3.wav");
 		m_flapSound[2] = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/bird_land.wav");
+		m_landSound = audioClip()->createSource();
+
+		audioClip = SWAssets.loadAudioClip( "audios/bird_slidelp.wav");
+		m_slideSound = audioClip()->createSource();
+		m_slideSound()->setLooping( true );
 	}
 }
 
@@ -377,6 +312,8 @@ void Bird::onFixedRateUpdate()
 	SWRigidBody2D* body = getComponent<SWRigidBody2D>();
 	SWTransform* trans = getComponent<SWTransform>();
 
+	if ( body->isFixedPosition() ) return;
+
 	if ( m_doFlapping )
 	{
 		m_doFlapping = false;
@@ -415,6 +352,26 @@ void Bird::onFixedRateUpdate()
 		if ( !action->isPlaying() ) action->play( "magnetic" );
 	}
 
+	tuint state = getComponent<Character>()->getState();
+	switch ( state )
+	{
+	case Character::Landing :
+		{
+			m_landSound()->play();
+			m_slideSound()->play();
+		}
+		break;
+	case Character::OnGround :
+		{
+			if ( !m_slideSound()->isPlaying() ) m_slideSound()->play();
+		}
+		break;
+	case Character::TakeOff :
+		{
+			m_slideSound()->stop();
+		}
+		break;
+	}
 }
 
 void Bird::onCollision( SWCollision2D* )
