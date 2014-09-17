@@ -10,6 +10,7 @@
 #include "Character.h"
 #include "CharacterState.h"
 #include "VehicleItem.h"
+#include "Bomb.h"
 
 inline void registerGameAppFactories()
 {
@@ -22,6 +23,8 @@ inline void registerGameAppFactories()
 	SW_GC.registerFactory<BackGround>();
 	SW_GC.registerFactory<Obstacle>();
 	SW_GC.registerFactory<VehicleItem>();
+	SW_GC.registerFactory<Bomb>();
+	SW_GC.registerFactory<Shrapnel>();
 };
 
 inline bool isButtonPushed()

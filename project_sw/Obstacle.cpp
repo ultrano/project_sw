@@ -62,7 +62,9 @@ void Obstacle::onCollision( SWCollision2D* coll )
 		{
 			go->removeComponent( charState->queryRtti() );
 			go->addComponent<Runner>();
+			SWGameObject* bombGO = new SWGameObject;
+			SWTransform* trans = bombGO->addComponent<Bomb>()->getComponent<SWTransform>();
+			trans->setPosition( go->getComponent<SWTransform>()->getPosition() );
 		}
 	}
-
 }
