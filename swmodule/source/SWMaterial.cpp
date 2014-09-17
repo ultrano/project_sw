@@ -160,7 +160,7 @@ bool SWMaterial::getMatrix4x4( const tstring& name, TMatrix4x4& val ) const
 
 SWTexture* SWMaterial::getTexture( const tstring& name ) const
 {
-	if ( !m_shader.isValid() ) return false;
+	if ( !m_shader.isValid() ) return NULL;
 
 	int index = m_shader()->getUniformLocation( name );
 	if ( index < 0 ) return NULL;

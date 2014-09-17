@@ -155,7 +155,7 @@ SWHardRef<SWSocket> SWSocket::connect( const tstring& ip, int port, bool blockin
 		ret = (ioctlsocket(pimpl->sock, FIONBIO, &mode) == 0);
 #else
 		int flags = fcntl( pimpl->sock, F_GETFL, 0);
-		if (flags < 0) return false;
+		if (flags < 0) return NULL;
 		flags = blocking ? (flags&~O_NONBLOCK) : (flags|O_NONBLOCK);
 		ret = (fcntl(pimpl->sock, F_SETFL, flags) == 0);
 #endif
