@@ -85,7 +85,7 @@ void Runner::onStart()
 		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_3.wav");
 		m_stepRSound[2] = audioClip()->createSource();
 
-		m_stepSound = NULL;
+		m_stepSound = m_stepLSound[0]();
 		m_whichStep = false;
 	}
 }
@@ -137,6 +137,21 @@ void Runner::onFixedRateUpdate()
 
 				m_body()->addForce( tvec2( 0, JumpForce ) );
 				m_jumpSound()->play();
+			}
+
+			if ( !m_stepSound->isPlaying() )
+			{
+				tuint index = (tuint)SWMath.repeat( SWTime.getTime(), 2.9f );
+				m_whichStep = !m_whichStep;
+				if ( m_whichStep )
+				{
+					m_stepSound = m_stepRSound[index]();
+				}
+				else
+				{
+					m_stepSound = m_stepLSound[index]();
+				}
+				m_stepSound->play();
 			}
 		}
 		break;
