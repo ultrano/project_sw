@@ -78,9 +78,9 @@ SWHardRef<SWObject> SWObject::clone()
 	ow()->writeObject( this );
 
 	SWByteBufferInputStream* bbis = new SWByteBufferInputStream( bbos->getBuffer() );
-	SWHardRef<SWObjectReader> or = new SWObjectReader( bbis );
+	SWHardRef<SWObjectReader> reader = new SWObjectReader( bbis );
 
-	SWHardRef<SWObject> ret = or()->readObject();
+	SWHardRef<SWObject> ret = reader()->readObject();
 	return ret;
 }
 

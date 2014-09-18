@@ -190,18 +190,20 @@ public:
 	void makeFireWorks()
 	{
 		if ( --m_fireWorkDelay > 0 ) return;
-		m_fireWorkDelay = 10;
+		m_fireWorkDelay = 30;
 
 		tuint count = SWMath.randomInt( 1, 4 );
 		while ( count-- )
 		{
-			SWGameObject* go = new SWGameObject;
-			SWTransform* trans = go->addComponent<FireWork>()->getComponent<SWTransform>();
+			FireWork* fireWork = FireWork::createFireWork();
+			SWTransform* trans = fireWork->getComponent<SWTransform>();
 
 			float halfW = WorldWidth/2.0f;
 			float halfH = WorldHeight/2.0f;
 			tvec3 pos( SWMath.randomInt( -halfW,halfW ), SWMath.randomInt( -halfH,halfH ), 0 );
 			trans->setPosition( pos );
+
+			fireWork->fire();
 		}
 	}
 };

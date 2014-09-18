@@ -12,10 +12,20 @@ public:
 	FireWork( factory_constructor );
 	~FireWork();
 
+	static FireWork* createFireWork();
+
+	void fire();
+
+private:
+
+	void goToPool();
+
 protected:
 
-	virtual void onStart();
+	virtual void onAwake();
 	virtual void onFixedRateUpdate();
+
+	void onEndAction();
 
 };
 
