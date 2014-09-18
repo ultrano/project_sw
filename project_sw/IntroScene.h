@@ -62,6 +62,7 @@ public:
 			transform->setLocalPosition( tvec3::zero );
 			transform->setLocalScale( tvec3( 480/logoSize.x, 320/logoSize.y, 1 ) );
 		}
+
 	}
 
 
@@ -73,6 +74,7 @@ public:
 	void onUpdate()
 	{
 	}
+
 };
 
 #endif // IntroScene_h__

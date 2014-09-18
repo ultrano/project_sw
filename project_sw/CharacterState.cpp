@@ -389,6 +389,16 @@ void Bird::onFixedRateUpdate()
 	}
 }
 
-void Bird::onCollision( SWCollision2D* )
+void Bird::onCollision( SWCollision2D* coll )
 {
+	SWGameObject* go = coll->collider()->gameObject();
+
+	if ( go->getName() == "Obstacle" )
+	{
+		SWGameObject* bombGO = SW_GC.getScene()->findGO("Bomb");
+		if ( bombGO == NULL ) bombGO = new SWGameObject;
+		Bomb* bomb = bombGO->addComponent<Bomb>();
+		bomb->reset( getComponent<SWTransform>()->getPosition() );
+	}
+
 }

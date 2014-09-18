@@ -11,13 +11,40 @@ Bomb::~Bomb()
 
 }
 
-void Bomb::onStart()
+void Bomb::reset( const tvec3& pos )
 {
+	gameObject()->setActive( true );
+	gameObject()->setName( "Bomb" );
+
+	SWTransform* parent = getComponent<SWTransform>();
+	parent->setPosition( pos );
+
+	//! 
+	tuint count = parent->getChildrenCount();
+	while ( count-- )
+	{
+		SWTransform* shrapnelTrans = parent->getChildAt( count );
+		SWRigidBody2D* body = shrapnelTrans->getComponent<SWRigidBody2D>();
+		body->setPosition( pos.xy() );
+
+		Shrapnel* shrapnel = shrapnelTrans->getComponent<Shrapnel>();
+		shrapnel->reset();
+	}
+
+	SWAction* action = gameObject()->getComponent<SWAction>();
+	action->play( "boom" );
+
+	m_sound()->play();
+}
+
+void Bomb::onAwake()
+{
+	__super::onAwake();
+
 	//! sound
 	{
 		SWHardRef<SWAudioClip> audioClip = SWAssets.loadAudioClip( "audios/rocket_explode_1.wav" );
 		m_sound = audioClip()->createSource();
-		m_sound()->play();
 	}
 
 	//! set animation
@@ -28,30 +55,29 @@ void Bomb::onStart()
 		SWActAnimate* act = new SWActAnimate( 1, anim()->getSequenceAt(0) );
 
 		SWAction* action = gameObject()->addComponent<SWAction>();
-		action->setAct( "boom", new SWActSequence( act, new SWActDelay(3), new SWActDestroy() ) );
-		action->play( "boom" );
+		action->setAct( "boom", new SWActSequence( act, new SWActDelay(1), new SWActDelegate( GetDelegator(onEndAction) ) ) );
 	}
 
-	SWTransform* parent = getComponent<SWTransform>();
-	//parent->setLocalScale( tvec3::one * 0.5f );
-
-	//! 
 	tuint count = 10;
 	while ( count-- )
 	{
 		SWGameObject* go = new SWGameObject;
 
-		SWTransform* trans = go->getComponent<SWTransform>();
-		trans->setPosition( parent->getPosition() );
+		SWTransform* shrapnelTrans = go->getComponent<SWTransform>();
+		shrapnelTrans->setParent( getComponent<SWTransform>() );
 
 		go->addComponent<Shrapnel>();
 	}
-	
+
+	gameObject()->setActive( false );
+}
+
+void Bomb::onStart()
+{
 }
 
 void Bomb::onUpdate()
 {
-
 }
 
 void Bomb::onFixedRateUpdate()
@@ -62,6 +88,11 @@ void Bomb::onFixedRateUpdate()
 void Bomb::onCollision( SWCollision2D* )
 {
 
+}
+
+void Bomb::onEndAction()
+{
+	gameObject()->setActive( false );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,22 +107,34 @@ Shrapnel::~Shrapnel()
 
 }
 
-void Shrapnel::onStart()
+void Shrapnel::reset()
 {
-	m_delay = 10;
 	float radian = SWMath.angleToRadian( SWMath.randomInt(0,45) );
 	tvec2 dir( SWMath.cos(radian), SWMath.sin(radian) );
 
 	SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
 	body->addForce( dir*SWMath.randomInt(15,30) );
+
+	m_delay = 0;
+}
+
+void Shrapnel::onAwake()
+{
+	__super::onAwake();
+	gameObject()->setName( "Shrapnel" );
+	SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
 	body->setGravityScale( -tvec2::axisY*0.5f );
 	body->setLinearDrag( 0.05f );
 
-	SWAction* action = gameObject()->addComponent<SWAction>();
-	action->setAct( "life", new SWActSequence( new SWActDelay(3), new SWActDestroy() ) );
-	action->play( "life" );
+	SWGameObject* poolGO = new SWGameObject;
+	poolGO->setName( "Pool" );
+	poolGO->getComponent<SWTransform>()->setParent( getComponent<SWTransform>() );
 
 	m_atlas = SWAssets.loadSpriteAtlas( "textures/cloud.png" );
+}
+
+void Shrapnel::onStart()
+{
 }
 
 void Shrapnel::onFixedRateUpdate()
@@ -99,21 +142,44 @@ void Shrapnel::onFixedRateUpdate()
 	if ( --m_delay > 0 ) return;
 	m_delay = 5;
 
-	SWGameObject* go = new SWGameObject;
-	
-	SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-	renderer->setSprite( m_atlas()->find("cloud_0") );
+	SWTransform* dirst = getComponent<SWTransform>()->find("Pool/Dirst");
+	if ( dirst == NULL )
+	{
+		SWGameObject* go = new SWGameObject;
+		go->setName( "Dirst" );
 
-	SWTransform* trans = go->getComponent<SWTransform>();
-	trans->setLocalScale( tvec3::one * SWMath.randomInt(50,100)/100.0f );
-	trans->setParent( getComponent<SWTransform>() );
+		SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+		renderer->setSprite( m_atlas()->find("cloud_0") );
 
-	SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-	body->setGravityScale( tvec2::zero );
+		dirst = go->getComponent<SWTransform>();
+		dirst->setParent( getComponent<SWTransform>() );
 
-	SWAction* action = go->addComponent<SWAction>();
-	SWActBunch* bunch = new SWActBunch( new SWActColorTo(1, tcolor(1,1,1,0)), new SWActScaleTo( 1, tvec3::zero ) );
-	action->setAct( "fadeout", new SWActSequence( bunch, new SWActDestroy() ) );
-	action->play( "fadeout" );
+		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+		body->setGravityScale( tvec2::zero );
 
+		SWAction* action = go->addComponent<SWAction>();
+		SWActBunch* bunch = new SWActBunch( new SWActColorTo(1, tcolor(1,1,1,0)), new SWActScaleTo( 1, tvec3::zero ) );
+		action->setAct( "fadeout", new SWActSequence( bunch, new SWActDelegate(GetDelegator(onEndAction)) ) );
+	}
+
+	{
+		dirst->setLocalScale( tvec3::one * SWMath.randomInt(50,100)/100.0f );
+		dirst->setParent( getComponent<SWTransform>() );
+
+		SWAction* action = dirst->getComponent<SWAction>();
+		action->play( "fadeout" );
+
+		SWSpriteRenderer* renderer = dirst->getComponent<SWSpriteRenderer>();
+		renderer->setColor( tcolor(1,1,1,1) );
+
+		SWRigidBody2D* body = dirst->getComponent<SWRigidBody2D>();
+		body->setPosition( getComponent<SWTransform>()->getPosition().xy() );
+	}
+
+}
+
+void Shrapnel::onEndAction( SWActDelegate* act )
+{
+	SWTransform* trans = act->getAction()->getComponent<SWTransform>();
+	trans->setParent( getComponent<SWTransform>()->find("Pool") );
 }
