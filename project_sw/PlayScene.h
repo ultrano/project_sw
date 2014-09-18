@@ -392,7 +392,7 @@ public:
 				m_playBGM = audioClip()->createSource();
 				m_playBGM()->setLooping( true );
 
-				m_readyBGM()->play();
+				//m_readyBGM()->play();
 				changeState( Standby );
 			}
 			break;
@@ -407,7 +407,7 @@ public:
 					findGO( "TATP" )->getComponent<SWAction>()->play( "removing" );
 
 					m_readyBGM()->stop();
-					m_playBGM()->play();
+					//m_playBGM()->play();
 
 					changeState( Playing );
 				}

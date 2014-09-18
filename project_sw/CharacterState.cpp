@@ -56,33 +56,34 @@ void Runner::onStart()
 
 	//! load sound
 	{
+		Character* character = getComponent<Character>();
 		SWHardRef<SWAudioClip> audioClip = NULL;
 
-		audioClip = SWAssets.loadAudioClip( "audios/boots_jump.wav");
+		audioClip = character->getAudioClip( "audios/boots_jump.wav");
 		m_jumpSound = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/boots_land.wav");
+		audioClip = character->getAudioClip( "audios/boots_land.wav");
 		m_landSound = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/jetpack_steam_lp.wav");
+		audioClip = character->getAudioClip( "audios/jetpack_steam_lp.wav");
 		m_steamSound = audioClip()->createSource();
 		m_steamSound()->setLooping( true );
 
-		audioClip = SWAssets.loadAudioClip( "audios/player_bones.wav");
+		audioClip = character->getAudioClip( "audios/player_bones.wav");
 		m_shockSound = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/boots_step_left_1.wav");
+		audioClip = character->getAudioClip( "audios/boots_step_left_1.wav");
 		m_stepLSound[0] = audioClip()->createSource();
-		audioClip = SWAssets.loadAudioClip( "audios/boots_step_left_2.wav");
+		audioClip = character->getAudioClip( "audios/boots_step_left_2.wav");
 		m_stepLSound[1] = audioClip()->createSource();
-		audioClip = SWAssets.loadAudioClip( "audios/boots_step_left_3.wav");
+		audioClip = character->getAudioClip( "audios/boots_step_left_3.wav");
 		m_stepLSound[2] = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_1.wav");
+		audioClip = character->getAudioClip( "audios/boots_step_right_1.wav");
 		m_stepRSound[0] = audioClip()->createSource();
-		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_2.wav");
+		audioClip = character->getAudioClip( "audios/boots_step_right_2.wav");
 		m_stepRSound[1] = audioClip()->createSource();
-		audioClip = SWAssets.loadAudioClip( "audios/boots_step_right_3.wav");
+		audioClip = character->getAudioClip( "audios/boots_step_right_3.wav");
 		m_stepRSound[2] = audioClip()->createSource();
 
 		m_stepSound = m_stepLSound[0]();
@@ -269,21 +270,22 @@ void Bird::onStart()
 
 	//! load flapping sound
 	{
+		Character* character = getComponent<Character>();
 		SWHardRef<SWAudioClip> audioClip = NULL;
 
-		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_1.wav");
+		audioClip = character->getAudioClip( "audios/bird_flap_1.wav");
 		m_flapSound[0] = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_2.wav");
+		audioClip = character->getAudioClip( "audios/bird_flap_2.wav");
 		m_flapSound[1] = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/bird_flap_3.wav");
+		audioClip = character->getAudioClip( "audios/bird_flap_3.wav");
 		m_flapSound[2] = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/bird_land.wav");
+		audioClip = character->getAudioClip( "audios/bird_land.wav");
 		m_landSound = audioClip()->createSource();
 
-		audioClip = SWAssets.loadAudioClip( "audios/bird_slidelp.wav");
+		audioClip = character->getAudioClip( "audios/bird_slidelp.wav");
 		m_slideSound = audioClip()->createSource();
 		m_slideSound()->setLooping( true );
 	}

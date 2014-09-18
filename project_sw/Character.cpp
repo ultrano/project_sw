@@ -18,13 +18,13 @@ void Character::onAwake()
 
 	SWHardRef<SWAudioClip> audioClip = NULL;
 
-	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_1.wav");
+	audioClip = getAudioClip( "audios/coin_pickup_1.wav");
 	m_coinSound[0] = audioClip()->createSource();
 	
-	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_2.wav");
+	audioClip = getAudioClip( "audios/coin_pickup_2.wav");
 	m_coinSound[1] = audioClip()->createSource();
 
-	audioClip = SWAssets.loadAudioClip( "audios/coin_pickup_3.wav");
+	audioClip = getAudioClip( "audios/coin_pickup_3.wav");
 	m_coinSound[2] = audioClip()->createSource();
 
 	m_state = None;
@@ -129,4 +129,16 @@ void Character::onCollision( SWCollision2D* coll )
 		gameObject()->removeComponent<Runner>();
 		gameObject()->addComponent<Bird>();
 	}
+}
+
+SWAudioClip* Character::getAudioClip( const tstring& filePath )
+{
+	SWHardRef<SWAudioClip> audioClip = NULL;
+
+	audioClip = SWAssets.loadAudioClip( filePath );
+	if ( !audioClip.isValid() ) return NULL;
+	
+	m_audioTable[filePath] = audioClip;
+
+	return audioClip();
 }
