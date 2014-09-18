@@ -29,8 +29,8 @@ public:
 	Character( factory_constructor );
 	~Character();
 
-	void setScore( tuint score ) { m_score = score; };
 	tuint getScore() const { return m_score; };
+	tuint getMeter() const { return m_meter; };
 
 	tuint getState() const { return m_state; }
 	bool isState( tuint state ) const { return ( m_state == state ); };
@@ -54,6 +54,7 @@ private:
 	typedef ttable<tstring,SWHardRef<SWAudioClip>> AudioTable;
 
 	tuint m_score;
+	tuint m_meter;
 	tuint m_state;
 	SWWeakRef<SWFontRenderer> m_meterScore;
 	SWWeakRef<SWFontRenderer> m_coinScore;

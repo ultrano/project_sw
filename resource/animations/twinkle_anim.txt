@@ -1,0 +1,2 @@
+textures/twinkle.png
+twinkle 0.2 twinkle_1,twinkle_2,twinkle_3,twinkle_4

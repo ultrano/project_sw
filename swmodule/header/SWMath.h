@@ -55,6 +55,7 @@ public:
 	float angleToRadian( float angle ) const;
 
 	int   randomInt( int kMin, int kMax ) const;
+	float randomFloat() const;
 };
 
 #endif //SWMath

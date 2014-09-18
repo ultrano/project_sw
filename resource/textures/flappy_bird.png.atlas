@@ -1,4 +1,5 @@
 background = 0 0 140 256
+background_2 = 0 150 145 106
 bird_0 = 264 90 18 18
 bird_1 = 264 64 18 18
 bird_2 = 223 124 18 18

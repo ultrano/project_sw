@@ -53,6 +53,12 @@ class Bird : public CharacterState
 	
 public:
 
+	enum
+	{
+		BeginSucking,
+		StaySucking,
+		EndSucking,
+	};
 	Bird( factory_constructor );
 	~Bird();
 
@@ -68,8 +74,10 @@ private:
 
 	bool m_wasPressed;
 	bool m_doFlapping;
+	tuint m_suckState;
 
 	SWHardRef<SWAudioClip::Source> m_flapSound[3];
+	SWHardRef<SWAudioClip::Source> m_voxSound[3];
 	SWHardRef<SWAudioClip::Source> m_landSound;
 	SWHardRef<SWAudioClip::Source> m_slideSound;
 };

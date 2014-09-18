@@ -71,7 +71,7 @@ public:
 		SW_GC.setNextScene( new PlayScene );
 	}
 
-	void onUpdate()
+	void onFixedRateUpdate()
 	{
 	}
 

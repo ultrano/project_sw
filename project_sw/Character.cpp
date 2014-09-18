@@ -44,11 +44,11 @@ void Character::onUpdate()
 void Character::onFixedRateUpdate()
 {
 	SWTransform* trans = getComponent<SWTransform>();
-	tuint meters = (tuint)trans->getPosition().x/100;
-	m_meterScore()->setText( "%d Meters", meters );
+	m_meter = (tuint)trans->getPosition().x/100;
+	m_meterScore()->setText( "%d Meters", m_meter );
 
 	SWHardRef<SWRigidBody2D> body = getComponent<SWRigidBody2D>();
-	if ( !body()->isFixedPosition() ) body()->addForce( tvec2( RunningForce + ((float)meters/5000),0 ) );
+	if ( !body()->isFixedPosition() ) body()->addForce( tvec2( RunningForce + ((float)m_meter/5000),0 ) );
 
 	updateCondition();
 }

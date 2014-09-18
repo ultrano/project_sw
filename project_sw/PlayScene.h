@@ -334,7 +334,7 @@ public:
 					renderer->setFontInfo( m_fontInfo() );
 					renderer->setFontTexture( m_fontTexture() );
 					renderer->setColor( tcolor( 1, 1, 0, 1 ) );
-					renderer->setText( "0 Coins" );
+					renderer->setText( "0 %c", (char)169 );
 
 					SWTransform* trans = go->getComponent<SWTransform>();
 					trans->setPosition( tvec3( -m_screenSize.x/2, (m_screenSize.y/2) - m_fontInfo()->getLineHeight(), 0 ) );

@@ -11,6 +11,7 @@
 #include "CharacterState.h"
 #include "VehicleItem.h"
 #include "Bomb.h"
+#include "FireWork.h"
 
 inline void registerGameAppFactories()
 {
@@ -25,6 +26,7 @@ inline void registerGameAppFactories()
 	SW_GC.registerFactory<VehicleItem>();
 	SW_GC.registerFactory<Bomb>();
 	SW_GC.registerFactory<Shrapnel>();
+	SW_GC.registerFactory<FireWork>();
 };
 
 inline bool isButtonPushed()

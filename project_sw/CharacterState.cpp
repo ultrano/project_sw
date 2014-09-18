@@ -204,7 +204,8 @@ void Runner::onCollision( SWCollision2D* coll )
 	SWGameObject* go = coll->collider()->gameObject();
 	if ( go->getName() == "Obstacle" )
 	{
-		ResultScene* scene = new ResultScene( 111, 111 );
+		Character* character = getComponent<Character>();
+		ResultScene* scene = new ResultScene( character->getMeter(), character->getScore() );
 		SW_GC.setNextScene( scene );
 	}
 }
@@ -220,6 +221,7 @@ void Runner::inactivate( SWActDelegate* del )
 Bird::Bird( factory_constructor )
 	: m_doFlapping( false )
 	, m_wasPressed( false )
+	, m_suckState( EndSucking )
 {
 }
 
@@ -291,6 +293,15 @@ void Bird::onStart()
 		audioClip = character->getAudioClip( "audios/bird_flap_3.wav");
 		m_flapSound[2] = audioClip()->createSource();
 
+		audioClip = character->getAudioClip( "audios/bird_vox_1.wav");
+		m_voxSound[0] = audioClip()->createSource();
+
+		audioClip = character->getAudioClip( "audios/bird_vox_2.wav");
+		m_voxSound[1] = audioClip()->createSource();
+
+		audioClip = character->getAudioClip( "audios/bird_vox_3.wav");
+		m_voxSound[2] = audioClip()->createSource();
+
 		audioClip = character->getAudioClip( "audios/bird_land.wav");
 		m_landSound = audioClip()->createSource();
 
@@ -317,7 +328,6 @@ void Bird::onUpdate()
 	SWTransform* trans = getComponent<SWTransform>();
 
 	trans->setLocalRotate( tvec3( 0, 0, body->getVelocity().y/20 ) );
-	//trans->setLocalRotate( tvec3( 0, 0, SWMath.pingPong( SWTime.getTime(), SWMath.pi*2 ) ) );
 
 	if ( isButtonPushed() )
 	{
@@ -355,7 +365,7 @@ void Bird::onFixedRateUpdate()
 	SWGameObject* coins = SW_GC.getScene()->findGO( "Coins" );
 	SWTransform* parent = coins->getComponent<SWTransform>();
 
-	bool playEffect = false;
+	bool isCoinIn = false;
 	tuint count = parent->getChildrenCount();
 	while ( count-- )
 	{
@@ -369,13 +379,37 @@ void Bird::onFixedRateUpdate()
 		pos += delta.normal()*body->getVelocity().length();
 		child->setPosition( pos );
 
-		if ( playEffect == false ) playEffect = true;
+		isCoinIn = true;
 	}
 
-	if ( playEffect )
+	switch ( m_suckState )
 	{
-		SWAction* action = trans->find( "magnetic" )->getComponent<SWAction>();
-		if ( !action->isPlaying() ) action->play( "magnetic" );
+	case BeginSucking :
+		if ( isCoinIn ) m_suckState = StaySucking;
+		else m_suckState = EndSucking;
+		break;
+	case StaySucking :
+		if ( !isCoinIn ) m_suckState = EndSucking;
+		break;
+	case EndSucking :
+		if ( isCoinIn ) m_suckState = BeginSucking;
+		break;
+	}
+
+	switch ( m_suckState )
+	{
+	case BeginSucking :
+		{
+			tuint index = SWMath.randomInt(0,2);
+			m_voxSound[index]()->play();
+		}
+		break;
+	case StaySucking :
+		{
+			SWAction* action = trans->find( "magnetic" )->getComponent<SWAction>();
+			if ( !action->isPlaying() ) action->play( "magnetic" );
+		}
+		break;
 	}
 
 	tuint state = getComponent<Character>()->getState();
