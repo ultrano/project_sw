@@ -58,6 +58,7 @@ public:
 
 	void onAwake()
 	{
+		SW_GC.registerFactory<PlayScene>();
 		registerGameAppFactories();
 
 		//! initialize values

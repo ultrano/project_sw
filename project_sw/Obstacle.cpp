@@ -50,12 +50,7 @@ void Obstacle::onCollision( SWCollision2D* coll )
 {
 	SWGameObject* go = coll->collider()->gameObject();
 
-	if ( go->getName() == "Basket" )
-	{
-		SWGameObject* poolGO = SW_GC.getScene()->findGO( "Pool" );
-		getComponent<SWTransform>()->setParent( poolGO->getComponent<SWTransform>() );
-	}
-	else if ( go->getName() == "Character" )
+	if ( go->getName() == "Character" )
 	{
 		CharacterState* charState = go->getComponent<CharacterState>();
 		if ( charState->queryRtti() != Runner::getRtti() )
@@ -63,5 +58,11 @@ void Obstacle::onCollision( SWCollision2D* coll )
 			go->removeComponent( charState->queryRtti() );
 			go->addComponent<Runner>();
 		}
+	}
+
+	if ( (go->getName() == "Basket") || (go->getName() == "Character") )
+	{
+		SWGameObject* poolGO = SW_GC.getScene()->findGO( "Pool" );
+		getComponent<SWTransform>()->setParent( poolGO->getComponent<SWTransform>() );
 	}
 }

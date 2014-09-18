@@ -1,6 +1,7 @@
 #include "CharacterState.h"
 #include "GameValues.h"
 #include "GameHeaders.h"
+#include "ResultScene.h"
 
 Runner::Runner( factory_constructor )
 	: m_activate( false )
@@ -196,8 +197,16 @@ void Runner::onFixedRateUpdate()
 	}
 }
 
-void Runner::onCollision( SWCollision2D* )
+void Runner::onCollision( SWCollision2D* coll )
 {
+	if ( !coll->collider.isValid() ) return;
+
+	SWGameObject* go = coll->collider()->gameObject();
+	if ( go->getName() == "Obstacle" )
+	{
+		ResultScene* scene = new ResultScene( 111, 111 );
+		SW_GC.setNextScene( scene );
+	}
 }
 
 void Runner::inactivate( SWActDelegate* del )
