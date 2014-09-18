@@ -58,7 +58,7 @@ void Bomb::onAwake()
 		action->setAct( "boom", new SWActSequence( act, new SWActDelay(1), new SWActDelegate( GetDelegator(onEndAction) ) ) );
 	}
 
-	tuint count = 10;
+	tuint count = 5;
 	while ( count-- )
 	{
 		SWGameObject* go = new SWGameObject;
@@ -115,7 +115,7 @@ void Shrapnel::reset()
 	SWRigidBody2D* body = gameObject()->addComponent<SWRigidBody2D>();
 	body->addForce( dir*SWMath.randomInt(15,30) );
 
-	m_delay = 0;
+	m_delay = 5;
 }
 
 void Shrapnel::onAwake()
@@ -140,7 +140,7 @@ void Shrapnel::onStart()
 void Shrapnel::onFixedRateUpdate()
 {
 	if ( --m_delay > 0 ) return;
-	m_delay = 5;
+	m_delay = 3;
 
 	SWTransform* dirst = getComponent<SWTransform>()->find("Pool/Dirst");
 	if ( dirst == NULL )
