@@ -90,6 +90,10 @@ SWFontInfo* SWFontRenderer::getFontInfo() const
 void SWFontRenderer::setColor( const tcolor& color )
 {
 	m_color = color;
+	if ( SWMaterial* material = getMaterial() )
+	{
+		material->setVector4( "COLOR", tquat( m_color.r, m_color.g, m_color.b, m_color.a ) );
+	}
 }
 
 const tcolor& SWFontRenderer::getColor() const
@@ -128,6 +132,7 @@ int  SWFontRenderer::getAlignV() const
 void SWFontRenderer::onAwake()
 {
 	__super::onAwake();
+	setColor( tcolor(1,1,1,1) );
 }
 
 void SWFontRenderer::render( SWCamera* camera )
@@ -146,12 +151,9 @@ void SWFontRenderer::render( SWCamera* camera )
 	const TMatrix4x4& model = transform->getWorldMatrix();
 	const TMatrix4x4& VPMat = camera->getVPMatrix();
 
-	tquat color( m_color.r, m_color.g, m_color.b, m_color.a );
-
 	SWMaterial* material = getMaterial();
 	material->setTexture( "TEXTURE_0", m_texture() );
 	material->setMatrix4x4( "MATRIX_MVP", ( model * VPMat ) );
-	material->setVector4( "COLOR", color );
 	material->apply();
 
 	getMesh()->draw();

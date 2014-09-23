@@ -32,7 +32,7 @@ SWSpriteRenderer::~SWSpriteRenderer()
 void SWSpriteRenderer::onAwake()
 {
 	__super::onAwake();
-	m_color = tcolor(1,1,1,1);
+	setColor( tcolor(1,1,1,1) );
 }
 
 void SWSpriteRenderer::render( SWCamera* camera )
@@ -46,12 +46,10 @@ void SWSpriteRenderer::render( SWCamera* camera )
 		const tvec2& size   = m_sprite()->getScaledSize();
 
 		tquat scaler( offset.x, offset.y, size.x, size.y );
-		tquat color( m_color.r, m_color.g, m_color.b, m_color.a );
 
 		SWMaterial* material = getMaterial();
 		material->setTexture( "TEXTURE_0", m_sprite()->getTexture() );
 		material->setMatrix4x4( "MATRIX_MVP", ( model * VPMat ) );
-		material->setVector4( "COLOR", color );
 		material->setVector4( "SCALER", scaler );
 		material->apply();
 	}
@@ -88,6 +86,11 @@ const SWSprite* SWSpriteRenderer::getSprite() const
 void SWSpriteRenderer::setColor( const tcolor& color )
 {
 	m_color = color;
+	if ( SWMaterial* material = getMaterial() )
+	{
+		tquat vec4( m_color.r, m_color.g, m_color.b, m_color.a );
+		material->setVector4( "COLOR", vec4 );
+	}
 }
 
 const tcolor& SWSpriteRenderer::getColor() const

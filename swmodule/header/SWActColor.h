@@ -3,6 +3,7 @@
 
 #include "SWAct.h"
 
+class SWMaterial;
 class SWActColor : public SWAct
 {
 	SW_RTTI( SWActColor, SWAct );
@@ -22,12 +23,16 @@ protected:
 	void serialize( SWObjectWriter* writer );
 	void deserialize( SWObjectReader* reader );
 
+	void setColor( const tcolor& color );
+	void getColor( tcolor& color ) const;
+
 protected:
 
 	float m_duration;
 	float m_spendTime;
 	tcolor m_from;
 	tcolor m_to;
+	SWWeakRef<SWMaterial> m_material;
 };
 
 //////////////////////////////////////////////////////////////////////////
