@@ -124,26 +124,8 @@
     <Filter Include="stb_image">
       <UniqueIdentifier>{52ef00e5-7d5a-4ada-b830-ab56de0df871}</UniqueIdentifier>
     </Filter>
-    <Filter Include="WI">
-      <UniqueIdentifier>{6ae5dbc5-9cf8-411e-93eb-50200dd71469}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WI\WIImage">
-      <UniqueIdentifier>{f7326522-e76c-4322-8213-fba7a0c1da04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WI\WIDefines">
-      <UniqueIdentifier>{66dc6591-02fb-4a32-9fa4-06f1c7c6449f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWCamera">
       <UniqueIdentifier>{f2acb6cd-d1c4-45d7-b853-5a64ad51574d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WI\WIFontChar">
-      <UniqueIdentifier>{bdcab14e-9ab1-46b5-a1b8-8e932a213ac4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WI\WIFontData">
-      <UniqueIdentifier>{b71def87-cfbb-44df-aa01-2188b2881b76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WI\WIText">
-      <UniqueIdentifier>{58d126f7-022d-476c-baa1-00f8f9394648}</UniqueIdentifier>
     </Filter>
     <Filter Include="json">
       <UniqueIdentifier>{83a83fd1-34b2-4adc-8d2a-d7604cba7b39}</UniqueIdentifier>
@@ -246,9 +228,6 @@
     </Filter>
     <Filter Include="SW\SWType\TColorRGBA">
       <UniqueIdentifier>{5bd785e8-cf97-4056-8d0c-a3fc21c9a5e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SW\SWAct\SWActAlphaTo">
-      <UniqueIdentifier>{0c529d29-342b-4d9a-b9dd-953f30b2dd3b}</UniqueIdentifier>
     </Filter>
     <Filter Include="SW\SWObjectStream">
       <UniqueIdentifier>{cbf9a09d-6cf4-45e7-a2c3-91d91d324e88}</UniqueIdentifier>
@@ -453,26 +432,11 @@
     <ClInclude Include="header\SWValue.h">
       <Filter>SW\SWValue</Filter>
     </ClInclude>
-    <ClInclude Include="header\WIImage.h">
-      <Filter>WI\WIImage</Filter>
-    </ClInclude>
-    <ClInclude Include="header\WIDefines.h">
-      <Filter>WI\WIDefines</Filter>
-    </ClInclude>
     <ClInclude Include="header\stb_image.h">
       <Filter>stb_image</Filter>
     </ClInclude>
     <ClInclude Include="header\SWCamera.h">
       <Filter>SW\SWCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="header\WIFontChar.h">
-      <Filter>WI\WIFontChar</Filter>
-    </ClInclude>
-    <ClInclude Include="header\WIFontData.h">
-      <Filter>WI\WIFontData</Filter>
-    </ClInclude>
-    <ClInclude Include="header\WIText.h">
-      <Filter>WI\WIText</Filter>
     </ClInclude>
     <ClInclude Include="header\SWType.h">
       <Filter>SW\SWType</Filter>
@@ -593,9 +557,6 @@
     </ClInclude>
     <ClInclude Include="header\TColorRGBA.h">
       <Filter>SW\SWType\TColorRGBA</Filter>
-    </ClInclude>
-    <ClInclude Include="header\SWActAlphaTo.h">
-      <Filter>SW\SWAct\SWActAlphaTo</Filter>
     </ClInclude>
     <ClInclude Include="header\SWObjectStream.h">
       <Filter>SW\SWObjectStream</Filter>
@@ -779,20 +740,11 @@
     <ClCompile Include="source\SWValue.cpp">
       <Filter>SW\SWValue</Filter>
     </ClCompile>
-    <ClCompile Include="source\WIImage.cpp">
-      <Filter>WI\WIImage</Filter>
-    </ClCompile>
     <ClCompile Include="source\stb_image.c">
       <Filter>stb_image</Filter>
     </ClCompile>
     <ClCompile Include="source\SWCamera.cpp">
       <Filter>SW\SWCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="source\WIText.cpp">
-      <Filter>WI\WIText</Filter>
-    </ClCompile>
-    <ClCompile Include="source\WIFontData.cpp">
-      <Filter>WI\WIFontData</Filter>
     </ClCompile>
     <ClCompile Include="source\SWFileStream.cpp">
       <Filter>SW\SWFileStream</Filter>
@@ -884,9 +836,6 @@
     <ClCompile Include="source\SWTexture.cpp">
       <Filter>SW\SWTexture</Filter>
     </ClCompile>
-    <ClCompile Include="source\SWActAlphaTo.cpp">
-      <Filter>SW\SWAct\SWActAlphaTo</Filter>
-    </ClCompile>
     <ClCompile Include="source\SWObjectStream.cpp">
       <Filter>SW\SWObjectStream</Filter>
     </ClCompile>
@@ -949,6 +898,9 @@
     </ClCompile>
     <ClCompile Include="source\SWOpenAL.cpp">
       <Filter>SW\SWOpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TAABB.cpp">
+      <Filter>SW\SWType\TAABB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

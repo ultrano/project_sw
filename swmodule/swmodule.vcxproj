@@ -88,7 +88,6 @@
     <ClInclude Include="header\reader.h" />
     <ClInclude Include="header\stb_image.h" />
     <ClInclude Include="header\SWAct.h" />
-    <ClInclude Include="header\SWActAlphaTo.h" />
     <ClInclude Include="header\SWActAnimate.h" />
     <ClInclude Include="header\SWActBunch.h" />
     <ClInclude Include="header\SWActColor.h" />
@@ -153,7 +152,6 @@
     <ClInclude Include="header\SWShader.h" />
     <ClInclude Include="header\TIndex3.h" />
     <ClInclude Include="header\SWType.h" />
-    <ClInclude Include="header\WIFontData.h" />
     <ClInclude Include="header\SWGameContext.h" />
     <ClInclude Include="header\SWGameObject.h" />
     <ClInclude Include="header\SWGameScene.h" />
@@ -186,10 +184,6 @@
     <ClInclude Include="header\SWValue.h" />
     <ClInclude Include="header\TVector2f.h" />
     <ClInclude Include="header\TVector3f.h" />
-    <ClInclude Include="header\WIDefines.h" />
-    <ClInclude Include="header\WIFontChar.h" />
-    <ClInclude Include="header\WIImage.h" />
-    <ClInclude Include="header\WIText.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\json_reader.cpp" />
@@ -197,7 +191,6 @@
     <ClCompile Include="source\json_writer.cpp" />
     <ClCompile Include="source\stb_image.c" />
     <ClCompile Include="source\SWAct.cpp" />
-    <ClCompile Include="source\SWActAlphaTo.cpp" />
     <ClCompile Include="source\SWActAnimate.cpp" />
     <ClCompile Include="source\SWActBunch.cpp" />
     <ClCompile Include="source\SWActColor.cpp" />
@@ -249,6 +242,7 @@
     <ClCompile Include="source\SWSpriteSequence.cpp" />
     <ClCompile Include="source\SWSpriteAtlas.cpp" />
     <ClCompile Include="source\SWTexture.cpp" />
+    <ClCompile Include="source\TAABB.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />
     <ClCompile Include="source\SWList.cpp" />
@@ -282,9 +276,6 @@
     <ClCompile Include="source\TTriangle.cpp" />
     <ClCompile Include="source\TVector2f.cpp" />
     <ClCompile Include="source\TVector3f.cpp" />
-    <ClCompile Include="source\WIFontData.cpp" />
-    <ClCompile Include="source\WIImage.cpp" />
-    <ClCompile Include="source\WIText.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,13 +11,15 @@ public:
 	TVector2f lower;
 	TVector2f upper;
 
-	TAABB2D() {}
-	TAABB2D( const TVector2f& kLower, const TVector2f& kUpper ) : lower( kLower ), upper( kUpper ) {}
+	TAABB2D();
+	TAABB2D( const TVector2f& kLower, const TVector2f& kUpper );
+	TAABB2D( const TAABB2D& aabb1, const TAABB2D& aabb2 );
 
-	TVector2f center()
-	{
-		return TVector2f( (lower.x + upper.x)/2.0f, (lower.y + upper.y)/2.0f );
-	}
+	bool contains( const TAABB2D& aabb ) const;
+	TVector2f center() const;
+	TAABB2D& combine( const TAABB2D& aabb1, const TAABB2D& aabb2 );
+	TAABB2D& combine( const TAABB2D& aabb );
+	float getPerimeter() const;
 };
 
 class TAABB3D : public SWMemory

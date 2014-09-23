@@ -104,7 +104,25 @@ void SWMesh::updateMesh()
 {
 	m_updateMesh = false;
 
-
+	//! refresh AABB
+	tuint count = m_vertices.size();
+	if ( count > 0)
+	{
+		tvec3 lower = m_vertices[0];
+		tvec3 upper = lower;
+		while ( count-- )
+		{
+			const tvec3& pos = m_vertices[count];
+			lower.x = SWMath.min( lower.x, pos.x );
+			lower.y = SWMath.min( lower.y, pos.y );
+			lower.z = SWMath.min( lower.z, pos.z );
+			upper.x = SWMath.max( upper.x, pos.x );
+			upper.y = SWMath.max( upper.y, pos.y );
+			upper.z = SWMath.max( upper.z, pos.z );
+		}
+		m_aabb.lower = lower;
+		m_aabb.upper = upper;
+	}
 
     /*
 	//! this is for when using graphic buffer
