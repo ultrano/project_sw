@@ -50,8 +50,6 @@ private:
 
 private:
 	
-	SWHardRef<SWMesh>     m_mesh;
-	SWHardRef<SWMaterial> m_material;
 	int m_alignH;
 	int m_alignV;
 	bool m_textChanged;

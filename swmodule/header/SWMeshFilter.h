@@ -13,10 +13,9 @@ public:
 	SWMeshFilter();
 	SWMeshFilter( factory_constructor );
 	~SWMeshFilter();
+
 	void setMesh( SWMesh* data );
 	SWMesh* getMesh() const;
-
-	void draw();
 
 protected:
 

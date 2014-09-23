@@ -22,14 +22,6 @@ public:
 	void setMeshFilter( SWMeshFilter* filter );
 	SWMeshFilter* getMeshFilter();
 
-	void setMaterial( SWMaterial* material );
-	SWMaterial* getMaterial() const;
-
-protected:
-
-	void serialize( SWObjectWriter* writer );
-	void deserialize( SWObjectReader* reader );
-
 private:
 
 	void onAwake();
@@ -37,7 +29,6 @@ private:
 private:
 
 	SWWeakRef<SWMeshFilter> m_filter;
-	SWHardRef<SWMaterial> m_material;
 };
 
 #endif // SWMeshRenderer_h__

@@ -11,15 +11,14 @@
 #include "SWMesh.h"
 
 SWSpriteRenderer::SWSpriteRenderer( factory_constructor )
-	: m_mesh( new SWMesh() )
 {
 	SWHardRef<SWShader> shader = SWAssets.loadShader( "system/sprite.shader" );
-	m_material = new SWMaterial( shader() );
+	setMaterial( new SWMaterial( shader() ) );
 
 	TVector2f texCoords[] = { TVector2f(0,0), TVector2f(1,0), TVector2f(0,1), TVector2f(1,1) };
 	TIndex3 indices[] = { TIndex3(0,1,2), TIndex3(3,2,1) };
 
-	SWMesh* mesh = m_mesh();
+	SWMesh* mesh = getMesh();
 	mesh->resizeVertexStream( 4 );
 	mesh->setTexCoordStream( 4, &texCoords[0]);
 	mesh->setTriangleStream( 2, &indices[0] );
@@ -38,7 +37,7 @@ void SWSpriteRenderer::onAwake()
 
 void SWSpriteRenderer::render( SWCamera* camera )
 {
-	if ( m_material.isValid() && m_sprite.isValid() )
+	if ( getMaterial() && m_sprite.isValid() )
 	{
 		SWTransform* transform = gameObject()->getComponent<SWTransform>();
 		const TMatrix4x4& model = transform->getWorldMatrix();
@@ -49,14 +48,15 @@ void SWSpriteRenderer::render( SWCamera* camera )
 		tquat scaler( offset.x, offset.y, size.x, size.y );
 		tquat color( m_color.r, m_color.g, m_color.b, m_color.a );
 
-		m_material()->setTexture( "TEXTURE_0", m_sprite()->getTexture() );
-		m_material()->setMatrix4x4( "MATRIX_MVP", ( model * VPMat ) );
-		m_material()->setVector4( "COLOR", color );
-		m_material()->setVector4( "SCALER", scaler );
-		m_material()->apply();
+		SWMaterial* material = getMaterial();
+		material->setTexture( "TEXTURE_0", m_sprite()->getTexture() );
+		material->setMatrix4x4( "MATRIX_MVP", ( model * VPMat ) );
+		material->setVector4( "COLOR", color );
+		material->setVector4( "SCALER", scaler );
+		material->apply();
 	}
 
-	if ( m_mesh.isValid() ) m_mesh()->draw();
+	if ( getMesh() ) getMesh()->draw();
 }
 
 void SWSpriteRenderer::setSprite( const SWSprite* sprite )
@@ -72,7 +72,7 @@ void SWSpriteRenderer::setSprite( const SWSprite* sprite )
 	float halfW = size.x/2.0f;
 	float halfH = size.y/2.0f;
 
-	SWMesh* mesh = m_mesh();
+	SWMesh* mesh = getMesh();
 	mesh->setVertex( 0, tvec3( -halfW, +halfH, 0 ) );
 	mesh->setVertex( 1, tvec3( +halfW, +halfH, 0 ) );
 	mesh->setVertex( 2, tvec3( -halfW, -halfH, 0 ) );
@@ -95,28 +95,18 @@ const tcolor& SWSpriteRenderer::getColor() const
 	return m_color;
 }
 
-void SWSpriteRenderer::setMesh( const SWMesh* mesh )
-{
-	m_mesh = mesh;
-}
-
-const SWMesh* SWSpriteRenderer::getMesh() const
-{
-	return m_mesh();
-}
-
 void SWSpriteRenderer::serialize( SWObjectWriter* writer )
 {
+	__super::serialize( writer );
+
 	writer->writeColor( m_color );
-	writer->writeObject( m_mesh() );
 	writer->writeObject( m_sprite() );
-	writer->writeObject( m_material() );
 }
 
 void SWSpriteRenderer::deserialize( SWObjectReader* reader )
 {
+	__super::deserialize( reader );
+
 	reader->readColor( m_color );
-	m_mesh   = swrtti_cast<SWMesh>( reader->readObject() );
 	m_sprite = swrtti_cast<SWSprite>( reader->readObject() );
-	m_material = swrtti_cast<SWMaterial>( reader->readObject() );
 }

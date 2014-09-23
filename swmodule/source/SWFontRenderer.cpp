@@ -14,14 +14,13 @@
 #include "SWDefines.h"
 
 SWFontRenderer::SWFontRenderer( factory_constructor )
-	: m_mesh( new SWMesh() )
-	, m_color( 1,1,1,1 )
+	: m_color( 1,1,1,1 )
 	, m_textChanged( false )
 	, m_alignH( SW_Align_Left )
 	, m_alignV( SW_Align_Top )
 {
 	SWHardRef<SWShader> shader = SWAssets.loadShader( "system/font.shader" );
-	m_material = new SWMaterial( shader() );
+	setMaterial( new SWMaterial( shader() ) );
 }
 
 SWFontRenderer::~SWFontRenderer()
@@ -133,8 +132,8 @@ void SWFontRenderer::onAwake()
 
 void SWFontRenderer::render( SWCamera* camera )
 {
-	if ( !m_mesh.isValid() ) return;
-	if ( !m_material.isValid() ) return;
+	if ( !getMesh() ) return;
+	if ( !getMaterial() ) return;
 	if ( !m_texture.isValid() ) return;
 	if ( m_text.size() == 0 ) return;
 	if ( m_textChanged )
@@ -149,19 +148,21 @@ void SWFontRenderer::render( SWCamera* camera )
 
 	tquat color( m_color.r, m_color.g, m_color.b, m_color.a );
 
-	m_material()->setTexture( "TEXTURE_0", m_texture() );
-	m_material()->setMatrix4x4( "MATRIX_MVP", ( model * VPMat ) );
-	m_material()->setVector4( "COLOR", color );
-	m_material()->apply();
-	m_mesh()->draw();
+	SWMaterial* material = getMaterial();
+	material->setTexture( "TEXTURE_0", m_texture() );
+	material->setMatrix4x4( "MATRIX_MVP", ( model * VPMat ) );
+	material->setVector4( "COLOR", color );
+	material->apply();
+
+	getMesh()->draw();
 }
 
 void SWFontRenderer::updateMesh()
 {
-	if ( !m_mesh.isValid() ) return;
+	if ( !getMesh() ) return;
 	if ( !m_fontInfo.isValid() ) return;
 
-	SWMesh* mesh = m_mesh();
+	SWMesh* mesh = getMesh();
 	mesh->resizeVertexStream( m_text.size() * 4 );
 	mesh->resizeTexCoordStream( m_text.size() * 4 );
 	mesh->resizeTriangleStream( m_text.size() * 2 );
