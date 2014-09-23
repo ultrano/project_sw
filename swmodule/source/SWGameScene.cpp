@@ -261,7 +261,6 @@ void SWGameScene::draw()
 			for ( ; itor2 != objectList.end() ; ++itor2 )
 			{
 				SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor2)());
-				renderer->preRender();
 				renderer->render( camera );
 			}
 		}
