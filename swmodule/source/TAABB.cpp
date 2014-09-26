@@ -22,7 +22,7 @@ TAABB2D::TAABB2D( const TAABB2D& aabb1, const TAABB2D& aabb2 )
 	combine( aabb1, aabb2 );
 }
 
-bool TAABB2D::contains( const TAABB2D& aabb ) const
+bool TAABB2D::collide( const TAABB2D& aabb ) const
 {
 	bool ret = true;
 
@@ -34,9 +34,9 @@ bool TAABB2D::contains( const TAABB2D& aabb ) const
 	return ret;
 }
 
-TVector2f TAABB2D::center() const
+void TAABB2D::getCenter( TVector2f& center ) const
 {
-	return (lower + upper) * 0.5f;
+	center = (lower + upper) * 0.5f;
 }
 
 TAABB2D& TAABB2D::combine( const TAABB2D& aabb1, const TAABB2D& aabb2 )

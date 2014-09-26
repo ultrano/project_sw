@@ -301,6 +301,9 @@
     <Filter Include="SW\SWOpenAL">
       <UniqueIdentifier>{50fc4611-1234-4d92-9ae2-3b28cf8cc239}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWDynamicTree2D">
+      <UniqueIdentifier>{74576666-e16a-4222-a58f-4e78a960d2d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -630,6 +633,9 @@
     <ClInclude Include="header\SWOpenAL.h">
       <Filter>SW\SWOpenAL</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWDynamicTree2D.h">
+      <Filter>SW\SWDynamicTree2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -901,6 +907,9 @@
     </ClCompile>
     <ClCompile Include="source\TAABB.cpp">
       <Filter>SW\SWType\TAABB</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWDynamicTree2D.cpp">
+      <Filter>SW\SWDynamicTree2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
