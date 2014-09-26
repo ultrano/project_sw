@@ -1,2 +1,0 @@
-textures/boom.png
-boom 0.05 boom_1,boom_2,boom_3,boom_4,boom_5,boom_6,boom_7,boom_8,boom_9,boom_10,boom_11

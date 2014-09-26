@@ -7,10 +7,7 @@
 #include "al.h"
 #include "alc.h"
 
-//#include "CatAss.h"
-#include "PlayScene.h"
-#include "IntroScene.h"
-#include "PhysicsTestScene.h"
+#include "SWHeaders.h"
 
 void callbackDisplay()
 {
@@ -94,7 +91,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutKeyboardUpFunc( callbackKeyboardUp );
 	glewInit();
 
-	SW_GC.onStart( new IntroScene, new SWWIN32AssetsAccessor( "../resource/" ), width, height );
+	SW_GC.onStart( NULL, new SWWIN32AssetsAccessor( "../resource/" ), width, height );
 
 	glutMainLoop();
 	return 0;

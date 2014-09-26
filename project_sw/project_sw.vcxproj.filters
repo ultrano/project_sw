@@ -20,90 +20,12 @@
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="IntroScene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Rider.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GasCloud.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameValues.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameHeaders.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterState.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsTestScene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="VehicleItem.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Bomb.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ResultScene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="FireWork.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="project_sw.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Rider.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GasCloud.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterState.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="VehicleItem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Bomb.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="FireWork.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
