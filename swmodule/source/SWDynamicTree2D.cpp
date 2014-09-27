@@ -3,7 +3,33 @@
 #define SW_ExpandCount (256)
 #define SW_AddedExtension (0.2f)
 
+
+struct SWDynamicTree2D::TreeNode : public SWMemory
+{
+	taabb2d aabb;
+	void* userData;
+	tuint childID[2];
+	union
+	{
+		tuint parentID; //! using in dynamic tree
+		tuint nextID;   //! using in free list;
+	};
+	bool isLeaf() { return (childID[1] == nullID); }
+};
+
 tuint SWDynamicTree2D::nullID = ((tuint)-1);
+
+SWDynamicTree2D::SWDynamicTree2D()
+	: m_rootID( nullID )
+	, m_freeID( nullID )
+{
+
+}
+
+SWDynamicTree2D::~SWDynamicTree2D()
+{
+	m_nodes.clear();
+}
 
 tuint SWDynamicTree2D::createProxy( const taabb2d& aabb, void* userData )
 {
@@ -72,7 +98,7 @@ tuint SWDynamicTree2D::allocNode()
 		tuint proxyID = m_freeID;
 		TreeNode& node = m_nodes[ proxyID ];
 		m_freeID = node.nextID;
-
+		node.parentID = nullID;
 		return proxyID;
 	}
 
@@ -94,6 +120,8 @@ void SWDynamicTree2D::freeNode( tuint nodeID )
 
 void SWDynamicTree2D::insertLeaf( tuint nodeID )
 {
+	if ( nodeID >= m_nodes.size() ) return;
+
 	tuint targetID = m_rootID;
 	if ( targetID == nullID )
 	{
@@ -113,12 +141,27 @@ void SWDynamicTree2D::insertLeaf( tuint nodeID )
 			TreeNode& targetNode = m_nodes[targetID];
 			TreeNode& newParentNode = m_nodes[newParentID];
 
+			if ( targetNode.parentID != nullID )
+			{
+				TreeNode& oldParentNode = m_nodes[targetNode.parentID];
+				if (oldParentNode.childID[0] == targetID)
+				{
+					oldParentNode.childID[0] = newParentID;
+				}
+				else
+				{
+					oldParentNode.childID[1] = newParentID;
+				}
+			}
+
 			newParentNode.childID[0] = targetID;
 			newParentNode.childID[1] = nodeID;
 
+			newParentNode.parentID = targetNode.parentID;
 			targetNode.parentID = newParentID;
 			leafNode.parentID   = newParentID;
 
+			if ( targetID == m_rootID ) m_rootID = newParentID;
 			targetID = newParentID;
 			break;
 		}
@@ -128,8 +171,8 @@ void SWDynamicTree2D::insertLeaf( tuint nodeID )
 			TreeNode& childNode1 = m_nodes[ targetNode.childID[0] ];
 			TreeNode& childNode2 = m_nodes[ targetNode.childID[1] ];
 
-			float cost1 = taabb2d(childNode1.aabb, leafNode.aabb).getPerimeter() - leafNode.aabb.getPerimeter();
-			float cost2 = taabb2d(childNode2.aabb, leafNode.aabb).getPerimeter() - leafNode.aabb.getPerimeter();
+			float cost1 = taabb2d(childNode1.aabb, leafNode.aabb).getPerimeter() - childNode1.aabb.getPerimeter();
+			float cost2 = taabb2d(childNode2.aabb, leafNode.aabb).getPerimeter() - childNode2.aabb.getPerimeter();
 
 			targetID = (cost1 < cost2)? targetNode.childID[0] : targetNode.childID[1];
 		}
@@ -151,6 +194,8 @@ void SWDynamicTree2D::insertLeaf( tuint nodeID )
 
 void SWDynamicTree2D::removeLeaf( tuint nodeID )
 {
+	if ( nodeID >= m_nodes.size() ) return;
+
 	TreeNode& leafNode = m_nodes[nodeID];
 	if ( !leafNode.isLeaf() ) return;
 
@@ -175,8 +220,6 @@ void SWDynamicTree2D::removeLeaf( tuint nodeID )
 	}
 
 	TreeNode& grandParentNode = m_nodes[ grandParentID ];
-
-	anotherLeafNode.parentID = grandParentID;
 	if ( grandParentNode.childID[0] == anotherLeafNode.parentID )
 	{
 		grandParentNode.childID[0] = anotherLeafID;
@@ -185,6 +228,7 @@ void SWDynamicTree2D::removeLeaf( tuint nodeID )
 	{
 		grandParentNode.childID[1] = anotherLeafID;
 	}
+	anotherLeafNode.parentID = grandParentID;
 
 	//! update AABBs
 	tuint targetID = grandParentID;
@@ -198,5 +242,55 @@ void SWDynamicTree2D::removeLeaf( tuint nodeID )
 		targetNode.aabb.combine(childNode1.aabb, childNode2.aabb);
 
 		targetID = targetNode.parentID;
+	}
+}
+
+void* SWDynamicTree2D::getUserData( tuint proxyID )
+{
+	if ( proxyID >= m_nodes.size() ) return NULL;
+	
+	TreeNode& node = m_nodes[proxyID];
+	if ( !node.isLeaf() ) return NULL;
+
+	return node.userData;
+}
+
+bool SWDynamicTree2D::getFatAABB( tuint proxyID, taabb2d& aabb )
+{
+	if ( proxyID >= m_nodes.size() ) return false;
+
+	TreeNode& node = m_nodes[proxyID];
+	if ( !node.isLeaf() ) return false;
+
+	aabb = node.aabb;
+
+	return true;
+}
+
+void SWDynamicTree2D::query( tarray<tuint>& result, const taabb2d& aabb )
+{
+	tlist<tuint> suspects;
+	suspects.push_back( m_rootID );
+
+	while ( suspects.size() > 0 )
+	{
+		tuint nodeID = suspects.front();
+		suspects.pop_front();
+
+		if ( nodeID == nullID ) continue;
+
+		TreeNode& node = m_nodes[ nodeID ];
+		if ( node.aabb.collide( aabb ) )
+		{
+			if ( node.isLeaf() )
+			{
+				result.push_back( nodeID );
+			}
+			else
+			{
+				suspects.push_back( node.childID[0] );
+				suspects.push_back( node.childID[1] );
+			}
+		}
 	}
 }

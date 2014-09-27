@@ -12,7 +12,7 @@ TAABB2D::TAABB2D( const TVector2f& kLower, const TVector2f& kUpper )
 	: lower( kLower )
 	, upper( kUpper )
 {
-
+	set( lower, upper );
 }
 
 TAABB2D::TAABB2D( const TAABB2D& aabb1, const TAABB2D& aabb2 )
@@ -20,6 +20,15 @@ TAABB2D::TAABB2D( const TAABB2D& aabb1, const TAABB2D& aabb2 )
 	, upper( TVector2f::zero )
 {
 	combine( aabb1, aabb2 );
+}
+
+void TAABB2D::set( const TVector2f& kLower, const TVector2f& kUpper )
+{
+	lower.x = (kLower.x < kUpper.x)? kLower.x : kUpper.x;
+	lower.y = (kLower.y < kUpper.y)? kLower.y : kUpper.y;
+
+	upper.x = (kLower.x > kUpper.x)? kLower.x : kUpper.x;
+	upper.y = (kLower.y > kUpper.y)? kLower.y : kUpper.y;
 }
 
 bool TAABB2D::contains( const TAABB2D& aabb ) const
@@ -42,7 +51,7 @@ bool TAABB2D::collide( const TAABB2D& aabb ) const
 	bool ret1 = ((dist1.x > 0) || (dist1.y > 0));
 	bool ret2 = ((dist2.x > 0) || (dist2.y > 0));
 
-	return (ret1 && ret2);
+	return (!ret1 && !ret2);
 }
 
 void TAABB2D::getCenter( TVector2f& center ) const

@@ -15,6 +15,8 @@ public:
 	TAABB2D( const TVector2f& kLower, const TVector2f& kUpper );
 	TAABB2D( const TAABB2D& aabb1, const TAABB2D& aabb2 );
 
+	void set( const TVector2f& kLower, const TVector2f& kUpper );
+
 	bool contains( const TAABB2D& aabb ) const;
 	bool collide( const TAABB2D& aabb ) const;
 	

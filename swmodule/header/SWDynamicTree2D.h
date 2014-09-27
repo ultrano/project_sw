@@ -8,12 +8,17 @@ class SWDynamicTree2D : public SWMemory
 {
 public:
 
+	SWDynamicTree2D();
+	~SWDynamicTree2D();
+
 	tuint createProxy( const taabb2d& aabb, void* userData );
 	void  updateProxy( tuint proxyID, const taabb2d& aabb );
 	void  destroyProxy(tuint proxyID);
+	
+	void* getUserData( tuint proxyID );
+	bool  getFatAABB( tuint proxyID, taabb2d& aabb );
 
-	template<typename T>
-	void  query( T* callBack, const taabb2d& aabb );
+	void  query( tarray<tuint>& result, const taabb2d& aabb );
 
 private:
 
@@ -25,52 +30,11 @@ private:
 
 private:
 
-	struct TreeNode : public SWMemory
-	{
-		taabb2d aabb;
-		void* userData;
-		tuint childID[2];
-		union
-		{
-			tuint parentID; //! using in dynamic tree
-			tuint nextID;   //! using in free list;
-		};
-		bool isLeaf() { return (childID[1] == nullID); }
-	};
+	class TreeNode;
 	tarray<TreeNode> m_nodes;
-
-	static tuint nullID;
 	tuint m_rootID;
 	tuint m_freeID;
+	static tuint nullID;
 };
-
-template<typename T>
-void SWDynamicTree2D::query( T* callBack, const taabb2d& aabb )
-{
-	tlist suspects;
-	suspects.push_back( m_rootID );
-
-	while ( suspects.size() > 0 )
-	{
-		tuint nodeID = suspects.front();
-		suspects.pop_front();
-
-		if ( nodeID == nullID ) continue;
-
-		TreeNode& node = m_nodes[ nodeID ];
-		if ( node.aabb.collide( aabb ) )
-		{
-			if ( node.isLeaf() )
-			{
-				callBack->queryCallback( nodeID );
-			}
-			else
-			{
-				suspects.push_back( node.childID[0] );
-				suspects.push_back( node.childID[1] );
-			}
-		}
-	}
-}
 
 #endif // SWDynamicTree2D_h__

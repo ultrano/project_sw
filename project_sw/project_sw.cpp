@@ -8,6 +8,7 @@
 #include "alc.h"
 
 #include "SWHeaders.h"
+#include "game/TestScene.h"
 
 void callbackDisplay()
 {
@@ -91,7 +92,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	glutKeyboardUpFunc( callbackKeyboardUp );
 	glewInit();
 
-	SW_GC.onStart( NULL, new SWWIN32AssetsAccessor( "../resource/" ), width, height );
+	SW_GC.onStart( new TestScene, new SWWIN32AssetsAccessor( "../resource/" ), width, height );
 
 	glutMainLoop();
 	return 0;
