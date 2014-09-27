@@ -7,7 +7,7 @@
 //
 
 #include "TVector2f.h"
-#include "SWLog.h"
+#include "TVector3f.h"
 #include "SWMath.h"
 #include <math.h>
 
@@ -26,6 +26,13 @@ TVector2f::TVector2f( float kx, float ky )
 , y( ky )
 {
     
+}
+
+TVector2f::TVector2f( const TVector3f& vec3 )
+	: x( vec3.x )
+	, y( vec3.y )
+{
+
 }
 
 float TVector2f::length() const

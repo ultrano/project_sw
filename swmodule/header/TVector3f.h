@@ -2,8 +2,8 @@
 #define TVector3f_h__
 
 #include "SWPrimaryType.h"
-#include "TVector2f.h"
 
+class TVector2f;
 class TVector3f
 {
 public:
@@ -16,17 +16,17 @@ public:
 	
 	float x,y,z;
 
-	TVector3f() {};
-	TVector3f( const TVector3f& copy ): x(copy.x), y(copy.y), z(copy.z) {};
-	TVector3f(float fx, float fy, float fz) : x(fx), y(fy), z(fz) {};
-	TVector3f( const TVector2f& fxy, float fz ) : x(fxy.x), y(fxy.y), z(fz) {};
+	TVector3f();;
+	TVector3f( const TVector3f& copy );;
+	TVector3f(float fx, float fy, float fz);;
+	TVector3f( const TVector2f& fxy, float fz );;
 
 	float		length() const;
 	float		dot( const TVector3f& v ) const;
 	TVector3f   cross( const TVector3f& v ) const;
 	TVector3f	normal() const;
 	TVector3f	scale( const TVector3f& v ) const;
-	const TVector2f&   xy() const { return *((TVector2f*)this); };
+	const TVector2f&   xy() const;;
 
 	void        rotateX( float radian );
 	void        rotateY( float radian );

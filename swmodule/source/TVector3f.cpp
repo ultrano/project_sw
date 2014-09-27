@@ -1,5 +1,6 @@
 
 #include "TVector3f.h"
+#include "TVector2f.h"
 #include "SWMath.h"
 #include <math.h>
 
@@ -8,6 +9,27 @@ const TVector3f TVector3f::axisY(0,1,0);
 const TVector3f TVector3f::axisZ(0,0,1);
 const TVector3f TVector3f::zero(0,0,0);
 const TVector3f TVector3f::one(1,1,1);
+
+
+TVector3f::TVector3f()
+{
+
+}
+
+TVector3f::TVector3f( const TVector3f& copy ) : x(copy.x), y(copy.y), z(copy.z)
+{
+
+}
+
+TVector3f::TVector3f( float fx, float fy, float fz ) : x(fx), y(fy), z(fz)
+{
+
+}
+
+TVector3f::TVector3f( const TVector2f& fxy, float fz ) : x(fxy.x), y(fxy.y), z(fz)
+{
+
+}
 
 float TVector3f::length() const
 {
@@ -50,6 +72,11 @@ TVector3f TVector3f::normal() const
 TVector3f	TVector3f::scale( const TVector3f& v ) const
 {
 	return TVector3f( x*v.x, y*v.y, z*v.z );
+}
+
+const TVector2f& TVector3f::xy() const
+{
+	return *((TVector2f*)this);
 }
 
 void        TVector3f::rotateX( float radian )

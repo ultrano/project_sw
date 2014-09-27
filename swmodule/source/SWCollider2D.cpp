@@ -65,6 +65,16 @@ void SWCircleCollider2D::farthestPoint( tvec2& ret, const tvec2& worldDir )
 	ret = center + (worldDir * radius);
 }
 
+void SWCircleCollider2D::computeAABB( taabb2d& aabb )
+{
+	tvec2 center = getWorldCenter();
+	float radius = getWorldRadius();
+	tvec2 half(radius, radius);
+
+	aabb.lower = center - half;
+	aabb.upper = center + half;
+}
+
 void SWCircleCollider2D::serialize( SWObjectWriter* writer )
 {
 	writer->writeVec2( m_center );
@@ -164,4 +174,30 @@ void SWRectCollider2D::deserialize( SWObjectReader* reader )
 {
 	reader->readVec2( m_center );
 	reader->readVec2( m_size );
+}
+
+void SWRectCollider2D::computeAABB( taabb2d& aabb )
+{
+	float halfW = m_size.x/2;
+	float halfH = m_size.y/2;
+	const tmat44& worldMat = getComponent<SWTransform>()->getWorldMatrix();
+
+	tvec3 pt[4];
+	pt[0] = tvec3( -halfW, +halfH, 0 );
+	pt[1] = tvec3( -halfW, -halfH, 0 );
+	pt[2] = tvec3( +halfW, +halfH, 0 );
+	pt[3] = tvec3( +halfW, -halfH, 0 );
+
+	aabb.lower = pt[0];
+	aabb.upper = aabb.lower;
+	for ( tuint i = 0 ; i < 4 ; +i)
+	{
+		tvec2 vec2 = (pt[i] * worldMat).xy();
+
+		aabb.lower.x = SWMath.min( aabb.lower.x, vec2.x );
+		aabb.lower.y = SWMath.min( aabb.lower.y, vec2.y );
+
+		aabb.upper.x = SWMath.max( aabb.upper.x, vec2.x );
+		aabb.upper.y = SWMath.max( aabb.upper.y, vec2.y );
+	}
 }

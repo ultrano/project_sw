@@ -13,6 +13,7 @@ public:
 	
 	virtual bool containPoint( const tvec2& worldPt ) = 0;
 	virtual void farthestPoint( tvec2& ret, const tvec2& worldDir ) = 0;
+	virtual void computeAABB( taabb2d& aabb ) = 0;
 };
 
 class SWCollision2D : public SWObject
@@ -45,8 +46,9 @@ public:
 	float getWorldRadius() const;
 	tvec2 getWorldCenter() const;
 
-	bool containPoint( const tvec2& point );
-	void farthestPoint( tvec2& ret, const tvec2& worldDir );
+	virtual bool containPoint( const tvec2& point );
+	virtual void farthestPoint( tvec2& ret, const tvec2& worldDir );
+	virtual void computeAABB( taabb2d& aabb );
 
 protected:
 
@@ -73,9 +75,10 @@ public:
 	tvec2 getWorldCenter() const;
 	void getWorldEdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const;
 
-	bool containPoint( const tvec2& point );
-	void farthestPoint( tvec2& ret, const tvec2& worldDir );
-	
+	virtual bool containPoint( const tvec2& point );
+	virtual void farthestPoint( tvec2& ret, const tvec2& worldDir );
+	virtual void computeAABB( taabb2d& aabb );
+
 protected:
 
 	void getSREdges( tvec2& edge1, tvec2& edge2, tvec2& edge3, tvec2& edge4 ) const;

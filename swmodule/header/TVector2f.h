@@ -11,6 +11,7 @@
 
 #include "SWMemory.h"
 
+class TVector3f;
 // 2D 공간 좌표 Class
 class TVector2f : public SWMemory
 {
@@ -26,7 +27,8 @@ public:
     
     //! 생성자
     TVector2f();
-    TVector2f( float kx, float ky );
+	TVector2f( float kx, float ky );
+	TVector2f( const TVector3f& vec3 );
     
     //! length from origin
     float length() const;
