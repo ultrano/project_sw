@@ -18,6 +18,7 @@ public:
 	void perspectiveMode( float fov, float aspect, float near, float far );
 
 	bool computeFrustrumAABB( taabb3d& aabb ) const;
+	tuint getProxyID() const;
 
 	tvec3 screenToWorld( const tvec3& screenPt ) const;
 	tray  screenToRay( const tvec2& screenPt ) const;
@@ -62,6 +63,7 @@ private:
 	float m_far;
 
 	taabb3d m_frustrumAABB;
+	tuint m_proxyID;
 
 	tcolor m_clearColor;
 	float  m_clearDepth;

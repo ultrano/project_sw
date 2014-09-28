@@ -12,7 +12,7 @@ public:
 	~SWDynamicTree3D();
 
 	tuint createProxy( const taabb3d& aabb, void* userData );
-	void  updateProxy( tuint proxyID, const taabb3d& aabb );
+	bool  updateProxy( tuint proxyID, const taabb3d& aabb );
 	void  destroyProxy(tuint proxyID);
 
 	void* getUserData( tuint proxyID );

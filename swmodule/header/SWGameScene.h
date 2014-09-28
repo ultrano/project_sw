@@ -15,6 +15,8 @@ class SWGameObject;
 class SWComponent;
 class SWCollisionManager;
 class SWRenderer;
+class SWCamera;
+class SWGameLayer;
 
 /**
  @brief 게임 플로우의 기본 단위인 scene(장면)을 관리.
@@ -63,6 +65,11 @@ private:
 	tuint addRenderer( SWRenderer* renderer );
 	void removeRenderer( SWRenderer* renderer );
 
+	tuint addCamera( SWCamera* camera );
+	void  removeCamera( SWCamera* camera );
+
+	SWGameLayer* getLayer( const tstring& name );
+
 private:
 
 	friend class SWTransform;
@@ -80,25 +87,26 @@ private:
 
 private:
 
-	typedef ttable<thashstr,SWObject::List> LayerTable;
+	typedef ttable<thashstr,SWHardRef<SWGameLayer>> LayerTable;
 
 	//! root game objects
 	SWObject::List m_roots;
 	SWObject::List m_updates;
-	SWObject::List m_cameras;
-	SWObject::List m_renderers;
 	SWObject::List m_destroyGOs;
-	LayerTable m_layers;
-
-	SWDynamicTree3D m_tree;
-	tlist<tuint> m_proxies;
-
+	
 	//! for fixed frame rate update
 	tfloat m_fixedFrameRate;
 	tfloat m_accumFrameRate;
 
 	//! for physics2D
 	tfloat m_physicsFrameRate;
+
+	//! camera infos
+	SWObject::List m_cameras;
+	SWDynamicTree3D m_cameraTree;
+
+	//! scene layers
+	LayerTable m_layerTable;
 };
 
 #endif

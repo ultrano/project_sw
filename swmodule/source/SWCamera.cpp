@@ -15,6 +15,7 @@ SWCamera::SWCamera()
 	, m_layerName( "default" )
 	, m_depth( 0 )
 	, m_clearFlags( SW_Dont_Clear )
+	, m_proxyID(-1)
 {
 }
 
@@ -26,6 +27,7 @@ SWCamera::SWCamera( factory_constructor )
 	, m_layerName( "default" )
 	, m_depth( 0 )
 	, m_clearFlags( SW_Dont_Clear )
+	, m_proxyID(-1)
 {
 
 }
@@ -38,12 +40,12 @@ void SWCamera::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
-	SW_GC.getScene()->m_cameras.push_back( this );
+	m_proxyID = SW_GC.getScene()->addCamera( this );
 }
 
 void SWCamera::onRemove()
 {
-	SW_GC.getScene()->m_cameras.remove( this );
+	SW_GC.getScene()->removeCamera( this );
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
@@ -112,6 +114,11 @@ bool SWCamera::computeFrustrumAABB( taabb3d& aabb ) const
 
 	aabb.set( point1, point2 );
 	return true;
+}
+
+tuint SWCamera::getProxyID() const
+{
+	return m_proxyID;
 }
 
 tvec3 SWCamera::screenToWorld( const tvec3& screenPt ) const

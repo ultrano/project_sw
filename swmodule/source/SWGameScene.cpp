@@ -180,135 +180,11 @@ void SWGameScene::update()
 
 void SWGameScene::draw()
 {
-	struct CameraSorter
-	{
-		bool operator()( SWObject::Ref left, SWObject::Ref right )
-		{
-			return ((SWCamera*)left())->getDepth() < ((SWCamera*)right())->getDepth();
-		}
-	} cameraSorter;
 
-	struct RendererSorter
-	{
-		tvec3 cameraPos;
-		tvec3 lookDir;
-		RendererSorter( const tvec3& pos, const tvec3& look ) : cameraPos( pos ), lookDir( look ) {}
-		bool operator()( SWObject::Ref left, SWObject::Ref right )
-		{
-			SWTransform* lTrans = ((SWComponent*)left())->getComponent<SWTransform>();
-			SWTransform* rTrans = ((SWComponent*)right())->getComponent<SWTransform>();
-			tvec3 lPos = lTrans->getPosition();
-			tvec3 rPos = rTrans->getPosition();
-			float lDepth = lookDir.dot(lPos - cameraPos);
-			float rDepth = lookDir.dot(rPos - cameraPos);
-			return lDepth < rDepth;
-		}
-	};
+	//* 
 
-	//! sort cameras
-	m_cameras.sort( cameraSorter );
-
-	//! clear layers
-	{
-		LayerTable::iterator itor = m_layers.begin();
-		for ( ; itor != m_layers.end() ; ++itor )
-		{
-			itor->second.clear();
-		}
-	}
-
-
-	//! Test AABB Update
-	{
-		SWObject::List::iterator itor = m_renderers.begin();
-		for ( ; itor != m_renderers.end() ; ++itor )
-		{
-			SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
-			tuint proxyID = renderer->getProxyID();
-			taabb3d aabb;
-			renderer->computeAABB( aabb );
-			m_tree.updateProxy( proxyID, aabb );
-		}
-	}
-	//! Test AABB Tree culling 
-	{
-		SWObject::List::iterator itor = m_cameras.begin();
-		for ( ; itor != m_cameras.end() ; ++itor )
-		{
-			SWCamera* camera = swrtti_cast<SWCamera>((*itor)());
-			taabb3d aabb;
-			camera->computeFrustrumAABB( aabb );
-
-			tarray<tuint> result;
-			result.reserve( 64 );
-			m_tree.query( result, aabb );
-
-			for ( tuint i = 0 ; i < result.size() ; ++i )
-			{
-				void* userData = m_tree.getUserData( result[i] );
-				if ( !userData ) continue;
-				SWRenderer* renderer = (SWRenderer*)userData;
-				SWGameObject* go = renderer->gameObject();
-				if ( go->isActiveInScene() )
-				{
-					m_layers[ go->getLayerName() ].push_back( renderer );
-				}
-			}
-		}
-	}
-
-	/*//! extract game objects in layer
-	{
-		SWObject::List::iterator itor = m_renderers.begin();
-		for ( ; itor != m_renderers.end() ; ++itor )
-		{
-			SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
-			SWGameObject* go = renderer->gameObject();
-			if ( go->isActiveInScene() )
-			{
-				m_layers[ go->getLayerName() ].push_back( renderer );
-			}
-		}
-	}
 	//*/
 
-	//! sort game objects and render
-	{
-		SWObject::List::iterator itor = m_cameras.begin();
-		for ( ; itor != m_cameras.end() ; ++itor )
-		{
-			SWCamera* camera = swrtti_cast<SWCamera>((*itor)());
-			SWTransform* transform = camera->getComponent<SWTransform>();
-
-			//! get clear mask
-			int clearMask = GL_NONE;
-			if ( camera->getClearFlags() & SW_Clear_Color ) clearMask |= GL_COLOR_BUFFER_BIT;
-			if ( camera->getClearFlags() & SW_Clear_Depth ) clearMask |= GL_DEPTH_BUFFER_BIT;
-
-			//! sort objects from camera
-			SWObject::List& objectList = m_layers[ camera->getTargetLayerName() ];
-			objectList.sort( RendererSorter( transform->getPosition(), camera->getLookDir() ) );
-
-			//! clear buffer
-			if ( clearMask != GL_NONE )
-			{
-				tcolor color = camera->getClearColor();
-				glClearColor( color.r, color.g, color.b, color.a );
-				glClearDepth( camera->getClearDepth() );
-				glClear( clearMask );
-			}
-
-			SWObject::List::iterator itor2 = objectList.begin();
-			for ( ; itor2 != objectList.end() ; ++itor2 )
-			{
-				SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor2)());
-				renderer->render( camera );
-			}
-		}
-	}
-
-	/**/
-	
     onPostDraw();
 }
 
@@ -320,31 +196,42 @@ void SWGameScene::handleEvent()
 
 tuint SWGameScene::addRenderer( SWRenderer* renderer )
 {
-	if ( renderer == NULL ) return m_tree.nullID;
-
-	taabb3d aabb;
-	renderer->computeAABB( aabb );
-	tuint proxyID = m_tree.createProxy( aabb, renderer );
-
-	if ( proxyID != m_tree.nullID )
-	{
-		m_proxies.push_back( proxyID );
-		m_renderers.push_back( renderer );
-	}
-	else SWLog( "failed to create renderer proxy aabb into dynamic tree" );
-	
-	return proxyID;
+	return 0;
 }
 
 void SWGameScene::removeRenderer( SWRenderer* renderer )
 {
-	if ( renderer == NULL ) return;
+}
 
-	tuint proxyID = renderer->getProxyID();
-	if ( proxyID == m_tree.nullID ) return;
+tuint SWGameScene::addCamera( SWCamera* camera )
+{
+	if ( camera == NULL ) return m_cameraTree.nullID;
 
-	m_tree.destroyProxy( proxyID );
+	taabb3d aabb;
+	camera->computeFrustrumAABB( aabb );
+	tuint proxyID = m_cameraTree.createProxy( aabb, camera );
 
-	m_renderers.remove( renderer );
-	m_proxies.remove( proxyID );
+	if ( proxyID != m_cameraTree.nullID ) m_cameras.push_back( camera );
+	else SWLog( "failed to create camera proxy aabb into dynamic tree" );
+
+	return proxyID;
+}
+
+void SWGameScene::removeCamera( SWCamera* camera )
+{
+	if ( camera == NULL ) return;
+
+	tuint proxyID = camera->getProxyID();
+	if ( proxyID == m_cameraTree.nullID ) return;
+
+	m_cameraTree.destroyProxy( proxyID );
+	m_cameras.remove( camera );
+}
+
+SWGameLayer* SWGameScene::getLayer( const tstring& name )
+{
+	LayerTable::iterator itor = m_layerTable.find( name );
+	if ( itor == m_layerTable.end() )
+	{
+	}
 }
