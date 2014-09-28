@@ -10,10 +10,11 @@
 #define prototype_SWGameScene_h
 
 #include "SWObject.h"
-
+#include "SWDynamicTree3D.h"
 class SWGameObject;
 class SWComponent;
 class SWCollisionManager;
+class SWRenderer;
 
 /**
  @brief 게임 플로우의 기본 단위인 scene(장면)을 관리.
@@ -59,6 +60,11 @@ private:
 
 private:
 
+	tuint addRenderer( SWRenderer* renderer );
+	void removeRenderer( SWRenderer* renderer );
+
+private:
+
 	friend class SWTransform;
 	friend class SWCamera;
 	friend class SWRenderer;
@@ -83,6 +89,9 @@ private:
 	SWObject::List m_renderers;
 	SWObject::List m_destroyGOs;
 	LayerTable m_layers;
+
+	SWDynamicTree3D m_tree;
+	tlist<tuint> m_proxies;
 
 	//! for fixed frame rate update
 	tfloat m_fixedFrameRate;

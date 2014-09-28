@@ -5,6 +5,7 @@
 #include "SWMesh.h"
 #include "SWMaterial.h"
 #include "SWObjectStream.h"
+#include "SWTransform.h"
 
 SWRenderer::SWRenderer()
 	: m_mesh( new SWMesh() )
@@ -28,13 +29,13 @@ SWRenderer::~SWRenderer()
 void SWRenderer::onAwake()
 {
 	SWGameScene* scene = SW_GC.getScene();
-	scene->m_renderers.push_back( this );
+	m_proxyID = scene->addRenderer( this );
 }
 
 void SWRenderer::onRemove()
 {
 	SWGameScene* scene = SW_GC.getScene();
-	scene->m_renderers.remove( this );
+	scene->removeRenderer( this );
 }
 
 void SWRenderer::setMaterial( const SWMaterial* material )
@@ -72,4 +73,27 @@ void SWRenderer::deserialize( SWObjectReader* reader )
 
 	m_mesh   = swrtti_cast<SWMesh>( reader->readObject() );
 	m_material = swrtti_cast<SWMaterial>( reader->readObject() );
+}
+
+tuint SWRenderer::getProxyID() const
+{
+	return m_proxyID;
+}
+
+bool SWRenderer::computeAABB( taabb3d& aabb ) const
+{
+	if ( !m_mesh.isValid() ) return false;
+
+	SWTransform* trans = getComponent<SWTransform>();
+	if ( trans == NULL ) return false;
+
+	const taabb3d& meshAABB = m_mesh()->getAABB();
+	const tmat44 worldMat = trans->getWorldMatrix();
+
+	tvec3 point1 = meshAABB.lower * worldMat;
+	tvec3 point2 = meshAABB.upper * worldMat;
+
+	aabb.set( point1, point2 );
+
+	return true;
 }

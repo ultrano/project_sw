@@ -265,3 +265,8 @@ void SWMesh::deserialize( SWObjectReader* reader )
 		reader->readIndex3( m_triangles[i] );
 	}
 }
+
+const taabb3d& SWMesh::getAABB() const
+{
+	return m_aabb;
+}

@@ -15,11 +15,11 @@ public:
 	TAABB2D( const TVector2f& kLower, const TVector2f& kUpper );
 	TAABB2D( const TAABB2D& aabb1, const TAABB2D& aabb2 );
 
-	void set( const TVector2f& kLower, const TVector2f& kUpper );
+	void set( const TVector2f& point1, const TVector2f& point2 );
 
 	bool contains( const TAABB2D& aabb ) const;
 	bool collide( const TAABB2D& aabb ) const;
-	
+
 	void getCenter( TVector2f& center ) const;
 	float getPerimeter() const;
 
@@ -34,13 +34,20 @@ public:
 	TVector3f lower;
 	TVector3f upper;
 
-	TAABB3D() {}
-	TAABB3D( const TVector3f& kLower, const TVector3f& kUpper ) : lower( kLower ), upper( kUpper ) {}
+	TAABB3D();
+	TAABB3D( const TVector3f& kLower, const TVector3f& kUpper );
+	TAABB3D( const TAABB3D& aabb1, const TAABB3D& aabb2 );
 
-	TVector3f center()
-	{
-		return TVector3f( (lower.x + upper.x)/2.0f, (lower.y + upper.y)/2.0f, (lower.z + upper.z)/2.0f );
-	}
+	void set( const TVector3f& point1, const TVector3f& point2 );
+
+	bool contains( const TAABB3D& aabb ) const;
+	bool collide( const TAABB3D& aabb ) const;
+
+	void getCenter( TVector3f& center ) const;
+	float getPerimeter() const;
+
+	TAABB3D& combine( const TAABB3D& aabb1, const TAABB3D& aabb2 );
+	TAABB3D& combine( const TAABB3D& aabb );
 };
 
 #endif //! TAABB_h__

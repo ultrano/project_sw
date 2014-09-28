@@ -5,6 +5,7 @@
 #include "SWGameScene.h"
 #include "SWDefines.h"
 #include "SWObjectStream.h"
+#include "SWMath.h"
 
 SWCamera::SWCamera()
 	: m_near( 0 )
@@ -82,6 +83,8 @@ void SWCamera::orthoMode( float width, float height, float near, float far )
 	m_far  = far;
 	m_projMatrix.ortho( -halfW, halfW, -halfH, halfH, near, far );
 	m_projMatrix.inverse( m_invProjMatrix );
+
+	m_frustrumAABB.set( tvec3( -halfW, -halfH, near ), tvec3( halfW, halfH, far ) );
 }
 
 void SWCamera::perspectiveMode( float fov, float aspect, float near, float far )
@@ -90,6 +93,25 @@ void SWCamera::perspectiveMode( float fov, float aspect, float near, float far )
 	m_far  = far;
 	m_projMatrix.perspective( fov, aspect, near, far );
 	m_projMatrix.inverse( m_invProjMatrix );
+
+	float halfW = SWMath.tan( fov ) * far;
+	float halfH = halfW * aspect;
+
+	m_frustrumAABB.set( tvec3( -halfW, -halfH, near ), tvec3( halfW, halfH, near ) );
+}
+
+bool SWCamera::computeFrustrumAABB( taabb3d& aabb ) const
+{
+	SWTransform* trans = getComponent<SWTransform>();
+	if ( trans == NULL ) return false;
+
+	const tmat44 worldMat = trans->getWorldMatrix();
+
+	tvec3 point1 = m_frustrumAABB.lower * worldMat;
+	tvec3 point2 = m_frustrumAABB.upper * worldMat;
+
+	aabb.set( point1, point2 );
+	return true;
 }
 
 tvec3 SWCamera::screenToWorld( const tvec3& screenPt ) const

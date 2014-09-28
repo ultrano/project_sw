@@ -216,8 +216,48 @@ void SWGameScene::draw()
 			itor->second.clear();
 		}
 	}
-	
-	//! extract game objects in layer
+
+
+	//! Test AABB Update
+	{
+		SWObject::List::iterator itor = m_renderers.begin();
+		for ( ; itor != m_renderers.end() ; ++itor )
+		{
+			SWRenderer* renderer = swrtti_cast<SWRenderer>((*itor)());
+			tuint proxyID = renderer->getProxyID();
+			taabb3d aabb;
+			renderer->computeAABB( aabb );
+			m_tree.updateProxy( proxyID, aabb );
+		}
+	}
+	//! Test AABB Tree culling 
+	{
+		SWObject::List::iterator itor = m_cameras.begin();
+		for ( ; itor != m_cameras.end() ; ++itor )
+		{
+			SWCamera* camera = swrtti_cast<SWCamera>((*itor)());
+			taabb3d aabb;
+			camera->computeFrustrumAABB( aabb );
+
+			tarray<tuint> result;
+			result.reserve( 64 );
+			m_tree.query( result, aabb );
+
+			for ( tuint i = 0 ; i < result.size() ; ++i )
+			{
+				void* userData = m_tree.getUserData( result[i] );
+				if ( !userData ) continue;
+				SWRenderer* renderer = (SWRenderer*)userData;
+				SWGameObject* go = renderer->gameObject();
+				if ( go->isActiveInScene() )
+				{
+					m_layers[ go->getLayerName() ].push_back( renderer );
+				}
+			}
+		}
+	}
+
+	/*//! extract game objects in layer
 	{
 		SWObject::List::iterator itor = m_renderers.begin();
 		for ( ; itor != m_renderers.end() ; ++itor )
@@ -230,7 +270,8 @@ void SWGameScene::draw()
 			}
 		}
 	}
-	
+	//*/
+
 	//! sort game objects and render
 	{
 		SWObject::List::iterator itor = m_cameras.begin();
@@ -275,4 +316,35 @@ void SWGameScene::handleEvent()
 {
     //! 객체들에 대한 처리후 씬에게도 터치 처리를 호출
     onHandleTouch();
+}
+
+tuint SWGameScene::addRenderer( SWRenderer* renderer )
+{
+	if ( renderer == NULL ) return m_tree.nullID;
+
+	taabb3d aabb;
+	renderer->computeAABB( aabb );
+	tuint proxyID = m_tree.createProxy( aabb, renderer );
+
+	if ( proxyID != m_tree.nullID )
+	{
+		m_proxies.push_back( proxyID );
+		m_renderers.push_back( renderer );
+	}
+	else SWLog( "failed to create renderer proxy aabb into dynamic tree" );
+	
+	return proxyID;
+}
+
+void SWGameScene::removeRenderer( SWRenderer* renderer )
+{
+	if ( renderer == NULL ) return;
+
+	tuint proxyID = renderer->getProxyID();
+	if ( proxyID == m_tree.nullID ) return;
+
+	m_tree.destroyProxy( proxyID );
+
+	m_renderers.remove( renderer );
+	m_proxies.remove( proxyID );
 }

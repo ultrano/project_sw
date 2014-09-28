@@ -14,7 +14,7 @@ public:
 	tuint createProxy( const taabb2d& aabb, void* userData );
 	void  updateProxy( tuint proxyID, const taabb2d& aabb );
 	void  destroyProxy(tuint proxyID);
-	
+
 	void* getUserData( tuint proxyID );
 	bool  getFatAABB( tuint proxyID, taabb2d& aabb );
 

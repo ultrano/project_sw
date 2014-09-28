@@ -8,7 +8,6 @@
 class SWShape2D : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWShape2D );
-	SW_REFERENCE( SWShape2D );
 
 public:
 
@@ -19,7 +18,6 @@ public:
 class SWCircle : public SWShape2D
 {
 	SW_RTTI( SWCircle, SWShape2D );
-	SW_REFERENCE( SWCircle );
 	
 	tvec2 m_center;
 	float m_radius;

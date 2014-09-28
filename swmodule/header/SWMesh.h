@@ -43,6 +43,8 @@ public:
 	void updateMesh();
 	void draw();
     
+	const taabb3d& getAABB() const;
+
 protected:
 
 	void serialize( SWObjectWriter* writer );

@@ -27,6 +27,8 @@ public:
 	void setMesh( const SWMesh* mesh );
 	SWMesh* getMesh() const;
 
+	tuint getProxyID() const;
+	bool computeAABB( taabb3d& aabb ) const;
 protected:
 
 	void onAwake();
@@ -39,6 +41,7 @@ private:
 
 	SWHardRef<SWMesh>   m_mesh;
 	SWHardRef<SWMaterial> m_material;
+	tuint m_proxyID;
 };
 
 #endif // SWRenderer

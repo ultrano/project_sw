@@ -108,6 +108,7 @@
     <ClInclude Include="header\SWArray.h" />
     <ClInclude Include="header\SWAudioClip.h" />
     <ClInclude Include="header\SWDynamicTree2D.h" />
+    <ClInclude Include="header\SWDynamicTree3D.h" />
     <ClInclude Include="header\SWFontInfo.h" />
     <ClInclude Include="header\SWFontRenderer.h" />
     <ClInclude Include="header\SWHeaders.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
     <ClCompile Include="source\SWDynamicTree2D.cpp" />
+    <ClCompile Include="source\SWDynamicTree3D.cpp" />
     <ClCompile Include="source\SWFileStream.cpp" />
     <ClCompile Include="source\SWFontInfo.cpp" />
     <ClCompile Include="source\SWFontRenderer.cpp" />
