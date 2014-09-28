@@ -212,6 +212,7 @@ void SWDynamicTree2D::removeLeaf( tuint nodeID )
 	TreeNode& anotherLeafNode = m_nodes[ anotherLeafID ];
 
 	freeNode( anotherLeafNode.parentID );
+
 	if ( grandParentID == nullID )
 	{
 		anotherLeafNode.parentID = nullID;

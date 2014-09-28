@@ -25,9 +25,9 @@ public:
 		tuint proxyID = dynamicTree.createProxy( aabb, NULL );
 
 
-		tarray<tuint> reult;
+		tarray<tuint> result;
 		aabb.set( tvec2(-5,-5), tvec2(5,5) );
-		dynamicTree.query(reult, aabb);
+		dynamicTree.query(result, aabb);
 
 	}
 
