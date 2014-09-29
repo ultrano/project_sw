@@ -13,7 +13,7 @@ struct SWDynamicTree3D::TreeNode : public SWMemory
 		tuint parentID; //! using in dynamic tree
 		tuint nextID;   //! using in free list;
 	};
-	bool isLeaf() { return (childID[1] == nullID); }
+	bool isLeaf() const { return (childID[1] == nullID); }
 };
 
 const tuint SWDynamicTree3D::nullID = ((tuint)-1);
@@ -247,21 +247,21 @@ void SWDynamicTree3D::removeLeaf( tuint nodeID )
 	}
 }
 
-void* SWDynamicTree3D::getUserData( tuint proxyID )
+void* SWDynamicTree3D::getUserData( tuint proxyID ) const
 {
 	if ( proxyID >= m_nodes.size() ) return NULL;
 
-	TreeNode& node = m_nodes[proxyID];
+	const TreeNode& node = m_nodes[proxyID];
 	if ( !node.isLeaf() ) return NULL;
 
 	return node.userData;
 }
 
-bool SWDynamicTree3D::getFatAABB( tuint proxyID, taabb3d& aabb )
+bool SWDynamicTree3D::getFatAABB( tuint proxyID, taabb3d& aabb ) const
 {
 	if ( proxyID >= m_nodes.size() ) return false;
 
-	TreeNode& node = m_nodes[proxyID];
+	const TreeNode& node = m_nodes[proxyID];
 	if ( !node.isLeaf() ) return false;
 
 	aabb = node.aabb;
@@ -269,7 +269,7 @@ bool SWDynamicTree3D::getFatAABB( tuint proxyID, taabb3d& aabb )
 	return true;
 }
 
-void SWDynamicTree3D::query( tarray<tuint>& result, const taabb3d& aabb )
+void SWDynamicTree3D::query( tarray<tuint>& result, const taabb3d& aabb ) const
 {
 	result.clear();
 
@@ -283,7 +283,7 @@ void SWDynamicTree3D::query( tarray<tuint>& result, const taabb3d& aabb )
 
 		if ( nodeID == nullID ) continue;
 
-		TreeNode& node = m_nodes[ nodeID ];
+		const TreeNode& node = m_nodes[ nodeID ];
 		if ( node.aabb.collide( aabb ) )
 		{
 			if ( node.isLeaf() )

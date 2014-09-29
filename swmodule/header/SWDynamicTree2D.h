@@ -15,10 +15,10 @@ public:
 	void  updateProxy( tuint proxyID, const taabb2d& aabb );
 	void  destroyProxy(tuint proxyID);
 
-	void* getUserData( tuint proxyID );
-	bool  getFatAABB( tuint proxyID, taabb2d& aabb );
+	void* getUserData( tuint proxyID ) const;
+	bool  getFatAABB( tuint proxyID, taabb2d& aabb ) const;
 
-	void  query( tarray<tuint>& result, const taabb2d& aabb );
+	void  query( tarray<tuint>& result, const taabb2d& aabb ) const;
 
 private:
 
