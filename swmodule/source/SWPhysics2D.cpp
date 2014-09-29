@@ -43,8 +43,8 @@ void __SWPhysics2D::simulate()
 			if ( !collider2->gameObject()->isActiveInScene() ) continue;
 			if ( collider1->gameObject() == collider2->gameObject() ) continue;
 
-			const thashstr& layer1 = collider1->gameObject()->getLayerName();
-			const thashstr& layer2 = collider2->gameObject()->getLayerName();
+			tuint layer1 = collider1->gameObject()->getLayer();
+			tuint layer2 = collider2->gameObject()->getLayer();
 
 			if ( getIgnoreLayer( layer1, layer2 ) ) continue;
 
@@ -70,10 +70,10 @@ void __SWPhysics2D::simulate()
 	}
 }
 
-bool __SWPhysics2D::getIgnoreLayer( const thashstr& layer1, const thashstr& layer2 )
+bool __SWPhysics2D::getIgnoreLayer( tuint layer1, tuint layer2 )
 {
-	thash32 hash1 = SWMath.min( layer1.hash(), layer2.hash() );
-	thash32 hash2 = SWMath.max( layer1.hash(), layer2.hash() );
+	thash32 hash1 = SWMath.min( layer1, layer2 );
+	thash32 hash2 = SWMath.max( layer1, layer2 );
 	thash64 hash = ((thash64)hash2<<32) | (hash1);
 
 	IgnoreTable::iterator itor = m_ignoreTable.find( hash );

@@ -17,19 +17,18 @@ public:
 	tuint addRenderer( SWRenderer* renderer );
 	void  removeRenderer( SWRenderer* renderer );
 
-	tuint addCamera( SWCamera* camera );
+	void  addCamera( SWCamera* camera );
 	void  removeCamera( SWCamera* camera );
 
 	void  update();
-	void  draw();
+	void  draw( SWCamera* camera );
 
 private:
 
 	typedef tarray<SWCamera*> CameraArray;
 	typedef tarray<SWRenderer*> RendererArray;
 	typedef ttable<SWCamera*,RendererArray> SortedTable;
-
-	thashstr m_name;
+	typedef ttable<SWCamera*,tuint> ProxyIDTable;
 
 	SWObject::List m_renderers;
 	SWDynamicTree3D m_rendererTree;
@@ -39,6 +38,8 @@ private:
 
 	SortedTable m_sortedTable;
 	tarray<tuint> m_aabbResult;
+
+	ProxyIDTable m_proxyIDTable;
 };
 
 #endif // SWGameLayer_h__

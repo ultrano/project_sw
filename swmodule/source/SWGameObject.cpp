@@ -26,7 +26,7 @@ public:
 SWGameObject::SWGameObject()
 	: m_name( "nonamed" )
 	, m_active( true )
-	, m_layer( "default" )
+	, m_layer( 0 )
 {
 	addComponent<SWTransform>();
 }
@@ -34,7 +34,7 @@ SWGameObject::SWGameObject()
 SWGameObject::SWGameObject( factory_constructor )
 	: m_name( "nonamed" )
 	, m_active( true )
-	, m_layer( "default" )
+	, m_layer( 0 )
 {
 	//! don't add transform component
 	//! when created by factory.
@@ -44,7 +44,7 @@ SWGameObject::SWGameObject( factory_constructor )
 SWGameObject::SWGameObject( const tstring& name )
 	: m_name( name )
 	, m_active( true )
-	, m_layer( "default" )
+	, m_layer( 0 )
 {
 	addComponent<SWTransform>();
 }
@@ -263,6 +263,29 @@ tuint SWGameObject::getFixedRateUpdateDelegator() const
 	return m_fixedRateUpdateDelegates.size();
 }
 
+void SWGameObject::addLayerDelegator( SWDelegator* dg )
+{
+	if ( !dg ) return;
+	SWObject::List::iterator itor = m_layerDelegates.begin();
+	for ( ; itor != m_layerDelegates.end() ; ++itor )
+	{
+		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
+		if ( itorDG->isEqual( dg ) ) return;
+	}
+	m_layerDelegates.push_back( dg );
+}
+
+void SWGameObject::removeLayerDelegator( SWDelegator* dg )
+{
+	if ( !dg ) return;
+	m_layerDelegates.remove( dg );
+}
+
+tuint SWGameObject::getLayerDelegator() const
+{
+	return m_layerDelegates.size();
+}
+
 void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
 {
 	SWObject::Array copy = m_components;
@@ -310,6 +333,31 @@ void SWGameObject::deserialize( SWObjectReader* reader )
 		registerComponent( comp );
 	}
 	m_loadedComponents.clear();
+}
+
+tuint SWGameObject::getLayer() const
+{
+	return m_layer;
+}
+
+void SWGameObject::setLayer( tuint layer )
+{
+	m_layer = layer;
+
+	if ( m_layerDelegates.size() )
+	{
+		SWWeakRef<SWGameObject> vital = this;
+		m_updates = m_layerDelegates;
+		SWObject::List::iterator itor = m_updates.begin();
+		while ( itor != m_updates.end() )
+		{
+			++itor;
+			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
+			if ( !itorDG || !itorDG->isValid() ) removeLayerDelegator( itorDG );
+			else itorDG->call( this );
+			if ( !vital.isValid() ) return;
+		}
+	}
 }
 
 void SWGameObject::setActive( bool active )

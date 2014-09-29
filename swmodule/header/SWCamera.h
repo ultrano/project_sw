@@ -18,7 +18,6 @@ public:
 	void perspectiveMode( float fov, float aspect, float near, float far );
 
 	bool computeFrustrumAABB( taabb3d& aabb ) const;
-	tuint getProxyID() const;
 
 	tvec3 screenToWorld( const tvec3& screenPt ) const;
 	tray  screenToRay( const tvec2& screenPt ) const;
@@ -33,8 +32,8 @@ public:
 	const TMatrix4x4& getViewMatrix() const;
 	const TMatrix4x4& getVPMatrix() const;
 
-	const thashstr& getTargetLayerName() const;
-	void setTargetLayerName( const thashstr& name );
+	tuint32 getCullingMask() const;
+	void setCullingMask( tuint32 mask );
 
 	int getDepth() const { return m_depth; }
 	void setDepth( int depth ) { m_depth = depth; }
@@ -63,12 +62,11 @@ private:
 	float m_far;
 
 	taabb3d m_frustrumAABB;
-	tuint m_proxyID;
 
 	tcolor m_clearColor;
 	float  m_clearDepth;
 
-	thashstr m_layerName;
+	tuint32 m_cullingMask;
 	int m_depth;
 	int m_clearFlags;
 

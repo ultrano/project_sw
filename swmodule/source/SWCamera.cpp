@@ -12,10 +12,9 @@ SWCamera::SWCamera()
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
 	, m_clearDepth( 0 )
-	, m_layerName( "default" )
+	, m_cullingMask( 1 )
 	, m_depth( 0 )
 	, m_clearFlags( SW_Dont_Clear )
-	, m_proxyID(-1)
 {
 }
 
@@ -24,10 +23,9 @@ SWCamera::SWCamera( factory_constructor )
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
 	, m_clearDepth( 0 )
-	, m_layerName( "default" )
+	, m_cullingMask( 1 )
 	, m_depth( 0 )
 	, m_clearFlags( SW_Dont_Clear )
-	, m_proxyID(-1)
 {
 
 }
@@ -40,12 +38,12 @@ void SWCamera::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
-	m_proxyID = SW_GC.getScene()->addCamera( this );
+	SW_GC.getScene()->addCamera( m_cullingMask, this );
 }
 
 void SWCamera::onRemove()
 {
-	SW_GC.getScene()->removeCamera( this );
+	SW_GC.getScene()->removeCamera( m_cullingMask, this );
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
@@ -116,11 +114,6 @@ bool SWCamera::computeFrustrumAABB( taabb3d& aabb ) const
 	return true;
 }
 
-tuint SWCamera::getProxyID() const
-{
-	return m_proxyID;
-}
-
 tvec3 SWCamera::screenToWorld( const tvec3& screenPt ) const
 {
 	tvec3 ret( 0, 0, screenPt.z );
@@ -186,14 +179,18 @@ float SWCamera::getClearDepth() const
 	return m_clearDepth;
 }
 
-const thashstr& SWCamera::getTargetLayerName() const
+tuint32 SWCamera::getCullingMask() const
 {
-	return m_layerName;
+	return m_cullingMask;
 }
 
-void SWCamera::setTargetLayerName( const thashstr& name )
+void SWCamera::setCullingMask( tuint32 mask )
 {
-	m_layerName = name;
+	if ( mask == 0 ) return;
+	if ( m_cullingMask == mask ) return;
+
+	SW_GC.getScene()->updateCamera( m_cullingMask, mask, this );
+	m_cullingMask = mask;
 }
 
 void SWCamera::serialize( SWObjectWriter* writer )
@@ -204,8 +201,8 @@ void SWCamera::serialize( SWObjectWriter* writer )
 	writer->writeFloat( m_far );
 	writer->writeInt( m_depth );
 	writer->writeInt( m_clearFlags );
+	writer->writeUInt( m_cullingMask );
 	writer->writeColor( m_clearColor );
-	writer->writeString( m_layerName.str() );
 }
 
 void SWCamera::deserialize( SWObjectReader* reader )
@@ -215,10 +212,8 @@ void SWCamera::deserialize( SWObjectReader* reader )
 	m_near  = reader->readFloat();
 	m_far   = reader->readFloat();
 	m_depth = reader->readInt();
-	m_clearFlags = reader->readInt();
+	m_clearFlags  = reader->readInt();
+	m_cullingMask = reader->readUInt();
 	reader->readColor( m_clearColor );
 
-	tstring layerName;
-	reader->readString( layerName );
-	m_layerName = layerName;
 }

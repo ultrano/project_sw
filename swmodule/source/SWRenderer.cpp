@@ -29,13 +29,26 @@ SWRenderer::~SWRenderer()
 void SWRenderer::onAwake()
 {
 	SWGameScene* scene = SW_GC.getScene();
-	m_proxyID = scene->addRenderer( this );
+	m_layer = gameObject()->getLayer();
+	m_proxyID = scene->addRenderer( m_layer, this );
+	
+	gameObject()->addLayerDelegator( GetDelegator( onLayerChanged ) );
 }
 
 void SWRenderer::onRemove()
 {
+	gameObject()->removeLayerDelegator( GetDelegator( onLayerChanged ) );
+
 	SWGameScene* scene = SW_GC.getScene();
-	scene->removeRenderer( this );
+	scene->removeRenderer( m_layer, this );
+}
+
+void SWRenderer::onLayerChanged()
+{
+	SWGameScene* scene = SW_GC.getScene();
+	scene->removeRenderer( m_layer, this );
+	m_layer = gameObject()->getLayer();
+	m_proxyID = scene->addRenderer( m_layer, this );
 }
 
 void SWRenderer::setMaterial( const SWMaterial* material )

@@ -29,10 +29,13 @@ public:
 
 	tuint getProxyID() const;
 	bool computeAABB( taabb3d& aabb ) const;
+
 protected:
 
-	void onAwake();
-	void onRemove();
+	override void onAwake();
+	override void onRemove();
+
+	void onLayerChanged();
 
 	void serialize( SWObjectWriter* writer );
 	void deserialize( SWObjectReader* reader );
@@ -41,6 +44,7 @@ private:
 
 	SWHardRef<SWMesh>   m_mesh;
 	SWHardRef<SWMaterial> m_material;
+	tuint m_layer;
 	tuint m_proxyID;
 };
 

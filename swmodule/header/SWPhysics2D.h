@@ -23,7 +23,7 @@ public:
 	void simulate();
 	bool testCollide( SWCollider2D* collider1, SWCollider2D* collider2 );
 
-	bool getIgnoreLayer( const thashstr& layer1, const thashstr& layer2 );
+	bool getIgnoreLayer( tuint layer1, tuint layer2 );
 	void ignoreLayer( const thashstr& layer1, const thashstr& layer2, bool ignore );
 
 	SWCollider2D* overlapPoint( const tvec2& point );

@@ -62,14 +62,14 @@ private:
 
 private:
 
-	tuint addRenderer( SWRenderer* renderer );
-	void removeRenderer( SWRenderer* renderer );
+	tuint addRenderer( tuint layer, SWRenderer* renderer );
+	void removeRenderer( tuint layer, SWRenderer* renderer );
 
-	tuint addCamera( SWCamera* camera );
-	void  removeCamera( SWCamera* camera );
+	void addCamera( tuint32 layerMask, SWCamera* camera );
+	void removeCamera( tuint32 layerMask, SWCamera* camera );
+	void updateCamera( tuint32 oldMask, tuint32 newMask, SWCamera* camera );
 
-	SWGameLayer* getLayer( const tstring& name );
-
+	SWGameLayer* getLayer( tuint layer );
 private:
 
 	friend class SWTransform;
@@ -87,7 +87,8 @@ private:
 
 private:
 
-	typedef ttable<thashstr,SWHardRef<SWGameLayer>> LayerTable;
+	enum { MaxLayerCount = 32 };
+	typedef tarray<SWHardRef<SWGameLayer>> LayerArray;
 
 	//! root game objects
 	SWObject::List m_roots;
@@ -106,7 +107,7 @@ private:
 	SWDynamicTree3D m_cameraTree;
 
 	//! scene layers
-	LayerTable m_layerTable;
+	SWHardRef<SWGameLayer> m_layerTable[MaxLayerCount];
 };
 
 #endif

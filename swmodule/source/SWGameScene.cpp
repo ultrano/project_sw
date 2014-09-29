@@ -7,11 +7,11 @@
 //
 
 #include "SWGameScene.h"
+#include "SWOpenGL.h"
+#include "SWDefines.h"
 #include "SWGameObject.h"
 #include "SWLog.h"
 #include "SWInput.h"
-#include "SWOpenGL.h"
-#include "SWDefines.h"
 #include "SWTime.h"
 #include "SWPhysics2D.h"
 
@@ -19,8 +19,17 @@
 #include "SWBehavior.h"
 #include "SWCamera.h"
 #include "SWRenderer.h"
+#include "SWGameLayer.h"
 
 #include <algorithm>
+
+struct CameraSorter
+{
+	bool operator()( SWObject::Ref left, SWObject::Ref right )
+	{
+		return ((SWCamera*)left())->getDepth() < ((SWCamera*)right())->getDepth();
+	}
+};
 
 SWGameScene::SWGameScene()
 {
@@ -88,7 +97,6 @@ void SWGameScene::destroy()
 	}
 
 	m_updates.clear();
-	m_renderers.clear();
 	m_destroyGOs.clear();
 
 	SWInput.removeInputDelegate( GetDelegator(handleEvent) );
@@ -180,10 +188,44 @@ void SWGameScene::update()
 
 void SWGameScene::draw()
 {
+	m_cameras.sort( CameraSorter() );
 
-	//* 
+	for ( tuint i = 0 ; i < MaxLayerCount ; ++i)
+	{
+		SWGameLayer* layer = m_layerTable[i]();
+		if ( layer ) layer->update();
+	}
 
-	//*/
+	SWObject::List::iterator itor = m_cameras.begin();
+	for ( ; itor != m_cameras.end() ; ++itor )
+	{
+		SWCamera* camera = swrtti_cast<SWCamera>( (*itor)() );
+		tuint32 cullingMask = camera->getCullingMask();
+
+		//! get clear mask
+		int clearMask = GL_NONE;
+		int clearFlags = camera->getClearFlags();
+		if ( clearFlags & SW_Clear_Color ) clearMask |= GL_COLOR_BUFFER_BIT;
+		if ( clearFlags & SW_Clear_Depth ) clearMask |= GL_DEPTH_BUFFER_BIT;
+
+		//! clear buffer
+		if ( clearMask != GL_NONE )
+		{
+			tcolor color = camera->getClearColor();
+			glClearColor( color.r, color.g, color.b, color.a );
+			glClearDepth( camera->getClearDepth() );
+			glClear( clearMask );
+		}
+
+		for ( tuint i = 0 ; i < MaxLayerCount ; ++i)
+		{
+			bool doDraw = (cullingMask & 0x1);
+			cullingMask = cullingMask >> 1;
+			if ( !doDraw ) continue;
+			SWGameLayer* layer = m_layerTable[i]();
+			if ( layer ) layer->draw( camera );
+		}
+	}
 
     onPostDraw();
 }
@@ -194,44 +236,80 @@ void SWGameScene::handleEvent()
     onHandleTouch();
 }
 
-tuint SWGameScene::addRenderer( SWRenderer* renderer )
+tuint SWGameScene::addRenderer( tuint layer, SWRenderer* renderer )
 {
-	return 0;
+	if ( layer >= MaxLayerCount ) return SWDynamicTree3D::nullID;
+
+	SWGameLayer* gameLayer = getLayer(layer);
+	return gameLayer->addRenderer( renderer );
 }
 
-void SWGameScene::removeRenderer( SWRenderer* renderer )
+void SWGameScene::removeRenderer( tuint layer, SWRenderer* renderer )
 {
+	if ( layer >= MaxLayerCount ) return;
+
+	SWGameLayer* gameLayer = getLayer(layer);
+	gameLayer->removeRenderer( renderer );
 }
 
-tuint SWGameScene::addCamera( SWCamera* camera )
+void SWGameScene::addCamera( tuint32 layerMask, SWCamera* camera )
 {
-	if ( camera == NULL ) return m_cameraTree.nullID;
+	if ( camera == NULL ) return ;
+	if ( layerMask == 0 ) return ;
 
-	taabb3d aabb;
-	camera->computeFrustrumAABB( aabb );
-	tuint proxyID = m_cameraTree.createProxy( aabb, camera );
-
-	if ( proxyID != m_cameraTree.nullID ) m_cameras.push_back( camera );
-	else SWLog( "failed to create camera proxy aabb into dynamic tree" );
-
-	return proxyID;
+	for ( tuint i = 0 ; i < MaxLayerCount ; ++i )
+	{
+		bool ret = (layerMask & 0x1);
+		layerMask = layerMask >> 1;
+		if ( !ret ) continue;
+		SWGameLayer* layer =  getLayer(i);
+		layer->addCamera( camera );
+	}
+	m_cameras.push_back( camera );
 }
 
-void SWGameScene::removeCamera( SWCamera* camera )
+void SWGameScene::removeCamera( tuint32 layerMask, SWCamera* camera )
 {
-	if ( camera == NULL ) return;
+	if ( camera == NULL ) return ;
+	if ( layerMask == 0 ) return ;
 
-	tuint proxyID = camera->getProxyID();
-	if ( proxyID == m_cameraTree.nullID ) return;
-
-	m_cameraTree.destroyProxy( proxyID );
+	for ( tuint i = 0 ; i < MaxLayerCount ; ++i )
+	{
+		bool ret = (layerMask & 0x1);
+		layerMask = layerMask >> 1;
+		if ( !ret ) continue;
+		SWGameLayer* layer =  getLayer(i);
+		layer->removeCamera( camera );
+	}
 	m_cameras.remove( camera );
 }
 
-SWGameLayer* SWGameScene::getLayer( const tstring& name )
+void SWGameScene::updateCamera( tuint32 oldMask, tuint32 newMask, SWCamera* camera )
 {
-	LayerTable::iterator itor = m_layerTable.find( name );
-	if ( itor == m_layerTable.end() )
+	tuint32 common  = oldMask & newMask;
+	tuint32 removedMask = newMask ^ common;
+	tuint32 addedMask   = oldMask ^ common;
+
+	for ( tuint i = 0 ; i < MaxLayerCount ; ++i )
 	{
+		bool added   = (addedMask & 0x1);
+		bool removed = (removedMask & 0x1);
+		addedMask   = addedMask >> 1;
+		removedMask = removedMask >> 1;
+
+		SWGameLayer* layer =  getLayer(i);
+		if ( added ) layer->addCamera( camera );
+		if ( removed ) layer->removeCamera( camera );
 	}
+}
+
+SWGameLayer* SWGameScene::getLayer( tuint layer )
+{
+	SWGameLayer* gameLayer = m_layerTable[layer]();
+	if ( gameLayer == NULL )
+	{
+		gameLayer = new SWGameLayer;
+		m_layerTable[layer] = gameLayer;
+	}
+	return gameLayer;
 }

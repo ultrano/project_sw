@@ -38,8 +38,8 @@ public:
 	void setName( const thashstr& name ) { m_name = name; }
 	const thashstr&  getName() const { return m_name; }
 
-	void setLayerName( const thashstr& layer) { m_layer = layer; }
-	const thashstr& getLayerName() const { return m_layer; }
+	void  setLayer( tuint layer);
+	tuint getLayer() const;
 
 	void setActive( bool active );
 	bool isActiveSelf() const;
@@ -68,6 +68,10 @@ public:
 	void removeFixedRateUpdateDelegator( SWDelegator* dg );
 	tuint getFixedRateUpdateDelegator() const;
 
+	void addLayerDelegator( SWDelegator* dg );
+	void removeLayerDelegator( SWDelegator* dg );
+	tuint getLayerDelegator() const;
+
 	void sendMessage( const tstring& msgName, SWObject* param );
 
 protected:
@@ -86,7 +90,7 @@ private:
 
 	
 	thashstr m_name;
-	thashstr m_layer;
+	tuint    m_layer;
 	bool     m_active;
 
 	SWObject::Array m_components;
@@ -95,6 +99,7 @@ private:
 	SWObject::List  m_addedComponents;
 	SWObject::List  m_updateDelegates;
 	SWObject::List  m_fixedRateUpdateDelegates;
+	SWObject::List  m_layerDelegates;
 	SWObject::List  m_updates;
 };
 
