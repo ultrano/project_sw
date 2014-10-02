@@ -61,7 +61,7 @@ public:
 	SWTransform* find( const tstring& name ) const;
 	SWTransform* getChildAt( tuint index ) const;
 	tuint getChildrenCount() const;
-	void copyChildren( SWObject::List& transList ) const;
+	void copyChildren( SWObject::Array& transList ) const;
 
 protected:
 
@@ -81,9 +81,9 @@ private:
 
 	SWWeakRef<SWTransform> m_parent;
 
-	SWObject::List m_updates;
-	SWObject::List m_children;
-	SWObject::List m_setParentDelegates;
+	SWObject::Array m_iterateCopy;
+	SWObject::Array m_children;
+	SWObject::Array m_setParentDelegates;
 
 	TVector3f    m_scale;    //< 비율.
 	TQuaternion  m_rotate;   //< 회전.

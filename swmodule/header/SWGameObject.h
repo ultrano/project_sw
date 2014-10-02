@@ -96,11 +96,11 @@ private:
 	SWObject::Array m_components;
 	SWObject::Array m_loadedComponents;
 	
-	SWObject::List  m_addedComponents;
-	SWObject::List  m_updateDelegates;
-	SWObject::List  m_fixedRateUpdateDelegates;
-	SWObject::List  m_layerDelegates;
-	SWObject::List  m_updates;
+	SWObject::Array  m_addedComponents;
+	SWObject::Array  m_updateDelegates;
+	SWObject::Array  m_fixedRateUpdateDelegates;
+	SWObject::Array  m_layerDelegates;
+	SWObject::Array  m_iterateCopy;
 };
 
 #endif

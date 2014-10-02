@@ -53,7 +53,7 @@ private:
  %%% SWRtti will fail to compile if there isn't. %%%
  */
 template<typename T1, typename T2>
-T1* swrtti_cast(T2* cls)
+inline T1* swrtti_cast(T2* cls)
 {
 	if (!cls) return NULL;
 	const SWRtti* rtti = cls->queryRtti();

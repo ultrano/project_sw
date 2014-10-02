@@ -25,16 +25,23 @@ public:
 
 private:
 
+	struct CameraState
+	{
+		CameraState(){};
+		tvec3 lookDir;
+	};
 	typedef tarray<SWCamera*> CameraArray;
 	typedef tarray<SWRenderer*> RendererArray;
 	typedef ttable<SWCamera*,RendererArray> SortedTable;
 	typedef ttable<SWCamera*,tuint> ProxyIDTable;
+	typedef ttable<SWCamera*,CameraState> CameraStateTable;
 
-	SWObject::List m_renderers;
+	SWObject::Array m_renderers;
 	SWDynamicTree3D m_rendererTree;
 
-	SWObject::List m_cameras;
+	SWObject::Array m_cameras;
 	SWDynamicTree3D m_cameraTree;
+	CameraStateTable m_cameraStateTable;
 
 	SortedTable m_sortedTable;
 	tarray<tuint> m_aabbResult;

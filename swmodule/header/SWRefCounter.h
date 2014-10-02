@@ -12,37 +12,6 @@
 #include "SWMemory.h"
 #include <stdio.h>
 
-class SWRefCountable;
-
-/**
-@brief 객체의 참조 카운트를 보관.
-*/
-class SWRefObject : public SWMemory
-{
-	friend class SWRefCountable;
-	SWRefCountable* m_obj;
-	int m_hard;
-	int m_weak;
-	SWRefObject(SWRefCountable* obj);
-	~SWRefObject();
-public:
-	void incHard();
-	void decHard();
-	void incWeak();
-	void decWeak();
-
-	SWRefCountable* getObject() const;
-	int  getHard() const;
-	int  getWeak() const;
-
-	bool isUndead() const;
-	/*
-	there is two possibility.
-	first. this was never assigned to "reference counter" like SWHardRef or SWWeakRef after created.
-	second. this is dying. 
-	*/
-};
-
 /**
 @brief 참조 카운트에 필요한 상위 클레스
 @warning % "SWRefCountable"를 상속한 클레스의 주의사항 %
@@ -82,6 +51,48 @@ public:
 
 #define SW_REFERENCE(name) public: typedef SWHardRef<name> Ref; typedef SWWeakRef<name> WRef; private:
 
+
+/**
+@brief 객체의 참조 카운트를 보관.
+*/
+class SWRefObject : public SWMemory
+{
+	friend class SWRefCountable;
+	SWRefCountable* m_obj;
+	int m_hard;
+	int m_weak;
+	SWRefObject( SWRefCountable* obj ) : m_obj(obj), m_hard(0), m_weak(0) {}
+	~SWRefObject() {}
+public:
+	inline void incWeak() { ++m_weak; }
+	inline void decWeak() { if (--m_weak == 0) delete this; }
+	inline SWRefCountable* getObject() const { return m_obj; }
+	inline int getHard() const { return m_hard; }
+	inline int getWeak() const { return m_weak; }
+	inline void incHard() { if ( !m_obj ) return; ++m_hard; }
+	inline void decHard()
+	{
+		if ( !m_obj ) return;
+		--m_hard;
+		if (m_hard == 0) 
+		{
+			if ( m_obj )
+			{
+				m_obj->_make_zero_ref();
+				m_obj = NULL;
+			}
+		}
+		else if ( m_hard < 0 ) m_hard = 0;
+	}
+
+	bool isUndead() const { return ( getHard() <= 0 && getObject() ); }
+	/*
+	there is two possibility.
+	first. this was never assigned to "reference counter" like SWHardRef or SWWeakRef after created.
+	second. this is dying. 
+	*/
+};
+
 /**
 @brief 약참조를 하는 참조자
 객체의 생명에는 관여 하지 않는다.
@@ -92,11 +103,11 @@ class SWWeakRef
 {
 	SWRefObject* m_ref;
 public:
-	SWWeakRef() : m_ref(NULL) {};
-	SWWeakRef(const T* obj) : m_ref(NULL) { *this = obj; };
-	SWWeakRef(const SWWeakRef& ref) : m_ref(NULL) { *this = ref; };
-	~SWWeakRef() { *this = NULL; }
-	SWWeakRef& operator = (const SWWeakRef& ref)
+	inline SWWeakRef() : m_ref(NULL) {};
+	inline SWWeakRef(const T* obj) : m_ref(NULL) { *this = obj; };
+	inline SWWeakRef(const SWWeakRef& ref) : m_ref(NULL) { *this = ref; };
+	inline ~SWWeakRef() { *this = NULL; }
+	inline SWWeakRef& operator = (const SWWeakRef& ref)
 	{
 		if ( m_ref != ref.m_ref )
 		{
@@ -113,7 +124,7 @@ public:
 		}
 		return *this;
 	}
-	SWWeakRef& operator = (const T* obj)
+	inline SWWeakRef& operator = (const T* obj)
 	{
 		if ( m_ref != (obj?obj->getRefObject():NULL) )
 		{
@@ -131,19 +142,19 @@ public:
 		return *this;
 	}
 
-	T* operator ()() const { return (T*)(isValid()? m_ref->getObject():NULL); };
-	T* getRaw() const { return (T*)(m_ref? m_ref->getObject():NULL); };
+	inline T* operator ()() const { return (T*)(isValid()? m_ref->getObject():NULL); };
+	inline T* getRaw() const { return (T*)(m_ref? m_ref->getObject():NULL); };
 
-	bool operator < (const T* obj) const { return ((*this)() < obj); };
-	bool operator > (const T* obj) const { return ((*this)() > obj); };
-	bool operator == (const T* obj) const { return ((*this)() == obj); };
-	bool operator != (const T* obj) const { return ((*this)() != obj); };
-	bool operator < (const SWWeakRef& ref) const { return ((*this)() < ref()); };
-	bool operator > (const SWWeakRef& ref) const { return ((*this)() > ref()); };
-	bool operator == (const SWWeakRef& ref) const { return ((*this)() == ref()); };
-	bool operator != (const SWWeakRef& ref) const { return ((*this)() != ref()); };
-	bool isValid() const { return (m_ref && (m_ref->getHard() > 0)); };
-	bool isUndead() const { return (m_ref && m_ref->isUndead() ); };
+	inline bool operator < (const T* obj) const { return ((*this)() < obj); };
+	inline bool operator > (const T* obj) const { return ((*this)() > obj); };
+	inline bool operator == (const T* obj) const { return ((*this)() == obj); };
+	inline bool operator != (const T* obj) const { return ((*this)() != obj); };
+	inline bool operator < (const SWWeakRef& ref) const { return ((*this)() < ref()); };
+	inline bool operator > (const SWWeakRef& ref) const { return ((*this)() > ref()); };
+	inline bool operator == (const SWWeakRef& ref) const { return ((*this)() == ref()); };
+	inline bool operator != (const SWWeakRef& ref) const { return ((*this)() != ref()); };
+	inline bool isValid() const { return (m_ref && (m_ref->getHard() > 0)); };
+	inline bool isUndead() const { return (m_ref && m_ref->isUndead() ); };
 };
 
 
@@ -158,11 +169,11 @@ class SWHardRef
 {
 	SWRefObject* m_ref;
 public:
-	SWHardRef() : m_ref(NULL) {};
-	SWHardRef(const T* obj) : m_ref(NULL) { *this = obj; };
-	SWHardRef(const SWHardRef& ref) : m_ref(NULL) { *this = ref; };
-	~SWHardRef() { *this = NULL; }
-	SWHardRef& operator = (const SWHardRef& ref)
+	inline SWHardRef() : m_ref(NULL) {};
+	inline SWHardRef(const T* obj) : m_ref(NULL) { *this = obj; };
+	inline SWHardRef(const SWHardRef& ref) : m_ref(NULL) { *this = ref; };
+	inline ~SWHardRef() { *this = NULL; }
+	inline SWHardRef& operator = (const SWHardRef& ref)
 	{
 		if ( m_ref != ref.m_ref )
 		{
@@ -181,7 +192,7 @@ public:
 		}
 		return *this;
 	}
-	SWHardRef& operator = (const T* obj)
+	inline SWHardRef& operator = (const T* obj)
 	{
 		if ( m_ref != (obj?obj->getRefObject():NULL) )
 		{
@@ -201,19 +212,19 @@ public:
 		return *this;
 	}
 
-	T* operator ()() const { return (T*)(isValid()? m_ref->getObject():NULL); };
-	T* getRaw() const { return (T*)(m_ref? m_ref->getObject():NULL); };
+	inline T* operator ()() const { return (T*)(isValid()? m_ref->getObject():NULL); };
+	inline T* getRaw() const { return (T*)(m_ref? m_ref->getObject():NULL); };
 
-	bool operator < (const T* obj) const { return ((*this)() < obj); };
-	bool operator > (const T* obj) const { return ((*this)() > obj); };
-	bool operator == (const T* obj) const { return ((*this)() == obj); };
-	bool operator != (const T* obj) const { return ((*this)() != obj); };
-	bool operator < (const SWHardRef& ref) const { return ((*this)() < ref()); };
-	bool operator > (const SWHardRef& ref) const { return ((*this)() > ref()); };
-	bool operator == (const SWHardRef& ref) const { return ((*this)() == ref()); };
-	bool operator != (const SWHardRef& ref) const { return ((*this)() != ref()); };
-	bool isValid() const { return (m_ref && (m_ref->getHard() > 0)); };
-	bool isUndead() const { return (m_ref && m_ref->isUndead() ); };
+	inline bool operator < (const T* obj) const { return ((*this)() < obj); };
+	inline bool operator > (const T* obj) const { return ((*this)() > obj); };
+	inline bool operator == (const T* obj) const { return ((*this)() == obj); };
+	inline bool operator != (const T* obj) const { return ((*this)() != obj); };
+	inline bool operator < (const SWHardRef& ref) const { return ((*this)() < ref()); };
+	inline bool operator > (const SWHardRef& ref) const { return ((*this)() > ref()); };
+	inline bool operator == (const SWHardRef& ref) const { return ((*this)() == ref()); };
+	inline bool operator != (const SWHardRef& ref) const { return ((*this)() != ref()); };
+	inline bool isValid() const { return (m_ref && (m_ref->getHard() > 0)); };
+	inline bool isUndead() const { return (m_ref && m_ref->isUndead() ); };
 };
 
 #endif

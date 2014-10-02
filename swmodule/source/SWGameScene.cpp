@@ -47,7 +47,7 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 	tstring subName = ( offset != tstring::npos )? name.substr( 0, offset ) : name;
 	
 	SWGameObject* object = NULL;
-	SWObject::List::iterator itor = m_roots.begin();
+	SWObject::Array::iterator itor = m_roots.begin();
 	for ( ; itor != m_roots.end() ; ++itor )
 	{
 		object = swrtti_cast<SWGameObject>( (*itor)() );
@@ -67,7 +67,7 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 
 void SWGameScene::reserveDestroy( const SWGameObject* go )
 {
-	SWObject::List::iterator itor = m_destroyGOs.begin();
+	SWObject::Array::iterator itor = m_destroyGOs.begin();
 	for ( ; itor != m_destroyGOs.end() ; ++itor )
 	{
 		if ( go == (*itor)() ) return;
@@ -88,15 +88,15 @@ void SWGameScene::destroy()
 {
 	onDestroy();
 
-	m_updates = m_roots;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ; ++itor )
+	m_iterateCopy = m_roots;
+	SWObject::Array::iterator itor = m_iterateCopy.begin();
+	for ( ; itor != m_iterateCopy.end() ; ++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		go->destroyNow();
 	}
 
-	m_updates.clear();
+	m_iterateCopy.clear();
 	m_destroyGOs.clear();
 
 	SWInput.removeInputDelegate( GetDelegator(handleEvent) );
@@ -125,30 +125,15 @@ void SWGameScene::update()
 	}
 
 	//! copy objects to update
-	m_updates = m_roots;
-	
-	/*//! pre-updates
-	{	
-		onUpdate();
-
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
-		{
-			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			if ( go == NULL ) continue;
-			if ( go->isActiveSelf() ) go->preUpdate();
-		}
-	}
-	/*/
+	m_iterateCopy = m_roots;
 	
 	//! fixed rate updates
 	while ( fixedCount-- )
 	{
 		onFixedRateUpdate();
 
-		m_updates = m_roots;
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
+		SWObject::Array::iterator itor = m_iterateCopy.begin();
+		for ( ; itor != m_iterateCopy.end() ; ++itor )
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 			if ( go == NULL ) continue;
@@ -159,11 +144,11 @@ void SWGameScene::update()
 	}
 
 	//! regular updates
-	{	
+	{
 		onUpdate();
 
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
+		SWObject::Array::iterator itor = m_iterateCopy.begin();
+		for ( ; itor != m_iterateCopy.end() ; ++itor )
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 			if ( go == NULL ) continue;
@@ -174,10 +159,10 @@ void SWGameScene::update()
 	//! post destroy game objects
 	do
 	{
-		m_updates = m_destroyGOs;
+		m_iterateCopy = m_destroyGOs;
 		m_destroyGOs.clear();
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
+		SWObject::Array::iterator itor = m_iterateCopy.begin();
+		for ( ; itor != m_iterateCopy.end() ; ++itor )
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 			if ( !go ) continue;

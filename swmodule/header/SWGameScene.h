@@ -91,9 +91,9 @@ private:
 	typedef tarray<SWHardRef<SWGameLayer>> LayerArray;
 
 	//! root game objects
-	SWObject::List m_roots;
-	SWObject::List m_updates;
-	SWObject::List m_destroyGOs;
+	SWObject::Array m_roots;
+	SWObject::Array m_iterateCopy;
+	SWObject::Array m_destroyGOs;
 	
 	//! for fixed frame rate update
 	tfloat m_fixedFrameRate;

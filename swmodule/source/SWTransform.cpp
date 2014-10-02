@@ -49,8 +49,19 @@ void SWTransform::setParent( SWTransform* parent )
 
 	SWGameObject::Ref object = gameObject();
 
-	if ( m_parent() ) m_parent()->m_children.remove( object() );
-	else SW_GC.getScene()->m_roots.remove( object() );
+	if ( m_parent() )
+	{
+		SWObject::Array::iterator begin = m_parent()->m_children.begin();
+		SWObject::Array::iterator end   = m_parent()->m_children.end();
+		SWObject::Array::iterator last = std::remove( begin, end, object() );
+		m_parent()->m_children.erase( last, end );
+	}
+	else
+	{
+		SWObject::Array& roots = SW_GC.getScene()->m_roots;
+		SWObject::Array::iterator itor = std::remove( roots.begin(), roots.end(), object() );
+		roots.erase( itor, roots.end() );
+	}
 
 	if ( parent ) parent->m_children.push_back( object() );
 	else SW_GC.getScene()->m_roots.push_back( object() );
@@ -64,12 +75,18 @@ void SWTransform::setParent( SWTransform* parent )
 	arr->add( this );
 	arr->add( parent );
 
-	m_updates = m_setParentDelegates;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ;++itor )
+	m_iterateCopy = m_setParentDelegates;
+	SWObject::Array::iterator itor = m_iterateCopy.begin();
+	for ( ; itor != m_iterateCopy.end() ;++itor )
 	{
 		SWDelegator* dg = swrtti_cast<SWDelegator>( (*itor)() );
-		if ( dg == NULL ) m_setParentDelegates.remove( *itor );
+		if ( dg == NULL )
+		{
+			SWObject::Array::iterator begin = m_setParentDelegates.begin();
+			SWObject::Array::iterator end   = m_setParentDelegates.end();
+			SWObject::Array::iterator last = std::remove( begin, end, dg );
+			m_setParentDelegates.erase( last, end );
+		}
 		dg->call( param() );
 	}
 
@@ -97,13 +114,16 @@ void SWTransform::removeSetParentDelegate( SWObject* object, const SWHandler& ha
 	if ( !object ) return;
 	if ( !handler.m_method ) return;
 	
-	SWObject::List::iterator itor = m_setParentDelegates.begin();
+	SWObject::Array::iterator itor = m_setParentDelegates.begin();
 	for ( ; itor != m_setParentDelegates.end() ; ++itor )
 	{
 		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
 		if ( itorDG->isEqual( object, handler ) )
 		{
-			m_setParentDelegates.remove( *itor );
+			SWObject::Array::iterator begin = m_setParentDelegates.begin();
+			SWObject::Array::iterator end   = m_setParentDelegates.end();
+			SWObject::Array::iterator last = std::remove( begin, end, itorDG );
+			m_setParentDelegates.erase( last, end );
 			return;
 		}
 	}
@@ -289,7 +309,7 @@ SWTransform* SWTransform::findImmadiate( const tstring& name ) const
 {
 	if ( name.size() == 0 ) return NULL;
 
-	SWObject::List::const_iterator itor = m_children.begin();
+	SWObject::Array::const_iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ;++itor )
 	{
 		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
@@ -303,7 +323,7 @@ SWTransform* SWTransform::getChildAt( tuint index ) const
 	tuint count = m_children.size();
 	if ( index >= count ) return NULL;
 
-	SWObject::List::const_iterator itor = m_children.begin();
+	SWObject::Array::const_iterator itor = m_children.begin();
 	while ( index-- ) ++itor;
 	SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
 	return object->getComponent<SWTransform>();
@@ -314,11 +334,11 @@ tuint SWTransform::getChildrenCount() const
 	return m_children.size();
 }
 
-void SWTransform::copyChildren( SWObject::List& transList ) const
+void SWTransform::copyChildren( SWObject::Array& transList ) const
 {
 	transList.clear();
 
-	SWObject::List::const_iterator itor = m_children.begin();
+	SWObject::Array::const_iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ; ++itor )
 	{
 		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
@@ -338,19 +358,30 @@ void SWTransform::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 
-	m_updates = m_children;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ; ++itor )
+	m_iterateCopy = m_children;
+	SWObject::Array::iterator itor = m_iterateCopy.begin();
+	for ( ; itor != m_iterateCopy.end() ; ++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		go->destroyNow();
 	}
-	m_updates.clear();
+	m_iterateCopy.clear();
 	m_children.clear();
 	
 	SWGameObject* object = gameObject();
-	if ( m_parent() ) m_parent()->m_children.remove( object );
-	else SW_GC.getScene()->m_roots.remove( object );
+	if ( m_parent() )
+	{
+		SWObject::Array::iterator begin = m_parent()->m_children.begin();
+		SWObject::Array::iterator end   = m_parent()->m_children.end();
+		SWObject::Array::iterator last = std::remove( begin, end, object );
+		m_parent()->m_children.erase( last, end );
+	}
+	else
+	{
+		SWObject::Array& roots = SW_GC.getScene()->m_roots;
+		SWObject::Array::iterator itor = std::remove( roots.begin(), roots.end(), object );
+		roots.erase( itor, roots.end() );
+	}
 }
 
 void SWTransform::onUpdate()
@@ -358,9 +389,9 @@ void SWTransform::onUpdate()
 	updateMatrix();
 
 	SWWeakRef<SWTransform> vital = this;
-	m_updates = m_children;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ;++itor )
+	m_iterateCopy = m_children;
+	SWObject::Array::iterator itor = m_iterateCopy.begin();
+	for ( ; itor != m_iterateCopy.end() ;++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		if ( go->isActiveSelf() )
@@ -374,9 +405,9 @@ void SWTransform::onUpdate()
 void SWTransform::onFixedRateUpdate()
 {
 	SWWeakRef<SWTransform> vital = this;
-	m_updates = m_children;
-	SWObject::List::iterator itor = m_updates.begin();
-	for ( ; itor != m_updates.end() ;++itor )
+	m_iterateCopy = m_children;
+	SWObject::Array::iterator itor = m_iterateCopy.begin();
+	for ( ; itor != m_iterateCopy.end() ;++itor )
 	{
 		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		if ( go->isActiveSelf() )
@@ -409,7 +440,7 @@ void SWTransform::updateMatrix()
 void SWTransform::serialize( SWObjectWriter* writer )
 {
 	writer->writeUInt( m_children.size() );
-	SWObject::List::iterator itor = m_children.begin();
+	SWObject::Array::iterator itor = m_children.begin();
 	for ( ; itor != m_children.end() ; ++itor )
 	{
 		writer->writeObject( (*itor)() );

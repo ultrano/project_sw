@@ -43,8 +43,8 @@ public:
 	TVector3f& operator *= ( float f ) { x *= f; y *= f; z *= f; return *this; }
 	TVector3f& operator /= ( float f ) { x /= f; y /= f; z /= f; return *this; }
 
-	bool	  operator == ( const TVector3f& a ) { return ((x==a.x)&&(y==a.y)&&(z==a.z)); };
-	bool	  operator != ( const TVector3f& a ) { return !(*this == a);};
+	bool	  operator == ( const TVector3f& a ) const { return ((x==a.x)&&(y==a.y)&&(z==a.z)); };
+	bool	  operator != ( const TVector3f& a ) const { return !(*this == a);};
 
 	TVector3f& operator = ( const TVector3f& a ) { x = a.x; y = a.y; z = a.z;  return *this; }
 

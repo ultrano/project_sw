@@ -55,7 +55,8 @@ void SWGameLayer::removeRenderer( SWRenderer* renderer )
 	if ( proxyID == m_rendererTree.nullID ) return;
 
 	m_rendererTree.destroyProxy( proxyID );
-	m_renderers.remove( renderer );
+	SWObject::Array::iterator last = std::remove( m_renderers.begin(), m_renderers.end(), renderer );
+	m_renderers.erase( last, m_renderers.end() );
 
 	SortedTable::iterator itor = m_sortedTable.begin();
 	for ( ; itor != m_sortedTable.end() ; ++itor )
@@ -74,6 +75,10 @@ void SWGameLayer::addCamera( SWCamera* camera )
 	if ( proxyID != m_cameraTree.nullID ) m_cameras.push_back( camera );
 	else SWLog( "failed to create camera proxy aabb into dynamic tree" );
 
+	SWTransform* trans = camera->getComponent<SWTransform>();
+	CameraState cameraState;
+	cameraState.lookDir  = camera->getLookDir();
+	m_cameraStateTable[camera] = cameraState;
 	m_proxyIDTable[camera] = proxyID;
 	update();
 }
@@ -85,10 +90,12 @@ void SWGameLayer::removeCamera( SWCamera* camera )
 	ProxyIDTable::iterator itor = m_proxyIDTable.find( camera );
 	if ( itor == m_proxyIDTable.end() ) return;
 
-	m_cameraTree.destroyProxy( itor->second );
-	m_cameras.remove( camera );
 	m_sortedTable.erase( camera );
 	m_proxyIDTable.erase( camera );
+	m_cameraStateTable.erase( camera );
+	m_cameraTree.destroyProxy( itor->second );
+	SWObject::Array::iterator last = std::remove( m_cameras.begin(), m_cameras.end(), camera );
+	m_cameras.erase( last, m_cameras.end() );
 }
 
 void SWGameLayer::update()
@@ -100,7 +107,7 @@ void SWGameLayer::update()
 	CameraArray updatedCameras;
 
 	//! check renderer AABB update
-	for ( SWObject::List::iterator itor = m_renderers.begin()
+	for ( SWObject::Array::iterator itor = m_renderers.begin()
 		; itor != m_renderers.end() 
 		; ++itor )
 	{
@@ -114,8 +121,8 @@ void SWGameLayer::update()
 		if ( m_rendererTree.updateProxy( proxyID, aabb ) ) rendererUpdated = true;
 	}
 
-	//! check camera AABB update
-	for ( SWObject::List::iterator itor = m_cameras.begin()
+	//! check changing of camera
+	for ( SWObject::Array::iterator itor = m_cameras.begin()
 		; itor != m_cameras.end() 
 		; ++itor )
 	{
@@ -123,12 +130,29 @@ void SWGameLayer::update()
 		if ( camera == NULL ) continue;
 		if ( !camera->gameObject()->isActiveInScene() ) continue;
 
-		taabb3d aabb;
-		camera->computeFrustrumAABB( aabb );
-		ProxyIDTable::iterator proxyIDpair = m_proxyIDTable.find( camera );
-		if ( m_cameraTree.updateProxy( proxyIDpair->second, aabb ) )
+		//! check AABB
 		{
-			updatedCameras.push_back( camera );
+			taabb3d aabb;
+			camera->computeFrustrumAABB( aabb );
+			ProxyIDTable::iterator proxyIDpair = m_proxyIDTable.find( camera );
+			if ( m_cameraTree.updateProxy( proxyIDpair->second, aabb ) )
+			{
+				updatedCameras.push_back( camera );
+				continue;
+			}
+		}
+
+		//! check state changing
+		{
+			SWTransform* trans = camera->getComponent<SWTransform>();
+			CameraStateTable::iterator stateItor = m_cameraStateTable.find( camera );
+			if ( stateItor == m_cameraStateTable.end() ) continue;
+			const CameraState& cameraState = stateItor->second;
+			const tvec3& lookDir  = cameraState.lookDir;
+			if ( camera->getLookDir() != lookDir )
+			{
+				updatedCameras.push_back( camera );
+			}
 		}
 	}
 
@@ -136,7 +160,7 @@ void SWGameLayer::update()
 	if ( rendererUpdated )
 	{
 		updatedCameras.clear();
-		SWObject::List::iterator itor = m_cameras.begin();
+		SWObject::Array::iterator itor = m_cameras.begin();
 		for ( ; itor != m_cameras.end() ; ++itor )
 		{
 			SWCamera* camera = swrtti_cast<SWCamera>((*itor)());
@@ -149,7 +173,6 @@ void SWGameLayer::update()
 
 	if ( updatedCameras.size() <= 0 ) return;
 
-	SWLog( "layer rendering updated" );
 	//! re-sorting renderer by camera and AABB Culling
 	tuint count = updatedCameras.size();
 	while ( count-- )
@@ -170,6 +193,10 @@ void SWGameLayer::update()
 			SWRenderer* renderer = (SWRenderer*)m_rendererTree.getUserData( m_aabbResult[i] );
 			sortedArray.push_back( renderer );
 		}
+
+		CameraState cameraState;
+		cameraState.lookDir  = camera->getLookDir();
+		m_cameraStateTable[camera] = cameraState;
 
 		RendererSorter sorter( trans->getPosition(), camera->getLookDir() );
 		std::sort( sortedArray.begin(), sortedArray.end(), sorter );

@@ -71,10 +71,10 @@ void SWGameObject::preUpdate()
 {
 	if ( m_addedComponents.size() )
 	{
-		m_updates = m_addedComponents;
+		m_iterateCopy = m_addedComponents;
 		m_addedComponents.clear();
-		SWObject::List::iterator itor = m_updates.begin();
-		for ( ; itor != m_updates.end() ; ++itor )
+		SWObject::Array::iterator itor = m_iterateCopy.begin();
+		for ( ; itor != m_iterateCopy.end() ; ++itor )
 		{
 			SWComponent* comp = swrtti_cast<SWComponent>( (*itor)() );
 			comp->onStart();
@@ -89,9 +89,9 @@ void SWGameObject::udpate()
 	if ( m_updateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
-		m_updates = m_updateDelegates;
-		SWObject::List::iterator itor = m_updates.end();
-		while ( itor != m_updates.begin() )
+		m_iterateCopy = m_updateDelegates;
+		SWObject::Array::iterator itor = m_iterateCopy.end();
+		while ( itor != m_iterateCopy.begin() )
 		{
 			--itor;
 			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
@@ -109,9 +109,9 @@ void SWGameObject::fixedRateUpdate()
 	if ( m_fixedRateUpdateDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
-		m_updates = m_fixedRateUpdateDelegates;
-		SWObject::List::iterator itor = m_updates.end();
-		while ( itor != m_updates.begin() )
+		m_iterateCopy = m_fixedRateUpdateDelegates;
+		SWObject::Array::iterator itor = m_iterateCopy.end();
+		while ( itor != m_iterateCopy.begin() )
 		{
 			--itor;
 			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
@@ -206,6 +206,8 @@ void SWGameObject::removeComponentAll()
 	SWObject::Array copy = m_components;
 	SWObject::Array::iterator itor = copy.end();
 
+	m_components.clear();
+
 	do
 	{
 		--itor;
@@ -213,14 +215,12 @@ void SWGameObject::removeComponentAll()
 		comp->onRemove();
 		comp->destroy();
 	} while ( itor != copy.begin() );
-
-	m_components.clear();
 }
 
 void SWGameObject::addUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	SWObject::List::iterator itor = m_updateDelegates.begin();
+	SWObject::Array::iterator itor = m_updateDelegates.begin();
 	for ( ; itor != m_updateDelegates.end() ; ++itor )
 	{
 		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
@@ -232,7 +232,10 @@ void SWGameObject::addUpdateDelegator( SWDelegator* dg )
 void SWGameObject::removeUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	m_updateDelegates.remove( dg );
+	SWObject::Array::iterator begin = m_updateDelegates.begin();
+	SWObject::Array::iterator end   = m_updateDelegates.end();
+	SWObject::Array::iterator last = std::remove( begin, end, dg );
+	m_updateDelegates.erase( last, end );
 }
 
 tuint SWGameObject::getUpdateDelegatorCount() const
@@ -243,7 +246,7 @@ tuint SWGameObject::getUpdateDelegatorCount() const
 void SWGameObject::addFixedRateUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	SWObject::List::iterator itor = m_fixedRateUpdateDelegates.begin();
+	SWObject::Array::iterator itor = m_fixedRateUpdateDelegates.begin();
 	for ( ; itor != m_fixedRateUpdateDelegates.end() ; ++itor )
 	{
 		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
@@ -255,7 +258,10 @@ void SWGameObject::addFixedRateUpdateDelegator( SWDelegator* dg )
 void SWGameObject::removeFixedRateUpdateDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	m_fixedRateUpdateDelegates.remove( dg );
+	SWObject::Array::iterator begin = m_fixedRateUpdateDelegates.begin();
+	SWObject::Array::iterator end   = m_fixedRateUpdateDelegates.end();
+	SWObject::Array::iterator last = std::remove( begin, end, dg );
+	m_fixedRateUpdateDelegates.erase( last, end );
 }
 
 tuint SWGameObject::getFixedRateUpdateDelegator() const
@@ -266,7 +272,7 @@ tuint SWGameObject::getFixedRateUpdateDelegator() const
 void SWGameObject::addLayerDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	SWObject::List::iterator itor = m_layerDelegates.begin();
+	SWObject::Array::iterator itor = m_layerDelegates.begin();
 	for ( ; itor != m_layerDelegates.end() ; ++itor )
 	{
 		SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
@@ -278,7 +284,10 @@ void SWGameObject::addLayerDelegator( SWDelegator* dg )
 void SWGameObject::removeLayerDelegator( SWDelegator* dg )
 {
 	if ( !dg ) return;
-	m_layerDelegates.remove( dg );
+	SWObject::Array::iterator begin = m_layerDelegates.begin();
+	SWObject::Array::iterator end   = m_layerDelegates.end();
+	SWObject::Array::iterator last = std::remove( begin, end, dg );
+	m_layerDelegates.erase( last, end );
 }
 
 tuint SWGameObject::getLayerDelegator() const
@@ -347,9 +356,9 @@ void SWGameObject::setLayer( tuint layer )
 	if ( m_layerDelegates.size() )
 	{
 		SWWeakRef<SWGameObject> vital = this;
-		m_updates = m_layerDelegates;
-		SWObject::List::iterator itor = m_updates.begin();
-		while ( itor != m_updates.end() )
+		m_iterateCopy = m_layerDelegates;
+		SWObject::Array::iterator itor = m_iterateCopy.begin();
+		while ( itor != m_iterateCopy.end() )
 		{
 			++itor;
 			SWDelegator* itorDG = swrtti_cast<SWDelegator>( (*itor)() );
