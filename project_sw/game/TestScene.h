@@ -28,7 +28,7 @@ public:
 
 		//! set logo sprite
 		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
-		for ( tuint i = 0 ; i < 10 ; ++i )
+		for ( tuint i = 0 ; i < 100 ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
 

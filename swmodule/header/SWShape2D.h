@@ -25,7 +25,18 @@ class SWCircle : public SWShape2D
 	virtual tvec2 getFarthest( const tvec2& direction );
 };
 
+class SWPolygonShape2D : public SWShape2D
+{
+	SW_RTTI( SWPolygonShape2D, SWShape2D );
+public:
 
+	void set( const tarray<tvec2>& vertices );
+
+private:
+	tvec2 m_centroid;
+	tarray<tvec2> m_vertices;
+	tarray<tvec2> m_normals;
+};
 
 
 #endif //! SWShape2D_h__
