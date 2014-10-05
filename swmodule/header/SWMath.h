@@ -48,6 +48,7 @@ public:
 	float sin( float radian ) const;
 	float cos( float radian ) const;
 	float tan( float radian ) const;
+	float sqrt( float value ) const;
 
 	float atan( float sinValue, float cosValue ) const;
 

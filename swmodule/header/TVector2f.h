@@ -42,8 +42,9 @@ public:
     float dot( const TVector2f& pt ) const;
 
 	//! cross product
-    float cross( float kx, float ky ) const;
-    float cross( const TVector2f& pt ) const;
+	float cross( const TVector2f& pt ) const;
+	float cross( float kx, float ky ) const;
+	TVector2f cross( float kz ) const;
 
     //! 단위화 값 (길이가 0인 벡터에 대한 단위화는 보장하지 않는다. (사전에 체크))
     TVector2f normal() const;

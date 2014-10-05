@@ -25,6 +25,17 @@ public:
 
 	TAABB2D& combine( const TAABB2D& aabb1, const TAABB2D& aabb2 );
 	TAABB2D& combine( const TAABB2D& aabb );
+
+	inline void min( const TVector2f& vec )
+	{
+		lower.x = (lower.x > vec.x)? vec.x:lower.x;
+		lower.y = (lower.y > vec.y)? vec.y:lower.y;
+	}
+	inline void max( const TVector2f& vec )
+	{
+		upper.x = (upper.x > vec.x)? upper.x:vec.x;
+		upper.y = (upper.y > vec.y)? upper.y:vec.y;
+	}
 };
 
 class TAABB3D : public SWMemory

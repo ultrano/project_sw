@@ -144,6 +144,8 @@
     <ClInclude Include="header\TAABB.h" />
     <ClInclude Include="header\TColorRGBA.h" />
     <ClInclude Include="header\SWObjectFactory.h" />
+    <ClInclude Include="header\TMatrix3x3.h" />
+    <ClInclude Include="header\TOBB.h" />
     <ClInclude Include="header\TRay.h" />
     <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />
@@ -255,6 +257,7 @@
     <ClCompile Include="source\SWLog.cpp" />
     <ClCompile Include="source\SWMaterial.cpp" />
     <ClCompile Include="source\SWMath.cpp" />
+    <ClCompile Include="source\TMatrix3x3.cpp" />
     <ClCompile Include="source\TMatrix4x4.cpp" />
     <ClCompile Include="source\SWMemory.cpp" />
     <ClCompile Include="source\SWMesh.cpp" />

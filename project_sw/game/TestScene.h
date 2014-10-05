@@ -2,6 +2,7 @@
 #define TestScene_h__
 
 #include "SWHeaders.h"
+#include "SWShape2D.h"
 
 class TestScene : public SWGameScene
 {
@@ -12,48 +13,27 @@ public:
 
 	override void onAwake()
 	{
-		//! set default camera
-		{
-			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
+		SWShape2D::Transform transform1;
+		transform1.scale = tvec2(1,1);
+		transform1.rotate = SWMath.angleToRadian( 0 );
+		transform1.move = tvec2(0,0);
 
-			SWGameObject* go = new SWGameObject;
-			go->setName( "Camera" );
+		SWShape2D::Transform transform2;
+		transform2.scale = tvec2(1,1);
+		transform2.rotate = SWMath.angleToRadian( 45 );
+		transform2.move = tvec2(3,3);
 
-			SWCamera* cam = go->addComponent<SWCamera>();
-			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
-			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
-			cam->setClearColor( tcolor( 0,0,0,1 ) );
-			cam->setClearFlags( SW_Clear_Color );
-		}
+		SWHardRef<SWCircle> circle = new SWCircle;
+		circle()->set( tvec2::zero, 10 );
 
-		//! set logo sprite
-		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
-		for ( tuint i = 0 ; i < 100 ; ++i )
-		{
-			SWGameObject* go = new SWGameObject;
-
-			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			SWSprite* logoSprite = atlas()->find( "bird_0" );
-			tvec2 logoSize = logoSprite->getSize();
-			renderer->setSprite( logoSprite );
-
-			SWTransform* transform = go->getComponent<SWTransform>();
-			transform->setPosition( tvec3(50*i,0,0) );
-		}
+		SWHardRef<SWPolygonShape2D> polygon = new SWPolygonShape2D;
+		polygon()->setBox(1, 1);
+		
+		testCollide( polygon(), transform1, polygon(), transform2 );
 	}
 
 	override void onFixedRateUpdate()
 	{
-		if ( SWInput.getKey('d') )
-		{
-			SWTransform* trans = findGO("Camera")->getComponent<SWTransform>();
-			trans->setPosition( trans->getPosition() + tvec3(1,0,0) );
-		}
-		else if ( SWInput.getKey('a') )
-		{
-			SWTransform* trans = findGO("Camera")->getComponent<SWTransform>();
-			trans->setPosition( trans->getPosition() - tvec3(1,0,0) );
-		}
 	}
 
 };

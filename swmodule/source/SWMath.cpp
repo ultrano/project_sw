@@ -28,6 +28,11 @@ float __SWMath::tan( float radian ) const
 	return tanf( radian );
 }
 
+float __SWMath::sqrt( float value ) const
+{
+	return sqrtf( value );
+}
+
 float __SWMath::atan( float sinValue, float cosValue ) const
 {
 	return atan2f( sinValue, cosValue );

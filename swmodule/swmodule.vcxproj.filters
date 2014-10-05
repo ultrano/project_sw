@@ -163,9 +163,6 @@
     <Filter Include="SW\SWType\THashString">
       <UniqueIdentifier>{07bddf0d-1f58-497c-8b4c-4699385191a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWType\TMatrix2x2">
-      <UniqueIdentifier>{dee33689-be9f-495c-a063-cdf7a0a5f7fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWShape2D">
       <UniqueIdentifier>{43074a94-f8bb-44e0-ae5b-dd5eea05943e}</UniqueIdentifier>
     </Filter>
@@ -306,6 +303,12 @@
     </Filter>
     <Filter Include="SW\SWGameLayer">
       <UniqueIdentifier>{020bcbd7-871f-4d18-842c-3b62104cdf34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TOBB">
+      <UniqueIdentifier>{909f6062-a45d-4ff6-8247-b91d04e78d79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TMatrix3x3">
+      <UniqueIdentifier>{dee33689-be9f-495c-a063-cdf7a0a5f7fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -645,6 +648,12 @@
     <ClInclude Include="header\SWGameLayer.h">
       <Filter>SW\SWGameLayer</Filter>
     </ClInclude>
+    <ClInclude Include="header\TOBB.h">
+      <Filter>SW\SWType\TOBB</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TMatrix3x3.h">
+      <Filter>SW\SWType\TMatrix3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -925,6 +934,9 @@
     </ClCompile>
     <ClCompile Include="source\SWGameLayer.cpp">
       <Filter>SW\SWGameLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TMatrix3x3.cpp">
+      <Filter>SW\SWType\TMatrix3x3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

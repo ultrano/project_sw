@@ -74,6 +74,11 @@ float TVector2f::cross( const TVector2f &pt ) const
     return cross( pt.x, pt.y );
 }
 
+TVector2f TVector2f::cross( float kz ) const
+{
+	return tvec2( y*kz, -x*kz );
+}
+
 TVector2f   TVector2f::normal() const
 {
     TVector2f pt( 0, 0 );
