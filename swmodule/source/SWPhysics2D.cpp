@@ -104,6 +104,9 @@ void __SWPhysics2D::findNewContacts()
 
 void __SWPhysics2D::updateContacts()
 {
+	static thashstr onCollisionEnter = "onCollisionEnter";
+	static thashstr onCollisionStay  = "onCollisionStay";
+	static thashstr onCollisionLeave = "onCollisionLeave";
 	SWContact2D* contact = m_contactHead();
 	while ( contact )
 	{
@@ -114,17 +117,22 @@ void __SWPhysics2D::updateContacts()
 	contact = m_contactHead();
 	while ( contact )
 	{
+		SWCollider2D* collider1 = contact->fixture1()->getCollide();
+		SWCollider2D* collider2 = contact->fixture2()->getCollide();
 		if ( contact->state.get( SWContact2D::eEntering ) )
 		{
-			SWLog( "entering" );
+			collider1->gameObject()->sendMessage( onCollisionEnter, NULL );
+			collider2->gameObject()->sendMessage( onCollisionEnter, NULL );
 		}
 		else if ( contact->state.get( SWContact2D::eStaying ) )
 		{
-			SWLog( "staying" );
+			collider1->gameObject()->sendMessage( onCollisionStay, NULL );
+			collider2->gameObject()->sendMessage( onCollisionStay, NULL );
 		}
 		else if ( contact->state.get( SWContact2D::eLeaving ) )
 		{
-			SWLog( "leaving" );
+			collider1->gameObject()->sendMessage( onCollisionLeave, NULL );
+			collider2->gameObject()->sendMessage( onCollisionLeave, NULL );
 		}
 		contact = contact->next();
 	}

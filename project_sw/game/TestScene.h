@@ -5,6 +5,30 @@
 #include "SWShape2D.h"
 #include "SWBroadPhase2D.h"
 
+class TestBehavior : public SWBehavior
+{
+	SW_RTTI( TestBehavior, SWBehavior );
+
+public:
+	TestBehavior(factory_constructor) {};
+	override void onCollisionEnter()
+	{
+		SWLog( "onCollisionEnter" );
+	}
+
+	override void onCollisionStay()
+	{
+		SWLog( "onCollisionStay" );
+	}
+
+	override void onCollisionLeave()
+	{
+		SWLog( "onCollisionLeave" );
+	}
+
+};
+
+
 class TestScene : public SWGameScene
 {
 	SW_RTTI(TestScene,SWGameScene);
@@ -14,6 +38,7 @@ public:
 
 	override void onAwake()
 	{
+		SW_GC.registerFactory<TestBehavior>();
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
@@ -52,6 +77,7 @@ public:
 		}
 		{
 			SWGameObject* go = new SWGameObject("test");
+			go->addComponent<TestBehavior>();
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( logoSprite );
 
@@ -62,7 +88,6 @@ public:
 			trans->setLocalScale( tvec3(1,1,1) );
 			trans->setLocalRotate( tvec3::axisZ*SWMath.angleToRadian(45));
 		}
-
 	}
 
 	override void onFixedRateUpdate()

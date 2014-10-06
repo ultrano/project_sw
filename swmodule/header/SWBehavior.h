@@ -31,9 +31,9 @@ public:
 	SWBehavior( factory_constructor );
     ~SWBehavior();
     
-	void delegateMessage( const tstring& msgName, SWObject* param );
-	void setMessageDelegator( const tstring& msgName, const SWDelegator* del );
-	const SWDelegator* getMessageDelegator( const tstring& msgName );
+	void delegateMessage( const thashstr& msgName, SWObject* param );
+	void setMessageDelegator( const thashstr& msgName, const SWDelegator* del );
+	const SWDelegator* getMessageDelegator( const thashstr& msgName );
 
 protected:
 
@@ -41,17 +41,21 @@ protected:
 	virtual void onRemove();
 	virtual void onUpdate();
 	virtual void onFixedRateUpdate();
-	virtual void onCollision( SWCollision2D* );
+	virtual void onCollisionEnter(  );
+	virtual void onCollisionStay(  );
+	virtual void onCollisionLeave(  );
 
 private:
 
 	void update();
 	void fixedRateUpdate();
-	void collision( SWObject* );
+	void collisionEnter( SWObject* );
+	void collisionStay( SWObject* );
+	void collisionLeave( SWObject* );
 
 private:
 
-	typedef ttable< tstring,SWHardRef<SWDelegator> > ReceiverTable;
+	typedef ttable< thashstr,SWHardRef<SWDelegator> > ReceiverTable;
 	ReceiverTable m_recvTable;
 };
 

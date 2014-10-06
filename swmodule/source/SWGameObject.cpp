@@ -295,7 +295,7 @@ tuint SWGameObject::getLayerDelegator() const
 	return m_layerDelegates.size();
 }
 
-void SWGameObject::sendMessage( const tstring& msgName, SWObject* param )
+void SWGameObject::sendMessage( const thashstr& msgName, SWObject* param )
 {
 	SWObject::Array copy = m_components;
 	SWObject::Array::iterator itor = copy.begin();

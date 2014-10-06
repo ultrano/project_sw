@@ -72,7 +72,7 @@ public:
 	void removeLayerDelegator( SWDelegator* dg );
 	tuint getLayerDelegator() const;
 
-	void sendMessage( const tstring& msgName, SWObject* param );
+	void sendMessage( const thashstr& msgName, SWObject* param );
 
 protected:
 
