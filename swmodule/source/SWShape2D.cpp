@@ -1,17 +1,17 @@
 #include "SWShape2D.h"
 #include "SWMath.h"
 
-SWCircle::SWCircle()
+SWCircleShape2D::SWCircleShape2D()
 {
 
 }
 
-SWCircle::~SWCircle()
+SWCircleShape2D::~SWCircleShape2D()
 {
 
 }
 
-bool SWCircle::getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform  )
+bool SWCircleShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform  ) const
 {
 	float a = m_radius * transform.scale.x;
 	float b = m_radius * transform.scale.y;
@@ -22,7 +22,7 @@ bool SWCircle::getFarthest( tvec2& farthest, const tvec2& direction, const Trans
 	float t = SWMath.atan(direction.y, direction.x) - transform.rotate;
 	float cost = SWMath.cos(t);
 	float sint = SWMath.sin(t);
-	tvec2 local( a*cost, b*sint );
+	tvec2 local = tvec2( a*cost, b*sint ) + m_center;
 
 	farthest.x = (local.x*rot1.x) + (local.y*rot2.x) + transform.move.x;
 	farthest.y = (local.x*rot1.y) + (local.y*rot2.y) + transform.move.y;
@@ -30,10 +30,10 @@ bool SWCircle::getFarthest( tvec2& farthest, const tvec2& direction, const Trans
 	return false;
 }
 
-void SWCircle::computeAABB( taabb2d& aabb, const Transform& transform )
+void SWCircleShape2D::computeAABB( taabb2d& aabb, const Transform& transform ) const
 {
-	aabb.lower = tvec2( -FLT_MAX, -FLT_MAX );
-	aabb.upper = tvec2( FLT_MAX, FLT_MAX );
+	aabb.lower = tvec2( FLT_MAX, FLT_MAX );
+	aabb.upper = -aabb.lower;
 	float a = m_radius * transform.scale.x;
 	float b = m_radius * transform.scale.y;
 
@@ -48,7 +48,7 @@ void SWCircle::computeAABB( taabb2d& aabb, const Transform& transform )
 		float t = SWMath.atan(direction.y, direction.x) - transform.rotate;
 		float cost = SWMath.cos(t);
 		float sint = SWMath.sin(t);
-		tvec2 local( a*cost, b*sint );
+		tvec2 local = tvec2( a*cost, b*sint ) + m_center;
 
 		tvec2 point;
 		point.x = (local.x*rot1.x) + (local.y*rot2.x) + transform.move.x;
@@ -90,41 +90,35 @@ void SWPolygonShape2D::set( const tarray<tvec2>& vertices )
 	computeLocalOBB( m_localOBB );
 }
 
-void SWPolygonShape2D::setBox( float halfWidth, float halfHeight )
+void SWPolygonShape2D::setBox( const tvec2& center, float width, float height )
 {
+	float halfWidth  = width/2.0f;
+	float halfHeight = height/2.0f;
 	tarray<tvec2> vertices;
 	vertices.resize(4);
-	vertices[0] = tvec2( halfWidth,  halfHeight);
-	vertices[1] = tvec2(-halfWidth,  halfHeight);
-	vertices[2] = tvec2( halfWidth, -halfHeight);
-	vertices[3] = tvec2(-halfWidth, -halfHeight);
+	vertices[0] = center + tvec2( halfWidth,  halfHeight);
+	vertices[1] = center + tvec2(-halfWidth,  halfHeight);
+	vertices[2] = center + tvec2(-halfWidth, -halfHeight);
+	vertices[3] = center + tvec2( halfWidth, -halfHeight);
 	set( vertices );
 }
 
-bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform )
+bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const
 {
 	if ( m_vertices.size() == 0 ) return false;
 
-	tvec2 rot1( SWMath.cos( transform.rotate ), SWMath.sin( transform.rotate ) );
-	tvec2 rot2 = rot1.cross( -1 );
-	tvec3 col1(rot1.x * transform.scale.x, rot2.x * transform.scale.y, transform.move.x);
-	tvec3 col2(rot1.y * transform.scale.x, rot2.y * transform.scale.y, transform.move.y);
+	tmat33 mat;
+	mat.set( transform.scale, transform.rotate, transform.move );
 
-	farthest = m_vertices.at(0);
-	tvec2 v1;
-	v1.x = (farthest.x * col1.x) + (farthest.y * col1.y) + col1.z;
-	v1.y = (farthest.x * col2.x) + (farthest.y * col2.y) + col2.z;
-	farthest = v1;
-	float maxDist = direction.dot( v1 );
+	farthest = m_vertices.at(0) * mat;
+	float maxDist = direction.dot( farthest );
 
 	tuint index = m_vertices.size();
 	while ( index-- )
 	{
 		const tvec2& v = m_vertices.at( index );
-		
-		v1.x = (v.x * col1.x) + (v.y * col1.y) + col1.z;
-		v1.y = (v.x * col2.x) + (v.y * col2.y) + col2.z;
 
+		tvec2 v1 = v * mat;
 		float dist = direction.dot( v1 );
 		if ( dist > maxDist )
 		{
@@ -136,22 +130,19 @@ bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, con
 	return true;
 }
 
-void SWPolygonShape2D::computeAABB( taabb2d& aabb, const Transform& transform )
+void SWPolygonShape2D::computeAABB( taabb2d& aabb, const Transform& transform ) const
 {
-	tvec2 rot1( SWMath.cos( transform.rotate ), SWMath.sin( transform.rotate ) );
-	tvec2 rot2 = rot1.cross( 1 );
-	tvec3 col1(rot1.x * transform.scale.x, rot2.x * transform.scale.y, transform.move.x);
-	tvec3 col2(rot1.y * transform.scale.x, rot2.y * transform.scale.y, transform.move.y);
+	tmat33 mat;
+	mat.set( transform.scale, transform.rotate, transform.move );
 
-	aabb.set( m_vertices[0], m_vertices[0] );
+	aabb.lower = tvec2(FLT_MAX,FLT_MAX);
+	aabb.upper = -aabb.lower;
 	tuint index = m_vertices.size();
 	while ( index-- )
 	{
-		const tvec2& v = m_vertices.at( index );
+		const tvec2& v = m_vertices[index];
 
-		tvec2 v1;
-		v1.x = (v.x * col1.x) + (v.y * col1.y) + col1.z;
-		v1.y = (v.x * col2.x) + (v.y * col2.y) + col2.z;
+		tvec2 v1 = v * mat;
 
 		aabb.min( v1 );
 		aabb.max( v1 );
@@ -266,9 +257,30 @@ float calculateArea( const tvec2& a, const tvec2& b, const tvec2& c )
 	return area/2.0f;
 }
 
-bool testCollide
-	( SWShape2D* shape1, const SWShape2D::Transform& transform1
-	, SWShape2D* shape2, const SWShape2D::Transform& transform2 )
+void calculateSide( tflag8& sideFlag, const tvec2& a, const tvec2& b, const tvec2& c )
+{
+	tvec2 edgeA = b - a;
+	tvec2 edgeB = c - b;
+	tvec2 edgeC = a - c;
+	tvec2 center = (a+b+c)/3.0f;
+	float det(0), val(0);
+
+	det = edgeA.cross(center - a);
+	val = edgeA.cross(-a);
+	sideFlag.set(0, (det*val) <= 0 );
+
+	det = edgeB.cross(center - b);
+	val = edgeB.cross(-b);
+	sideFlag.set(1, (det*val) <= 0 );
+
+	det = edgeC.cross(center - c);
+	val = edgeC.cross(-c);
+	sideFlag.set(2, (det*val) <= 0 );
+}
+
+bool testShape2D
+	( const SWShape2D* shape1, const SWShape2D::Transform& transform1
+	, const SWShape2D* shape2, const SWShape2D::Transform& transform2 )
 {
 	tvec2 simplex[3];
 
@@ -279,15 +291,15 @@ bool testCollide
 		dir = tvec2::axisX;
 		shape1->getFarthest( farthest1, dir, transform1 );
 		shape2->getFarthest( farthest2, -dir, transform2 );
-		simplex[0] = farthest2 - farthest1;
+		simplex[0] = farthest1 - farthest2;
 
 		dir = (-simplex[0]).normal();
 		shape1->getFarthest( farthest1, dir, transform1 );
 		shape2->getFarthest( farthest2, -dir, transform2 );
-		simplex[1] = farthest2 - farthest1;
+		simplex[1] = farthest1 - farthest2;
 
 		tvec2 line = (simplex[1] - simplex[0]);
-		float kz = line.cross( -simplex[0] );
+		float kz = line.cross( simplex[0] );
 		if ( kz == 0 )
 		{
 			if (  line.dot( -simplex[0] ) < 0 ) return false;
@@ -297,7 +309,7 @@ bool testCollide
 		dir = line.cross( kz ).normal();
 		shape1->getFarthest( farthest1, dir, transform1 );
 		shape2->getFarthest( farthest2, -dir, transform2 );
-		simplex[2] = farthest2 - farthest1;
+		simplex[2] = farthest1 - farthest2;
 	}
 
 	//! try a few times to find overriding using Minkowski Difference and GJK
@@ -310,35 +322,26 @@ bool testCollide
 		originArea += calculateArea( tvec2::zero, simplex[1], simplex[2]);
 		originArea += calculateArea( tvec2::zero, simplex[2], simplex[0]);
 		
-		if ( simplesArea == originArea ) return true;
+		if ( (originArea - simplesArea) < 0.1f ) return true;
 
-		tvec2 edge1 = simplex[1] - simplex[0];
-		tvec2 edge2 = simplex[2] - simplex[1];
-		tvec2 edge3 = simplex[0] - simplex[2];
-
-		tvec2 dir1  = tvec2::zero - simplex[0];
-		tvec2 dir2  = tvec2::zero - simplex[1];
-		tvec2 dir3  = tvec2::zero - simplex[2];
-
-		float kz1 = edge1.cross( dir1 );
-		float kz2 = edge2.cross( dir2 );
-		float kz3 = edge3.cross( dir3 );
+		tflag8 sideFlag;
+		calculateSide( sideFlag, simplex[0], simplex[1], simplex[2] );
 		tuint count = 0;
 		tuint index = 0;
-		tvec2 edge;
 
-		if ( kz1 > 0 ) {edge = edge1; index = 0; count += 1;}
-		if ( kz2 > 0 ) {edge = edge2; index = 1; count += 1;}
-		if ( kz3 > 0 ) {edge = edge3; index = 2; count += 1;}
+		if ( sideFlag.get(0) ) { index = 0; count += 1;}
+		if ( sideFlag.get(1) ) { index = 1; count += 1;}
+		if ( sideFlag.get(2) ) { index = 2; count += 1;}
 		if ( count >= 2 ) return false;
 
-		float kz = edge.cross(-simplex[index]);
-		tvec2 dir = edge.cross( kz );
+		tvec2 edge = simplex[(index+1)%3]-simplex[index];
+		float kz = edge.cross(simplex[index]);
+		tvec2 dir = edge.cross( kz ).normal();
 		tvec2 farthest1, farthest2;
 
 		shape1->getFarthest( farthest1, dir, transform1 );
 		shape2->getFarthest( farthest2, -dir, transform2 );
-		simplex[(index+2)%3] = farthest2 - farthest1;
+		simplex[(index+2)%3] = farthest1 - farthest2;
 	}
 	return false;
 }

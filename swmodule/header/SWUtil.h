@@ -22,7 +22,7 @@ public:
 	void* alloc( size_t size );
 	void  free( void* memory );
 
-	tnumber strToNum( const tstring& str );
+	tdouble strToNum( const tstring& str );
 
 	/*
 	bool utf8ToUTF16( const tstring& utf8, twstring& unicode );

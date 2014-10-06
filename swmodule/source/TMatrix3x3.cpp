@@ -5,12 +5,13 @@ void TMatrix3x3::set( const TVector2f& scale, float rotate, const TVector2f& mov
 {
 	float cost = SWMath.cos( rotate );
 	float sint = SWMath.sin( rotate );
+	
 	m11 = +cost * scale.x;
-	m21 = +sint * scale.y;
-	m31 = move.x;
-	m12 = -sint * scale.x;
+	m12 = +sint * scale.x;
+	m21 = -sint * scale.y;
 	m22 = +cost * scale.y;
-	m32 = move.y;
+
+	m31 = move.x; m32 = move.y;
 	m13 = 0; m23 = 0; m33 = 1;
 }
 

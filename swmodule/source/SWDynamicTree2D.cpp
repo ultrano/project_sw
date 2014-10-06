@@ -47,12 +47,12 @@ tuint SWDynamicTree2D::createProxy( const taabb2d& aabb, void* userData )
 	return proxyID;
 }
 
-void SWDynamicTree2D::updateProxy( tuint proxyID, const taabb2d& aabb )
+bool SWDynamicTree2D::updateProxy( tuint proxyID, const taabb2d& aabb )
 {
-	if ( proxyID >= m_nodes.size() ) return;
+	if ( proxyID >= m_nodes.size() ) return false;
 
 	TreeNode& node = m_nodes[proxyID];
-	if ( node.aabb.contains( aabb ) ) return;
+	if ( node.aabb.contains( aabb ) ) return false;
 
 	removeLeaf( proxyID );
 
@@ -62,6 +62,8 @@ void SWDynamicTree2D::updateProxy( tuint proxyID, const taabb2d& aabb )
 	node.aabb.upper += extention;
 
 	insertLeaf( proxyID );
+
+	return true;
 }
 
 void SWDynamicTree2D::destroyProxy( tuint proxyID )
@@ -270,6 +272,8 @@ bool SWDynamicTree2D::getFatAABB( tuint proxyID, taabb2d& aabb ) const
 
 void SWDynamicTree2D::query( tarray<tuint>& result, const taabb2d& aabb ) const
 {
+	result.clear();
+
 	tlist<tuint> suspects;
 	suspects.push_back( m_rootID );
 

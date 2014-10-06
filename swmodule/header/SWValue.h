@@ -21,7 +21,7 @@ public:
 	bool isArray() const;
 	bool isValue() const;
 
-	const tnumber&  asNumber() const;
+	const tdouble&  asNumber() const;
 	const tstring&  asString() const;
 	const tboolean& asBoolean() const;
 

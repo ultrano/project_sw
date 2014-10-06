@@ -310,6 +310,18 @@
     <Filter Include="SW\SWType\TMatrix3x3">
       <UniqueIdentifier>{dee33689-be9f-495c-a063-cdf7a0a5f7fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWFixture2D">
+      <UniqueIdentifier>{4e4d6bb2-b740-464d-a1fe-2b3b7003ef83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWBroadPhase">
+      <UniqueIdentifier>{84ff1edd-9a3a-4604-a5c1-b40bcc843542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWType\TFlag">
+      <UniqueIdentifier>{5ab40f2b-1f46-41d6-ae37-e604dd3e8a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWContact2D">
+      <UniqueIdentifier>{409e6e16-db51-4636-9164-5aa84ecfd55c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -654,6 +666,18 @@
     <ClInclude Include="header\TMatrix3x3.h">
       <Filter>SW\SWType\TMatrix3x3</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWFixture2D.h">
+      <Filter>SW\SWFixture2D</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWBroadPhase2D.h">
+      <Filter>SW\SWBroadPhase</Filter>
+    </ClInclude>
+    <ClInclude Include="header\TFlag.h">
+      <Filter>SW\SWType\TFlag</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWContact2D.h">
+      <Filter>SW\SWContact2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -937,6 +961,15 @@
     </ClCompile>
     <ClCompile Include="source\TMatrix3x3.cpp">
       <Filter>SW\SWType\TMatrix3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWFixture2D.cpp">
+      <Filter>SW\SWFixture2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWBroadPhase2D.cpp">
+      <Filter>SW\SWBroadPhase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWContact2D.cpp">
+      <Filter>SW\SWContact2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

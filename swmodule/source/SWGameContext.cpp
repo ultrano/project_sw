@@ -33,6 +33,7 @@ void registerBasicObjectFactories( SWGameContext* gc )
 	gc->registerFactory<SWActScaleBy>();
 	
 	gc->registerFactory<SWCamera>();
+	gc->registerFactory<SWCollider2D>();
 	
 	gc->registerFactory<SWFontRenderer>();
 

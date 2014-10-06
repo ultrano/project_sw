@@ -177,18 +177,19 @@ public:
 	{
 		if ( m_ref != ref.m_ref )
 		{
-			if ( m_ref )
+			SWRefObject* oldRef = m_ref;
+			SWRefObject* newRef = ref.isValid()? ref.m_ref:NULL;
+			if ( newRef )
 			{
-				m_ref->decHard();
-				m_ref->decWeak();
-				m_ref = NULL;
+				newRef->incHard();
+				newRef->incWeak();
 			}
-			if ( ref.isValid() )
+			if ( oldRef )
 			{
-				m_ref = ref.m_ref;
-				m_ref->incHard();
-				m_ref->incWeak();
+				oldRef->decHard();
+				oldRef->decWeak();
 			}
+			m_ref = newRef;
 		}
 		return *this;
 	}
@@ -196,18 +197,19 @@ public:
 	{
 		if ( m_ref != (obj?obj->getRefObject():NULL) )
 		{
-			if ( m_ref )
+			SWRefObject* oldRef = m_ref;
+			SWRefObject* newRef = ( obj && obj->getRefObject() )? obj->getRefObject():NULL;
+			if ( newRef )
 			{
-				m_ref->decHard();
-				m_ref->decWeak();
-				m_ref = NULL;
+				newRef->incHard();
+				newRef->incWeak();
 			}
-			if ( obj && obj->getRefObject() )
+			if ( oldRef )
 			{
-				m_ref = obj->getRefObject();
-				m_ref->incHard();
-				m_ref->incWeak();
+				oldRef->decHard();
+				oldRef->decWeak();
 			}
+			m_ref = newRef;
 		}
 		return *this;
 	}

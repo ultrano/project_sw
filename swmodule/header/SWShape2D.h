@@ -16,20 +16,21 @@ public:
 		tvec2 scale;
 		float rotate;
 		tvec2 move;
+		Transform() : scale(tvec2::one), rotate(0), move(tvec2::zero) {}
 	};
 
-	abstract bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) = 0;
-	abstract void computeAABB( taabb2d& aabb, const Transform& transform ) = 0;
+	abstract bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const = 0;
+	abstract void computeAABB( taabb2d& aabb, const Transform& transform ) const = 0;
 };
 
-class SWCircle : public SWShape2D
+class SWCircleShape2D : public SWShape2D
 {
-	SW_RTTI( SWCircle, SWShape2D );
+	SW_RTTI( SWCircleShape2D, SWShape2D );
 	
 public:
 	
-	SWCircle();
-	~SWCircle();
+	SWCircleShape2D();
+	~SWCircleShape2D();
 
 	void set( const tvec2& center, float radius ) { m_center = center; m_radius = radius; }
 
@@ -39,8 +40,8 @@ public:
 	void setRadius( float radius ) { m_radius = radius; }
 	float getRadius() const { return m_radius; }
 
-	override bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform );
-	override void computeAABB( taabb2d& aabb, const Transform& transform );
+	override bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const;
+	override void computeAABB( taabb2d& aabb, const Transform& transform ) const;
 
 private:
 	tvec2 m_center;
@@ -56,9 +57,9 @@ public:
 	~SWPolygonShape2D();
 
 	void set( const tarray<tvec2>& vertices );
-	void setBox( float halfWidth, float halfHeight );
-	override bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform );
-	override void computeAABB( taabb2d& aabb, const Transform& transform );
+	void setBox( const tvec2& center, float width, float height );
+	override bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const;
+	override void computeAABB( taabb2d& aabb, const Transform& transform ) const;
 private:
 	void computeLocalOBB( tobb2d& obb );
 private:
@@ -68,6 +69,6 @@ private:
 
 };
 
-bool testCollide( SWShape2D* shape1, const SWShape2D::Transform& transform1 , SWShape2D* shape2, const SWShape2D::Transform& transform2 );
+bool testShape2D( const SWShape2D* shape1, const SWShape2D::Transform& transform1 , const SWShape2D* shape2, const SWShape2D::Transform& transform2 );
 
 #endif //! SWShape2D_h__

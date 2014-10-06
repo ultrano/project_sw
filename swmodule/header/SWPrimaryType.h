@@ -10,28 +10,42 @@
 
 typedef std::basic_string<char, std::char_traits<char>, SWAllocator<char> > tstring2;
 typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, SWAllocator<wchar_t> > twstring2;
+
 typedef std::string    tstring;
 typedef std::wstring   twstring;
-typedef double         tnumber;
+
 typedef bool           tboolean;
-typedef int            tint;
-typedef short          tshort;
-typedef char           tchar;
+
 typedef float          tfloat;
-typedef unsigned int   tuint;
+typedef double         tdouble;
+
+typedef tfloat         tfloat32;
+typedef double         tdouble64;
+
+typedef tfloat32       treal32;
+typedef tdouble64      treal64;
+
+typedef short          tshort;
 typedef unsigned short tushort;
+
+typedef char           tchar;
 typedef unsigned char  tbyte;
+
+typedef int            tint;
+typedef tchar          tint8;
+typedef tshort         tint16;
 typedef tint           tint32;
 typedef long long int  tint64;
+
+typedef unsigned int   tuint;
+typedef tbyte          tuint8;
+typedef tushort        tuint16;
 typedef tuint          tuint32;
 typedef unsigned long long int tuint64;
-typedef tshort         tint16;
-typedef tushort        tuint16;
-typedef tchar          tint8;
-typedef tbyte          tuint8;
+
 typedef tuint32        thash32;
 typedef tuint64        thash64;
-typedef tfloat         tfloat32;
+
 
 #define tlist  std::list
 #define ttable std::map

@@ -2,15 +2,51 @@
 #define SWCollider2D_h__
 
 #include "SWComponent.h"
+#include "SWShape2D.h"
 
+class SWFixture2D;
+class SWBroadPhase2D;
+class SWContact2D;
+class SWContactEdge2D;
 class SWCollider2D : public SWComponent
 {
 	SW_RTTI( SWCollider2D, SWComponent );
 public:
 
+	SWCollider2D( factory_constructor );
+	~SWCollider2D();
+
+	SWFixture2D* addCircle( const tvec2& center, float radius );
+	SWFixture2D* addBox( const tvec2& center, float width, float height );
+	SWFixture2D* addPolygon( const tarray<tvec2>& vertices );
+
+	void removeFixture( SWFixture2D* fixture );
+	void removeAllFixture();
+
+	const SWShape2D::Transform& getTransform2D() const { return m_transform2D; }
+
+	void addContact( const SWContact2D* contact );
+	void removeContact( const SWContact2D* contact );
+	const SWContactEdge2D* getContactEdge() const;
+
+protected:
+
 	void onAwake();
+	void onStart();
 	void onRemove();
-	
+	void onFixedUpdate();
+
+private:
+
+	void addFixture( SWFixture2D* fixture );
+	void updateTransform2D();
+
+private:
+	typedef tlist<SWHardRef<SWFixture2D>> FixtureList;
+	FixtureList m_fixtures;
+	SWShape2D::Transform m_transform2D;
+	SWWeakRef<SWBroadPhase2D> m_broadPhase;
+	SWHardRef<SWContactEdge2D> m_contactEdge;
 };
 
 class SWCollision2D : public SWObject

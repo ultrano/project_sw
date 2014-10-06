@@ -31,9 +31,9 @@ bool SWValue::isValue() const
 	return ( isNumber() || isString() || isBoolean() || isTable() || isArray() );
 }
 
-const tnumber& SWValue::asNumber() const
+const tdouble& SWValue::asNumber() const
 {
-	static tnumber static_value = 0;
+	static tdouble static_value = 0;
 	static_value = 0;
 	{
 		SWNumber* object = swrtti_cast<SWNumber>(this);

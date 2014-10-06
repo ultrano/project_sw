@@ -31,7 +31,7 @@ void  __SWUtil::free( void* memory )
 	//::free( memory );
 }
 
-tnumber __SWUtil::strToNum( const tstring& str )
+tdouble __SWUtil::strToNum( const tstring& str )
 {
 	float num = 0;
 	sscanf( str.c_str(), "%f", &num );
