@@ -34,6 +34,8 @@ void SWCollider2D::onStart()
 
 void SWCollider2D::onRemove()
 {
+	removeAllContactEdges();
+	removeAllFixtures();
 	gameObject()->removeFixedRateUpdateDelegator( GetDelegator( onFixedUpdate ) );
 	SWPhysics2D.m_colliders.remove( this );
 	__super::onRemove();
@@ -106,7 +108,7 @@ void SWCollider2D::removeFixture( SWFixture2D* fixture )
 	m_fixtures.remove( fixture );
 }
 
-void SWCollider2D::removeAllFixture()
+void SWCollider2D::removeAllFixtures()
 {
 	FixtureList::iterator itor = m_fixtures.begin();
 	for ( ; itor != m_fixtures.end() ; ++itor )
@@ -117,7 +119,7 @@ void SWCollider2D::removeAllFixture()
 	m_fixtures.clear();
 }
 
-void SWCollider2D::addContact( const SWContact2D* contact )
+void SWCollider2D::addContactEdge( const SWContact2D* contact )
 {
 	SWContactEdge2D* contactEdge = new SWContactEdge2D;
 	contactEdge->next = m_contactEdge;
@@ -132,7 +134,7 @@ void SWCollider2D::addContact( const SWContact2D* contact )
 	m_contactEdge = contactEdge;
 }
 
-void SWCollider2D::removeContact( const SWContact2D* contact )
+void SWCollider2D::removeContactEdge( const SWContact2D* contact )
 {
 	SWContactEdge2D* contactEdge = m_contactEdge();
 	while ( contactEdge )
@@ -147,6 +149,17 @@ void SWCollider2D::removeContact( const SWContact2D* contact )
 			break;
 		}
 		contactEdge = contactEdge->next();
+	}
+}
+
+void SWCollider2D::removeAllContactEdges()
+{
+	SWHardRef<SWContactEdge2D> ce = m_contactEdge();
+	while ( ce() )
+	{
+		SWHardRef<SWContactEdge2D> ce0 = ce();
+		ce = ce()->next();
+		SWPhysics2D.removeContact( ce0()->contact() );
 	}
 }
 

@@ -21,12 +21,13 @@ public:
 	SWFixture2D* addPolygon( const tarray<tvec2>& vertices );
 
 	void removeFixture( SWFixture2D* fixture );
-	void removeAllFixture();
+	void removeAllFixtures();
 
 	const SWShape2D::Transform& getTransform2D() const { return m_transform2D; }
 
-	void addContact( const SWContact2D* contact );
-	void removeContact( const SWContact2D* contact );
+	void addContactEdge( const SWContact2D* contact );
+	void removeContactEdge( const SWContact2D* contact );
+	void removeAllContactEdges();
 	const SWContactEdge2D* getContactEdge() const;
 
 protected:
@@ -43,6 +44,7 @@ private:
 
 private:
 	typedef tlist<SWHardRef<SWFixture2D>> FixtureList;
+
 	FixtureList m_fixtures;
 	SWShape2D::Transform m_transform2D;
 	SWWeakRef<SWBroadPhase2D> m_broadPhase;

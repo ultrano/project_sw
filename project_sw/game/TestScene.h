@@ -24,6 +24,7 @@ public:
 	override void onCollisionLeave()
 	{
 		SWLog( "onCollisionLeave" );
+		gameObject()->destroy();
 	}
 
 };
@@ -62,6 +63,7 @@ public:
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
+			go->addComponent<TestBehavior>();
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( logoSprite );
 			
@@ -77,7 +79,6 @@ public:
 		}
 		{
 			SWGameObject* go = new SWGameObject("test");
-			go->addComponent<TestBehavior>();
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( logoSprite );
 

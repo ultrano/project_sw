@@ -44,8 +44,16 @@ SWContact2D* __SWPhysics2D::createContact()
 void __SWPhysics2D::removeContact( SWContact2D* contact )
 {
 	if ( !contact ) return;
-	contact->fixture1()->getCollide()->removeContact( contact );
-	contact->fixture2()->getCollide()->removeContact( contact );
+	if ( SWFixture2D* fixture = contact->fixture1() )
+	{
+		SWCollider2D* collider = fixture->getCollide();
+		if ( collider ) collider->removeContactEdge( contact );
+	}
+	if ( SWFixture2D* fixture = contact->fixture2() )
+	{
+		SWCollider2D* collider = fixture->getCollide();
+		if ( collider ) collider->removeContactEdge( contact );
+	}
 	SWContact2D* next = contact->next();
 	SWContact2D* prev = contact->prev();
 	if ( prev ) prev->next = next;
@@ -97,8 +105,8 @@ void __SWPhysics2D::findNewContacts()
 		contact->friction = SWMath.sqrt( fixture1->getFriction() * fixture2->getFriction() );
 		contact->bounciness = (fixture1->getBounciness() + fixture2->getBounciness()) * 0.5f;
 
-		if ( collider1 ) collider1->addContact( contact );
-		if ( collider2 ) collider2->addContact( contact );
+		if ( collider1 ) collider1->addContactEdge( contact );
+		if ( collider2 ) collider2->addContactEdge( contact );
 	}
 }
 
