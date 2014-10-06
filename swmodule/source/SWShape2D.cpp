@@ -302,6 +302,7 @@ bool testShape2D
 		float kz = line.cross( simplex[0] );
 		if ( kz == 0 )
 		{
+			if ( (simplex[1] == simplex[0]) ) return false;
 			if (  line.dot( -simplex[0] ) < 0 ) return false;
 			if ( -line.dot( -simplex[1] ) < 0 ) return false;
 			return true;

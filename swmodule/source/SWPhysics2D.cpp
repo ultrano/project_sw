@@ -107,6 +107,7 @@ void __SWPhysics2D::updateContacts()
 	static thashstr onCollisionEnter = "onCollisionEnter";
 	static thashstr onCollisionStay  = "onCollisionStay";
 	static thashstr onCollisionLeave = "onCollisionLeave";
+
 	SWContact2D* contact = m_contactHead();
 	while ( contact )
 	{

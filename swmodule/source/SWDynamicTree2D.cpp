@@ -1,7 +1,7 @@
 #include "SWDynamicTree2D.h"
 
 #define SW_ExpandCount (256)
-#define SW_AddedExtension (0.2f)
+#define SW_AddedExtension (2.0f)
 
 
 struct SWDynamicTree2D::TreeNode : public SWMemory
