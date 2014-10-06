@@ -18,7 +18,7 @@
 class SWTransform : public SWComponent
 {
     SW_RTTI( SWTransform, SWComponent );
-
+	friend class SWGameScene;
 public:
 	
 	SWTransform();
@@ -59,9 +59,6 @@ public:
 	void rotate( const tvec3& euler );
 
 	SWTransform* find( const tstring& name ) const;
-	SWTransform* getChildAt( tuint index ) const;
-	tuint getChildrenCount() const;
-	void copyChildren( SWObject::Array& transList ) const;
 
 protected:
 
@@ -77,12 +74,14 @@ private:
 	void needUpdateMatrix();
 	void updateMatrix();
 	SWTransform* findImmadiate( const tstring& name ) const;
+	void addChild( SWGameObject* go );
+	void removeChild( SWGameObject* go );
 private:
 
 	SWWeakRef<SWTransform> m_parent;
+	SWHardRef<SWGameObject> m_child;
 
 	SWObject::Array m_iterateCopy;
-	SWObject::Array m_children;
 	SWObject::Array m_setParentDelegates;
 
 	TVector3f    m_scale;    //< 비율.

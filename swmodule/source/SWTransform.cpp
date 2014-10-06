@@ -14,6 +14,7 @@
 #include "SWParam.h"
 #include "SWMath.h"
 #include "SWObjectStream.h"
+#include "SWDefines.h"
 #include <algorithm>
 #include <math.h>
 
@@ -47,24 +48,42 @@ void SWTransform::setParent( SWTransform* parent )
 {
 	if ( m_parent() == parent ) return;
 
-	SWGameObject::Ref object = gameObject();
+	SWHardRef<SWGameObject> object = gameObject();
 
-	if ( m_parent() )
+	//! remove from old parent
 	{
-		SWObject::Array::iterator begin = m_parent()->m_children.begin();
-		SWObject::Array::iterator end   = m_parent()->m_children.end();
-		SWObject::Array::iterator last = std::remove( begin, end, object() );
-		m_parent()->m_children.erase( last, end );
-	}
-	else
-	{
-		SWObject::Array& roots = SW_GC.getScene()->m_roots;
-		SWObject::Array::iterator itor = std::remove( roots.begin(), roots.end(), object() );
-		roots.erase( itor, roots.end() );
+		SWHardRef<SWGameObject> next = object()->m_next();
+		SWHardRef<SWGameObject> prev = object()->m_prev();
+		if ( next() ) next()->m_prev = prev();
+		if ( prev() ) prev()->m_next = next();
+		if ( m_parent() )
+		{
+			if ( m_parent()->m_child == object() )
+			{
+				m_parent()->m_child = object();
+			}
+		} else {
+			if ( SW_GC.getScene()->m_rootGO == object() )
+			{
+				SW_GC.getScene()->m_rootGO = object();
+			}
+		}
 	}
 
-	if ( parent ) parent->m_children.push_back( object() );
-	else SW_GC.getScene()->m_roots.push_back( object() );
+	//! add to new parent
+	{
+		SWHardRef<SWGameObject> head;
+		if ( parent )
+		{
+			head = parent->m_child();
+			parent->m_child = object();
+		} else {
+			head = SW_GC.getScene()->m_rootGO();
+			SW_GC.getScene()->m_rootGO = object();
+		}
+		object()->m_next = head();
+		head()->m_prev = object();
+	}
 
 	m_parent = parent;
 
@@ -309,47 +328,75 @@ SWTransform* SWTransform::findImmadiate( const tstring& name ) const
 {
 	if ( name.size() == 0 ) return NULL;
 
-	SWObject::Array::const_iterator itor = m_children.begin();
-	for ( ; itor != m_children.end() ;++itor )
+	for ( SWGameObject* itor = m_child() ; itor ;  )
 	{
-		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
-		if ( object->getName() == name ) return object->getComponent<SWTransform>();
+		SWGameObject* go = itor;
+		itor = itor->m_next();
+		if ( go->getName() == name ) return go->getComponent<SWTransform>();
 	}
 	return NULL;
 }
 
-SWTransform* SWTransform::getChildAt( tuint index ) const
+void SWTransform::addChild( SWGameObject* go )
 {
-	tuint count = m_children.size();
-	if ( index >= count ) return NULL;
-
-	SWObject::Array::const_iterator itor = m_children.begin();
-	while ( index-- ) ++itor;
-	SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
-	return object->getComponent<SWTransform>();
-}
-
-tuint SWTransform::getChildrenCount() const
-{
-	return m_children.size();
-}
-
-void SWTransform::copyChildren( SWObject::Array& transList ) const
-{
-	transList.clear();
-
-	SWObject::Array::const_iterator itor = m_children.begin();
-	for ( ; itor != m_children.end() ; ++itor )
+	if ( go == NULL ) return;
+	SWTransform* trans = go->getComponent<SWTransform>();
+	if ( trans->m_parent() == this ) return;
+	
+	//! attach to list
 	{
-		SWGameObject* object = swrtti_cast<SWGameObject>( (*itor)() );
-		transList.push_back( object->getComponent<SWTransform>() );
+		SWHardRef<SWGameObject> object = go;
+		SWHardRef<SWTransform> oldParent = trans->m_parent();
+		if ( oldParent() ) oldParent()->removeChild( object() );
+		object()->m_next = m_child();
+		m_child()->m_prev = object();
+		m_child = object();
 	}
+	trans->m_parent = this;
+
+	go->m_state.set(SW_GO_Root, false);
+	go->m_state.set(SW_GO_Child, true);
+	go->m_state.set(SW_GO_Drift, false);
+}
+
+void SWTransform::removeChild( SWGameObject* go )
+{
+	if ( go == NULL ) return;
+	SWTransform* trans = go->getComponent<SWTransform>();
+	if ( trans->m_parent() != this ) return;
+
+	//! dettach from list
+	{
+		SWHardRef<SWGameObject> object = go;
+		SWHardRef<SWGameObject> next = object()->m_next();
+		SWHardRef<SWGameObject> prev = object()->m_prev();
+		if ( next() ) next()->m_prev = prev();
+		if ( prev() ) prev()->m_next = next();
+		if ( m_child == object() ) m_child = next();
+	}
+	trans->m_parent = NULL;
+
+	go->m_state.set(SW_GO_Root, false);
+	go->m_state.set(SW_GO_Child, false);
+	go->m_state.set(SW_GO_Drift, true);
 }
 
 void SWTransform::onAwake()
 {
 	__super::onAwake();
-	SW_GC.getScene()->m_roots.push_back( gameObject.getRaw() );
+
+	//! add to root
+	{
+		SWHardRef<SWGameObject> hold = gameObject.getRaw();
+		SWHardRef<SWGameObject> head = SW_GC.getScene()->m_rootGO();
+		if ( head() )
+		{
+			gameObject()->m_next = head();
+			head()->m_prev = gameObject();
+		}
+		SW_GC.getScene()->m_rootGO = gameObject();
+	}
+
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
 	gameObject()->addFixedRateUpdateDelegator( GetDelegator( onFixedRateUpdate ) );
 }
@@ -358,29 +405,32 @@ void SWTransform::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 
-	m_iterateCopy = m_children;
-	SWObject::Array::iterator itor = m_iterateCopy.begin();
-	for ( ; itor != m_iterateCopy.end() ; ++itor )
+	for ( SWGameObject* itor = m_child() ; itor ;  )
 	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
+		SWGameObject* go = itor;
+		itor = itor->m_next();
 		go->destroyNow();
 	}
-	m_iterateCopy.clear();
-	m_children.clear();
-	
-	SWGameObject* object = gameObject();
-	if ( m_parent() )
+
+	//! remove from old parent
 	{
-		SWObject::Array::iterator begin = m_parent()->m_children.begin();
-		SWObject::Array::iterator end   = m_parent()->m_children.end();
-		SWObject::Array::iterator last = std::remove( begin, end, object );
-		m_parent()->m_children.erase( last, end );
-	}
-	else
-	{
-		SWObject::Array& roots = SW_GC.getScene()->m_roots;
-		SWObject::Array::iterator itor = std::remove( roots.begin(), roots.end(), object );
-		roots.erase( itor, roots.end() );
+		SWHardRef<SWGameObject> object = gameObject();
+		SWHardRef<SWGameObject> next = object()->m_next();
+		SWHardRef<SWGameObject> prev = object()->m_prev();
+		if ( next() ) next()->m_prev = prev();
+		if ( prev() ) prev()->m_next = next();
+		if ( m_parent() )
+		{
+			if ( m_parent()->m_child == object() )
+			{
+				m_parent()->m_child = object();
+			}
+		} else {
+			if ( SW_GC.getScene()->m_rootGO == object() )
+			{
+				SW_GC.getScene()->m_rootGO = object();
+			}
+		}
 	}
 }
 
@@ -389,11 +439,8 @@ void SWTransform::onUpdate()
 	updateMatrix();
 
 	SWWeakRef<SWTransform> vital = this;
-	m_iterateCopy = m_children;
-	SWObject::Array::iterator itor = m_iterateCopy.begin();
-	for ( ; itor != m_iterateCopy.end() ;++itor )
+	for ( SWGameObject* go = m_child() ; go ; go = go->m_next() )
 	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 		if ( go->isActiveSelf() )
 		{
 			go->udpate();
@@ -405,14 +452,12 @@ void SWTransform::onUpdate()
 void SWTransform::onFixedRateUpdate()
 {
 	SWWeakRef<SWTransform> vital = this;
-	m_iterateCopy = m_children;
-	SWObject::Array::iterator itor = m_iterateCopy.begin();
-	for ( ; itor != m_iterateCopy.end() ;++itor )
+	for ( SWHardRef<SWGameObject> go = m_child()
+		; go.isValid() ; go = go()->m_next )
 	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		if ( go->isActiveSelf() )
+		if ( go()->isActiveSelf() )
 		{
-			go->fixedRateUpdate();
+			go()->fixedRateUpdate();
 			if ( !vital.isValid() ) break;
 		}
 	}
@@ -439,12 +484,10 @@ void SWTransform::updateMatrix()
 
 void SWTransform::serialize( SWObjectWriter* writer )
 {
-	writer->writeUInt( m_children.size() );
-	SWObject::Array::iterator itor = m_children.begin();
-	for ( ; itor != m_children.end() ; ++itor )
-	{
-		writer->writeObject( (*itor)() );
-	}
+	tuint count = 0;
+	for ( SWGameObject* go = m_child() ; go ; go = go->m_next() ) count += 1;
+	writer->writeUInt( count );
+	for ( SWGameObject* go = m_child() ; go ; go = go->m_next() ) writer->writeObject( go );
 	
 	writer->writeVec3( m_scale );
 	writer->writeQuat( m_rotate );
@@ -454,10 +497,15 @@ void SWTransform::serialize( SWObjectWriter* writer )
 
 void SWTransform::deserialize( SWObjectReader* reader )
 {
-	m_children.resize( reader->readUInt() );
-	for ( tuint i = 0 ; i < m_children.size() ; ++i )
+	tuint count = reader->readUInt();
+	SWGameObject* go = NULL;
+	SWGameObject* last = NULL;
+	while ( count-- )
 	{
-		m_children.push_back( reader->readObject() );
+		go = (SWGameObject*)reader->readObject();
+		go->m_prev = last;
+		if ( last ) last->m_next = go;
+		else m_child = go;
 	}
 
 	reader->readVec3( m_scale );

@@ -88,10 +88,13 @@ private:
 
 private:
 
+	SWHardRef<SWGameObject> m_next;
+	SWWeakRef<SWGameObject> m_prev;
 	
 	thashstr m_name;
 	tuint    m_layer;
 	bool     m_active;
+	tflag8   m_state;
 
 	SWObject::Array m_components;
 	SWObject::Array m_loadedComponents;

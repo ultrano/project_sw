@@ -75,6 +75,11 @@ enum SWDefines
 	SW_File_Binary  = 1 << 1,
 	SW_File_Append  = 1 << 2,
 	SW_File_Refresh = 1 << 3,
+
+	//! game object state
+	SW_GO_Root  = 0,
+	SW_GO_Child = 1,
+	SW_GO_Drift = 2,
 };
 
 #define SW_PI (3.14f)

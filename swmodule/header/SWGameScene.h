@@ -70,6 +70,9 @@ private:
 	void updateCamera( tuint32 oldMask, tuint32 newMask, SWCamera* camera );
 
 	SWGameLayer* getLayer( tuint layer );
+
+	void addRootGO( SWGameObject* go );
+	void removeRootGO( SWGameObject* go );
 private:
 
 	friend class SWTransform;
@@ -91,7 +94,7 @@ private:
 	typedef tarray<SWHardRef<SWGameLayer>> LayerArray;
 
 	//! root game objects
-	SWObject::Array m_roots;
+	SWHardRef<SWGameObject> m_rootGO;
 	SWObject::Array m_iterateCopy;
 	SWObject::Array m_destroyGOs;
 	

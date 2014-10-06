@@ -45,14 +45,12 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 {
 	tuint offset = name.find( '/' );
 	tstring subName = ( offset != tstring::npos )? name.substr( 0, offset ) : name;
-	
+
 	SWGameObject* object = NULL;
-	SWObject::Array::iterator itor = m_roots.begin();
-	for ( ; itor != m_roots.end() ; ++itor )
+	for ( SWGameObject* go = m_rootGO() ; go ; go = go->m_next() )
 	{
-		object = swrtti_cast<SWGameObject>( (*itor)() );
+		object = go;
 		if ( object->getName() == subName ) break;
-		object = NULL;
 	}
 
 	if ( object != NULL && ( offset != tstring::npos ) )
@@ -87,13 +85,11 @@ void SWGameScene::awake()
 void SWGameScene::destroy()
 {
 	onDestroy();
-
-	m_iterateCopy = m_roots;
-	SWObject::Array::iterator itor = m_iterateCopy.begin();
-	for ( ; itor != m_iterateCopy.end() ; ++itor )
+	for ( SWGameObject* go = m_rootGO() ; go ; )
 	{
-		SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-		go->destroyNow();
+		SWGameObject* del = go;
+		go = go->m_next();
+		del->destroyNow();
 	}
 
 	m_iterateCopy.clear();
@@ -123,20 +119,13 @@ void SWGameScene::update()
 		m_physicsFrameRate -= SWPhysics2D.getFixedInterval();		
 		fixedCount += 1;
 	}
-
-	//! copy objects to update
-	m_iterateCopy = m_roots;
 	
 	//! fixed rate updates
 	while ( fixedCount-- )
 	{
 		onFixedRateUpdate();
-
-		SWObject::Array::iterator itor = m_iterateCopy.begin();
-		for ( ; itor != m_iterateCopy.end() ; ++itor )
+		for ( SWGameObject* go = m_rootGO() ; go ; go = go->m_next() )
 		{
-			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			if ( go == NULL ) continue;
 			if ( go->isActiveSelf() ) go->fixedRateUpdate();
 		}
 
@@ -147,11 +136,8 @@ void SWGameScene::update()
 	{
 		onUpdate();
 
-		SWObject::Array::iterator itor = m_iterateCopy.begin();
-		for ( ; itor != m_iterateCopy.end() ; ++itor )
+		for ( SWGameObject* go = m_rootGO() ; go ; go = go->m_next() )
 		{
-			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
-			if ( go == NULL ) continue;
 			if ( go->isActiveSelf() ) go->udpate();
 		}
 	}
@@ -297,4 +283,40 @@ SWGameLayer* SWGameScene::getLayer( tuint layer )
 		m_layerTable[layer] = gameLayer;
 	}
 	return gameLayer;
+}
+
+void SWGameScene::addRootGO( SWGameObject* go )
+{
+	if ( go == NULL ) return;
+	SWTransform* trans = go->getComponent<SWTransform>();
+	if ( trans->m_parent() == NULL ) return;
+
+	//! attach to list
+	{
+		SWHardRef<SWGameObject> object = go;
+		SWHardRef<SWTransform> oldParent = trans->m_parent();
+		if ( oldParent() ) oldParent()->removeChild( object() );
+		object()->m_next = m_rootGO();
+		m_rootGO()->m_prev = object();
+		m_rootGO = object();
+	}
+	trans->m_parent = NULL;
+}
+
+void SWGameScene::removeRootGO( SWGameObject* go )
+{
+	if ( go == NULL ) return;
+	SWTransform* trans = go->getComponent<SWTransform>();
+	if ( trans->m_parent() != NULL ) return;
+
+	//! dettach from list
+	{
+		SWHardRef<SWGameObject> object = go;
+		SWHardRef<SWGameObject> next = object()->m_next();
+		SWHardRef<SWGameObject> prev = object()->m_prev();
+		if ( next() ) next()->m_prev = prev();
+		if ( prev() ) prev()->m_next = next();
+		if ( m_rootGO == object() ) m_rootGO = next();
+	}
+	trans->m_parent = NULL;
 }
