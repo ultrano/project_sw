@@ -59,6 +59,7 @@ public:
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
+		for ( tuint i = 0 ; i < 2 ; ++i )
 		{
 			SWGameObject* go = new SWGameObject("test");
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();

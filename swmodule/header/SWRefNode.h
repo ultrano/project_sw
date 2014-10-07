@@ -8,7 +8,7 @@ class SWRefNode : public SWRefCountable
 public:
 	SWHardRef<SWRefNode> next;
 	SWWeakRef<SWRefNode> prev;
-	SWHardRef<SWRefCountable> gameObject;
+	SWHardRef<SWRefCountable> ref;
 	SWRefNode();
 	~SWRefNode();
 };

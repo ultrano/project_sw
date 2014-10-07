@@ -11,6 +11,7 @@
 
 class SWBroadPhase2D;
 class SWContact2D;
+class SWRefNode;
 class __SWPhysics2D : public SWMemory
 {
 public:
@@ -36,6 +37,7 @@ public:
 
 	SWHardRef<SWBroadPhase2D> m_broadPhase;
 	SWHardRef<SWContact2D> m_contactHead;
+	SWHardRef<SWRefNode> m_contactList;
 
 private:
 

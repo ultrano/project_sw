@@ -1,6 +1,7 @@
 #include "SWPhysics2D.h"
 #include "SWTransform.h"
 #include "SWGameObject.h"
+#include "SWRefNode.h"
 #include "SWMath.h"
 #include "SWLog.h"
 #include "SWBroadPhase2D.h"
@@ -34,10 +35,13 @@ void __SWPhysics2D::simulate()
 SWContact2D* __SWPhysics2D::createContact()
 {
 	SWContact2D* contact = new SWContact2D;
-	contact->prev = NULL;
-	contact->next = m_contactHead;
-	if ( m_contactHead() ) m_contactHead()->prev = contact;
-	m_contactHead = contact;
+	SWRefNode* node = new SWRefNode;
+	node->ref = contact;
+	node->prev = NULL;
+	node->next = m_contactList();
+	contact->node = node;
+	if ( m_contactList() ) m_contactList()->prev = node;
+	m_contactList = node;
 	return contact;
 }
 
@@ -54,11 +58,11 @@ void __SWPhysics2D::removeContact( SWContact2D* contact )
 		SWCollider2D* collider = fixture->getCollide();
 		if ( collider ) collider->removeContactEdge( contact );
 	}
-	SWContact2D* next = contact->next();
-	SWContact2D* prev = contact->prev();
-	if ( prev ) prev->next = next;
-	if ( next ) next->prev = prev;
-	if ( m_contactHead() == contact ) m_contactHead = next;
+
+	//! disconnect each other
+	SWRefNode* node = contact->node();
+	node->ref = NULL;
+	contact->node = NULL;
 }
 
 bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 )
@@ -116,51 +120,76 @@ void __SWPhysics2D::updateContacts()
 	static thashstr onCollisionStay  = "onCollisionStay";
 	static thashstr onCollisionLeave = "onCollisionLeave";
 
-	SWContact2D* contact = m_contactHead();
-	while ( contact )
+	//! update contacts
 	{
-		contact->update();
-		contact = contact->next();
+		SWRefNode* node = m_contactList();
+		while ( node )
+		{
+			SWContact2D* contact = (SWContact2D*)node->ref();
+			node = node->next();
+			contact->update();
+		}
 	}
 
-	contact = m_contactHead();
-	while ( contact )
+	//! sending message
 	{
-		SWCollider2D* collider1 = contact->fixture1()->getCollide();
-		SWCollider2D* collider2 = contact->fixture2()->getCollide();
-		if ( contact->state.get( SWContact2D::eEntering ) )
+		SWRefNode* node = m_contactList();
+		while ( node )
 		{
-			collider1->gameObject()->sendMessage( onCollisionEnter, NULL );
-			collider2->gameObject()->sendMessage( onCollisionEnter, NULL );
+			SWContact2D* contact = (SWContact2D*)node->ref();
+
+			SWCollider2D* collider1 = contact->fixture1()->getCollide();
+			SWCollider2D* collider2 = contact->fixture2()->getCollide();
+			if ( contact->state.get( SWContact2D::eEntering ) )
+			{
+				collider1->gameObject()->sendMessage( onCollisionEnter, NULL );
+				collider2->gameObject()->sendMessage( onCollisionEnter, NULL );
+			}
+			else if ( contact->state.get( SWContact2D::eStaying ) )
+			{
+				collider1->gameObject()->sendMessage( onCollisionStay, NULL );
+				collider2->gameObject()->sendMessage( onCollisionStay, NULL );
+			}
+			else if ( contact->state.get( SWContact2D::eLeaving ) )
+			{
+				collider1->gameObject()->sendMessage( onCollisionLeave, NULL );
+				collider2->gameObject()->sendMessage( onCollisionLeave, NULL );
+			}
+
+			//! make the iteration safe from the removing during iterate (lazy delete node)
+			if ( node->ref.isValid() ) node = node->next();
+			else while ( node && !node->ref.isValid() )
+			{
+				SWRefNode* next = node->next();
+				SWRefNode* prev = node->prev();
+				if ( next ) next->prev = prev;
+				if ( prev ) prev->next = next;
+				if ( m_contactList() == node ) m_contactList = next;
+				node = next;
+			}
 		}
-		else if ( contact->state.get( SWContact2D::eStaying ) )
-		{
-			collider1->gameObject()->sendMessage( onCollisionStay, NULL );
-			collider2->gameObject()->sendMessage( onCollisionStay, NULL );
-		}
-		else if ( contact->state.get( SWContact2D::eLeaving ) )
-		{
-			collider1->gameObject()->sendMessage( onCollisionLeave, NULL );
-			collider2->gameObject()->sendMessage( onCollisionLeave, NULL );
-		}
-		contact = contact->next();
 	}
 
-	contact = m_contactHead();
-	while ( contact )
+	//! remove contacts that are out of bound
 	{
-		tuint proxyID1 = contact->fixture1()->getProxyID();
-		tuint proxyID2 = contact->fixture2()->getProxyID();
-
-		if ( !m_broadPhase()->testOverlap( proxyID1, proxyID2 ) )
+		SWRefNode* node = m_contactList();
+		while ( node )
 		{
-			SWContact2D* next = contact->next();
-			removeContact( contact );
-			contact = next;
-			continue;
-		}
+			SWContact2D* contact = (SWContact2D*)node->ref();
+			node = node->next();
 
-		contact = contact->next();
+			tuint proxyID1 = contact->fixture1()->getProxyID();
+			tuint proxyID2 = contact->fixture2()->getProxyID();
+
+			if ( !m_broadPhase()->testOverlap( proxyID1, proxyID2 ) )
+			{
+				SWContact2D* next = contact->next();
+				removeContact( contact );
+				contact = next;
+				continue;
+			}
+			contact = contact->next();
+		}
 	}
 }
 

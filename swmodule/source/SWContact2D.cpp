@@ -1,6 +1,7 @@
 #include "SWContact2D.h"
 #include "SWFixture2D.h"
 #include "SWCollider2D.h"
+#include "SWRefNode.h"
 
 SWContact2D::SWContact2D()
 {

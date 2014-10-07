@@ -5,6 +5,7 @@
 #include "SWType.h"
 
 class SWFixture2D;
+class SWRefNode;
 class SWContact2D : public SWRefCountable
 {
 public:
@@ -24,6 +25,7 @@ public:
 
 	SWHardRef<SWContact2D> next;
 	SWWeakRef<SWContact2D> prev;
+	SWWeakRef<SWRefNode> node;
 
 	SWContact2D();
 	~SWContact2D();

@@ -50,7 +50,7 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 	SWGameObject* object = NULL;
 	for ( SWRefNode* node = m_rootNode() ; node ; node = node->next() )
 	{
-		object = (SWGameObject*)node->gameObject();
+		object = (SWGameObject*)node->ref();
 		if ( object && object->getName() == subName ) break;
 		object = NULL;
 	}
@@ -89,7 +89,7 @@ void SWGameScene::destroy()
 	onDestroy();
 	for ( SWRefNode* node = m_rootNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = (SWGameObject*)node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->ref();
 		if ( go ) go->destroyNow();
 	}
 	m_rootNode = NULL;
@@ -126,10 +126,14 @@ void SWGameScene::update()
 	while ( fixedCount-- )
 	{
 		onFixedRateUpdate();
-		for ( SWRefNode* node = m_rootNode() ; node ; node = node? node->next():NULL )
+		for ( SWRefNode* node = m_rootNode() ; node ; )
 		{
-			SWGameObject* go = (SWGameObject*)node->gameObject();
-			while ( go == NULL )
+			SWGameObject* go = (SWGameObject*)node->ref();
+			if ( go && go->isActiveSelf() ) go->fixedRateUpdate();
+
+			//! make the iteration safe from the removing during iterate (lazy delete node)
+			if ( node->ref.isValid() ) node = node->next();
+			else while ( node && !node->ref.isValid() )
 			{
 				SWRefNode* next = node->next();
 				SWRefNode* prev = node->prev();
@@ -137,10 +141,7 @@ void SWGameScene::update()
 				if ( prev ) prev->next = next;
 				if ( m_rootNode() == node ) m_rootNode = next;
 				node = next;
-				if ( node ) go = (SWGameObject*)node->gameObject();
-				else break;
 			}
-			if ( go && go->isActiveSelf() ) go->fixedRateUpdate();
 		}
 
 		SWPhysics2D.simulate();
@@ -151,8 +152,12 @@ void SWGameScene::update()
 		onUpdate();
 		for ( SWRefNode* node = m_rootNode() ; node ; node = node? node->next():NULL )
 		{
-			SWGameObject* go = (SWGameObject*)node->gameObject();
-			while ( go == NULL )
+			SWGameObject* go = (SWGameObject*)node->ref();
+			if ( go && go->isActiveSelf() ) go->udpate();
+
+			//! make the iteration safe from the removing during iterate (lazy delete node)
+			if ( node->ref.isValid() ) node = node->next();
+			else while ( node && !node->ref.isValid() )
 			{
 				SWRefNode* next = node->next();
 				SWRefNode* prev = node->prev();
@@ -160,10 +165,7 @@ void SWGameScene::update()
 				if ( prev ) prev->next = next;
 				if ( m_rootNode() == node ) m_rootNode = next;
 				node = next;
-				if ( node ) go = (SWGameObject*)node->gameObject();
-				else break;
 			}
-			if ( go && go->isActiveSelf() ) go->udpate();
 		}
 	}
 	
