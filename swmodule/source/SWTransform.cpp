@@ -10,6 +10,7 @@
 #include "SWGameContext.h"
 #include "SWGameScene.h"
 #include "SWGameObject.h"
+#include "SWRefNode.h"
 #include "SWLog.h"
 #include "SWParam.h"
 #include "SWMath.h"
@@ -52,14 +53,14 @@ void SWTransform::setParent( SWTransform* parent )
 
 	//! remove from old parent
 	{
-		SWHardRef<SWGONode> oldNode = object()->m_node();
-		SWHardRef<SWGONode> newNode = new SWGONode;
+		SWHardRef<SWRefNode> oldNode = object()->m_node();
+		SWHardRef<SWRefNode> newNode = new SWRefNode;
 		
 		newNode()->gameObject = object();
 		oldNode()->gameObject = NULL;
 		object()->m_node = newNode();
 
-		SWHardRef<SWGONode> head;
+		SWHardRef<SWRefNode> head;
 		if ( parent )
 		{
 			head = parent->m_childNode();
@@ -316,9 +317,9 @@ SWTransform* SWTransform::findImmadiate( const tstring& name ) const
 {
 	if ( name.size() == 0 ) return NULL;
 
-	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
+	for ( SWRefNode* node = m_childNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		if ( go && go->getName() == name ) return go->getComponent<SWTransform>();
 	}
 	return NULL;
@@ -330,10 +331,10 @@ void SWTransform::onAwake()
 
 	//! add to root
 	{
-		SWHardRef<SWGONode> newNode = new SWGONode;
+		SWHardRef<SWRefNode> newNode = new SWRefNode;
 		newNode()->gameObject = gameObject.getRaw();
 		gameObject()->m_node = newNode();
-		SWHardRef<SWGONode> head = SW_GC.getScene()->m_rootNode();
+		SWHardRef<SWRefNode> head = SW_GC.getScene()->m_rootNode();
 		if ( head() )
 		{
 			newNode()->next = head();
@@ -350,16 +351,16 @@ void SWTransform::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 
-	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
+	for ( SWRefNode* node = m_childNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		if ( go ) go->destroyNow();
 	}
 	m_childNode = NULL;
 
 	//! remove from list
 	{
-		SWHardRef<SWGONode> node = gameObject()->m_node();
+		SWHardRef<SWRefNode> node = gameObject()->m_node();
 		node()->gameObject = NULL;
 	}
 }
@@ -369,18 +370,18 @@ void SWTransform::onUpdate()
 	updateMatrix();
 
 	SWWeakRef<SWTransform> vital = this;
-	for ( SWGONode* node = m_childNode() ; node ; node = node? node->next():NULL )
+	for ( SWRefNode* node = m_childNode() ; node ; node = node? node->next():NULL )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		while ( go == NULL )
 		{
-			SWGONode* next = node->next();
-			SWGONode* prev = node->prev();
+			SWRefNode* next = node->next();
+			SWRefNode* prev = node->prev();
 			if ( next ) next->prev = prev;
 			if ( prev ) prev->next = next;
 			if ( m_childNode() == node ) m_childNode = next;
-			node = node->next();
-			if ( node ) go = node->gameObject();
+			node = next;
+			if ( node ) go = (SWGameObject*)node->gameObject();
 			else break;
 		}
 		if ( go && go->isActiveSelf() )
@@ -394,18 +395,18 @@ void SWTransform::onUpdate()
 void SWTransform::onFixedRateUpdate()
 {
 	SWWeakRef<SWTransform> vital = this;
-	for ( SWGONode* node = m_childNode() ; node ; node = node? node->next():NULL )
+	for ( SWRefNode* node = m_childNode() ; node ; node = node? node->next():NULL )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		while ( go == NULL )
 		{
-			SWGONode* next = node->next();
-			SWGONode* prev = node->prev();
+			SWRefNode* next = node->next();
+			SWRefNode* prev = node->prev();
 			if ( next ) next->prev = prev;
 			if ( prev ) prev->next = next;
 			if ( m_childNode() == node ) m_childNode = next;
-			node = node->next();
-			if ( node ) go = node->gameObject();
+			node = next;
+			if ( node ) go = (SWGameObject*)node->gameObject();
 			else break;
 		}
 		if ( go && go->isActiveSelf() )
@@ -438,16 +439,16 @@ void SWTransform::updateMatrix()
 void SWTransform::serialize( SWObjectWriter* writer )
 {
 	tuint count = 0;
-	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
+	for ( SWRefNode* node = m_childNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		if ( go ) count += 1;
 	}
 
 	writer->writeUInt( count );
-	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
+	for ( SWRefNode* node = m_childNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		if ( go ) writer->writeObject( go );
 	}
 	
@@ -460,12 +461,12 @@ void SWTransform::serialize( SWObjectWriter* writer )
 void SWTransform::deserialize( SWObjectReader* reader )
 {
 	tuint count = reader->readUInt();
-	SWGONode* node = NULL;
-	SWGONode* last = NULL;
+	SWRefNode* node = NULL;
+	SWRefNode* last = NULL;
 	while ( count-- )
 	{
 		SWGameObject* go = (SWGameObject*)reader->readObject();;
-		node = new SWGONode();
+		node = new SWRefNode();
 		node->prev = last;
 		node->gameObject = go;
 		go->m_node = node;

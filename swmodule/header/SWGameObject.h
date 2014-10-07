@@ -10,10 +10,9 @@
 #define prototype_SWGameObject_h
 
 #include "SWObject.h"
-
 class SWGameScene;
 class SWComponent;
-class SWGONode;
+class SWRefNode;
 
 class SWGameObject : public SWObject
 {
@@ -89,7 +88,7 @@ private:
 
 private:
 
-	SWWeakRef<SWGONode> m_node;
+	SWWeakRef<SWRefNode> m_node;
 	
 	thashstr m_name;
 	tuint    m_layer;
@@ -103,16 +102,6 @@ private:
 	SWObject::Array  m_fixedRateUpdateDelegates;
 	SWObject::Array  m_layerDelegates;
 	SWObject::Array  m_iterateCopy;
-};
-
-class SWGONode : public SWRefCountable
-{
-public:
-	SWHardRef<SWGONode> next;
-	SWWeakRef<SWGONode> prev;
-	SWHardRef<SWGameObject> gameObject;
-	SWGONode();
-	~SWGONode();
 };
 
 #endif

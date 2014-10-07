@@ -1,6 +1,8 @@
 #include "SWShape2D.h"
 #include "SWMath.h"
 
+#define SW_Epsilon (0.01f)
+
 SWCircleShape2D::SWCircleShape2D()
 {
 
@@ -299,10 +301,11 @@ bool testShape2D
 		simplex[1] = farthest1 - farthest2;
 
 		tvec2 line = (simplex[1] - simplex[0]);
+		if ( line.length() < SW_Epsilon ) return false;
+
 		float kz = line.cross( simplex[0] );
-		if ( kz == 0 )
+		if ( kz < SW_Epsilon )
 		{
-			if ( (simplex[1] == simplex[0]) ) return false;
 			if (  line.dot( -simplex[0] ) < 0 ) return false;
 			if ( -line.dot( -simplex[1] ) < 0 ) return false;
 			return true;
@@ -318,12 +321,13 @@ bool testShape2D
 	while ( trying-- )
 	{
 		float simplesArea = calculateArea(simplex[0], simplex[1], simplex[2]);
+		if ( simplesArea == 0 ) return false;
 		float originArea = 0;
 		originArea += calculateArea( tvec2::zero, simplex[0], simplex[1]);
 		originArea += calculateArea( tvec2::zero, simplex[1], simplex[2]);
 		originArea += calculateArea( tvec2::zero, simplex[2], simplex[0]);
 		
-		if ( (originArea - simplesArea) < 0.1f ) return true;
+		if ( (originArea - simplesArea) < SW_Epsilon ) return true;
 
 		tflag8 sideFlag;
 		calculateSide( sideFlag, simplex[0], simplex[1], simplex[2] );

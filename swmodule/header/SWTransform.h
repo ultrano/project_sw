@@ -15,7 +15,7 @@
  @brief 객체가 공간 개념을 갖게 한다.
         특별한 경우를 제외하고 가장 기본이 되는 컴포넌트
  */
-class SWGONode;
+class SWRefNode;
 class SWTransform : public SWComponent
 {
     SW_RTTI( SWTransform, SWComponent );
@@ -78,7 +78,7 @@ private:
 private:
 
 	SWWeakRef<SWTransform> m_parent;
-	SWHardRef<SWGONode> m_childNode;
+	SWHardRef<SWRefNode> m_childNode;
 
 	SWObject::Array m_iterateCopy;
 	SWObject::Array m_setParentDelegates;

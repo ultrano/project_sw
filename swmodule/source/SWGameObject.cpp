@@ -15,6 +15,7 @@
 #include "SWProfiler.h"
 #include "SWObjectStream.h"
 #include "SWDefines.h"
+#include "SWRefNode.h"
 
 #include <algorithm>
 
@@ -393,14 +394,4 @@ bool SWGameObject::isActiveInScene() const
 	} while ( transform != NULL );
 
 	return true;
-}
-
-SWGONode::SWGONode()
-{
-
-}
-
-SWGONode::~SWGONode()
-{
-	SWLog( "~SWGONode" );
 }

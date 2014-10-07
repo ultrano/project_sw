@@ -10,6 +10,7 @@
 #include "SWOpenGL.h"
 #include "SWDefines.h"
 #include "SWGameObject.h"
+#include "SWRefNode.h"
 #include "SWLog.h"
 #include "SWInput.h"
 #include "SWTime.h"
@@ -47,9 +48,9 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 	tstring subName = ( offset != tstring::npos )? name.substr( 0, offset ) : name;
 
 	SWGameObject* object = NULL;
-	for ( SWGONode* node = m_rootNode() ; node ; node = node->next() )
+	for ( SWRefNode* node = m_rootNode() ; node ; node = node->next() )
 	{
-		object = node->gameObject();
+		object = (SWGameObject*)node->gameObject();
 		if ( object && object->getName() == subName ) break;
 		object = NULL;
 	}
@@ -86,9 +87,9 @@ void SWGameScene::awake()
 void SWGameScene::destroy()
 {
 	onDestroy();
-	for ( SWGONode* node = m_rootNode() ; node ; node = node->next() )
+	for ( SWRefNode* node = m_rootNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = node->gameObject();
+		SWGameObject* go = (SWGameObject*)node->gameObject();
 		if ( go ) go->destroyNow();
 	}
 	m_rootNode = NULL;
@@ -125,18 +126,18 @@ void SWGameScene::update()
 	while ( fixedCount-- )
 	{
 		onFixedRateUpdate();
-		for ( SWGONode* node = m_rootNode() ; node ; node = node? node->next():NULL )
+		for ( SWRefNode* node = m_rootNode() ; node ; node = node? node->next():NULL )
 		{
-			SWGameObject* go = node->gameObject();
+			SWGameObject* go = (SWGameObject*)node->gameObject();
 			while ( go == NULL )
 			{
-				SWGONode* next = node->next();
-				SWGONode* prev = node->prev();
+				SWRefNode* next = node->next();
+				SWRefNode* prev = node->prev();
 				if ( next ) next->prev = prev;
 				if ( prev ) prev->next = next;
 				if ( m_rootNode() == node ) m_rootNode = next;
-				node = node->next();
-				if ( node ) go = node->gameObject();
+				node = next;
+				if ( node ) go = (SWGameObject*)node->gameObject();
 				else break;
 			}
 			if ( go && go->isActiveSelf() ) go->fixedRateUpdate();
@@ -148,18 +149,18 @@ void SWGameScene::update()
 	//! regular updates
 	{
 		onUpdate();
-		for ( SWGONode* node = m_rootNode() ; node ; node = node? node->next():NULL )
+		for ( SWRefNode* node = m_rootNode() ; node ; node = node? node->next():NULL )
 		{
-			SWGameObject* go = node->gameObject();
+			SWGameObject* go = (SWGameObject*)node->gameObject();
 			while ( go == NULL )
 			{
-				SWGONode* next = node->next();
-				SWGONode* prev = node->prev();
+				SWRefNode* next = node->next();
+				SWRefNode* prev = node->prev();
 				if ( next ) next->prev = prev;
 				if ( prev ) prev->next = next;
 				if ( m_rootNode() == node ) m_rootNode = next;
-				node = node->next();
-				if ( node ) go = node->gameObject();
+				node = next;
+				if ( node ) go = (SWGameObject*)node->gameObject();
 				else break;
 			}
 			if ( go && go->isActiveSelf() ) go->udpate();
