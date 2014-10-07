@@ -304,7 +304,8 @@ bool testShape2D
 		if ( line.length() < SW_Epsilon ) return false;
 
 		float kz = line.cross( simplex[0] );
-		if ( kz < SW_Epsilon )
+		float det = (kz<0)? -kz : kz;
+		if ( det < SW_Epsilon )
 		{
 			if (  line.dot( -simplex[0] ) < 0 ) return false;
 			if ( -line.dot( -simplex[1] ) < 0 ) return false;
@@ -327,7 +328,9 @@ bool testShape2D
 		originArea += calculateArea( tvec2::zero, simplex[1], simplex[2]);
 		originArea += calculateArea( tvec2::zero, simplex[2], simplex[0]);
 		
-		if ( (originArea - simplesArea) < SW_Epsilon ) return true;
+		float det = (originArea - simplesArea);
+		det = (det<0)? -det : det;
+		if ( det < SW_Epsilon ) return true;
 
 		tflag8 sideFlag;
 		calculateSide( sideFlag, simplex[0], simplex[1], simplex[2] );
