@@ -90,10 +90,10 @@ void SWGameLayer::removeCamera( SWCamera* camera )
 	ProxyIDTable::iterator itor = m_proxyIDTable.find( camera );
 	if ( itor == m_proxyIDTable.end() ) return;
 
-	m_sortedTable.erase( camera );
-	m_proxyIDTable.erase( camera );
-	m_cameraStateTable.erase( camera );
 	m_cameraTree.destroyProxy( itor->second );
+	m_sortedTable.erase( camera );
+	m_cameraStateTable.erase( camera );
+	m_proxyIDTable.erase( camera );
 	SWObject::Array::iterator last = std::remove( m_cameras.begin(), m_cameras.end(), camera );
 	m_cameras.erase( last, m_cameras.end() );
 }
