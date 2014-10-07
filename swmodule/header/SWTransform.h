@@ -74,8 +74,6 @@ private:
 	void needUpdateMatrix();
 	void updateMatrix();
 	SWTransform* findImmadiate( const tstring& name ) const;
-	void addChild( SWGameObject* go );
-	void removeChild( SWGameObject* go );
 private:
 
 	SWWeakRef<SWTransform> m_parent;

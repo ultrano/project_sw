@@ -29,8 +29,6 @@ SWGameObject::SWGameObject()
 	, m_active( true )
 	, m_layer( 0 )
 {
-	m_state.clear();
-	m_state.set( SW_GO_Drift, true );
 	addComponent<SWTransform>();
 }
 
@@ -39,8 +37,6 @@ SWGameObject::SWGameObject( factory_constructor )
 	, m_active( true )
 	, m_layer( 0 )
 {
-	m_state.clear();
-	m_state.set( SW_GO_Drift, true );
 	//! don't add transform component
 	//! when created by factory.
 	//! because transform will be added by loader from data.
@@ -51,8 +47,6 @@ SWGameObject::SWGameObject( const tstring& name )
 	, m_active( true )
 	, m_layer( 0 )
 {
-	m_state.clear();
-	m_state.set( SW_GO_Drift, true );
 	addComponent<SWTransform>();
 }
 
@@ -398,4 +392,14 @@ bool SWGameObject::isActiveInScene() const
 	} while ( transform != NULL );
 
 	return true;
+}
+
+SWGONode::SWGONode()
+{
+
+}
+
+SWGONode::~SWGONode()
+{
+
 }

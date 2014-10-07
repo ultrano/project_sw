@@ -94,7 +94,6 @@ private:
 	thashstr m_name;
 	tuint    m_layer;
 	bool     m_active;
-	tflag8   m_state;
 
 	SWObject::Array m_components;
 	SWObject::Array m_loadedComponents;
@@ -104,6 +103,15 @@ private:
 	SWObject::Array  m_fixedRateUpdateDelegates;
 	SWObject::Array  m_layerDelegates;
 	SWObject::Array  m_iterateCopy;
+};
+
+class SWGONode : public SWRefCountable
+{
+	SWHardRef<SWGONode> next;
+	SWWeakRef<SWGONode> prev;
+	SWHardRef<SWGameObject> gameObject;
+	SWGONode();
+	~SWGONode();
 };
 
 #endif

@@ -58,7 +58,7 @@ public:
 		SWSprite* logoSprite = atlas()->find( "bird_0" );
 		tvec2 logoSize = logoSprite->getSize();
 
-		tuint count = 30;
+		tuint count = 100;
 		float radius = 150;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
@@ -67,8 +67,8 @@ public:
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( logoSprite );
 			
-			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//SWCollider2D* collider = go->addComponent<SWCollider2D>();
+			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 
 			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 			float x = radius * SWMath.cos( radian );

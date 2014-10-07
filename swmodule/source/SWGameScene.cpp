@@ -284,39 +284,3 @@ SWGameLayer* SWGameScene::getLayer( tuint layer )
 	}
 	return gameLayer;
 }
-
-void SWGameScene::addRootGO( SWGameObject* go )
-{
-	if ( go == NULL ) return;
-	SWTransform* trans = go->getComponent<SWTransform>();
-	if ( trans->m_parent() == NULL ) return;
-
-	//! attach to list
-	{
-		SWHardRef<SWGameObject> object = go;
-		SWHardRef<SWTransform> oldParent = trans->m_parent();
-		if ( oldParent() ) oldParent()->removeChild( object() );
-		object()->m_next = m_rootGO();
-		m_rootGO()->m_prev = object();
-		m_rootGO = object();
-	}
-	trans->m_parent = NULL;
-}
-
-void SWGameScene::removeRootGO( SWGameObject* go )
-{
-	if ( go == NULL ) return;
-	SWTransform* trans = go->getComponent<SWTransform>();
-	if ( trans->m_parent() != NULL ) return;
-
-	//! dettach from list
-	{
-		SWHardRef<SWGameObject> object = go;
-		SWHardRef<SWGameObject> next = object()->m_next();
-		SWHardRef<SWGameObject> prev = object()->m_prev();
-		if ( next() ) next()->m_prev = prev();
-		if ( prev() ) prev()->m_next = next();
-		if ( m_rootGO == object() ) m_rootGO = next();
-	}
-	trans->m_parent = NULL;
-}

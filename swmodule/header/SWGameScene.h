@@ -70,9 +70,6 @@ private:
 	void updateCamera( tuint32 oldMask, tuint32 newMask, SWCamera* camera );
 
 	SWGameLayer* getLayer( tuint layer );
-
-	void addRootGO( SWGameObject* go );
-	void removeRootGO( SWGameObject* go );
 private:
 
 	friend class SWTransform;

@@ -337,50 +337,6 @@ SWTransform* SWTransform::findImmadiate( const tstring& name ) const
 	return NULL;
 }
 
-void SWTransform::addChild( SWGameObject* go )
-{
-	if ( go == NULL ) return;
-	SWTransform* trans = go->getComponent<SWTransform>();
-	if ( trans->m_parent() == this ) return;
-	
-	//! attach to list
-	{
-		SWHardRef<SWGameObject> object = go;
-		SWHardRef<SWTransform> oldParent = trans->m_parent();
-		if ( oldParent() ) oldParent()->removeChild( object() );
-		object()->m_next = m_child();
-		m_child()->m_prev = object();
-		m_child = object();
-	}
-	trans->m_parent = this;
-
-	go->m_state.set(SW_GO_Root, false);
-	go->m_state.set(SW_GO_Child, true);
-	go->m_state.set(SW_GO_Drift, false);
-}
-
-void SWTransform::removeChild( SWGameObject* go )
-{
-	if ( go == NULL ) return;
-	SWTransform* trans = go->getComponent<SWTransform>();
-	if ( trans->m_parent() != this ) return;
-
-	//! dettach from list
-	{
-		SWHardRef<SWGameObject> object = go;
-		SWHardRef<SWGameObject> next = object()->m_next();
-		SWHardRef<SWGameObject> prev = object()->m_prev();
-		if ( next() ) next()->m_prev = prev();
-		if ( prev() ) prev()->m_next = next();
-		if ( m_child == object() ) m_child = next();
-	}
-	trans->m_parent = NULL;
-
-	go->m_state.set(SW_GO_Root, false);
-	go->m_state.set(SW_GO_Child, false);
-	go->m_state.set(SW_GO_Drift, true);
-}
-
 void SWTransform::onAwake()
 {
 	__super::onAwake();
