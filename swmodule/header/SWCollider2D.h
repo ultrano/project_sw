@@ -5,7 +5,7 @@
 #include "SWShape2D.h"
 
 class SWFixture2D;
-class SWBroadPhase2D;
+class SWWorld2D;
 class SWContact2D;
 class SWContactEdge2D;
 class SWCollider2D : public SWComponent
@@ -27,39 +27,27 @@ public:
  
 	void addContactEdge( const SWContact2D* contact );
 	void removeContactEdge( const SWContact2D* contact );
-	void removeAllContactEdges();
 	const SWContactEdge2D* getContactEdge() const;
 
+private:
+	void removeAllContactEdges( SWWorld2D* world );
 protected:
 
 	void onAwake();
-	void onStart();
 	void onRemove();
 	void onFixedUpdate();
+	void onLayerChanged();
 
 private:
 
-	void addFixture( SWFixture2D* fixture );
+	void registerFixture( SWFixture2D* fixture );
 
 private:
 	typedef tlist<SWHardRef<SWFixture2D>> FixtureList;
 
 	FixtureList m_fixtures;
-	SWShape2D::Transform m_transform2D;
-	SWWeakRef<SWBroadPhase2D> m_broadPhase;
 	SWHardRef<SWContactEdge2D> m_contactEdge;
-};
-
-class SWCollision2D : public SWObject
-{
-	SW_RTTI( SWCollision2D, SWObject );
-
-public:
-
-	SWCollision2D() : collider( NULL ) {};
-	SWCollision2D( SWCollider2D* _collider ) : collider( _collider ) {};
-	
-	SWWeakRef<SWCollider2D> collider;
+	SWWeakRef<SWWorld2D> m_world;
 };
 
 #endif // SWCollider2D_h__

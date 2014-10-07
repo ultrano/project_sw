@@ -32,8 +32,8 @@ public:
 	const TMatrix4x4& getViewMatrix() const;
 	const TMatrix4x4& getVPMatrix() const;
 
-	tuint32 getCullingMask() const;
-	void setCullingMask( tuint32 mask );
+	tflag32 getCullingMask() const;
+	void setCullingMask( tflag32 mask );
 
 	int getDepth() const { return m_depth; }
 	void setDepth( int depth ) { m_depth = depth; }
@@ -66,7 +66,7 @@ private:
 	tcolor m_clearColor;
 	float  m_clearDepth;
 
-	tuint32 m_cullingMask;
+	tflag32 m_cullingMask;
 	int m_depth;
 	int m_clearFlags;
 

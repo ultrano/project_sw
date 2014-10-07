@@ -93,8 +93,6 @@ void SWGameScene::destroy()
 		if ( go ) go->destroyNow();
 	}
 	m_rootNode = NULL;
-
-	m_iterateCopy.clear();
 	m_destroyGOs.clear();
 
 	SWInput.removeInputDelegate( GetDelegator(handleEvent) );
@@ -172,10 +170,11 @@ void SWGameScene::update()
 	//! post destroy game objects
 	do
 	{
-		m_iterateCopy = m_destroyGOs;
+		SWObject::Array iterateCopy;
+		iterateCopy = m_destroyGOs;
 		m_destroyGOs.clear();
-		SWObject::Array::iterator itor = m_iterateCopy.begin();
-		for ( ; itor != m_iterateCopy.end() ; ++itor )
+		SWObject::Array::iterator itor = iterateCopy.begin();
+		for ( ; itor != iterateCopy.end() ; ++itor )
 		{
 			SWGameObject* go = swrtti_cast<SWGameObject>( (*itor)() );
 			if ( !go ) continue;
@@ -188,7 +187,7 @@ void SWGameScene::draw()
 {
 	m_cameras.sort( CameraSorter() );
 
-	for ( tuint i = 0 ; i < MaxLayerCount ; ++i)
+	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i)
 	{
 		SWGameLayer* layer = m_layerTable[i]();
 		if ( layer ) layer->update();
@@ -198,7 +197,7 @@ void SWGameScene::draw()
 	for ( ; itor != m_cameras.end() ; ++itor )
 	{
 		SWCamera* camera = swrtti_cast<SWCamera>( (*itor)() );
-		tuint32 cullingMask = camera->getCullingMask();
+		tflag32 cullingMask = camera->getCullingMask();
 
 		//! get clear mask
 		int clearMask = GL_NONE;
@@ -215,11 +214,9 @@ void SWGameScene::draw()
 			glClear( clearMask );
 		}
 
-		for ( tuint i = 0 ; i < MaxLayerCount ; ++i)
+		for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i)
 		{
-			bool doDraw = (cullingMask & 0x1);
-			cullingMask = cullingMask >> 1;
-			if ( !doDraw ) continue;
+			if ( !cullingMask.get(i) ) continue;
 			SWGameLayer* layer = m_layerTable[i]();
 			if ( layer ) layer->draw( camera );
 		}
@@ -236,7 +233,7 @@ void SWGameScene::handleEvent()
 
 tuint SWGameScene::addRenderer( tuint layer, SWRenderer* renderer )
 {
-	if ( layer >= MaxLayerCount ) return SWDynamicTree3D::nullID;
+	if ( layer >= SW_MaxLayerCount ) return SWDynamicTree3D::nullID;
 
 	SWGameLayer* gameLayer = getLayer(layer);
 	return gameLayer->addRenderer( renderer );
@@ -244,51 +241,49 @@ tuint SWGameScene::addRenderer( tuint layer, SWRenderer* renderer )
 
 void SWGameScene::removeRenderer( tuint layer, SWRenderer* renderer )
 {
-	if ( layer >= MaxLayerCount ) return;
+	if ( layer >= SW_MaxLayerCount ) return;
 
 	SWGameLayer* gameLayer = getLayer(layer);
 	gameLayer->removeRenderer( renderer );
 }
 
-void SWGameScene::addCamera( tuint32 layerMask, SWCamera* camera )
+void SWGameScene::addCamera( tflag32 layerMask, SWCamera* camera )
 {
 	if ( camera == NULL ) return ;
-	if ( layerMask == 0 ) return ;
+	if ( layerMask.flags == 0 ) return ;
 
-	for ( tuint i = 0 ; i < MaxLayerCount ; ++i )
+	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i )
 	{
-		bool ret = (layerMask & 0x1);
-		layerMask = layerMask >> 1;
-		if ( !ret ) continue;
+		if ( !layerMask.get(i) ) continue;
 		SWGameLayer* layer =  getLayer(i);
 		layer->addCamera( camera );
 	}
 	m_cameras.push_back( camera );
 }
 
-void SWGameScene::removeCamera( tuint32 layerMask, SWCamera* camera )
+void SWGameScene::removeCamera( tflag32 layerMask, SWCamera* camera )
 {
 	if ( camera == NULL ) return ;
-	if ( layerMask == 0 ) return ;
+	if ( layerMask.flags == 0 ) return ;
 
-	for ( tuint i = 0 ; i < MaxLayerCount ; ++i )
+	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i )
 	{
-		bool ret = (layerMask & 0x1);
-		layerMask = layerMask >> 1;
-		if ( !ret ) continue;
+		if ( !layerMask.get(i) ) continue;
 		SWGameLayer* layer =  getLayer(i);
 		layer->removeCamera( camera );
 	}
 	m_cameras.remove( camera );
 }
 
-void SWGameScene::updateCamera( tuint32 oldMask, tuint32 newMask, SWCamera* camera )
+void SWGameScene::moveCamera( tflag32 oldMask, tflag32 newMask, SWCamera* camera )
 {
-	tuint32 common  = oldMask & newMask;
-	tuint32 removedMask = newMask ^ common;
-	tuint32 addedMask   = oldMask ^ common;
+	tuint32 oldLayers = oldMask.flags;
+	tuint32 newLayers = newMask.flags;
+	tuint32 common  = oldLayers & newLayers;
+	tuint32 removedMask = newLayers ^ common;
+	tuint32 addedMask   = oldLayers ^ common;
 
-	for ( tuint i = 0 ; i < MaxLayerCount ; ++i )
+	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i )
 	{
 		bool added   = (addedMask & 0x1);
 		bool removed = (removedMask & 0x1);

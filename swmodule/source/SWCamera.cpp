@@ -12,7 +12,6 @@ SWCamera::SWCamera()
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
 	, m_clearDepth( 0 )
-	, m_cullingMask( 1 )
 	, m_depth( 0 )
 	, m_clearFlags( SW_Dont_Clear )
 {
@@ -23,7 +22,6 @@ SWCamera::SWCamera( factory_constructor )
 	, m_far( 0 )
 	, m_clearColor( 0, 0, 1, 1 )
 	, m_clearDepth( 0 )
-	, m_cullingMask( 1 )
 	, m_depth( 0 )
 	, m_clearFlags( SW_Dont_Clear )
 {
@@ -38,6 +36,9 @@ void SWCamera::onAwake()
 {
 	__super::onAwake();
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
+
+	m_cullingMask.clear(false);
+	m_cullingMask.set(SW_DefaultLayer,true);
 	SW_GC.getScene()->addCamera( m_cullingMask, this );
 }
 
@@ -179,17 +180,17 @@ float SWCamera::getClearDepth() const
 	return m_clearDepth;
 }
 
-tuint32 SWCamera::getCullingMask() const
+tflag32 SWCamera::getCullingMask() const
 {
 	return m_cullingMask;
 }
 
-void SWCamera::setCullingMask( tuint32 mask )
+void SWCamera::setCullingMask( tflag32 mask )
 {
-	if ( mask == 0 ) return;
+	if ( mask.flags == 0 ) return;
 	if ( m_cullingMask == mask ) return;
 
-	SW_GC.getScene()->updateCamera( m_cullingMask, mask, this );
+	SW_GC.getScene()->moveCamera( m_cullingMask, mask, this );
 	m_cullingMask = mask;
 }
 
@@ -201,7 +202,7 @@ void SWCamera::serialize( SWObjectWriter* writer )
 	writer->writeFloat( m_far );
 	writer->writeInt( m_depth );
 	writer->writeInt( m_clearFlags );
-	writer->writeUInt( m_cullingMask );
+	writer->writeUInt( m_cullingMask.flags );
 	writer->writeColor( m_clearColor );
 }
 
@@ -213,7 +214,7 @@ void SWCamera::deserialize( SWObjectReader* reader )
 	m_far   = reader->readFloat();
 	m_depth = reader->readInt();
 	m_clearFlags  = reader->readInt();
-	m_cullingMask = reader->readUInt();
+	m_cullingMask.flags = reader->readUInt();
 	reader->readColor( m_clearColor );
 
 }

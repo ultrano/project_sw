@@ -76,12 +76,18 @@ enum SWDefines
 	SW_File_Append  = 1 << 2,
 	SW_File_Refresh = 1 << 3,
 
-	//! game object state
-	SW_GO_Root  = 0,
-	SW_GO_Child = 1,
-	SW_GO_Drift = 2,
+	//! maximum count of layers
+	SW_MaxLayerCount = 32,
+
+	//! layer indices, (0...31) -> (0...SW_MaxLayerCount-1)
+	SW_Layer1 = 0,
+	SW_Layer2 = 1,
+	SW_Layer3 = 2,
+	SW_DefaultLayer = SW_Layer1,
+
 };
 
 #define SW_PI (3.14f)
+#define SW_Layer(index) (index>=SW_MaxLayerCount)? SW_MaxLayerCount:(index<0)?0:index;
 
 #endif

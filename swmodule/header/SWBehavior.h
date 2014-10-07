@@ -15,7 +15,6 @@ class TVector2f;
 class SWCollisionInfo;
 class SWGameObject;
 class SWNotifyMessage;
-class SWCollision2D;
 
 /** 
  @brief 객체의 행동양식을 담당하는 컴포넌트.

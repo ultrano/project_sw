@@ -145,6 +145,7 @@
     <ClInclude Include="header\SWSpriteSequence.h" />
     <ClInclude Include="header\SWSpriteAtlas.h" />
     <ClInclude Include="header\SWTexture.h" />
+    <ClInclude Include="header\SWWorld2D.h" />
     <ClInclude Include="header\TAABB.h" />
     <ClInclude Include="header\TColorRGBA.h" />
     <ClInclude Include="header\SWObjectFactory.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="source\SWSpriteSequence.cpp" />
     <ClCompile Include="source\SWSpriteAtlas.cpp" />
     <ClCompile Include="source\SWTexture.cpp" />
+    <ClCompile Include="source\SWWorld2D.cpp" />
     <ClCompile Include="source\TAABB.cpp" />
     <ClCompile Include="source\THashString.cpp" />
     <ClCompile Include="source\SWInput.cpp" />

@@ -3,15 +3,15 @@
 
 #include "SWType.h"
 #include "SWMemory.h"
-#include "SWCollider2D.h"
-#include "SWRigidBody2D.h"
-#include "SWDynamicTree2D.h"
+#include "SWObject.h"
+#include "SWDefines.h"
 
 #define SWPhysics2D (__SWPhysics2D::instance())
 
 class SWBroadPhase2D;
 class SWContact2D;
 class SWRefNode;
+class SWWorld2D;
 class __SWPhysics2D : public SWMemory
 {
 public:
@@ -27,17 +27,11 @@ public:
 
 	float getFixedInterval();
 
+	SWWorld2D* getWorld( tuint layer );
 public:
 
-	SWContact2D* createContact();
-	void removeContact( SWContact2D* contact );
-	void findNewContacts();
-	void updateContacts();
-public:
-
-	SWHardRef<SWBroadPhase2D> m_broadPhase;
-	SWHardRef<SWContact2D> m_contactHead;
-	SWHardRef<SWRefNode> m_contactList;
+	SWHardRef<SWWorld2D> m_world;
+	SWHardRef<SWWorld2D> m_worlds[SW_MaxLayerCount];
 
 private:
 
@@ -49,9 +43,6 @@ private:
 	SWObject::WList m_colliders;
 	SWObject::WList m_bodies;
 	IgnoreTable m_ignoreTable;
-	SWDynamicTree2D m_tree;
-	
-	SWHardRef<SWCollision2D> m_coll;
 };
 
 #endif // SWPhysics_h__

@@ -325,6 +325,9 @@
     <Filter Include="SW\SWRefNode">
       <UniqueIdentifier>{c812d30b-ec0d-4ec1-9b17-5ec176d8308f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWWorld2D">
+      <UniqueIdentifier>{75e727fe-9d1d-4155-948a-5914dfcb10d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -684,6 +687,9 @@
     <ClInclude Include="header\SWRefNode.h">
       <Filter>SW\SWRefNode</Filter>
     </ClInclude>
+    <ClInclude Include="header\SWWorld2D.h">
+      <Filter>SW\SWWorld2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -979,6 +985,9 @@
     </ClCompile>
     <ClCompile Include="source\SWRefNode.cpp">
       <Filter>SW\SWRefNode</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWWorld2D.cpp">
+      <Filter>SW\SWWorld2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

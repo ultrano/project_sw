@@ -11,9 +11,9 @@
 
 #include "SWObject.h"
 #include "SWDynamicTree3D.h"
+#include "SWDefines.h"
 class SWGameObject;
 class SWComponent;
-class SWCollisionManager;
 class SWRenderer;
 class SWCamera;
 class SWGameLayer;
@@ -66,9 +66,9 @@ private:
 	tuint addRenderer( tuint layer, SWRenderer* renderer );
 	void removeRenderer( tuint layer, SWRenderer* renderer );
 
-	void addCamera( tuint32 layerMask, SWCamera* camera );
-	void removeCamera( tuint32 layerMask, SWCamera* camera );
-	void updateCamera( tuint32 oldMask, tuint32 newMask, SWCamera* camera );
+	void addCamera( tflag32 layerMask, SWCamera* camera );
+	void removeCamera( tflag32 layerMask, SWCamera* camera );
+	void moveCamera( tflag32 oldMask, tflag32 newMask, SWCamera* camera );
 
 	SWGameLayer* getLayer( tuint layer );
 private:
@@ -88,12 +88,10 @@ private:
 
 private:
 
-	enum { MaxLayerCount = 32 };
 	typedef tarray<SWHardRef<SWGameLayer>> LayerArray;
 
 	//! root game objects
 	SWHardRef<SWRefNode> m_rootNode;
-	SWObject::Array m_iterateCopy;
 	SWObject::Array m_destroyGOs;
 	
 	//! for fixed frame rate update
@@ -108,7 +106,7 @@ private:
 	SWDynamicTree3D m_cameraTree;
 
 	//! scene layers
-	SWHardRef<SWGameLayer> m_layerTable[MaxLayerCount];
+	SWHardRef<SWGameLayer> m_layerTable[SW_MaxLayerCount];
 };
 
 #endif

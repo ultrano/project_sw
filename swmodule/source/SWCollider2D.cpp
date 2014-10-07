@@ -3,11 +3,11 @@
 #include "SWMath.h"
 #include "SWPhysics2D.h"
 #include "SWObjectStream.h"
-#include "SWRigidBody2D.h"
 #include "SWFixture2D.h"
 #include "SWGameObject.h"
 #include "SWBroadPhase2D.h"
 #include "SWContact2D.h"
+#include "SWWorld2D.h"
 
 SWCollider2D::SWCollider2D( factory_constructor )
 {
@@ -22,21 +22,18 @@ SWCollider2D::~SWCollider2D()
 void SWCollider2D::onAwake()
 {
 	__super::onAwake();
-	SWPhysics2D.m_colliders.push_back( this );
-	m_broadPhase = SWPhysics2D.m_broadPhase();
-	gameObject()->addFixedRateUpdateDelegator( GetDelegator( onFixedUpdate ) );
-}
 
-void SWCollider2D::onStart()
-{
+	m_world = SWPhysics2D.getWorld( gameObject()->getLayer() );
+	gameObject()->addLayerDelegator( GetDelegator(onLayerChanged) );
+	gameObject()->addFixedRateUpdateDelegator( GetDelegator( onFixedUpdate ) );
 }
 
 void SWCollider2D::onRemove()
 {
-	removeAllContactEdges();
+	removeAllContactEdges( m_world() );
 	removeAllFixtures();
 	gameObject()->removeFixedRateUpdateDelegator( GetDelegator( onFixedUpdate ) );
-	SWPhysics2D.m_colliders.remove( this );
+	gameObject()->removeLayerDelegator( GetDelegator(onLayerChanged) );
 	__super::onRemove();
 }
 
@@ -45,13 +42,52 @@ void SWCollider2D::onFixedUpdate()
 	SWShape2D::Transform trans2D;
 	getTransform2D( trans2D );
 
+	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	FixtureList::iterator itor = m_fixtures.begin();
 	for ( ; itor != m_fixtures.end() ; ++itor )
 	{
 		SWFixture2D* fixture = (*itor)();
 		taabb2d aabb;
 		fixture->getShape()->computeAABB( aabb, trans2D );
-		m_broadPhase()->updateProxy( fixture->getProxyID(), aabb );
+		broadPhase->updateProxy( fixture->getProxyID(), aabb );
+	}
+}
+
+void SWCollider2D::onLayerChanged()
+{
+	SWWorld2D* oldWorld = m_world();
+	SWWorld2D* newWorld = SWPhysics2D.getWorld( gameObject()->getLayer() );
+	
+	SWBroadPhase2D* oldBroadPhase = oldWorld->getBroadPhase();
+	SWBroadPhase2D* newBroadPhase = newWorld->getBroadPhase();
+
+	//! remove all contacts and contact-edges from old world
+	removeAllContactEdges( oldWorld );
+
+	//! remove fixtures from old broad-phase
+	{
+		for ( FixtureList::iterator itor = m_fixtures.begin() 
+			; itor != m_fixtures.end() ; ++itor )
+		{
+			SWFixture2D* fixture = (*itor)();
+			oldBroadPhase->destroyProxy( fixture->getProxyID() );
+		}
+	}
+
+	//! add fixtures to new broad-phase
+	{
+		taabb2d aabb;
+		SWShape2D::Transform trans2D;
+		getTransform2D( trans2D );
+		for ( FixtureList::iterator itor = m_fixtures.begin() 
+			; itor != m_fixtures.end() ; ++itor )
+		{
+			SWFixture2D* fixture = (*itor)();
+			fixture->getShape()->computeAABB( aabb, trans2D );
+
+			tuint proxyID = newBroadPhase->createProxy( aabb, fixture );
+			fixture->setProxyID( proxyID );
+		}
 	}
 }
 
@@ -59,7 +95,7 @@ SWFixture2D* SWCollider2D::addCircle( const tvec2& center, float radius )
 {
 	SWFixture2D* fixture = new SWFixture2D(this);
 	fixture->setCircle(center, radius);
-	addFixture( fixture );
+	registerFixture( fixture );
 	return fixture;
 }
 
@@ -67,7 +103,7 @@ SWFixture2D* SWCollider2D::addBox( const tvec2& center, float width, float heigh
 {
 	SWFixture2D* fixture = new SWFixture2D(this);
 	fixture->setBox(center, width, height);
-	addFixture( fixture );
+	registerFixture( fixture );
 	return fixture;
 }
 
@@ -75,34 +111,39 @@ SWFixture2D* SWCollider2D::addPolygon( const tarray<tvec2>& vertices )
 {
 	SWFixture2D* fixture = new SWFixture2D(this);
 	fixture->setPolygon(vertices);
-	addFixture( fixture );
+	registerFixture( fixture );
 	return fixture;
 }
 
-void SWCollider2D::addFixture( SWFixture2D* fixture )
+void SWCollider2D::registerFixture( SWFixture2D* fixture )
 {
 	m_fixtures.push_back( fixture );
-	
-	taabb2d aabb;
-	fixture->getShape()->computeAABB( aabb, m_transform2D );
 
-	tuint proxyID = m_broadPhase()->createProxy( aabb, fixture );
+	SWShape2D::Transform trans2D;
+	taabb2d aabb;
+	getTransform2D( trans2D );
+	fixture->getShape()->computeAABB( aabb, trans2D );
+
+	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
+	tuint proxyID = broadPhase->createProxy( aabb, fixture );
 	fixture->setProxyID( proxyID );
 }
 
 void SWCollider2D::removeFixture( SWFixture2D* fixture )
 {
-	m_broadPhase()->destroyProxy( fixture->getProxyID() );
+	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
+	broadPhase->destroyProxy( fixture->getProxyID() );
 	m_fixtures.remove( fixture );
 }
 
 void SWCollider2D::removeAllFixtures()
 {
+	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	FixtureList::iterator itor = m_fixtures.begin();
 	for ( ; itor != m_fixtures.end() ; ++itor )
 	{
 		SWFixture2D* fixture = (*itor)();
-		m_broadPhase()->destroyProxy( fixture->getProxyID() );
+		broadPhase->destroyProxy( fixture->getProxyID() );
 	}
 	m_fixtures.clear();
 }
@@ -152,14 +193,14 @@ void SWCollider2D::removeContactEdge( const SWContact2D* contact )
 	}
 }
 
-void SWCollider2D::removeAllContactEdges()
+void SWCollider2D::removeAllContactEdges( SWWorld2D* world )
 {
 	SWHardRef<SWContactEdge2D> ce = m_contactEdge();
 	while ( ce() )
 	{
 		SWHardRef<SWContactEdge2D> ce0 = ce();
 		ce = ce()->next();
-		SWPhysics2D.removeContact( ce0()->contact() );
+		world->removeContact( ce0()->contact() );
 	}
 }
 

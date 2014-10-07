@@ -21,10 +21,8 @@ public:
 	SWWeakRef<SWFixture2D> fixture2;
 	float friction;
 	float bounciness;
-	tflag8 state;
 
-	SWHardRef<SWContact2D> next;
-	SWWeakRef<SWContact2D> prev;
+	tflag8 state;
 	SWWeakRef<SWRefNode> node;
 
 	SWContact2D();

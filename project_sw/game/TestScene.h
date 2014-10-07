@@ -24,12 +24,6 @@ public:
 	override void onCollisionLeave()
 	{
 		SWLog( "onCollisionLeave" );
-		while (true)
-		{
-			SWGameObject* go = SW_GC.getScene()->findGO("test");
-			if ( !go ) break;
-			go->destroyNow();
-		}
 	}
 
 };
@@ -59,18 +53,42 @@ public:
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
-		for ( tuint i = 0 ; i < 2 ; ++i )
-		{
-			SWGameObject* go = new SWGameObject("test");
-			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addCircle( tvec2::zero, 10 );
-		}
+		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
+		SWSprite* logoSprite = atlas()->find( "bird_0" );
+		tvec2 logoSize = logoSprite->getSize();
 
+		SWGameObject* parent = new SWGameObject("p");
+		tuint count = 30;
+		float radius = 150;
+		for ( tuint i = 0 ; i < count ; ++i )
+		{
+			SWGameObject* go = new SWGameObject;
+			go->addComponent<TestBehavior>();
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( logoSprite );
+
+			SWCollider2D* collider = go->addComponent<SWCollider2D>();
+			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+
+			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
+			float x = radius * SWMath.cos( radian );
+			float y = radius * SWMath.sin( radian );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setPosition( tvec3(x,y,0) );
+			trans->setParent( parent->getComponent<SWTransform>() );
+		}
 		{
 			SWGameObject* go = new SWGameObject("test");
-			go->addComponent<TestBehavior>();
+			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
+			renderer->setSprite( logoSprite );
+
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addCircle( tvec2::zero, 10 );
+			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+
+			SWTransform* trans = go->getComponent<SWTransform>();
+			trans->setLocalScale( tvec3(1,1,1) );
+			trans->setLocalRotate( tvec3::axisZ*SWMath.angleToRadian(45));
 		}
 	}
 
