@@ -24,6 +24,7 @@ public:
 	override void onCollisionLeave()
 	{
 		SWLog( "onCollisionLeave" );
+		gameObject()->destroy();
 	}
 
 };
@@ -42,7 +43,7 @@ public:
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-
+			screenSize *= 3;
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Camera" );
 
@@ -53,13 +54,13 @@ public:
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
-		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "flappy_bird.png" );
-		SWSprite* logoSprite = atlas()->find( "bird_0" );
+		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "test.png" );
+		SWSprite* logoSprite = atlas()->find( "box" );
 		tvec2 logoSize = logoSprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 30;
-		float radius = 150;
+		tuint count = 10;
+		float radius = 5*count;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
@@ -87,33 +88,38 @@ public:
 			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setLocalScale( tvec3(1,1,1) );
-			trans->setLocalRotate( tvec3::axisZ*SWMath.angleToRadian(45));
+			trans->setLocalScale( tvec3(3,3,1) );
+			trans->setLocalRotate( tvec3(0,1,1)*SWMath.angleToRadian(45));
 		}
 	}
 
 	override void onFixedRateUpdate()
 	{
+		if ( SWInput.getKey('p') )
+		{
+			SW_GC.setNextScene( new TestScene );
+		}
 
 		SWGameObject* go = findGO("test");
 		if ( !go ) return;
 
+		float speed = 10;
 		SWTransform* trans = go->getComponent<SWTransform>();
 		if ( SWInput.getKey('d') )
 		{
-			trans->setPosition( trans->getPosition() + tvec3::axisX );
+			trans->setPosition( trans->getPosition() + (tvec3::axisX*speed) );
 		} 
 		if ( SWInput.getKey('a') )
 		{
-			trans->setPosition( trans->getPosition() - tvec3::axisX );
+			trans->setPosition( trans->getPosition() - (tvec3::axisX*speed) );
 		}
 		if ( SWInput.getKey('w') )
 		{
-			trans->setPosition( trans->getPosition() + tvec3::axisY );
+			trans->setPosition( trans->getPosition() + (tvec3::axisY*speed) );
 		}
 		if ( SWInput.getKey('s') )
 		{
-			trans->setPosition( trans->getPosition() - tvec3::axisY );
+			trans->setPosition( trans->getPosition() - (tvec3::axisY*speed) );
 		}
 	}
 

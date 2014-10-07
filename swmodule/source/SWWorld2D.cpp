@@ -59,6 +59,11 @@ void SWWorld2D::removeContact( SWContact2D* contact )
 	SWRefNode* node = contact->node();
 	node->ref = NULL;
 	contact->node = NULL;
+	SWRefNode* next = node->next();
+	SWRefNode* prev = node->prev();
+	if ( next ) next->prev = prev;
+	if ( prev ) prev->next = next;
+	if ( m_contactList() == node ) m_contactList = next;
 }
 
 bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 )
@@ -127,16 +132,18 @@ void SWWorld2D::updateContacts()
 		{
 			SWContact2D* contact = (SWContact2D*)node->ref();
 			node = node->next();			
-			contact->update();
+			if ( contact ) contact->update();
 		}
 	}
 
 	//! send message
 	{
-		SWRefNode* node = m_contactList();
-		while ( node )
+		SWHardRef<SWRefNode> node = m_contactList();
+		while ( node.isValid() )
 		{
-			SWContact2D* contact = (SWContact2D*)node->ref();
+			SWContact2D* contact = (SWContact2D*)node()->ref();
+			node = node()->next();
+			if ( !contact ) continue;
 
 			SWCollider2D* collider1 = contact->fixture1()->getCollide();
 			SWCollider2D* collider2 = contact->fixture2()->getCollide();
@@ -157,27 +164,17 @@ void SWWorld2D::updateContacts()
 				go1()->sendMessage( onCollisionLeave, NULL );
 				if ( go2.isValid() ) go2()->sendMessage( onCollisionLeave, NULL );
 			}
-
-			//! make the iteration safe from the removing during iterate (lazy delete node)
-			if ( node->ref.isValid() ) node = node->next();
-			else while ( node && !node->ref.isValid() )
-			{
-				SWRefNode* next = node->next();
-				SWRefNode* prev = node->prev();
-				if ( next ) next->prev = prev;
-				if ( prev ) prev->next = next;
-				if ( m_contactList() == node ) m_contactList = next;
-				node = next;
-			}
 		}
 	}
 
 	//! remove contacts that are out of bound
 	{
-		SWRefNode* node = m_contactList();
-		while ( node )
+		SWHardRef<SWRefNode> node = m_contactList();
+		while ( node.isValid() )
 		{
-			SWContact2D* contact = (SWContact2D*)node->ref();
+			SWContact2D* contact = (SWContact2D*)node()->ref();
+			node = node()->next();
+			if ( !contact ) continue;
 
 			tuint proxyID1 = contact->fixture1()->getProxyID();
 			tuint proxyID2 = contact->fixture2()->getProxyID();
@@ -185,22 +182,6 @@ void SWWorld2D::updateContacts()
 			if ( !m_broadPhase()->testOverlap( proxyID1, proxyID2 ) )
 			{
 				removeContact( contact );
-				SWRefNode* next = node->next();
-				SWRefNode* prev = node->prev();
-				if ( next ) next->prev = prev;
-				if ( prev ) prev->next = next;
-			}
-
-			//! make the iteration safe from the removing during iterate (lazy delete node)
-			if ( node->ref.isValid() ) node = node->next();
-			else while ( node && !node->ref.isValid() )
-			{
-				SWRefNode* next = node->next();
-				SWRefNode* prev = node->prev();
-				if ( next ) next->prev = prev;
-				if ( prev ) prev->next = next;
-				if ( m_contactList() == node ) m_contactList = next;
-				node = next;
 			}
 		}
 	}

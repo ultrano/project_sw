@@ -54,10 +54,30 @@ void SWTransform::setParent( SWTransform* parent )
 	//! remove from old parent
 	{
 		SWHardRef<SWRefNode> oldNode = object()->m_node();
-		SWHardRef<SWRefNode> newNode = new SWRefNode;
-		
-		newNode()->ref = object();
 		oldNode()->ref = NULL;
+		object()->m_node = NULL;
+		SWRefNode* next = oldNode()->next();
+		SWRefNode* prev = oldNode()->prev();
+		if ( next ) next->prev = prev;
+		if ( prev ) prev->next = next;
+		if ( m_parent() )
+		{
+			if ( m_parent()->m_childNode() == oldNode() )
+			{
+				m_parent()->m_childNode = next;
+			}
+		} else {
+			if ( SW_GC.getScene()->m_rootNode() == oldNode() )
+			{
+				SW_GC.getScene()->m_rootNode = next;
+			}
+		}
+	}
+
+	//! add to new parent
+	{
+		SWHardRef<SWRefNode> newNode = new SWRefNode;
+		newNode()->ref = object();
 		object()->m_node = newNode();
 
 		SWHardRef<SWRefNode> head;
@@ -69,7 +89,6 @@ void SWTransform::setParent( SWTransform* parent )
 			head = SW_GC.getScene()->m_rootNode();
 			SW_GC.getScene()->m_rootNode = newNode();
 		}
-
 		newNode()->next = head();
 		if ( head() ) head()->prev = newNode();
 	}
@@ -361,7 +380,14 @@ void SWTransform::onRemove()
 	//! remove from list
 	{
 		SWHardRef<SWRefNode> node = gameObject()->m_node();
-		node()->ref = NULL;
+		if ( node.isValid() )
+		{
+			node()->ref = NULL;
+			SWRefNode* next = node()->next();
+			SWRefNode* prev = node()->prev();
+			if ( next ) next->prev = prev;
+			if ( prev ) prev->next = next;
+		}
 	}
 }
 
@@ -370,25 +396,15 @@ void SWTransform::onUpdate()
 	updateMatrix();
 
 	SWWeakRef<SWTransform> vital = this;
-	for ( SWRefNode* node = m_childNode() ; node ; )
+	for ( SWHardRef<SWRefNode> node = m_childNode() ; node.isValid() ; )
 	{
-		SWGameObject* go = (SWGameObject*)node->ref();
-		if ( go && go->isActiveSelf() )
+		SWGameObject* go = (SWGameObject*)node()->ref();
+		node = node()->next();
+		if ( !go ) continue;
+		if ( go->isActiveSelf() )
 		{
 			go->udpate();
 			if ( !vital.isValid() ) break;
-		}
-
-		//! make the iteration safe from the removing during iterate (lazy delete node)
-		if ( node->ref.isValid() ) node = node->next();
-		else while ( node && !node->ref.isValid() )
-		{
-			SWRefNode* next = node->next();
-			SWRefNode* prev = node->prev();
-			if ( next ) next->prev = prev;
-			if ( prev ) prev->next = next;
-			if ( m_childNode() == node ) m_childNode = next;
-			node = next;
 		}
 	}
 }
@@ -396,25 +412,15 @@ void SWTransform::onUpdate()
 void SWTransform::onFixedRateUpdate()
 {
 	SWWeakRef<SWTransform> vital = this;
-	for ( SWRefNode* node = m_childNode() ; node ; )
+	for ( SWHardRef<SWRefNode> node = m_childNode() ; node.isValid() ; )
 	{
-		SWGameObject* go = (SWGameObject*)node->ref();
-		if ( go && go->isActiveSelf() )
+		SWGameObject* go = (SWGameObject*)node()->ref();
+		node = node()->next();
+		if ( !go ) continue;
+		if ( go->isActiveSelf() )
 		{
 			go->fixedRateUpdate();
 			if ( !vital.isValid() ) break;
-		}
-
-		//! make the iteration safe from the removing during iterate (lazy delete node)
-		if ( node->ref.isValid() ) node = node->next();
-		else while ( node && !node->ref.isValid() )
-		{
-			SWRefNode* next = node->next();
-			SWRefNode* prev = node->prev();
-			if ( next ) next->prev = prev;
-			if ( prev ) prev->next = next;
-			if ( m_childNode() == node ) m_childNode = next;
-			node = next;
 		}
 	}
 }
