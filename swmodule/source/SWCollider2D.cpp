@@ -156,8 +156,8 @@ void SWCollider2D::getTransform2D( SWShape2D::Transform& transform2D ) const
 	tvec3 row2( world.m21, world.m22, world.m23 );
 	transform2D.move = tvec2( world.m41, world.m42 );
 	transform2D.rotate = SWMath.atan( row1.y, row1.x );
-	transform2D.scale.x = row1.length();
-	transform2D.scale.y = row2.length();
+	transform2D.scale.x = row1.xy().length();
+	transform2D.scale.y = row2.xy().length();
 }
 
 void SWCollider2D::addContactEdge( const SWContact2D* contact )
