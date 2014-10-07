@@ -50,7 +50,8 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 	for ( SWGONode* node = m_rootNode() ; node ; node = node->next() )
 	{
 		object = node->gameObject();
-		if ( object->getName() == subName ) break;
+		if ( object && object->getName() == subName ) break;
+		object = NULL;
 	}
 
 	if ( object != NULL && ( offset != tstring::npos ) )

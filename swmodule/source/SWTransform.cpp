@@ -319,8 +319,7 @@ SWTransform* SWTransform::findImmadiate( const tstring& name ) const
 	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
 	{
 		SWGameObject* go = node->gameObject();
-		if ( go == NULL ) continue;
-		if ( go->getName() == name ) return go->getComponent<SWTransform>();
+		if ( go && go->getName() == name ) return go->getComponent<SWTransform>();
 	}
 	return NULL;
 }

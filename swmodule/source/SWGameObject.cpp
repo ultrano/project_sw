@@ -64,7 +64,8 @@ void SWGameObject::destroyNow()
 {
 	SWGameObject::Ref holder = this;
 	removeComponentAll();
-
+	m_node()->gameObject = NULL;
+	m_node = NULL;
 	__super::destroy();
 }
 

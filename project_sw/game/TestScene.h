@@ -60,7 +60,7 @@ public:
 
 		SWGameObject* parent = new SWGameObject("p");
 		tuint count = 30;
-		float radius = 100;
+		float radius = 150;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
