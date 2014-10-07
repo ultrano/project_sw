@@ -29,7 +29,6 @@ void SWCollider2D::onAwake()
 
 void SWCollider2D::onStart()
 {
-	updateTransform2D();
 }
 
 void SWCollider2D::onRemove()
@@ -43,28 +42,17 @@ void SWCollider2D::onRemove()
 
 void SWCollider2D::onFixedUpdate()
 {
-	updateTransform2D();
+	SWShape2D::Transform trans2D;
+	getTransform2D( trans2D );
 
 	FixtureList::iterator itor = m_fixtures.begin();
 	for ( ; itor != m_fixtures.end() ; ++itor )
 	{
 		SWFixture2D* fixture = (*itor)();
 		taabb2d aabb;
-		fixture->getShape()->computeAABB( aabb, m_transform2D );
+		fixture->getShape()->computeAABB( aabb, trans2D );
 		m_broadPhase()->updateProxy( fixture->getProxyID(), aabb );
 	}
-}
-
-void SWCollider2D::updateTransform2D()
-{
-	SWTransform* transform = getComponent<SWTransform>();
-	const tmat44& world = transform->getWorldMatrix();
-	tvec3 row1( world.m11, world.m12, world.m13 );
-	tvec3 row2( world.m21, world.m22, world.m23 );
-	m_transform2D.move = tvec2( world.m41, world.m42 );
-	m_transform2D.rotate = SWMath.atan( row1.y, row1.x );
-	m_transform2D.scale.x = row1.length();
-	m_transform2D.scale.y = row2.length();
 }
 
 SWFixture2D* SWCollider2D::addCircle( const tvec2& center, float radius )
@@ -117,6 +105,18 @@ void SWCollider2D::removeAllFixtures()
 		m_broadPhase()->destroyProxy( fixture->getProxyID() );
 	}
 	m_fixtures.clear();
+}
+
+void SWCollider2D::getTransform2D( SWShape2D::Transform& transform2D ) const
+{
+	SWTransform* transform = getComponent<SWTransform>();
+	const tmat44& world = transform->getWorldMatrix();
+	tvec3 row1( world.m11, world.m12, world.m13 );
+	tvec3 row2( world.m21, world.m22, world.m23 );
+	transform2D.move = tvec2( world.m41, world.m42 );
+	transform2D.rotate = SWMath.atan( row1.y, row1.x );
+	transform2D.scale.x = row1.length();
+	transform2D.scale.y = row2.length();
 }
 
 void SWCollider2D::addContactEdge( const SWContact2D* contact )

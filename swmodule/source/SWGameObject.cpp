@@ -401,5 +401,5 @@ SWGONode::SWGONode()
 
 SWGONode::~SWGONode()
 {
-
+	SWLog( "~SWGONode" );
 }

@@ -47,9 +47,9 @@ SWGameObject* SWGameScene::findGO( const tstring& name )
 	tstring subName = ( offset != tstring::npos )? name.substr( 0, offset ) : name;
 
 	SWGameObject* object = NULL;
-	for ( SWGameObject* go = m_rootGO() ; go ; go = go->m_next() )
+	for ( SWGONode* node = m_rootNode() ; node ; node = node->next() )
 	{
-		object = go;
+		object = node->gameObject();
 		if ( object->getName() == subName ) break;
 	}
 
@@ -85,12 +85,12 @@ void SWGameScene::awake()
 void SWGameScene::destroy()
 {
 	onDestroy();
-	for ( SWGameObject* go = m_rootGO() ; go ; )
+	for ( SWGONode* node = m_rootNode() ; node ; node = node->next() )
 	{
-		SWGameObject* del = go;
-		go = go->m_next();
-		del->destroyNow();
+		SWGameObject* go = node->gameObject();
+		if ( go ) go->destroyNow();
 	}
+	m_rootNode = NULL;
 
 	m_iterateCopy.clear();
 	m_destroyGOs.clear();
@@ -124,9 +124,21 @@ void SWGameScene::update()
 	while ( fixedCount-- )
 	{
 		onFixedRateUpdate();
-		for ( SWGameObject* go = m_rootGO() ; go ; go = go->m_next() )
+		for ( SWGONode* node = m_rootNode() ; node ; node = node? node->next():NULL )
 		{
-			if ( go->isActiveSelf() ) go->fixedRateUpdate();
+			SWGameObject* go = node->gameObject();
+			while ( go == NULL )
+			{
+				SWGONode* next = node->next();
+				SWGONode* prev = node->prev();
+				if ( next ) next->prev = prev;
+				if ( prev ) prev->next = next;
+				if ( m_rootNode() == node ) m_rootNode = next;
+				node = node->next();
+				if ( node ) go = node->gameObject();
+				else break;
+			}
+			if ( go && go->isActiveSelf() ) go->fixedRateUpdate();
 		}
 
 		SWPhysics2D.simulate();
@@ -135,10 +147,21 @@ void SWGameScene::update()
 	//! regular updates
 	{
 		onUpdate();
-
-		for ( SWGameObject* go = m_rootGO() ; go ; go = go->m_next() )
+		for ( SWGONode* node = m_rootNode() ; node ; node = node? node->next():NULL )
 		{
-			if ( go->isActiveSelf() ) go->udpate();
+			SWGameObject* go = node->gameObject();
+			while ( go == NULL )
+			{
+				SWGONode* next = node->next();
+				SWGONode* prev = node->prev();
+				if ( next ) next->prev = prev;
+				if ( prev ) prev->next = next;
+				if ( m_rootNode() == node ) m_rootNode = next;
+				node = node->next();
+				if ( node ) go = node->gameObject();
+				else break;
+			}
+			if ( go && go->isActiveSelf() ) go->udpate();
 		}
 	}
 	

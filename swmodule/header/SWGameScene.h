@@ -17,6 +17,7 @@ class SWCollisionManager;
 class SWRenderer;
 class SWCamera;
 class SWGameLayer;
+class SWGONode;
 
 /**
  @brief 게임 플로우의 기본 단위인 scene(장면)을 관리.
@@ -91,7 +92,7 @@ private:
 	typedef tarray<SWHardRef<SWGameLayer>> LayerArray;
 
 	//! root game objects
-	SWHardRef<SWGameObject> m_rootGO;
+	SWHardRef<SWGONode> m_rootNode;
 	SWObject::Array m_iterateCopy;
 	SWObject::Array m_destroyGOs;
 	

@@ -52,37 +52,25 @@ void SWTransform::setParent( SWTransform* parent )
 
 	//! remove from old parent
 	{
-		SWHardRef<SWGameObject> next = object()->m_next();
-		SWHardRef<SWGameObject> prev = object()->m_prev();
-		if ( next() ) next()->m_prev = prev();
-		if ( prev() ) prev()->m_next = next();
-		if ( m_parent() )
-		{
-			if ( m_parent()->m_child == object() )
-			{
-				m_parent()->m_child = object();
-			}
-		} else {
-			if ( SW_GC.getScene()->m_rootGO == object() )
-			{
-				SW_GC.getScene()->m_rootGO = object();
-			}
-		}
-	}
+		SWHardRef<SWGONode> oldNode = object()->m_node();
+		SWHardRef<SWGONode> newNode = new SWGONode;
+		
+		newNode()->gameObject = object();
+		oldNode()->gameObject = NULL;
+		object()->m_node = newNode();
 
-	//! add to new parent
-	{
-		SWHardRef<SWGameObject> head;
+		SWHardRef<SWGONode> head;
 		if ( parent )
 		{
-			head = parent->m_child();
-			parent->m_child = object();
+			head = parent->m_childNode();
+			parent->m_childNode = newNode();
 		} else {
-			head = SW_GC.getScene()->m_rootGO();
-			SW_GC.getScene()->m_rootGO = object();
+			head = SW_GC.getScene()->m_rootNode();
+			SW_GC.getScene()->m_rootNode = newNode();
 		}
-		object()->m_next = head();
-		head()->m_prev = object();
+
+		newNode()->next = head();
+		if ( head() ) head()->prev = newNode();
 	}
 
 	m_parent = parent;
@@ -328,10 +316,10 @@ SWTransform* SWTransform::findImmadiate( const tstring& name ) const
 {
 	if ( name.size() == 0 ) return NULL;
 
-	for ( SWGameObject* itor = m_child() ; itor ;  )
+	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = itor;
-		itor = itor->m_next();
+		SWGameObject* go = node->gameObject();
+		if ( go == NULL ) continue;
 		if ( go->getName() == name ) return go->getComponent<SWTransform>();
 	}
 	return NULL;
@@ -343,14 +331,16 @@ void SWTransform::onAwake()
 
 	//! add to root
 	{
-		SWHardRef<SWGameObject> hold = gameObject.getRaw();
-		SWHardRef<SWGameObject> head = SW_GC.getScene()->m_rootGO();
+		SWHardRef<SWGONode> newNode = new SWGONode;
+		newNode()->gameObject = gameObject.getRaw();
+		gameObject()->m_node = newNode();
+		SWHardRef<SWGONode> head = SW_GC.getScene()->m_rootNode();
 		if ( head() )
 		{
-			gameObject()->m_next = head();
-			head()->m_prev = gameObject();
+			newNode()->next = head();
+			head()->prev = newNode();
 		}
-		SW_GC.getScene()->m_rootGO = gameObject();
+		SW_GC.getScene()->m_rootNode = newNode();
 	}
 
 	gameObject()->addUpdateDelegator( GetDelegator( onUpdate ) );
@@ -361,32 +351,17 @@ void SWTransform::onRemove()
 {
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 
-	for ( SWGameObject* itor = m_child() ; itor ;  )
+	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
 	{
-		SWGameObject* go = itor;
-		itor = itor->m_next();
-		go->destroyNow();
+		SWGameObject* go = node->gameObject();
+		if ( go ) go->destroyNow();
 	}
+	m_childNode = NULL;
 
-	//! remove from old parent
+	//! remove from list
 	{
-		SWHardRef<SWGameObject> object = gameObject();
-		SWHardRef<SWGameObject> next = object()->m_next();
-		SWHardRef<SWGameObject> prev = object()->m_prev();
-		if ( next() ) next()->m_prev = prev();
-		if ( prev() ) prev()->m_next = next();
-		if ( m_parent() )
-		{
-			if ( m_parent()->m_child == object() )
-			{
-				m_parent()->m_child = object();
-			}
-		} else {
-			if ( SW_GC.getScene()->m_rootGO == object() )
-			{
-				SW_GC.getScene()->m_rootGO = object();
-			}
-		}
+		SWHardRef<SWGONode> node = gameObject()->m_node();
+		node()->gameObject = NULL;
 	}
 }
 
@@ -395,9 +370,21 @@ void SWTransform::onUpdate()
 	updateMatrix();
 
 	SWWeakRef<SWTransform> vital = this;
-	for ( SWGameObject* go = m_child() ; go ; go = go->m_next() )
+	for ( SWGONode* node = m_childNode() ; node ; node = node? node->next():NULL )
 	{
-		if ( go->isActiveSelf() )
+		SWGameObject* go = node->gameObject();
+		while ( go == NULL )
+		{
+			SWGONode* next = node->next();
+			SWGONode* prev = node->prev();
+			if ( next ) next->prev = prev;
+			if ( prev ) prev->next = next;
+			if ( m_childNode() == node ) m_childNode = next;
+			node = node->next();
+			if ( node ) go = node->gameObject();
+			else break;
+		}
+		if ( go && go->isActiveSelf() )
 		{
 			go->udpate();
 			if ( !vital.isValid() ) break;
@@ -408,12 +395,23 @@ void SWTransform::onUpdate()
 void SWTransform::onFixedRateUpdate()
 {
 	SWWeakRef<SWTransform> vital = this;
-	for ( SWHardRef<SWGameObject> go = m_child()
-		; go.isValid() ; go = go()->m_next )
+	for ( SWGONode* node = m_childNode() ; node ; node = node? node->next():NULL )
 	{
-		if ( go()->isActiveSelf() )
+		SWGameObject* go = node->gameObject();
+		while ( go == NULL )
 		{
-			go()->fixedRateUpdate();
+			SWGONode* next = node->next();
+			SWGONode* prev = node->prev();
+			if ( next ) next->prev = prev;
+			if ( prev ) prev->next = next;
+			if ( m_childNode() == node ) m_childNode = next;
+			node = node->next();
+			if ( node ) go = node->gameObject();
+			else break;
+		}
+		if ( go && go->isActiveSelf() )
+		{
+			go->fixedRateUpdate();
 			if ( !vital.isValid() ) break;
 		}
 	}
@@ -441,9 +439,18 @@ void SWTransform::updateMatrix()
 void SWTransform::serialize( SWObjectWriter* writer )
 {
 	tuint count = 0;
-	for ( SWGameObject* go = m_child() ; go ; go = go->m_next() ) count += 1;
+	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
+	{
+		SWGameObject* go = node->gameObject();
+		if ( go ) count += 1;
+	}
+
 	writer->writeUInt( count );
-	for ( SWGameObject* go = m_child() ; go ; go = go->m_next() ) writer->writeObject( go );
+	for ( SWGONode* node = m_childNode() ; node ; node = node->next() )
+	{
+		SWGameObject* go = node->gameObject();
+		if ( go ) writer->writeObject( go );
+	}
 	
 	writer->writeVec3( m_scale );
 	writer->writeQuat( m_rotate );
@@ -454,14 +461,17 @@ void SWTransform::serialize( SWObjectWriter* writer )
 void SWTransform::deserialize( SWObjectReader* reader )
 {
 	tuint count = reader->readUInt();
-	SWGameObject* go = NULL;
-	SWGameObject* last = NULL;
+	SWGONode* node = NULL;
+	SWGONode* last = NULL;
 	while ( count-- )
 	{
-		go = (SWGameObject*)reader->readObject();
-		go->m_prev = last;
-		if ( last ) last->m_next = go;
-		else m_child = go;
+		SWGameObject* go = (SWGameObject*)reader->readObject();;
+		node = new SWGONode();
+		node->prev = last;
+		node->gameObject = go;
+		go->m_node = node;
+		if ( last ) last->next = node;
+		else m_childNode = node;
 	}
 
 	reader->readVec3( m_scale );

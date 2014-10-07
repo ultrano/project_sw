@@ -13,6 +13,7 @@
 
 class SWGameScene;
 class SWComponent;
+class SWGONode;
 
 class SWGameObject : public SWObject
 {
@@ -90,6 +91,7 @@ private:
 
 	SWHardRef<SWGameObject> m_next;
 	SWWeakRef<SWGameObject> m_prev;
+	SWWeakRef<SWGONode> m_node;
 	
 	thashstr m_name;
 	tuint    m_layer;
@@ -107,6 +109,7 @@ private:
 
 class SWGONode : public SWRefCountable
 {
+public:
 	SWHardRef<SWGONode> next;
 	SWWeakRef<SWGONode> prev;
 	SWHardRef<SWGameObject> gameObject;

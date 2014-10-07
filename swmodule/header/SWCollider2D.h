@@ -23,8 +23,8 @@ public:
 	void removeFixture( SWFixture2D* fixture );
 	void removeAllFixtures();
 
-	const SWShape2D::Transform& getTransform2D() const { return m_transform2D; }
-
+	void getTransform2D( SWShape2D::Transform& transform2D ) const;
+ 
 	void addContactEdge( const SWContact2D* contact );
 	void removeContactEdge( const SWContact2D* contact );
 	void removeAllContactEdges();
@@ -40,7 +40,6 @@ protected:
 private:
 
 	void addFixture( SWFixture2D* fixture );
-	void updateTransform2D();
 
 private:
 	typedef tlist<SWHardRef<SWFixture2D>> FixtureList;
