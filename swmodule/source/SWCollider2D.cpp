@@ -41,7 +41,7 @@ void SWCollider2D::onRemove()
 void SWCollider2D::onFixedUpdate()
 {
 	tmat33 mat;
-	getTransform2D( mat );
+	getMatrix2D( mat );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	FixtureList::iterator itor = m_fixtures.begin();
@@ -79,7 +79,7 @@ void SWCollider2D::onLayerChanged()
 	{
 		taabb2d aabb;
 		tmat33 mat;
-		getTransform2D( mat );
+		getMatrix2D( mat );
 		for ( FixtureList::iterator itor = m_fixtures.begin() 
 			; itor != m_fixtures.end() ; ++itor )
 		{
@@ -122,7 +122,7 @@ void SWCollider2D::registerFixture( SWFixture2D* fixture )
 
 	tmat33 mat;
 	taabb2d aabb;
-	getTransform2D( mat );
+	getMatrix2D( mat );
 	fixture->getShape()->computeAABB( aabb, mat );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
@@ -149,7 +149,7 @@ void SWCollider2D::removeAllFixtures()
 	m_fixtures.clear();
 }
 
-void SWCollider2D::getTransform2D( tmat33& mat ) const
+void SWCollider2D::getMatrix2D( tmat33& mat ) const
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	const tmat44& world = transform->getWorldMatrix();
