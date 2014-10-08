@@ -153,14 +153,9 @@ void SWCollider2D::getTransform2D( tmat33& mat ) const
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	const tmat44& world = transform->getWorldMatrix();
-	tvec3 row1( world.m11, world.m12, world.m13 );
-	tvec3 row2( world.m21, world.m22, world.m23 );
-
-	tvec2 move = tvec2( world.m41, world.m42 );
-	float rotate = SWMath.atan( row1.y, row1.x );
-	tvec2 scale( row1.xy().length(), row2.xy().length());
-
-	mat.set(scale, rotate, move);
+	mat.m11 = world.m11; mat.m12 = world.m12; mat.m13 = 0;
+	mat.m21 = world.m21; mat.m22 = world.m22; mat.m23 = 0;
+	mat.m31 = world.m41; mat.m32 = world.m42; mat.m33 = 1;
 }
 
 void SWCollider2D::addContactEdge( const SWContact2D* contact )

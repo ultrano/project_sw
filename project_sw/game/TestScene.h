@@ -77,10 +77,11 @@ public:
 
 			SWTransform* trans = go->getComponent<SWTransform>();
 			trans->setPosition( tvec3(x,y,0) );
+			trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(20) );
 			trans->setParent( parent->getComponent<SWTransform>() );
 		}
 
-		sprite = atlas()->find( "circle" );
+		sprite = atlas()->find( "box" );
 		{
 			SWGameObject* go = new SWGameObject("test");
 			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
@@ -91,11 +92,11 @@ public:
 			renderer->setSprite( sprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-			collider->addCircle( tvec2::zero, logoSize.x/2 );
+			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setLocalScale( tvec3(3,1,1) );
+			//trans->setLocalScale( tvec3(3,1,1) );
 		}
 	}
 
