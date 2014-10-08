@@ -8,6 +8,7 @@
 #include "SWBroadPhase2D.h"
 #include "SWContact2D.h"
 #include "SWWorld2D.h"
+#include "SWShape2D.h"
 
 SWCollider2D::SWCollider2D( factory_constructor )
 {
@@ -39,7 +40,7 @@ void SWCollider2D::onRemove()
 
 void SWCollider2D::onFixedUpdate()
 {
-	SWShape2D::Transform trans2D;
+	SWShapeTransform2D trans2D;
 	getTransform2D( trans2D );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
@@ -77,7 +78,7 @@ void SWCollider2D::onLayerChanged()
 	//! add fixtures to new broad-phase
 	{
 		taabb2d aabb;
-		SWShape2D::Transform trans2D;
+		SWShapeTransform2D trans2D;
 		getTransform2D( trans2D );
 		for ( FixtureList::iterator itor = m_fixtures.begin() 
 			; itor != m_fixtures.end() ; ++itor )
@@ -119,7 +120,7 @@ void SWCollider2D::registerFixture( SWFixture2D* fixture )
 {
 	m_fixtures.push_back( fixture );
 
-	SWShape2D::Transform trans2D;
+	SWShapeTransform2D trans2D;
 	taabb2d aabb;
 	getTransform2D( trans2D );
 	fixture->getShape()->computeAABB( aabb, trans2D );
@@ -148,7 +149,7 @@ void SWCollider2D::removeAllFixtures()
 	m_fixtures.clear();
 }
 
-void SWCollider2D::getTransform2D( SWShape2D::Transform& transform2D ) const
+void SWCollider2D::getTransform2D( SWShapeTransform2D& transform2D ) const
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	const tmat44& world = transform->getWorldMatrix();

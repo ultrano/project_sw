@@ -5,22 +5,22 @@
 #include "SWRefCounter.h"
 #include "SWRtti.h"
 
+struct SWShapeTransform2D
+{
+	tvec2 scale;
+	float rotate;
+	tvec2 move;
+	SWShapeTransform2D() : scale(tvec2::one), rotate(0), move(tvec2::zero) {}
+};
+
 class SWShape2D : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWShape2D );
 
 public:
 
-	struct Transform
-	{
-		tvec2 scale;
-		float rotate;
-		tvec2 move;
-		Transform() : scale(tvec2::one), rotate(0), move(tvec2::zero) {}
-	};
-
-	abstract bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const = 0;
-	abstract void computeAABB( taabb2d& aabb, const Transform& transform ) const = 0;
+	abstract bool getFarthest( tvec2& farthest, const tvec2& direction, const SWShapeTransform2D& transform ) const = 0;
+	abstract void computeAABB( taabb2d& aabb, const SWShapeTransform2D& transform ) const = 0;
 };
 
 class SWCircleShape2D : public SWShape2D
@@ -40,8 +40,8 @@ public:
 	void setRadius( float radius ) { m_radius = radius; }
 	float getRadius() const { return m_radius; }
 
-	override bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const;
-	override void computeAABB( taabb2d& aabb, const Transform& transform ) const;
+	override bool getFarthest( tvec2& farthest, const tvec2& direction, const SWShapeTransform2D& transform ) const;
+	override void computeAABB( taabb2d& aabb, const SWShapeTransform2D& transform ) const;
 
 private:
 	tvec2 m_center;
@@ -58,8 +58,8 @@ public:
 
 	void set( const tarray<tvec2>& vertices );
 	void setBox( const tvec2& center, float width, float height );
-	override bool getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const;
-	override void computeAABB( taabb2d& aabb, const Transform& transform ) const;
+	override bool getFarthest( tvec2& farthest, const tvec2& direction, const SWShapeTransform2D& transform ) const;
+	override void computeAABB( taabb2d& aabb, const SWShapeTransform2D& transform ) const;
 private:
 	void computeLocalOBB( tobb2d& obb );
 private:
@@ -69,6 +69,13 @@ private:
 
 };
 
-bool testShape2D( const SWShape2D* shape1, const SWShape2D::Transform& transform1 , const SWShape2D* shape2, const SWShape2D::Transform& transform2 );
+class SWManifold : public SWMemory
+{
+public:
+	tvec2 normal;
+	float depth;
+};
+
+bool testShape2D( SWManifold& manifold, const SWShape2D* shape1, const SWShapeTransform2D& transform1 , const SWShape2D* shape2, const SWShapeTransform2D& transform2 );
 
 #endif //! SWShape2D_h__

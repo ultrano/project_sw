@@ -13,7 +13,7 @@ SWCircleShape2D::~SWCircleShape2D()
 
 }
 
-bool SWCircleShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform  ) const
+bool SWCircleShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const SWShapeTransform2D& transform  ) const
 {
 	float a = m_radius * transform.scale.x;
 	float b = m_radius * transform.scale.y;
@@ -32,7 +32,7 @@ bool SWCircleShape2D::getFarthest( tvec2& farthest, const tvec2& direction, cons
 	return false;
 }
 
-void SWCircleShape2D::computeAABB( taabb2d& aabb, const Transform& transform ) const
+void SWCircleShape2D::computeAABB( taabb2d& aabb, const SWShapeTransform2D& transform ) const
 {
 	aabb.lower = tvec2( FLT_MAX, FLT_MAX );
 	aabb.upper = -aabb.lower;
@@ -105,7 +105,7 @@ void SWPolygonShape2D::setBox( const tvec2& center, float width, float height )
 	set( vertices );
 }
 
-bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const Transform& transform ) const
+bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const SWShapeTransform2D& transform ) const
 {
 	if ( m_vertices.size() == 0 ) return false;
 
@@ -132,7 +132,7 @@ bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, con
 	return true;
 }
 
-void SWPolygonShape2D::computeAABB( taabb2d& aabb, const Transform& transform ) const
+void SWPolygonShape2D::computeAABB( taabb2d& aabb, const SWShapeTransform2D& transform ) const
 {
 	tmat33 mat;
 	mat.set( transform.scale, transform.rotate, transform.move );
@@ -281,8 +281,9 @@ void calculateSide( tflag8& sideFlag, const tvec2& a, const tvec2& b, const tvec
 }
 
 bool testShape2D
-	( const SWShape2D* shape1, const SWShape2D::Transform& transform1
-	, const SWShape2D* shape2, const SWShape2D::Transform& transform2 )
+	( SWManifold& manifold
+	, const SWShape2D* shape1, const SWShapeTransform2D& transform1
+	, const SWShape2D* shape2, const SWShapeTransform2D& transform2 )
 {
 	tvec2 simplex[3];
 
@@ -345,7 +346,7 @@ bool testShape2D
 			while ( count < maxTrying )
 			{
 				tuint insertPos = 0;
-				tvec2 normal;
+				tvec2 direction;
 				float closest = FLT_MAX;
 				for ( tuint i = 0 ; i < count ; ++i )
 				{
@@ -356,26 +357,25 @@ bool testShape2D
 					if ( length < closest )
 					{
 						insertPos = i+1;
-						normal = dir;
+						direction = dir;
 						closest = length;
 					}
 				}
 
 				//! finds new farthest point.
 				tvec2 farthest1, farthest2;
-				shape1->getFarthest( farthest1, normal, transform1 );
-				shape2->getFarthest( farthest2, -normal, transform2 );
+				shape1->getFarthest( farthest1, direction, transform1 );
+				shape2->getFarthest( farthest2, -direction, transform2 );
 				tvec2 farthest = farthest1 - farthest2;
 
+				//! save the result
+				manifold.normal = direction;
+				manifold.depth = closest;
+
 				//! is it close enough
-				float length = normal.dot(farthest);
-				if ( SWMath.abs(length - closest) < SW_Epsilon )
-				{
-					SWLog( "normal: %f, %f", normal.x, normal.y );
-					SWLog( "depth: %f", closest );
-					break;
-				}
-				else
+				float length = direction.dot(farthest);
+				if ( SWMath.abs(length - closest) < SW_Epsilon ) break;
+				else 
 				{
 					tuint itor = count;
 					while ( itor > insertPos )

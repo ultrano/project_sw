@@ -68,7 +68,8 @@ public:
 			renderer->setSprite( logoSprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			collider->addCircle( tvec2::zero, logoSize.length()/2 );
 
 			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 			float x = radius * SWMath.cos( radian );
@@ -84,7 +85,8 @@ public:
 			renderer->setSprite( logoSprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			collider->addCircle( tvec2::zero, logoSize.length()/2 );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
 			//trans->setLocalScale( tvec3(3,3,1) );

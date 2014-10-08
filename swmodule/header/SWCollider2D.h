@@ -2,12 +2,12 @@
 #define SWCollider2D_h__
 
 #include "SWComponent.h"
-#include "SWShape2D.h"
 
 class SWFixture2D;
 class SWWorld2D;
 class SWContact2D;
 class SWContactEdge2D;
+class SWShapeTransform2D;
 class SWCollider2D : public SWComponent
 {
 	SW_RTTI( SWCollider2D, SWComponent );
@@ -23,7 +23,7 @@ public:
 	void removeFixture( SWFixture2D* fixture );
 	void removeAllFixtures();
 
-	void getTransform2D( SWShape2D::Transform& transform2D ) const;
+	void getTransform2D( SWShapeTransform2D& transform2D ) const;
  
 	void addContactEdge( const SWContact2D* contact );
 	void removeContactEdge( const SWContact2D* contact );

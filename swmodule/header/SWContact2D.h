@@ -21,6 +21,8 @@ public:
 	SWWeakRef<SWFixture2D> fixture2;
 	float friction;
 	float bounciness;
+	tvec2 normal;
+	float depth;
 
 	tflag8 state;
 	SWWeakRef<SWRefNode> node;

@@ -5,6 +5,7 @@
 #include "SWType.h"
 
 class SWShape2D;
+class SWManifold;
 class SWCollider2D;
 class SWFixture2D : public SWRefCountable
 {
@@ -38,6 +39,6 @@ public:
 	SWWeakRef<SWCollider2D> m_collide;
 };
 
-bool testFixture2D( const SWFixture2D* fixture1, const SWFixture2D* fixture2 );
+bool testFixture2D( SWManifold& manifold, const SWFixture2D* fixture1, const SWFixture2D* fixture2 );
 
 #endif // SWFixture2D_h__
