@@ -30,7 +30,7 @@ public:
 	const SWContactEdge2D* getContactEdge() const;
 
 private:
-	void removeAllContactEdges( SWWorld2D* world );
+	void clearContactEdges( SWWorld2D* world );
 protected:
 
 	void onAwake();

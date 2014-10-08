@@ -30,7 +30,7 @@ void SWCollider2D::onAwake()
 
 void SWCollider2D::onRemove()
 {
-	removeAllContactEdges( m_world() );
+	clearContactEdges( m_world() );
 	removeAllFixtures();
 	gameObject()->removeFixedRateUpdateDelegator( GetDelegator( onFixedUpdate ) );
 	gameObject()->removeLayerDelegator( GetDelegator(onLayerChanged) );
@@ -62,7 +62,7 @@ void SWCollider2D::onLayerChanged()
 	SWBroadPhase2D* newBroadPhase = newWorld->getBroadPhase();
 
 	//! remove all contacts and contact-edges from old world
-	removeAllContactEdges( oldWorld );
+	clearContactEdges( oldWorld );
 
 	//! remove fixtures from old broad-phase
 	{
@@ -193,7 +193,7 @@ void SWCollider2D::removeContactEdge( const SWContact2D* contact )
 	}
 }
 
-void SWCollider2D::removeAllContactEdges( SWWorld2D* world )
+void SWCollider2D::clearContactEdges( SWWorld2D* world )
 {
 	SWHardRef<SWContactEdge2D> ce = m_contactEdge();
 	while ( ce() )
@@ -202,6 +202,7 @@ void SWCollider2D::removeAllContactEdges( SWWorld2D* world )
 		ce = ce()->next();
 		world->removeContact( ce0()->contact() );
 	}
+	m_contactEdge = NULL;
 }
 
 const SWContactEdge2D* SWCollider2D::getContactEdge() const
