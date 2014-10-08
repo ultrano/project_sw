@@ -1,7 +1,7 @@
 #include "SWShape2D.h"
 #include "SWMath.h"
-
-#define SW_Epsilon (0.01f)
+#include "SWLog.h"
+#define SW_Epsilon (0.05f)
 
 SWCircleShape2D::SWCircleShape2D()
 {
@@ -304,12 +304,11 @@ bool testShape2D
 		if ( line.length() < SW_Epsilon ) return false;
 
 		float kz = line.cross( simplex[0] );
-		float det = (kz<0)? -kz : kz;
-		if ( det < SW_Epsilon )
+		if ( SWMath.abs(kz) < SW_Epsilon )
 		{
 			if (  line.dot( -simplex[0] ) < 0 ) return false;
 			if ( -line.dot( -simplex[1] ) < 0 ) return false;
-			return true;
+			kz = 1;
 		}
 		dir = line.cross( kz ).normal();
 		shape1->getFarthest( farthest1, dir, transform1 );
@@ -328,28 +327,95 @@ bool testShape2D
 		originArea += calculateArea( tvec2::zero, simplex[1], simplex[2]);
 		originArea += calculateArea( tvec2::zero, simplex[2], simplex[0]);
 		
-		float det = (originArea - simplesArea);
-		det = (det<0)? -det : det;
-		if ( det < SW_Epsilon ) return true;
+		//! is it close enough
+		if ( SWMath.abs(originArea - simplesArea) < SW_Epsilon )
+		{
+			//! finds normal and depth using EPA.
+			//! we only try as much as maxTrying to find them
+			const tuint maxTrying = 16;
+			tvec2 polytope[maxTrying];
+			tvec2 center = tvec2::zero;
+			tuint count = 0;
 
-		tflag8 sideFlag;
-		calculateSide( sideFlag, simplex[0], simplex[1], simplex[2] );
-		tuint count = 0;
-		tuint index = 0;
+			//! first, fills polytope with simplex that contains the origin.
+			center += polytope[count] = simplex[count];++count;
+			center += polytope[count] = simplex[count];++count;
+			center += polytope[count] = simplex[count];++count;
+			center /= count;
+			while ( count < maxTrying )
+			{
+				tuint insertPos = 0;
+				tvec2 normal;
+				float closest = FLT_MAX;
+				for ( tuint i = 0 ; i < count ; ++i )
+				{
+					tvec2 edge = polytope[(i+1)%count] - polytope[i];
+					float kz = edge.cross( center-polytope[i] );
+					tvec2 dir = edge.cross(kz).normal();
+					float length = dir.dot(polytope[i]);
+					if ( length < closest )
+					{
+						insertPos = i+1;
+						normal = dir;
+						closest = length;
+					}
+				}
 
-		if ( sideFlag.get(0) ) { index = 0; count += 1;}
-		if ( sideFlag.get(1) ) { index = 1; count += 1;}
-		if ( sideFlag.get(2) ) { index = 2; count += 1;}
-		if ( count >= 2 ) return false;
+				//! finds new farthest point.
+				tvec2 farthest1, farthest2;
+				shape1->getFarthest( farthest1, normal, transform1 );
+				shape2->getFarthest( farthest2, -normal, transform2 );
+				tvec2 farthest = farthest1 - farthest2;
 
-		tvec2 edge = simplex[(index+1)%3]-simplex[index];
-		float kz = edge.cross(simplex[index]);
-		tvec2 dir = edge.cross( kz ).normal();
-		tvec2 farthest1, farthest2;
+				//! is it close enough
+				float length = normal.dot(farthest);
+				if ( SWMath.abs(length - closest) < SW_Epsilon )
+				{
+					SWLog( "normal: %f, %f", normal.x, normal.y );
+					SWLog( "depth: %f", closest );
+					break;
+				}
+				else
+				{
+					tuint itor = count;
+					while ( itor > insertPos )
+					{
+						polytope[itor--] = polytope[itor];
+					}
+					polytope[insertPos] = farthest;
+					count += 1;
+				}
+			}
 
-		shape1->getFarthest( farthest1, dir, transform1 );
-		shape2->getFarthest( farthest2, -dir, transform2 );
-		simplex[(index+2)%3] = farthest1 - farthest2;
+			return true;
+		}
+		else
+		{
+			//! finds sides where origin is.
+			tflag8 sideFlag;
+			calculateSide( sideFlag, simplex[0], simplex[1], simplex[2] );
+			tuint count = 0;
+			tuint index = 0;
+
+			//! meaning of outside is opposite side of center of polygon in each edges.
+			//! if there are two outsides, 
+			//! it means that the shapes don't meet each other in case of the convex-shape.
+			if ( sideFlag.get(0) ) { index = 0; count += 1;}
+			if ( sideFlag.get(1) ) { index = 1; count += 1;}
+			if ( sideFlag.get(2) ) { index = 2; count += 1;}
+			if ( count >= 2 ) return false;
+
+			//! finds normal to the origin from a edge.
+			tvec2 edge = simplex[(index+1)%3]-simplex[index];
+			float kz = edge.cross(simplex[index]);
+			tvec2 dir = edge.cross( kz ).normal();
+
+			//! finds new farthest point.
+			tvec2 farthest1, farthest2;
+			shape1->getFarthest( farthest1, dir, transform1 );
+			shape2->getFarthest( farthest2, -dir, transform2 );
+			simplex[(index+2)%3] = farthest1 - farthest2;
+		}
 	}
 	return false;
 }

@@ -14,12 +14,11 @@ public:
 	override void onCollisionEnter()
 	{
 		SWLog( "onCollisionEnter" );
-		gameObject()->destroy();
 	}
 
 	override void onCollisionStay()
 	{
-		SWLog( "onCollisionStay" );
+		//SWLog( "onCollisionStay" );
 	}
 
 	override void onCollisionLeave()
@@ -43,7 +42,7 @@ public:
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-			screenSize *= 3;
+			//screenSize *= 3;
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Camera" );
 
@@ -59,8 +58,8 @@ public:
 		tvec2 logoSize = logoSprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 100;
-		float radius = 5*count;
+		tuint count = 1;
+		float radius = 0*count;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
@@ -88,8 +87,8 @@ public:
 			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setLocalScale( tvec3(3,3,1) );
-			trans->setLocalRotate( tvec3(0,1,1)*SWMath.angleToRadian(45));
+			//trans->setLocalScale( tvec3(3,3,1) );
+			//trans->setLocalRotate( tvec3(0,1,1)*SWMath.angleToRadian(45));
 		}
 	}
 
@@ -103,7 +102,7 @@ public:
 		SWGameObject* go = findGO("test");
 		if ( !go ) return;
 
-		float speed = 10;
+		float speed = 1;
 		SWTransform* trans = go->getComponent<SWTransform>();
 		if ( SWInput.getKey('d') )
 		{
