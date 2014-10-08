@@ -66,7 +66,7 @@ void SWWorld2D::removeContact( SWContact2D* contact )
 	if ( m_contactList() == node ) m_contactList = next;
 }
 
-bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 )
+bool SWWorld2D::existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 )
 {
 	const SWContactEdge2D* contactEdge = collider->getContactEdge();
 	while ( contactEdge )

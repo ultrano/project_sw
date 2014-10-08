@@ -7,6 +7,7 @@ class SWBroadPhase2D;
 class SWRefNode;
 class SWFixture2D;
 class SWContact2D;
+class SWCollider2D;
 class SWWorld2D : public SWRefCountable
 {
 public:
@@ -21,6 +22,7 @@ public:
 private:
 	void findNewContacts();
 	void updateContacts();
+	bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 );
 private:
 	SWHardRef<SWBroadPhase2D> m_broadPhase;
 	SWHardRef<SWRefNode> m_contactList;

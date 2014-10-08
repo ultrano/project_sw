@@ -11,6 +11,7 @@ class SWShapeTransform2D;
 class SWCollider2D : public SWComponent
 {
 	SW_RTTI( SWCollider2D, SWComponent );
+	friend class SWWorld2D;
 public:
 
 	SWCollider2D( factory_constructor );
@@ -24,12 +25,11 @@ public:
 	void removeAllFixtures();
 
 	void getTransform2D( SWShapeTransform2D& transform2D ) const;
- 
+
+private:
 	void addContactEdge( const SWContact2D* contact );
 	void removeContactEdge( const SWContact2D* contact );
 	const SWContactEdge2D* getContactEdge() const;
-
-private:
 	void clearContactEdges( SWWorld2D* world );
 protected:
 
