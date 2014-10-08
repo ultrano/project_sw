@@ -14,6 +14,7 @@ public:
 	override void onCollisionEnter()
 	{
 		SWLog( "onCollisionEnter" );
+		gameObject()->destroy();
 	}
 
 	override void onCollisionStay()
@@ -24,7 +25,6 @@ public:
 	override void onCollisionLeave()
 	{
 		SWLog( "onCollisionLeave" );
-		gameObject()->destroy();
 	}
 
 };
@@ -59,7 +59,7 @@ public:
 		tvec2 logoSize = logoSprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 10;
+		tuint count = 100;
 		float radius = 5*count;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
@@ -120,14 +120,6 @@ public:
 		if ( SWInput.getKey('s') )
 		{
 			trans->setPosition( trans->getPosition() - (tvec3::axisY*speed) );
-		}
-	}
-
-	void onTest()
-	{
-		if ( SWInput.getKey('x') )
-		{
-			while ( SWGameObject* go = findGO("p") ) go->destroyNow();
 		}
 	}
 };
