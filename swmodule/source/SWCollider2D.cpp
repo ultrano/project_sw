@@ -40,8 +40,8 @@ void SWCollider2D::onRemove()
 
 void SWCollider2D::onFixedUpdate()
 {
-	SWShapeTransform2D trans2D;
-	getTransform2D( trans2D );
+	tmat33 mat;
+	getTransform2D( mat );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	FixtureList::iterator itor = m_fixtures.begin();
@@ -49,7 +49,7 @@ void SWCollider2D::onFixedUpdate()
 	{
 		SWFixture2D* fixture = (*itor)();
 		taabb2d aabb;
-		fixture->getShape()->computeAABB( aabb, trans2D );
+		fixture->getShape()->computeAABB( aabb, mat );
 		broadPhase->updateProxy( fixture->getProxyID(), aabb );
 	}
 }
@@ -78,13 +78,13 @@ void SWCollider2D::onLayerChanged()
 	//! add fixtures to new broad-phase
 	{
 		taabb2d aabb;
-		SWShapeTransform2D trans2D;
-		getTransform2D( trans2D );
+		tmat33 mat;
+		getTransform2D( mat );
 		for ( FixtureList::iterator itor = m_fixtures.begin() 
 			; itor != m_fixtures.end() ; ++itor )
 		{
 			SWFixture2D* fixture = (*itor)();
-			fixture->getShape()->computeAABB( aabb, trans2D );
+			fixture->getShape()->computeAABB( aabb, mat );
 
 			tuint proxyID = newBroadPhase->createProxy( aabb, fixture );
 			fixture->setProxyID( proxyID );
@@ -120,10 +120,10 @@ void SWCollider2D::registerFixture( SWFixture2D* fixture )
 {
 	m_fixtures.push_back( fixture );
 
-	SWShapeTransform2D trans2D;
+	tmat33 mat;
 	taabb2d aabb;
-	getTransform2D( trans2D );
-	fixture->getShape()->computeAABB( aabb, trans2D );
+	getTransform2D( mat );
+	fixture->getShape()->computeAABB( aabb, mat );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	tuint proxyID = broadPhase->createProxy( aabb, fixture );
@@ -149,16 +149,18 @@ void SWCollider2D::removeAllFixtures()
 	m_fixtures.clear();
 }
 
-void SWCollider2D::getTransform2D( SWShapeTransform2D& transform2D ) const
+void SWCollider2D::getTransform2D( tmat33& mat ) const
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	const tmat44& world = transform->getWorldMatrix();
 	tvec3 row1( world.m11, world.m12, world.m13 );
 	tvec3 row2( world.m21, world.m22, world.m23 );
-	transform2D.move = tvec2( world.m41, world.m42 );
-	transform2D.rotate = SWMath.atan( row1.y, row1.x );
-	transform2D.scale.x = row1.xy().length();
-	transform2D.scale.y = row2.xy().length();
+
+	tvec2 move = tvec2( world.m41, world.m42 );
+	float rotate = SWMath.atan( row1.y, row1.x );
+	tvec2 scale( row1.xy().length(), row2.xy().length());
+
+	mat.set(scale, rotate, move);
 }
 
 void SWCollider2D::addContactEdge( const SWContact2D* contact )

@@ -7,7 +7,6 @@ class SWFixture2D;
 class SWWorld2D;
 class SWContact2D;
 class SWContactEdge2D;
-class SWShapeTransform2D;
 class SWCollider2D : public SWComponent
 {
 	SW_RTTI( SWCollider2D, SWComponent );
@@ -24,7 +23,7 @@ public:
 	void removeFixture( SWFixture2D* fixture );
 	void removeAllFixtures();
 
-	void getTransform2D( SWShapeTransform2D& transform2D ) const;
+	void getTransform2D( tmat33& mat ) const;
 
 private:
 	void addContactEdge( const SWContact2D* contact );

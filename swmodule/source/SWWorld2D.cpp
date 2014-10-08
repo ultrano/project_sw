@@ -66,6 +66,32 @@ void SWWorld2D::removeContact( SWContact2D* contact )
 	if ( m_contactList() == node ) m_contactList = next;
 }
 
+SWBroadPhase2D* SWWorld2D::getBroadPhase() const
+{
+	return m_broadPhase();
+}
+
+void SWWorld2D::addBody( SWRigidBody2D* body )
+{
+	SWRefNode* node = new SWRefNode;
+	node->ref = body;
+	node->next = m_bodyList();
+	if ( m_bodyList() ) m_bodyList()->prev = node;
+	m_bodyList = node;
+	body->m_node = node;
+}
+
+void SWWorld2D::removeBody( SWRigidBody2D* body )
+{
+	SWRefNode* node = body->m_node();
+	SWRefNode* next = node->next();
+	SWRefNode* prev = node->prev();
+	if ( next ) next->prev = prev;
+	if ( prev ) prev->next = next;
+	if ( m_bodyList() == node ) m_bodyList = next;
+	body->m_node = NULL;
+}
+
 bool SWWorld2D::existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 )
 {
 	const SWContactEdge2D* contactEdge = collider->getContactEdge();
@@ -108,7 +134,7 @@ void SWWorld2D::findNewContacts()
 
 		SWRigidBody2D* body1 = collider1->getComponent<SWRigidBody2D>();
 		SWRigidBody2D* body2 = collider2->getComponent<SWRigidBody2D>();
-		//if ( body1 == NULL && body2 == NULL ) continue;
+		if ( body1 == NULL && body2 == NULL ) continue;
 
 		float friction = SWMath.sqrt( fixture1->getFriction() * fixture2->getFriction() );
 		float bounciness = (fixture1->getBounciness() + fixture2->getBounciness()) * 0.5f;
@@ -187,7 +213,3 @@ void SWWorld2D::updateContacts()
 	}
 }
 
-SWBroadPhase2D* SWWorld2D::getBroadPhase() const
-{
-	return m_broadPhase();
-}

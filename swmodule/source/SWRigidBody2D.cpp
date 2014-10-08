@@ -5,11 +5,13 @@
 #include "SWPhysics2D.h"
 #include "SWTime.h"
 #include "SWMath.h"
+#include "SWWorld2D.h"
 #include "SWObjectStream.h"
+#include "SWRefNode.h"
 
 SWRigidBody2D::SWRigidBody2D()
-	: m_center( tvec2::zero )
-	, m_angle( 0 )
+	: m_position( tvec2::zero )
+	, m_rotate( 0 )
 	, m_velocity( tvec2::zero )
 	, m_torque( 0 )
 	, m_elastic( 0 )
@@ -24,8 +26,8 @@ SWRigidBody2D::SWRigidBody2D()
 }
 
 SWRigidBody2D::SWRigidBody2D( factory_constructor )
-	: m_center( tvec2::zero )
-	, m_angle( 0 )
+	: m_position( tvec2::zero )
+	, m_rotate( 0 )
 	, m_velocity( tvec2::zero )
 	, m_torque( 0 )
 	, m_elastic( 0 )
@@ -47,22 +49,32 @@ SWRigidBody2D::~SWRigidBody2D()
 void SWRigidBody2D::onAwake()
 {
 	__super::onAwake();
-	SWPhysics2D.m_bodies.push_back( this );
+	m_world = SWPhysics2D.getWorld( gameObject()->getLayer() );
+	m_world()->addBody( this );
 }
 
 void SWRigidBody2D::onStart()
 {
 	__super::onStart();
 	gameObject()->addFixedRateUpdateDelegator( GetDelegator( onFixedRateUpdate ) );
+	gameObject()->addLayerDelegator( GetDelegator( onLayerChanged ) );
 	SWTransform* transform = getComponent<SWTransform>();
-	m_center = transform->getPosition().xy();
+	m_position = transform->getPosition().xy();
 }
 
 void SWRigidBody2D::onRemove()
 {
-	SWPhysics2D.m_bodies.remove( this );
+	m_world()->removeBody( this );
 	gameObject()->removeFixedRateUpdateDelegator( GetDelegator( onFixedRateUpdate ) );
+	gameObject()->removeLayerDelegator( GetDelegator( onLayerChanged ) );
 	__super::onRemove();
+}
+
+void SWRigidBody2D::onLayerChanged()
+{
+	m_world()->removeBody( this );
+	m_world = SWPhysics2D.getWorld( gameObject()->getLayer() );
+	m_world()->addBody( this );
 }
 
 void SWRigidBody2D::onFixedRateUpdate()
@@ -75,16 +87,16 @@ void SWRigidBody2D::onFixedRateUpdate()
 	if ( !isFixedPosition() )
 	{
 		addAccel( m_gravityScale * gravityForce );
-		m_center += m_velocity;
+		m_position += m_velocity;
 		addAccel( -m_velocity * m_linearDrag );
-		transform->setPosition( tvec3( m_center, depth ) );
+		transform->setPosition( tvec3( m_position, depth ) );
 	}
 	
 	if ( !isFixedAngle() )
 	{
 		m_torque -= m_torque * m_angularDrag;
-		m_angle  += m_torque;
-		transform->setRotate( tquat().rotate( 0, 0, m_angle ) );
+		m_rotate  += m_torque;
+		transform->setRotate( tquat().rotate( 0, 0, m_rotate ) );
 	}
 }
 
@@ -98,7 +110,7 @@ void SWRigidBody2D::addForce( const tvec2& force )
 void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
 {
 	if ( m_mass == 0 ) return;
-	tvec2 radius = (pos - m_center);
+	tvec2 radius = (pos - m_position);
 	float torque = radius.cross( force );
 
 	addAccel( force/m_mass );
@@ -112,12 +124,22 @@ void SWRigidBody2D::addAccel( const tvec2& accel )
 
 void SWRigidBody2D::setPosition( const tvec2& center )
 {
-	m_center = center;
+	m_position = center;
 }
 
 const tvec2& SWRigidBody2D::getPosition() const
 {
-	return m_center;
+	return m_position;
+}
+
+void SWRigidBody2D::setRotate( float rotate )
+{
+	m_rotate = rotate;
+}
+
+float SWRigidBody2D::getRotate() const
+{
+	return m_rotate;
 }
 
 void SWRigidBody2D::setVelocity( const tvec2& vel )
@@ -184,10 +206,10 @@ bool SWRigidBody2D::isFixedPosition() const
 
 void SWRigidBody2D::serialize( SWObjectWriter* writer )
 {
-	writer->writeVec2( m_center );
+	writer->writeVec2( m_position );
 	writer->writeVec2( m_velocity );
 	writer->writeVec2( m_gravityScale );
-	writer->writeFloat( m_angle );
+	writer->writeFloat( m_rotate );
 	writer->writeFloat( m_torque );
 	writer->writeFloat( m_mass );
 	writer->writeFloat( m_inertia );
@@ -198,10 +220,10 @@ void SWRigidBody2D::serialize( SWObjectWriter* writer )
 
 void SWRigidBody2D::deserialize( SWObjectReader* reader )
 {
-	reader->readVec2( m_center );
+	reader->readVec2( m_position );
 	reader->readVec2( m_velocity );
 	reader->readVec2( m_gravityScale );
-	m_angle   = reader->readFloat();
+	m_rotate   = reader->readFloat();
 	m_torque  = reader->readFloat();
 	m_mass    = reader->readFloat();
 	m_inertia = reader->readFloat();

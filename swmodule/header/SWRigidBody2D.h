@@ -3,10 +3,11 @@
 
 #include "SWComponent.h"
 
+class SWRefNode;
 class SWRigidBody2D : public SWComponent
 {
 	SW_RTTI( SWRigidBody2D, SWComponent );
-
+	friend class SWWorld2D;
 public:
 	
 	SWRigidBody2D();
@@ -14,6 +15,7 @@ public:
 	~SWRigidBody2D();
 
 	void setPosition( const tvec2& center );
+	void setRotate( float rotate );
 	void addForce( const tvec2& force );
 	void addForce( const tvec2& force, const tvec2& pos );
 	void addAccel( const tvec2& accel );
@@ -27,6 +29,7 @@ public:
 	void setFixedPosition( bool isFixed );
 
 	const tvec2& getPosition() const;
+	float getRotate() const;
 	const tvec2& getVelocity() const;
 	const float& getTorque() const;
 	bool  isFixedAngle() const;
@@ -42,12 +45,13 @@ private:
 	void onAwake();
 	void onStart();
 	void onRemove();
+	void onLayerChanged();
 	void onFixedRateUpdate();
 
 private:
 
-	tvec2  m_center;
-	float  m_angle;
+	tvec2  m_position;
+	float  m_rotate;
 
 	tvec2  m_velocity;
 	tfloat m_torque;
@@ -63,6 +67,9 @@ private:
 
 	bool   m_fixedAngle;
 	bool   m_fixedPosition;
+
+	SWWeakRef<SWRefNode> m_node;
+	SWWeakRef<SWWorld2D> m_world;
 };
 
 #endif // SWRigidBody2D_h__

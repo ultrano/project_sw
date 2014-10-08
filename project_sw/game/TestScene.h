@@ -54,22 +54,22 @@ public:
 		}
 
 		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "test.png" );
-		SWSprite* logoSprite = atlas()->find( "box" );
-		tvec2 logoSize = logoSprite->getSize();
+		SWSprite* sprite = atlas()->find( "box" );
+		tvec2 logoSize = sprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 1;
-		float radius = 0*count;
+		tuint count = 10;
+		float radius = 5*count;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
 			go->addComponent<TestBehavior>();
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( logoSprite );
+			renderer->setSprite( sprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-			collider->addCircle( tvec2::zero, logoSize.length()/2 );
+			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//collider->addCircle( tvec2::zero, logoSize.length()/2 );
 
 			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 			float x = radius * SWMath.cos( radian );
@@ -79,18 +79,23 @@ public:
 			trans->setPosition( tvec3(x,y,0) );
 			trans->setParent( parent->getComponent<SWTransform>() );
 		}
+
+		sprite = atlas()->find( "circle" );
 		{
 			SWGameObject* go = new SWGameObject("test");
+			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+			body->setGravityScale( tvec2::zero );
+			body->setRotate( SWMath.angleToRadian(45) );
+
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
-			renderer->setSprite( logoSprite );
+			renderer->setSprite( sprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
 			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-			collider->addCircle( tvec2::zero, logoSize.length()/2 );
+			collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			//trans->setLocalScale( tvec3(3,3,1) );
-			//trans->setLocalRotate( tvec3(0,1,1)*SWMath.angleToRadian(45));
+			trans->setLocalScale( tvec3(3,1,1) );
 		}
 	}
 
@@ -105,22 +110,22 @@ public:
 		if ( !go ) return;
 
 		float speed = 1;
-		SWTransform* trans = go->getComponent<SWTransform>();
+		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
 		if ( SWInput.getKey('d') )
 		{
-			trans->setPosition( trans->getPosition() + (tvec3::axisX*speed) );
+			body->setPosition( body->getPosition() + (tvec2::axisX*speed) );
 		} 
 		if ( SWInput.getKey('a') )
 		{
-			trans->setPosition( trans->getPosition() - (tvec3::axisX*speed) );
+			body->setPosition( body->getPosition() - (tvec2::axisX*speed) );
 		}
 		if ( SWInput.getKey('w') )
 		{
-			trans->setPosition( trans->getPosition() + (tvec3::axisY*speed) );
+			body->setPosition( body->getPosition() + (tvec2::axisY*speed) );
 		}
 		if ( SWInput.getKey('s') )
 		{
-			trans->setPosition( trans->getPosition() - (tvec3::axisY*speed) );
+			body->setPosition( body->getPosition() - (tvec2::axisY*speed) );
 		}
 	}
 };

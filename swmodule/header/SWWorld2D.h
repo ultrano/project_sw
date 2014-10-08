@@ -8,8 +8,10 @@ class SWRefNode;
 class SWFixture2D;
 class SWContact2D;
 class SWCollider2D;
+class SWRigidBody2D;
 class SWWorld2D : public SWRefCountable
 {
+	friend class SWRigidBody2D;
 public:
 
 	SWWorld2D();
@@ -20,12 +22,15 @@ public:
 	SWBroadPhase2D* getBroadPhase() const;
 	void update( float step );
 private:
+	void addBody( SWRigidBody2D* body );
+	void removeBody( SWRigidBody2D* body );
+	bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 );
 	void findNewContacts();
 	void updateContacts();
-	bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 );
 private:
 	SWHardRef<SWBroadPhase2D> m_broadPhase;
 	SWHardRef<SWRefNode> m_contactList;
+	SWHardRef<SWRefNode> m_bodyList;
 };
 
 #endif // SWWorld2D_h__
