@@ -78,7 +78,7 @@ const TQuaternion operator*( const TQuaternion& v, const TMatrix4x4& m )
 		, (v.x*m.m14 + v.y*m.m24 + v.z*m.m34 + v.w*m.m44));
 }
 
-float matDet( unsigned square, float* m )
+float matDet44( unsigned square, float* m )
 {
 	if ( square == 1 ) return *m;
 	float ret = 0;
@@ -94,7 +94,7 @@ float matDet( unsigned square, float* m )
 				sub[k++] = (m[(r*square) + c]);
 			}
 		}
-		float cof = ((i%2)? -1:+1) * matDet(square-1, &sub[0]);
+		float cof = ((i%2)? -1:+1) * matDet44(square-1, &sub[0]);
 		ret += m[i] * cof;
 	}
 	return ret;
@@ -110,7 +110,7 @@ void TMatrix4x4::identity()
 
 float TMatrix4x4::determinant() const
 {
-	return matDet(4, (float*)this);
+	return matDet44(4, (float*)this);
 }
 
 float TMatrix4x4::minorDet( unsigned char row, unsigned char col ) const
@@ -126,14 +126,12 @@ float TMatrix4x4::minorDet( unsigned char row, unsigned char col ) const
 			minor[i++] = ((float*)this)[(r*4) + c];
 		}
 	}
-	return matDet(3,minor);
+	return matDet44(3,minor);
 }
 
 void TMatrix4x4::inverse( TMatrix4x4& m ) const
 {
-	m.identity();
 	adjoint(m);
-	m.transpose(m);
 	float det = determinant();
 	if ( det != 0.0f ) m *= 1.0f/det;
 }
@@ -144,7 +142,7 @@ void TMatrix4x4::adjoint( TMatrix4x4& m ) const
 	{
 		for ( int c = 0 ; c < 4 ; ++c )
 		{
-			m.m[r][c] = (((r+c)%2)? -1:+1) * minorDet( r, c );
+			m.m[c][r] = (((r+c)%2)? -1:+1) * minorDet( r, c );
 		}
 	}
 }

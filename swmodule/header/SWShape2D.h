@@ -12,6 +12,7 @@ class SWShape2D : public SWRefCountable
 public:
 
 	abstract bool getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const = 0;
+	abstract bool getCrossest( tvec2& begin,  tvec2& end, const tvec2& direction, const tmat33& mat ) const = 0;
 	abstract void computeAABB( taabb2d& aabb, const tmat33& mat ) const = 0;
 };
 
@@ -33,6 +34,7 @@ public:
 	float getRadius() const { return m_radius; }
 
 	override bool getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const;
+	override bool getCrossest( tvec2& begin,  tvec2& end, const tvec2& direction, const tmat33& mat ) const;
 	override void computeAABB( taabb2d& aabb, const tmat33& mat ) const;
 
 private:
@@ -51,6 +53,7 @@ public:
 	void set( const tarray<tvec2>& vertices );
 	void setBox( const tvec2& center, float width, float height );
 	override bool getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const;
+	override bool getCrossest( tvec2& begin,  tvec2& end, const tvec2& direction, const tmat33& mat ) const;
 	override void computeAABB( taabb2d& aabb, const tmat33& mat ) const;
 private:
 	void computeLocalOBB( tobb2d& obb );

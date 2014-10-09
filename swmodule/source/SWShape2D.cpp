@@ -15,32 +15,39 @@ SWCircleShape2D::~SWCircleShape2D()
 
 bool SWCircleShape2D::getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const
 {
-	float rotate = SWMath.atan( mat.m12, mat.m11 );
-	float t = SWMath.atan(direction.y, direction.x) - rotate;
-	float cost = SWMath.cos(t) * m_radius;
-	float sint = SWMath.sin(t) * m_radius;
-	tvec2 local = tvec2( cost, sint ) + m_center;
-
+	tmat33 inv;
+	mat.inverse( inv );
+	tvec2 localDIr = (tvec3(direction,0) * inv).xy().normal();
+	tvec2 local = (localDIr * m_radius) + m_center;
 	farthest = local * mat;
 
-	return false;
+	return true;
+}
+
+bool SWCircleShape2D::getCrossest( tvec2& begin, tvec2& end, const tvec2& direction, const tmat33& mat ) const
+{
+	tvec2 middle;
+	getFarthest( middle, direction, mat );
+	tvec2 gap = direction.cross( 1 ) * (SW_Epsilon/3.0f);
+	begin = middle - gap;
+	end   = middle + gap;
+	return true;
 }
 
 void SWCircleShape2D::computeAABB( taabb2d& aabb, const tmat33& mat ) const
 {
 	aabb.lower = tvec2( FLT_MAX, FLT_MAX );
 	aabb.upper = -aabb.lower;
-	float rotate = SWMath.atan( mat.m11, mat.m12 );
-	
+
+	tmat33 inv;
+	mat.inverse( inv );
+
 	const tuint count = 4;
 	tvec2 dirs[count] = { tvec2::axisX, tvec2::axisY, -tvec2::axisX, -tvec2::axisY };
 	for ( tuint i = 0 ; i < count ; ++i )
 	{
-		const tvec2& direction = dirs[i];
-		float t = SWMath.atan(direction.y, direction.x) - rotate;
-		float cost = SWMath.cos(t) * m_radius;
-		float sint = SWMath.sin(t) * m_radius;
-		tvec2 point = tvec2( cost, sint ) + m_center;
+		tvec2 localDIr = (tvec3(dirs[i],0) * inv).xy().normal();
+		tvec2 point = (localDIr * m_radius) + m_center;
 
 		point = point * mat;
 		aabb.min( point );
@@ -62,13 +69,14 @@ void SWPolygonShape2D::set( const tarray<tvec2>& vertices )
 {
 	if ( vertices.size() <= 2 ) return;
 
-	m_normals.resize( vertices.size() );
-	m_vertices.resize( vertices.size() );
+	tuint count = vertices.size();
+	m_normals.resize( count );
+	m_vertices.resize( count );
 
 	for ( tuint i = 0 ; i < vertices.size() ; ++i )
 	{
 		tuint i1 = i;
-		tuint i2 = ((i+1) == vertices.size())? 0 : (i+1);
+		tuint i2 = ((i+1)%count);
 		
 		const tvec2& v1 = vertices.at( i1 );
 		const tvec2& v2 = vertices.at( i2 );
@@ -97,22 +105,50 @@ bool SWPolygonShape2D::getFarthest( tvec2& farthest, const tvec2& direction, con
 {
 	if ( m_vertices.size() == 0 ) return false;
 
-	farthest = m_vertices.at(0) * mat;
-	float maxDist = direction.dot( farthest );
+	tmat33 inv;
+	mat.inverse( inv );
+	tvec3 test = (tvec3(direction,0) * inv);
+	tvec2 localDIr = test.xy().normal();
 
-	tuint index = m_vertices.size();
-	while ( index-- )
+	tuint index = 0;
+	float maxDist = localDIr.dot( m_vertices[index] );
+
+	tuint count = m_vertices.size();
+	while ( count-- )
 	{
-		const tvec2& v = m_vertices.at( index );
-
-		tvec2 v1 = v * mat;
-		float dist = direction.dot( v1 );
+		const tvec2& v = m_vertices[count];
+		float dist = localDIr.dot( v );
 		if ( dist > maxDist )
 		{
-			farthest = v1;
+			index = count;
 			maxDist = dist;
 		}
 	}
+
+	farthest = m_vertices[index] * mat;
+
+	return true;
+}
+
+bool SWPolygonShape2D::getCrossest( tvec2& begin, tvec2& end, const tvec2& direction, const tmat33& mat ) const
+{
+	if ( m_normals.size() < 3 ) return false;
+
+	tmat33 inv;
+	mat.inverse( inv );
+	tvec2 localDIr = (tvec3(direction,0) * inv).xy().normal();
+
+	tuint index = 0;
+	float maxGap = localDIr.dot( m_normals[index] );
+	tuint count = m_normals.size();
+	for ( tuint i = 0 ; i < count ; ++i )
+	{
+		float gap = localDIr.dot( m_normals[i] );
+		if ( gap > maxGap ) index = i;
+	}
+
+	begin = m_vertices[index] * mat;
+	end   = m_vertices[(index+1)%count] * mat;
 
 	return true;
 }
@@ -230,7 +266,6 @@ void SWPolygonShape2D::computeLocalOBB( tobb2d& obb )
 		}
 	}
 }
-
 
 float calculateArea( const tvec2& a, const tvec2& b, const tvec2& c )
 {
@@ -368,6 +403,8 @@ bool testShape2D
 					count += 1;
 				}
 			}
+
+
 
 			return true;
 		}

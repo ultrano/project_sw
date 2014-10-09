@@ -18,7 +18,22 @@ public:
 		float m[3][3];
 	};
 
+	TMatrix3x3();
+
+	TMatrix3x3& operator = ( const TMatrix3x3& mat );
+	TMatrix3x3& operator *= ( float f );
+	TMatrix3x3& operator *= ( const TMatrix3x3& mat );
+
 	void set( const TVector2f& scale, float rotate, const TVector2f& move );
+
+	void		identity();
+	float		determinant() const;
+	float		minorDet(unsigned char row, unsigned char col) const;
+	void		inverse(TMatrix3x3& m) const;
+	void		adjoint(TMatrix3x3& m) const;
+	void		transpose(TMatrix3x3& t) const;
+	TVector3f	row(unsigned char r) const;
+	TVector3f	col(unsigned char c) const;
 };
 
 const TMatrix3x3 operator * ( const TMatrix3x3& a, const TMatrix3x3& b );
