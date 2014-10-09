@@ -58,8 +58,8 @@ public:
 		tvec2 logoSize = sprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 10;
-		float radius = 5*count;
+		tuint count = 1;
+		float radius = 0*count;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
@@ -68,8 +68,8 @@ public:
 			renderer->setSprite( sprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-			//collider->addCircle( tvec2::zero, logoSize.length()/2 );
+			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 			float x = radius * SWMath.cos( radian );
@@ -77,7 +77,7 @@ public:
 
 			SWTransform* trans = go->getComponent<SWTransform>();
 			trans->setPosition( tvec3(x,y,0) );
-			trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(20) );
+			//trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(20) );
 			trans->setParent( parent->getComponent<SWTransform>() );
 		}
 
@@ -86,7 +86,7 @@ public:
 			SWGameObject* go = new SWGameObject("test");
 			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 			body->setGravityScale( tvec2::zero );
-			body->setRotate( SWMath.angleToRadian(45) );
+			//body->setRotate( SWMath.angleToRadian(45) );
 
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( sprite );

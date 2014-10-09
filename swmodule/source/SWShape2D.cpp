@@ -144,7 +144,11 @@ bool SWPolygonShape2D::getCrossest( tvec2& begin, tvec2& end, const tvec2& direc
 	for ( tuint i = 0 ; i < count ; ++i )
 	{
 		float gap = localDIr.dot( m_normals[i] );
-		if ( gap > maxGap ) index = i;
+		if ( gap > maxGap )
+		{
+			maxGap = gap;
+			index = i;
+		}
 	}
 
 	begin = m_vertices[index] * mat;
@@ -297,6 +301,32 @@ void calculateSide( tflag8& sideFlag, const tvec2& a, const tvec2& b, const tvec
 	sideFlag.set(2, (det*val) <= 0 );
 }
 
+bool clipToEdge( tvec2& v1, tvec2& v2, const tvec2& edge1, const tvec2& edge2 )
+{
+	tvec2 dirE = edge2 - edge1;
+	tvec2 dirV = (v2-v1);
+	float len = dirV.length();
+	dirV = dirV.normal();
+
+	float e1 = dirE.dot(edge1);
+	float d1 = dirE.dot(v1) - e1;
+	float d2 = dirE.dot(v2) - e1;
+
+	dirE = -dirE;
+	float e2 = dirE.dot(edge2);
+	float d3 = dirE.dot(v1) - e2;
+	float d4 = dirE.dot(v2) - e2;
+
+	if ( d1 < 0 && d2 < 0 ) return false;
+	if ( d3 < 0 && d4 < 0 ) return false;
+
+	if ( d1 < 0 ) v1 += dirV * (d1/(d1-d2)) * len;
+	if ( d2 < 0 ) v2 -= dirV * (d2/(d2-d1)) * len;
+	if ( d3 < 0 ) v1 += dirV * (d3/(d3-d4)) * len;
+	if ( d4 < 0 ) v2 -= dirV * (d4/(d4-d3)) * len;
+	return true;
+}
+
 bool testShape2D
 	( SWManifold& manifold
 	, const SWShape2D* shape1, const tmat33& mat1
@@ -404,8 +434,26 @@ bool testShape2D
 				}
 			}
 
+			//! finds incident points using edge clipping.
+			{
+				manifold.count = 0;
+				float length = 0;
+				struct {tvec2 v1,v2;} ref, inc;
+				shape1->getCrossest( ref.v1, ref.v2, manifold.normal, mat1);
+				if ( (ref.v1-ref.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = ref.v1;
+				shape2->getCrossest( inc.v1, inc.v2, -manifold.normal, mat2);
+				if ( (inc.v1-inc.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = inc.v1;
 
-
+				if ( manifold.count == 0 )
+				{
+					clipToEdge( inc.v1, inc.v2, ref.v1, ref.v2 );
+					if ( manifold.normal.dot( inc.v1 - ref.v1 ) <= 0 ) manifold.count += 1;
+					if ( manifold.normal.dot( inc.v2 - ref.v2 ) <= 0 ) manifold.count += 1;
+					if ( (inc.v2-inc.v1).length() < SW_Epsilon ) manifold.count = 1;
+					manifold.points[0] = inc.v1;
+					manifold.points[1] = inc.v2;
+				}
+			}
 			return true;
 		}
 		else

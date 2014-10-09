@@ -67,8 +67,11 @@ private:
 class SWManifold : public SWMemory
 {
 public:
+	enum { eMaxCount = 2 };
 	tvec2 normal;
 	float depth;
+	tuint count;
+	tvec2 points[eMaxCount];
 };
 
 bool testShape2D( SWManifold& manifold, const SWShape2D* shape1, const tmat33& mat1, const SWShape2D* shape2, const tmat33& mat2 );
