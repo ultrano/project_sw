@@ -165,6 +165,7 @@ void SWWorld2D::updateContacts()
 	//! prototype solving
 	do
 	{
+		//! break;
 		SWRefNode* node = m_contactList();
 		while ( node )
 		{
@@ -177,7 +178,7 @@ void SWWorld2D::updateContacts()
 			SWRigidBody2D* body1 = contact->fixture1()->getCollide()->getComponent<SWRigidBody2D>();
 			if ( body1 )
 			{
-				vel = -contact->normal * body1->getVelocity().length();
+				vel = body1->getVelocity();
 				vel += -contact->normal * contact->depth;
 				body1->setVelocity( vel );
 				SWLog( "body1" );
@@ -185,7 +186,7 @@ void SWWorld2D::updateContacts()
 			SWRigidBody2D* body2 = contact->fixture2()->getCollide()->getComponent<SWRigidBody2D>();
 			if ( body2 )
 			{
-				vel = contact->normal * body2->getVelocity().length();
+				vel = body2->getVelocity();
 				vel += contact->normal * contact->depth;
 				body2->setVelocity( vel );
 				SWLog( "body2" );

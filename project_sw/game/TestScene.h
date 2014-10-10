@@ -42,7 +42,7 @@ public:
 		//! set default camera
 		{
 			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-			//screenSize *= 3;
+			screenSize *= 3;
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Camera" );
 
@@ -58,7 +58,7 @@ public:
 		tvec2 logoSize = sprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 4;
+		tuint count = 10;
 		float radius = 30*count;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
@@ -66,6 +66,9 @@ public:
 			go->addComponent<TestBehavior>();
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( sprite );
+
+			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+			body->setGravityScale( tvec2::zero );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
 			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
@@ -82,19 +85,19 @@ public:
 			trans->setParent( parent->getComponent<SWTransform>() );
 		}
 
-		sprite = atlas()->find( "box" );
+		sprite = atlas()->find( "circle" );
 		{
 			SWGameObject* go = new SWGameObject("test");
 			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-			//body->setGravityScale( tvec2::zero );
+			body->setGravityScale( tvec2::zero );
 			//body->setRotate( SWMath.angleToRadian(45) );
 
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( sprite );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-			//collider->addCircle( tvec2::zero, logoSize.x/2 );
+			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
 			trans->setLocalScale( tvec3(2,2,1) );
