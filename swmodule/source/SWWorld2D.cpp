@@ -162,6 +162,37 @@ void SWWorld2D::updateContacts()
 		}
 	}
 
+	//! prototype solving
+	do
+	{
+		SWRefNode* node = m_contactList();
+		while ( node )
+		{
+			SWContact2D* contact = (SWContact2D*)node->ref();
+			node = node->next();			
+			if ( !contact ) continue;
+			if ( !contact->state.get( SWContact2D::eTouching ) ) continue;
+
+			tvec2 vel;
+			SWRigidBody2D* body1 = contact->fixture1()->getCollide()->getComponent<SWRigidBody2D>();
+			if ( body1 )
+			{
+				vel = -contact->normal * body1->getVelocity().length();
+				vel += -contact->normal * contact->depth;
+				body1->setVelocity( vel );
+				SWLog( "body1" );
+			}
+			SWRigidBody2D* body2 = contact->fixture2()->getCollide()->getComponent<SWRigidBody2D>();
+			if ( body2 )
+			{
+				vel = contact->normal * body2->getVelocity().length();
+				vel += contact->normal * contact->depth;
+				body2->setVelocity( vel );
+				SWLog( "body2" );
+			}
+		}
+	} while (false);
+
 	//! send message
 	{
 		SWHardRef<SWRefNode> node = m_contactList();
