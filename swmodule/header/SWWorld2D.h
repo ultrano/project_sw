@@ -2,6 +2,7 @@
 #define SWWorld2D_h__
 
 #include "SWRefCounter.h"
+#include "SWType.h"
 
 class SWBroadPhase2D;
 class SWRefNode;
@@ -31,6 +32,8 @@ private:
 	SWHardRef<SWBroadPhase2D> m_broadPhase;
 	SWHardRef<SWRefNode> m_contactList;
 	SWHardRef<SWRefNode> m_bodyList;
+	tuint m_contactCount;
+	tuint m_bodyCount;
 };
 
 #endif // SWWorld2D_h__

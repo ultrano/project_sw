@@ -1,6 +1,7 @@
 #include "SWMath.h"
 #include <math.h>
 #include <stdlib.h>
+#include <process.h>
 
 const __SWMath& __SWMath::getInstance()
 {
@@ -11,6 +12,7 @@ const __SWMath& __SWMath::getInstance()
 __SWMath::__SWMath()
 	: pi( 3.14f )
 {
+	srand( _getpid() );
 }
 
 float __SWMath::sin( float radian ) const
@@ -62,7 +64,7 @@ int __SWMath::randomInt( int kMin, int kMax ) const
 
 float __SWMath::randomFloat() const
 {
-	int max = 0xffff;
+	int max = 0xff;
 	int ret = randomInt( 0, max );
 	return (float)ret/(float)max;
 }

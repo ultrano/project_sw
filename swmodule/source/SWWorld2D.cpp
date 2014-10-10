@@ -11,6 +11,8 @@
 
 SWWorld2D::SWWorld2D()
 	: m_broadPhase( new SWBroadPhase2D )
+	, m_contactCount(0)
+	, m_bodyCount(0)
 {
 
 }
@@ -38,6 +40,8 @@ SWContact2D* SWWorld2D::createContact( const SWFixture2D* fixture1, const SWFixt
 	if ( m_contactList() ) m_contactList()->prev = node;
 	m_contactList = node;
 
+	m_contactCount += 1;
+	SWLog( "contact count : %d", m_contactCount );
 	return contact;
 }
 
@@ -55,6 +59,8 @@ void SWWorld2D::removeContact( SWContact2D* contact )
 		if ( collider ) collider->removeContactEdge( contact );
 	}
 
+	m_contactCount -= 1;
+	SWLog( "contact count : %d", m_contactCount );
 	//! disconnect each other
 	SWRefNode* node = contact->node();
 	node->ref = NULL;
@@ -79,6 +85,9 @@ void SWWorld2D::addBody( SWRigidBody2D* body )
 	if ( m_bodyList() ) m_bodyList()->prev = node;
 	m_bodyList = node;
 	body->m_node = node;
+
+	m_bodyCount += 1;
+	SWLog( "body count : %d", m_bodyCount );
 }
 
 void SWWorld2D::removeBody( SWRigidBody2D* body )
@@ -90,6 +99,9 @@ void SWWorld2D::removeBody( SWRigidBody2D* body )
 	if ( prev ) prev->next = next;
 	if ( m_bodyList() == node ) m_bodyList = next;
 	body->m_node = NULL;
+
+	m_bodyCount -= 1;
+	SWLog( "body count : %d", m_bodyCount );
 }
 
 bool SWWorld2D::existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 )
@@ -181,7 +193,6 @@ void SWWorld2D::updateContacts()
 				vel = body1->getVelocity();
 				vel += -contact->normal * contact->depth;
 				body1->setVelocity( vel );
-				SWLog( "body1" );
 			}
 			SWRigidBody2D* body2 = contact->fixture2()->getCollide()->getComponent<SWRigidBody2D>();
 			if ( body2 )
@@ -189,7 +200,6 @@ void SWWorld2D::updateContacts()
 				vel = body2->getVelocity();
 				vel += contact->normal * contact->depth;
 				body2->setVelocity( vel );
-				SWLog( "body2" );
 			}
 		}
 	} while (false);

@@ -57,6 +57,7 @@ public:
 
 	int   randomInt( int kMin, int kMax ) const;
 	float randomFloat() const;
+
 };
 
 #endif //SWMath

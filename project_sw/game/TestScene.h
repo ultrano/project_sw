@@ -8,24 +8,67 @@
 class TestBehavior : public SWBehavior
 {
 	SW_RTTI( TestBehavior, SWBehavior );
-
+	bool m_canJump;
 public:
-	TestBehavior(factory_constructor) {};
+	TestBehavior(factory_constructor)
+	{
+		m_canJump = true;
+	};
 	override void onCollisionEnter()
 	{
-		SWLog( "onCollisionEnter" );
+		SWLog(__FUNCTION__);
+		m_canJump = true;
 	}
 
 	override void onCollisionStay()
 	{
-		//SWLog( "onCollisionStay" );
 	}
 
 	override void onCollisionLeave()
 	{
-		SWLog( "onCollisionLeave" );
+		SWLog(__FUNCTION__);
+		m_canJump = false;
 	}
 
+	override void onFixedRateUpdate()
+	{
+		SWGameObject* go = gameObject();
+		if ( !go ) return;
+
+		float speed = 5;
+		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
+		SWTransform* trans = go->getComponent<SWTransform>();
+		if ( SWInput.getKey('d') )
+		{
+			body->addForce(  (tvec2::axisX*speed) );
+		} 
+		if ( SWInput.getKey('a') )
+		{
+			body->addForce( -(tvec2::axisX*speed) );
+		}
+		if ( SWInput.getKey('w') )
+		{
+			body->addForce( (tvec2::axisY*speed) );
+		}
+		if ( SWInput.getKey('s') )
+		{
+			body->addForce( -(tvec2::axisY*speed) );
+		}
+		if ( SWInput.getKey(' ') && m_canJump )
+		{
+			body->addForce( (tvec2::axisY*20) );
+		}
+		if ( SWInput.getKey('r') )
+		{
+			tvec3 scale = trans->getLocalScale();
+			trans->setLocalScale( scale + tvec3::one );
+		}
+		if ( SWInput.getKey('f') )
+		{
+			tvec3 scale = trans->getLocalScale();
+			trans->setLocalScale( scale - tvec3::one );
+		}
+	}
 };
 
 
@@ -39,10 +82,11 @@ public:
 	override void onAwake()
 	{
 		SW_GC.registerFactory<TestBehavior>();
+		tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
+		screenSize *= 3;
+
 		//! set default camera
 		{
-			tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-			screenSize *= 3;
 			SWGameObject* go = new SWGameObject;
 			go->setName( "Camera" );
 
@@ -58,29 +102,29 @@ public:
 		tvec2 logoSize = sprite->getSize();
 
 		SWGameObject* parent = new SWGameObject("p");
-		tuint count = 10;
-		float radius = 30*count;
+		tuint count = 15;
 		for ( tuint i = 0 ; i < count ; ++i )
 		{
 			SWGameObject* go = new SWGameObject;
-			go->addComponent<TestBehavior>();
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 			renderer->setSprite( sprite );
 
-			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-			body->setGravityScale( tvec2::zero );
+			//SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+			//body->setGravityScale( tvec2::zero );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
 			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 			//collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
-			float x = radius * SWMath.cos( radian );
-			float y = radius * SWMath.sin( radian );
+			float randomX = (SWMath.randomFloat()-0.5f);
+			float randomY = (SWMath.randomFloat()-0.5f);
+			float x = randomX * screenSize.x;
+			float y = randomY * screenSize.y;
 
 			SWTransform* trans = go->getComponent<SWTransform>();
 			trans->setPosition( tvec3(x,y,0) );
-			trans->setLocalScale( tvec3::one + tvec3(y*y,x*x,0).normal()*10 );
+			trans->setLocalScale( tvec3::one + tvec3(15,0,0) );
 			//trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(20) );
 			trans->setParent( parent->getComponent<SWTransform>() );
 		}
@@ -88,8 +132,10 @@ public:
 		sprite = atlas()->find( "circle" );
 		{
 			SWGameObject* go = new SWGameObject("test");
+			go->addComponent<TestBehavior>();
+
 			SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-			body->setGravityScale( tvec2::zero );
+			body->setGravityScale( tvec2::axisY* -3 );
 			//body->setRotate( SWMath.angleToRadian(45) );
 
 			SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
@@ -109,28 +155,6 @@ public:
 		if ( SWInput.getKey('p') )
 		{
 			SW_GC.setNextScene( new TestScene );
-		}
-
-		SWGameObject* go = findGO("test");
-		if ( !go ) return;
-
-		float speed = 2;
-		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
-		if ( SWInput.getKey('d') )
-		{
-			body->addForce(  (tvec2::axisX*speed) );
-		} 
-		if ( SWInput.getKey('a') )
-		{
-			body->addForce( -(tvec2::axisX*speed) );
-		}
-		if ( SWInput.getKey('w') )
-		{
-			body->addForce( (tvec2::axisY*speed) );
-		}
-		if ( SWInput.getKey('s') )
-		{
-			body->addForce( -(tvec2::axisY*speed) );
 		}
 	}
 };
