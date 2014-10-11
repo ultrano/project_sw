@@ -5,6 +5,7 @@
 #include "SWRefCounter.h"
 #include "SWRtti.h"
 
+class SWMassData;
 class SWShape2D : public SWRefCountable
 {
 	SW_RTTI_ROOT( SWShape2D );
@@ -14,6 +15,7 @@ public:
 	abstract bool getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const = 0;
 	abstract bool getCrossest( tvec2& begin,  tvec2& end, const tvec2& direction, const tmat33& mat ) const = 0;
 	abstract void computeAABB( taabb2d& aabb, const tmat33& mat ) const = 0;
+	abstract void computeMass( SWMassData& data, float density ) const = 0;
 };
 
 class SWCircleShape2D : public SWShape2D
@@ -36,7 +38,7 @@ public:
 	override bool getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const;
 	override bool getCrossest( tvec2& begin,  tvec2& end, const tvec2& direction, const tmat33& mat ) const;
 	override void computeAABB( taabb2d& aabb, const tmat33& mat ) const;
-
+	override void computeMass( SWMassData& data, float density ) const;
 private:
 	tvec2 m_center;
 	float m_radius;
@@ -55,6 +57,7 @@ public:
 	override bool getFarthest( tvec2& farthest, const tvec2& direction, const tmat33& mat ) const;
 	override bool getCrossest( tvec2& begin,  tvec2& end, const tvec2& direction, const tmat33& mat ) const;
 	override void computeAABB( taabb2d& aabb, const tmat33& mat ) const;
+	override void computeMass( SWMassData& data, float density ) const;
 private:
 	void computeLocalOBB( tobb2d& obb );
 private:
@@ -72,6 +75,14 @@ public:
 	float depth;
 	tuint count;
 	tvec2 points[eMaxCount];
+};
+
+class SWMassData : public SWMemory
+{
+public:
+	float mass;
+	tvec2 center;
+	float inertia;
 };
 
 bool testShape2D( SWManifold& manifold, const SWShape2D* shape1, const tmat33& mat1, const SWShape2D* shape2, const tmat33& mat2 );

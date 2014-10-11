@@ -55,6 +55,12 @@ void SWCircleShape2D::computeAABB( taabb2d& aabb, const tmat33& mat ) const
 	}
 }
 
+void SWCircleShape2D::computeMass( SWMassData& data, float density ) const
+{
+	data.mass = density * (SWMath.pi * m_radius * m_radius);
+	data.center = m_center;
+}
+
 SWPolygonShape2D::SWPolygonShape2D()
 {
 
@@ -269,6 +275,29 @@ void SWPolygonShape2D::computeLocalOBB( tobb2d& obb )
 			obb.radian = SWMath.atan( n1.y, n1.x );
 		}
 	}
+}
+
+void SWPolygonShape2D::computeMass( SWMassData& data, float density ) const
+{
+	float mass = 0;
+	float area = 0;
+	tvec2 center(0,0);
+	const tuint count = m_vertices.size();
+	for ( tuint i = 0 ; i < count ; ++i )
+	{
+		tuint i1 = i;
+		tuint i2 = ((i+1)%count);
+
+		const tvec2& v1 = m_vertices.at( i1 );
+		const tvec2& v2 = m_vertices.at( i2 );
+		float V = 0.5f * v1.cross(v2);
+		tvec2 centroid = (v1+v2)/3.0f;
+		center += V * centroid;
+		area += V;
+	}
+
+	data.mass   = density*area;
+	data.center = center/area;
 }
 
 float calculateArea( const tvec2& a, const tvec2& b, const tvec2& c )

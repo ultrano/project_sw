@@ -113,7 +113,8 @@ public:
 			//body->setGravityScale( tvec2::zero );
 
 			SWCollider2D* collider = go->addComponent<SWCollider2D>();
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			collider->addBox( tvec2(111,222), logoSize.x, logoSize.y );
 			//collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 			float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );

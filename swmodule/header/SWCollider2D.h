@@ -2,6 +2,7 @@
 #define SWCollider2D_h__
 
 #include "SWComponent.h"
+#include "SWShape2D.h"
 
 class SWFixture2D;
 class SWWorld2D;
@@ -47,6 +48,10 @@ private:
 	FixtureList m_fixtures;
 	SWHardRef<SWContactEdge2D> m_contactEdge;
 	SWWeakRef<SWWorld2D> m_world;
+	SWMassData m_mass;
+
+	enum { eUpdateMass };
+	tflag8 m_flags;
 };
 
 #endif // SWCollider2D_h__

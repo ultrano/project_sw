@@ -40,6 +40,24 @@ void SWCollider2D::onRemove()
 
 void SWCollider2D::onFixedUpdate()
 {
+	if ( m_flags.get( eUpdateMass ) )
+	{
+		m_flags.set( eUpdateMass, false );
+
+		m_mass.center = tvec2::zero;
+		m_mass.mass = 0;
+		FixtureList::iterator itor = m_fixtures.begin();
+		for ( ; itor != m_fixtures.end() ; ++itor )
+		{
+			SWMassData data;
+			SWFixture2D* fixture = (*itor)();
+			fixture->getShape()->computeMass( data, 1 );
+			m_mass.mass += data.mass;
+			m_mass.center += data.mass * data.center;
+		}
+		m_mass.center /= m_mass.mass;
+	}
+
 	tmat33 mat;
 	getMatrix2D( mat );
 
@@ -122,12 +140,16 @@ void SWCollider2D::registerFixture( SWFixture2D* fixture )
 
 	tmat33 mat;
 	taabb2d aabb;
+	SWMassData data;
 	getMatrix2D( mat );
-	fixture->getShape()->computeAABB( aabb, mat );
+	const SWShape2D* shape = fixture->getShape();
+	shape->computeAABB( aabb, mat );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	tuint proxyID = broadPhase->createProxy( aabb, fixture );
 	fixture->setProxyID( proxyID );
+
+	m_flags.set( eUpdateMass, true );
 }
 
 void SWCollider2D::removeFixture( SWFixture2D* fixture )
@@ -135,6 +157,8 @@ void SWCollider2D::removeFixture( SWFixture2D* fixture )
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	broadPhase->destroyProxy( fixture->getProxyID() );
 	m_fixtures.remove( fixture );
+
+	m_flags.set( eUpdateMass, true );
 }
 
 void SWCollider2D::removeAllFixtures()
