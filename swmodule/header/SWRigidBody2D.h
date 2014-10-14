@@ -20,6 +20,7 @@ public:
 	void addForce( const tvec2& force, const tvec2& pos );
 	void addAccel( const tvec2& accel );
 	void setVelocity( const tvec2& vel );
+	void setTorque( float torque );
 	void setLinearDrag( float drag );
 	void setGravityScale( const tvec2& scale );
 	void setElastic( float elastic );
@@ -27,13 +28,17 @@ public:
 	void setInertia( tfloat inertia );
 	void setFixedAngle( bool isFixed );
 	void setFixedPosition( bool isFixed );
+	void setSleeping( bool awake );
 
 	const tvec2& getPosition() const;
 	float getRotate() const;
 	const tvec2& getVelocity() const;
-	const float& getTorque() const;
+	float getTorque() const;
 	bool  isFixedAngle() const;
 	bool  isFixedPosition() const;
+	float getLinearDrag() const;
+	float getAngularDrag() const;
+	bool isSleeping() const;
 
 protected:
 
@@ -70,6 +75,9 @@ private:
 
 	SWWeakRef<SWRefNode> m_node;
 	SWWeakRef<SWWorld2D> m_world;
+
+	enum { eSleeping };
+	tflag8 m_flags;
 };
 
 #endif // SWRigidBody2D_h__

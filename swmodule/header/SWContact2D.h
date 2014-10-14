@@ -3,6 +3,7 @@
 
 #include "SWRefCounter.h"
 #include "SWType.h"
+#include "SWShape2D.h"
 
 class SWFixture2D;
 class SWRefNode;
@@ -21,8 +22,9 @@ public:
 	SWWeakRef<SWFixture2D> fixture2;
 	float friction;
 	float bounciness;
-	tvec2 normal;
-	float depth;
+	
+	SWManifold manifold;
+	tvec2 cm1, cm2; // center of mass in world
 
 	tflag8 state;
 	SWWeakRef<SWRefNode> node;

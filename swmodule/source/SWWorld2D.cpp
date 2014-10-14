@@ -41,7 +41,7 @@ SWContact2D* SWWorld2D::createContact( const SWFixture2D* fixture1, const SWFixt
 	m_contactList = node;
 
 	m_contactCount += 1;
-	SWLog( "contact count : %d", m_contactCount );
+	//SWLog( "contact count : %d", m_contactCount );
 	return contact;
 }
 
@@ -60,7 +60,7 @@ void SWWorld2D::removeContact( SWContact2D* contact )
 	}
 
 	m_contactCount -= 1;
-	SWLog( "contact count : %d", m_contactCount );
+	//SWLog( "contact count : %d", m_contactCount );
 	//! disconnect each other
 	SWRefNode* node = contact->node();
 	node->ref = NULL;
@@ -177,7 +177,7 @@ void SWWorld2D::updateContacts()
 	//! prototype solving
 	do
 	{
-		//! break;
+
 		SWRefNode* node = m_contactList();
 		while ( node )
 		{
@@ -186,21 +186,117 @@ void SWWorld2D::updateContacts()
 			if ( !contact ) continue;
 			if ( !contact->state.get( SWContact2D::eTouching ) ) continue;
 
-			tvec2 vel;
-			SWRigidBody2D* body1 = contact->fixture1()->getCollide()->getComponent<SWRigidBody2D>();
+			SWCollider2D* collider1 = contact->fixture1()->getCollide();
+			SWCollider2D* collider2 = contact->fixture2()->getCollide();
+			SWRigidBody2D* body1 = collider1->getComponent<SWRigidBody2D>();
+			SWRigidBody2D* body2 = collider2->getComponent<SWRigidBody2D>();
+
+			const SWManifold& mf = contact->manifold;
+			tvec2 normal = mf.normal;
+			tvec2 tangent = normal.cross(1);
+			
+
+			float invI1(0), invI2(0), invM1(0), invM2(0);
+			tvec2 v1(tvec2::zero), v2(tvec2::zero);
+			float w1(0), w2(0);
 			if ( body1 )
 			{
-				vel = body1->getVelocity();
-				vel += -contact->normal * contact->depth;
-				body1->setVelocity( vel );
+				v1 = body1->getVelocity();
+				w1 = body1->getTorque();
+				invI1 = 1.0f/330.0f;
+				invM1 = 1.0f/200.0f;
 			}
-			SWRigidBody2D* body2 = contact->fixture2()->getCollide()->getComponent<SWRigidBody2D>();
 			if ( body2 )
 			{
-				vel = body2->getVelocity();
-				vel += contact->normal * contact->depth;
-				body2->setVelocity( vel );
+				v2 = body2->getVelocity();
+				w2 = body2->getTorque();
+				invI2 = 1.0f/330.0f;
+				invM2 = 1.0f/200.0f;
 			}
+			for ( tuint i = 0 ; i < mf.count ; ++i )
+			{
+				tvec2 dv = tvec2::zero;
+				tvec2 point = mf.points[i];
+				tvec2 r1(tvec2::zero), r2(tvec2::zero);
+				float rn1(0), rn2(0), rt1(0), rt2(0);
+
+				float kNormal = 0;
+				float kTangent = 0;
+
+				if ( body1 )
+				{
+					r1 = point - contact->cm1;
+					float rn = normal.dot(r1);
+					float rt = tangent.dot(r1);
+					
+					kNormal  += invM1 + invI1*(r1.dot(r1) - rn * rn);
+					kTangent += invM1 + invI1*(r1.dot(r1) - rt * rt);
+				}
+
+				if ( body2 )
+				{
+					r2 = point - contact->cm2;
+					float rn = normal.dot(r2);
+					float rt = tangent.dot(r2);
+
+					float term = (r2.dot(r2) - rn * rn);
+					kNormal  += invM2 + invI2*term;
+					kTangent += invM2 + invI2*(r2.dot(r2) - rt * rt);
+				}
+
+				dv = v2 + r2.cross( -w2 ) - (v1 + r1.cross( -w1 ));
+				float massNormal  = 1/kNormal;
+				float vn = normal.dot(dv);
+				float dPn = massNormal * (-vn );
+				dPn = SWMath.max(dPn,0.0f);
+				tvec2 Pn = dPn * normal;
+
+				if ( body1 )
+				{
+					v1 -= Pn * invM1;
+					w1 -= r1.cross(Pn) * invI1;
+				}
+
+				if ( body2 )
+				{
+					v2 += Pn * invM2;
+					w2 += r2.cross(Pn) * invI2;
+				}
+
+				dv = v2 + r2.cross( -w2 ) - (v1 + r1.cross( -w1 ));
+				float massTangent = 1/kTangent;
+				float vt = tangent.dot(dv);
+				float dPt = massTangent * (-vt );
+				dPt = SWMath.clamp(dPt,-dPt*0.2f,dPt*0.2f);
+				tvec2 Pt = dPt * tangent;
+
+				if ( body1 )
+				{
+					v1 -= Pt * invM1;
+					w1 -= r1.cross(Pt) * invI1;
+				}
+
+				if ( body2 )
+				{
+					v2 += Pt * invM2;
+					w2 += r2.cross(Pt) * invI2;
+				}
+			}
+
+			if ( body1 )
+			{
+				body1->setVelocity( v1 );
+				body1->setTorque( w1 );
+				body1->setPosition( body1->getPosition() - normal * mf.depth );
+			}
+
+			if ( body2 )
+			{
+				body2->setVelocity( v2 );
+				body2->setTorque( w2 );
+				body2->setPosition( body2->getPosition() + normal * mf.depth );
+			}
+
 		}
 	} while (false);
 

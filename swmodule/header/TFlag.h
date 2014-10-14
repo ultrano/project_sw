@@ -12,7 +12,7 @@ public:
 
 	TFlag():flags(0){};
 	inline void	set(tuint index,bool check);
-	inline bool get(tuint index);
+	inline bool get(tuint index) const;
 	inline void	clear( bool check = false );
 	inline bool	operator ==( const TFlag<T> flag ) { return flag.flags == flags; };
 	inline bool	operator !=( const TFlag<T> flag ) { return flag.flags != flags; };
@@ -35,7 +35,7 @@ inline void	TFlag<T>::set(tuint index,bool check)
 }
 
 template<typename T>
-inline bool	TFlag<T>::get(tuint index)
+inline bool	TFlag<T>::get(tuint index)  const
 {
 	return (( flags & ( 1 << index ) ) != 0);
 }

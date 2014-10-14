@@ -3,6 +3,7 @@
 
 #include "SWRefCounter.h"
 #include "SWType.h"
+#include "SWShape2D.h"
 
 class SWShape2D;
 class SWManifold;
@@ -27,14 +28,17 @@ public:
 
 	const SWShape2D* getShape() const;
 	SWCollider2D* getCollide() const;
+	const SWMassData& getMassData() const;
 
 	void setProxyID( tuint proxyID ) { m_proxyID = proxyID; }
 	tuint getProxyID() const { return m_proxyID; }
-
+private:
+	void registerShape( SWShape2D* shape );
 public:
 	float m_friction;
 	float m_bounciness;
 	tuint m_proxyID;
+	SWMassData m_mass;
 	SWHardRef<SWShape2D> m_shape;
 	SWWeakRef<SWCollider2D> m_collide;
 };

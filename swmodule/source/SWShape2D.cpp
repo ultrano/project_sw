@@ -332,27 +332,44 @@ void calculateSide( tflag8& sideFlag, const tvec2& a, const tvec2& b, const tvec
 
 bool clipToEdge( tvec2& v1, tvec2& v2, const tvec2& edge1, const tvec2& edge2 )
 {
-	tvec2 dirE = edge2 - edge1;
+	tvec2 dirE = (edge2 - edge1);
+	float eLen = dirE.length();
 	tvec2 dirV = (v2-v1);
-	float len = dirV.length();
+	float vLen = dirV.length();
+
+	dirE = dirE.normal();
 	dirV = dirV.normal();
+	
+	float d1, d2, len, rate;
+	tvec2 term1, term2;
+	
+	d1 = dirE.dot( v1-edge1 );
+	d2 = dirE.dot( v2-edge1 );
 
-	float e1 = dirE.dot(edge1);
-	float d1 = dirE.dot(v1) - e1;
-	float d2 = dirE.dot(v2) - e1;
-
-	dirE = -dirE;
-	float e2 = dirE.dot(edge2);
-	float d3 = dirE.dot(v1) - e2;
-	float d4 = dirE.dot(v2) - e2;
-
-	if ( d1 < 0 && d2 < 0 ) return false;
-	if ( d3 < 0 && d4 < 0 ) return false;
-
-	if ( d1 < 0 ) v1 += dirV * (d1/(d1-d2)) * len;
-	if ( d2 < 0 ) v2 -= dirV * (d2/(d2-d1)) * len;
-	if ( d3 < 0 ) v1 += dirV * (d3/(d3-d4)) * len;
-	if ( d4 < 0 ) v2 -= dirV * (d4/(d4-d3)) * len;
+	if ( d1 < 0 )
+	{
+		len = d1 - d2;
+		rate = d1/len;
+		v1 += rate*vLen*dirV;
+	}
+	if ( d2 < 0 )
+	{
+		len = d2 - d1;
+		rate = d2/len;
+		v2 -= rate*vLen*dirV;
+	}
+	if ( d1 > eLen )
+	{
+		len = d1 - d2;
+		rate = (d1-eLen)/len;
+		v1 += rate*vLen*dirV;
+	}
+	if ( d2 > eLen )
+	{
+		len = d2 - d1;
+		rate = (d2-eLen)/len;
+		v2 -= rate*vLen*dirV;
+	}
 	return true;
 }
 
@@ -450,7 +467,11 @@ bool testShape2D
 
 				//! is it close enough
 				float length = direction.dot(farthest);
-				if ( SWMath.abs(length - closest) < SW_Epsilon ) break;
+				if ( SWMath.abs(length - closest) < SW_Epsilon )
+				{
+					manifold.normal = manifold.normal.normal();
+					break;
+				}
 				else 
 				{
 					tuint itor = count;
@@ -469,18 +490,29 @@ bool testShape2D
 				float length = 0;
 				struct {tvec2 v1,v2;} ref, inc;
 				shape1->getCrossest( ref.v1, ref.v2, manifold.normal, mat1);
-				if ( (ref.v1-ref.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = ref.v1;
+				if ( (ref.v1-ref.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = (ref.v1+ref.v2)*0.5f;
 				shape2->getCrossest( inc.v1, inc.v2, -manifold.normal, mat2);
-				if ( (inc.v1-inc.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = inc.v1;
+				if ( (inc.v1-inc.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = (inc.v1+inc.v2)*0.5f;
 
 				if ( manifold.count == 0 )
 				{
 					clipToEdge( inc.v1, inc.v2, ref.v1, ref.v2 );
-					if ( manifold.normal.dot( inc.v1 - ref.v1 ) <= 0 ) manifold.count += 1;
-					if ( manifold.normal.dot( inc.v2 - ref.v2 ) <= 0 ) manifold.count += 1;
-					if ( (inc.v2-inc.v1).length() < SW_Epsilon ) manifold.count = 1;
-					manifold.points[0] = inc.v1;
-					manifold.points[1] = inc.v2;
+					tvec2 edgeNormal = (ref.v2 - ref.v1).normal();
+					edgeNormal = -edgeNormal.cross( edgeNormal.cross(manifold.normal) );
+
+					float d1, d2;
+					d1 = edgeNormal.dot( inc.v1 - ref.v1 );
+					d2 = edgeNormal.dot( inc.v2 - ref.v1 );
+					if ( d1 < 0 ) manifold.points[manifold.count++] = inc.v1;
+					if ( d2 < 0 ) manifold.points[manifold.count++] = inc.v2;
+					if ( manifold.count == 2 )
+					{
+						if ( (inc.v2-inc.v1).length() < SW_Epsilon )
+						{
+							manifold.count = 1;
+							manifold.points[0] = (inc.v2+inc.v1)*0.5f;
+						}
+					}
 				}
 			}
 			return true;

@@ -98,6 +98,9 @@ void SWRigidBody2D::onFixedRateUpdate()
 		m_rotate  += m_torque;
 		transform->setRotate( tquat().rotate( 0, 0, m_rotate ) );
 	}
+	float vellen = m_velocity.length();
+	bool sleep = ( vellen < 0.5f );
+	m_flags.set(eSleeping, sleep );
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )
@@ -147,6 +150,11 @@ void SWRigidBody2D::setVelocity( const tvec2& vel )
 	m_velocity = vel;
 }
 
+void SWRigidBody2D::setTorque( float torque )
+{
+	m_torque = torque;
+}
+
 void SWRigidBody2D::setLinearDrag( float drag )
 {
 	m_linearDrag = drag;
@@ -184,12 +192,17 @@ void SWRigidBody2D::setFixedPosition( bool isFixed )
 	m_fixedPosition = isFixed;
 }
 
+void SWRigidBody2D::setSleeping( bool awake )
+{
+	m_flags.set( eSleeping, !awake );
+}
+
 const tvec2& SWRigidBody2D::getVelocity() const
 {
 	return m_velocity;
 }
 
-const float& SWRigidBody2D::getTorque() const
+float SWRigidBody2D::getTorque() const
 {
 	return m_torque;
 }
@@ -202,6 +215,21 @@ bool SWRigidBody2D::isFixedAngle() const
 bool SWRigidBody2D::isFixedPosition() const
 {
 	return m_fixedPosition;
+}
+
+float SWRigidBody2D::getLinearDrag() const
+{
+	return m_linearDrag;
+}
+
+float SWRigidBody2D::getAngularDrag() const
+{
+	return m_angularDrag;
+}
+
+bool SWRigidBody2D::isSleeping() const
+{
+	return m_flags.get(eSleeping);
 }
 
 void SWRigidBody2D::serialize( SWObjectWriter* writer )

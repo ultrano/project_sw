@@ -20,25 +20,32 @@ public:
 		__super::onAwake();
 
 		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "test.png" );
-		SWSprite* sprite = atlas()->find( "box" );
+		SWSprite* sprite = NULL;
+		bool isBox = 0;
+		if ( isBox ) sprite = atlas()->find( "box" );
+		else sprite = atlas()->find( "circle" );
 		tvec2 logoSize = sprite->getSize();
-		sprite = atlas()->find( "circle" );
 
 		SWGameObject* go = gameObject();
 
 		SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
-		body->setGravityScale( tvec2::axisY* -3 );
+		//body->setGravityScale(tvec2::zero);
+		//body->setGravityScale( tvec2::axisY* -3 );
 		//body->setRotate( SWMath.angleToRadian(45) );
 
 		SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 		renderer->setSprite( sprite );
 
 		SWCollider2D* collider = go->addComponent<SWCollider2D>();
-		//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-		collider->addCircle( tvec2::zero, logoSize.x/2 );
+		if ( isBox )
+		{
+			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+			//collider->addBox( tvec2::zero, 0.5f, 0.5f );
+		}
+		else collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 		SWTransform* trans = go->getComponent<SWTransform>();
-		trans->setLocalScale( tvec3(2,2,1) );
+		trans->setLocalScale( tvec3::one*2 );
 	}
 	override void onCollisionEnter()
 	{
@@ -79,6 +86,14 @@ public:
 		if ( SWInput.getKey('s') )
 		{
 			body->addForce( -(tvec2::axisY*speed) );
+		}
+		if ( SWInput.getKey('z') )
+		{
+			body->setTorque( -SWMath.pi/2.0f );
+		}
+		if ( SWInput.getKey('c') )
+		{
+			body->setTorque( SWMath.pi/2.0f );
 		}
 		if ( SWInput.getKey(' ') && m_canJump )
 		{
@@ -151,11 +166,11 @@ public:
 			}
 		}
 
-		//! circles
+		//! 
 		{
-			SWSprite* sprite = atlas()->find( "circle" );
+			SWSprite* sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 110;
+			tuint count = 1;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -165,8 +180,8 @@ public:
 				//SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 
 				SWCollider2D* collider = go->addComponent<SWCollider2D>();
-				//collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-				collider->addCircle( tvec2::zero, logoSize.x/2 );
+				collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+				//collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 				float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 				float randomX = (SWMath.randomFloat()-0.5f);
@@ -176,11 +191,12 @@ public:
 
 				SWTransform* trans = go->getComponent<SWTransform>();
 				trans->setPosition( tvec3(x,y,0) );
-				//trans->setLocalScale( tvec3(2,2,1) );
+				trans->setLocalScale( tvec3(4,4,1) );
+				trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(45) );
 				//trans->setLocalScale( tvec3::one*2 + tvec3(y,x,0).normal()*20 );
 			}
 		}
-
+		
 		{
 			SWGameObject* go = new SWGameObject("test");
 			go->addComponent<TestBehavior>();

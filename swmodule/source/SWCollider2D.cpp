@@ -59,7 +59,7 @@ void SWCollider2D::onFixedUpdate()
 	}
 
 	tmat33 mat;
-	getMatrix2D( mat );
+	computeMatrix2D( mat );
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	FixtureList::iterator itor = m_fixtures.begin();
@@ -97,7 +97,7 @@ void SWCollider2D::onLayerChanged()
 	{
 		taabb2d aabb;
 		tmat33 mat;
-		getMatrix2D( mat );
+		computeMatrix2D( mat );
 		for ( FixtureList::iterator itor = m_fixtures.begin() 
 			; itor != m_fixtures.end() ; ++itor )
 		{
@@ -141,7 +141,7 @@ void SWCollider2D::registerFixture( SWFixture2D* fixture )
 	tmat33 mat;
 	taabb2d aabb;
 	SWMassData data;
-	getMatrix2D( mat );
+	computeMatrix2D( mat );
 	const SWShape2D* shape = fixture->getShape();
 	shape->computeAABB( aabb, mat );
 
@@ -173,13 +173,18 @@ void SWCollider2D::removeAllFixtures()
 	m_fixtures.clear();
 }
 
-void SWCollider2D::getMatrix2D( tmat33& mat ) const
+void SWCollider2D::computeMatrix2D( tmat33& mat ) const
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	const tmat44& world = transform->getWorldMatrix();
 	mat.m11 = world.m11; mat.m12 = world.m12; mat.m13 = 0;
 	mat.m21 = world.m21; mat.m22 = world.m22; mat.m23 = 0;
 	mat.m31 = world.m41; mat.m32 = world.m42; mat.m33 = 1;
+}
+
+const SWMassData& SWCollider2D::getMassData() const
+{
+	return m_mass;
 }
 
 void SWCollider2D::addContactEdge( const SWContact2D* contact )

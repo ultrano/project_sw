@@ -24,7 +24,8 @@ public:
 	void removeFixture( SWFixture2D* fixture );
 	void removeAllFixtures();
 
-	void getMatrix2D( tmat33& mat ) const;
+	void computeMatrix2D( tmat33& mat ) const;
+	const SWMassData& getMassData() const;
 
 private:
 	void addContactEdge( const SWContact2D* contact );
