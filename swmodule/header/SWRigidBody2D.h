@@ -19,8 +19,8 @@ public:
 	void addForce( const tvec2& force );
 	void addForce( const tvec2& force, const tvec2& pos );
 	void addAccel( const tvec2& accel );
-	void setVelocity( const tvec2& vel );
-	void setTorque( float torque );
+	void setLinearVelocity( const tvec2& vel );
+	void setAngularVelocity( float torque );
 	void setLinearDrag( float drag );
 	void setGravityScale( const tvec2& scale );
 	void setElastic( float elastic );
@@ -32,8 +32,8 @@ public:
 
 	const tvec2& getPosition() const;
 	float getRotate() const;
-	const tvec2& getVelocity() const;
-	float getTorque() const;
+	const tvec2& getLinearVelocity() const;
+	float getAngularVelocity() const;
 	bool  isFixedAngle() const;
 	bool  isFixedPosition() const;
 	float getLinearDrag() const;
@@ -58,8 +58,8 @@ private:
 	tvec2  m_position;
 	float  m_rotate;
 
-	tvec2  m_velocity;
-	tfloat m_torque;
+	tvec2  m_linearVel;
+	tfloat m_angularVel;
 
 	tfloat m_mass;
 	tfloat m_inertia;

@@ -44,16 +44,18 @@ void SWCollider2D::onFixedUpdate()
 	{
 		m_flags.set( eUpdateMass, false );
 
-		m_mass.center = tvec2::zero;
-		m_mass.mass = 0;
+		m_mass.center  = tvec2::zero;
+		m_mass.mass    = 0;
+		m_mass.inertia = 0;
 		FixtureList::iterator itor = m_fixtures.begin();
 		for ( ; itor != m_fixtures.end() ; ++itor )
 		{
 			SWMassData data;
 			SWFixture2D* fixture = (*itor)();
 			fixture->getShape()->computeMass( data, 1 );
-			m_mass.mass += data.mass;
-			m_mass.center += data.mass * data.center;
+			m_mass.mass    += data.mass;
+			m_mass.center  += data.mass * data.center;
+			m_mass.inertia += data.inertia + data.mass * data.center.dot(data.center);
 		}
 		m_mass.center /= m_mass.mass;
 	}

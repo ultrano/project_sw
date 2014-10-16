@@ -59,6 +59,7 @@ void SWCircleShape2D::computeMass( SWMassData& data, float density ) const
 {
 	data.mass = density * (SWMath.pi * m_radius * m_radius);
 	data.center = m_center;
+	data.inertia = data.mass; // testing
 }
 
 SWPolygonShape2D::SWPolygonShape2D()
@@ -298,6 +299,7 @@ void SWPolygonShape2D::computeMass( SWMassData& data, float density ) const
 
 	data.mass   = density*area;
 	data.center = center/area;
+	data.inertia = data.mass; // testing
 }
 
 float calculateArea( const tvec2& a, const tvec2& b, const tvec2& c )
@@ -486,16 +488,18 @@ bool testShape2D
 
 			//! finds incident points using edge clipping.
 			{
-				manifold.count = 0;
-				float length = 0;
+				tuint count = 0;
 				struct {tvec2 v1,v2;} ref, inc;
-				shape1->getCrossest( ref.v1, ref.v2, manifold.normal, mat1);
-				if ( (ref.v1-ref.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = (ref.v1+ref.v2)*0.5f;
 				shape2->getCrossest( inc.v1, inc.v2, -manifold.normal, mat2);
-				if ( (inc.v1-inc.v2).length() < SW_Epsilon ) manifold.points[manifold.count++] = (inc.v1+inc.v2)*0.5f;
-
-				if ( manifold.count == 0 )
+				if ( (inc.v1-inc.v2).length() < SW_Epsilon )
 				{
+					count += 1;
+					manifold.point = (inc.v1+inc.v2)*0.5f;
+				}
+
+				if ( count == 0 )
+				{
+					shape1->getCrossest( ref.v1, ref.v2, manifold.normal, mat1);
 					clipToEdge( inc.v1, inc.v2, ref.v1, ref.v2 );
 					tvec2 edgeNormal = (ref.v2 - ref.v1).normal();
 					edgeNormal = -edgeNormal.cross( edgeNormal.cross(manifold.normal) );
@@ -503,16 +507,9 @@ bool testShape2D
 					float d1, d2;
 					d1 = edgeNormal.dot( inc.v1 - ref.v1 );
 					d2 = edgeNormal.dot( inc.v2 - ref.v1 );
-					if ( d1 < 0 ) manifold.points[manifold.count++] = inc.v1;
-					if ( d2 < 0 ) manifold.points[manifold.count++] = inc.v2;
-					if ( manifold.count == 2 )
-					{
-						if ( (inc.v2-inc.v1).length() < SW_Epsilon )
-						{
-							manifold.count = 1;
-							manifold.points[0] = (inc.v2+inc.v1)*0.5f;
-						}
-					}
+					if ( d1 <= 0 ) {count += 1; manifold.point = inc.v1;}
+					if ( d2 <= 0 ) {count += 1; manifold.point = inc.v2;}
+					if ( count == 2 ) manifold.point = (inc.v2+inc.v1)*0.5f;
 				}
 			}
 			return true;
