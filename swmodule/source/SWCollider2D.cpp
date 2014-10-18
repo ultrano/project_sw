@@ -44,24 +44,26 @@ void SWCollider2D::onFixedUpdate()
 	{
 		m_flags.set( eUpdateMass, false );
 
-		m_mass.center  = tvec2::zero;
-		m_mass.mass    = 0;
-		m_mass.inertia = 0;
+		m_localMass.center  = tvec2::zero;
+		m_localMass.mass    = 0;
+		m_localMass.inertia = 0;
 		FixtureList::iterator itor = m_fixtures.begin();
 		for ( ; itor != m_fixtures.end() ; ++itor )
 		{
 			SWMassData data;
 			SWFixture2D* fixture = (*itor)();
 			fixture->getShape()->computeMass( data, 1 );
-			m_mass.mass    += data.mass;
-			m_mass.center  += data.mass * data.center;
-			m_mass.inertia += data.inertia + data.mass * data.center.dot(data.center);
+			m_localMass.mass    += data.mass;
+			m_localMass.center  += data.mass * data.center;
+			m_localMass.inertia += data.inertia + data.mass * data.center.dot(data.center);
 		}
-		m_mass.center /= m_mass.mass;
+		m_localMass.center /= m_localMass.mass;
 	}
 
 	tmat33 mat;
 	computeMatrix2D( mat );
+
+	m_centerOfMass = m_localMass.center * mat;
 
 	SWBroadPhase2D* broadPhase = m_world()->getBroadPhase();
 	FixtureList::iterator itor = m_fixtures.begin();
@@ -184,11 +186,6 @@ void SWCollider2D::computeMatrix2D( tmat33& mat ) const
 	mat.m31 = world.m41; mat.m32 = world.m42; mat.m33 = 1;
 }
 
-const SWMassData& SWCollider2D::getMassData() const
-{
-	return m_mass;
-}
-
 void SWCollider2D::addContactEdge( const SWContact2D* contact )
 {
 	SWContactEdge2D* contactEdge = new SWContactEdge2D;
@@ -237,4 +234,9 @@ void SWCollider2D::clearContactEdges( SWWorld2D* world )
 const SWContactEdge2D* SWCollider2D::getContactEdge() const
 {
 	return m_contactEdge();
+}
+
+const tvec2& SWCollider2D::getCenterOfMass() const
+{
+	return m_centerOfMass;
 }

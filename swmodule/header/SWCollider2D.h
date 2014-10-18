@@ -25,7 +25,7 @@ public:
 	void removeAllFixtures();
 
 	void computeMatrix2D( tmat33& mat ) const;
-	const SWMassData& getMassData() const;
+	const tvec2& getCenterOfMass() const;
 
 private:
 	void addContactEdge( const SWContact2D* contact );
@@ -49,7 +49,9 @@ private:
 	FixtureList m_fixtures;
 	SWHardRef<SWContactEdge2D> m_contactEdge;
 	SWWeakRef<SWWorld2D> m_world;
-	SWMassData m_mass;
+
+	SWMassData m_localMass;
+	tvec2 m_centerOfMass;
 
 	enum { eUpdateMass };
 	tflag8 m_flags;

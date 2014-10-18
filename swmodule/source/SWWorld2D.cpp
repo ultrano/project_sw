@@ -181,7 +181,7 @@ void SWWorld2D::updateContacts()
 		while ( node )
 		{
 			SWContact2D* contact = (SWContact2D*)node->ref();
-			node = node->next();			
+			node = node->next();
 			if ( !contact ) continue;
 			if ( !contact->state.get( SWContact2D::eTouching ) ) continue;
 
@@ -190,55 +190,73 @@ void SWWorld2D::updateContacts()
 			SWRigidBody2D* body1 = collider1->getComponent<SWRigidBody2D>();
 			SWRigidBody2D* body2 = collider2->getComponent<SWRigidBody2D>();
 
-			const SWMassData& md1 = collider1->getMassData();
-			const SWMassData& md2 = collider2->getMassData();
+			float invMass1(0), invMass2(0), invI1(0), invI2(0);
+			if ( body1 )
+			{
+				invMass1 = 1.0f/body1->getMass();
+				invI1 = 1.0f/body1->getInertia();
+			}
+			if ( body2 )
+			{
+				invMass2 = 1.0f/body2->getMass();
+				invI2 = 1.0f/body2->getInertia();
+			}
 			const SWManifold& mf = contact->manifold;
 			tvec2 normal = mf.normal;
 			tvec2 tangent = normal.cross(1);
 
-			tvec2 r1 = contact->manifold.point - contact->cm1;
-			tvec2 r2 = contact->manifold.point - contact->cm2;
+			for ( tuint i = 0 ; i < mf.count ; ++i )
+			{
+				tvec2 r1 = mf.points[i] - contact->cm1;
+				tvec2 r2 = mf.points[i] - contact->cm2;
 
-			tvec2 relative = tvec2::zero;
-			float kmass = 0;
-			if ( body1 )
-			{
-				relative -= body1->getLinearVelocity() + r1.cross(-body1->getAngularVelocity());
-				float t0 = r1.dot(normal);
-				float t = r1.dot(r1) - t0*t0;
-				kmass += (1/md1.mass) + (t/md1.inertia);
-			}
-			if ( body2 )
-			{
-				relative += body2->getLinearVelocity() + r2.cross(-body2->getAngularVelocity());
-				float t0 = r2.dot(normal);
-				float t = r2.dot(r2) - t0*t0;
-				kmass += (1/md2.mass) + (t/md2.inertia);
-			}
-			float dJn = (normal.dot(-relative)) / kmass;
-			dJn = SWMath.max(dJn,0.0f);
-			tvec2 Jn  = normal * (dJn);
+				tvec2 relative = tvec2::zero;
+				float kmass = 0;
+				if ( body1 )
+				{
+					relative -= body1->getLinearVelocity() + r1.cross(-body1->getAngularVelocity());
+					float t0 = r1.dot(normal);
+					float t = r1.dot(r1) - t0*t0;
+					kmass += (invMass1) + (t*invI1);
+				}
+				if ( body2 )
+				{
+					relative += body2->getLinearVelocity() + r2.cross(-body2->getAngularVelocity());
+					float t0 = r2.dot(normal);
+					float t = r2.dot(r2) - t0*t0;
+					kmass += (invMass2) + (t*invI2);
+				}
 
-			if ( body1 )
-			{
-				tvec2 v = body1->getLinearVelocity();
-				float w = body1->getAngularVelocity();
-				v -= Jn/md1.mass;
-				w -= r1.cross(Jn)/md1.inertia;
-				body1->setLinearVelocity( v );
-				body1->setAngularVelocity( w );
-				body1->setPosition( body1->getPosition() - normal*mf.depth * 0.5f );
-			}
-			if ( body2 )
-			{
-				tvec2 v = body2->getLinearVelocity();
-				float w = body2->getAngularVelocity();
-				tvec2 nv = Jn/md2.mass;
-				float nw = r2.cross(Jn)/md2.inertia;
-				body2->setLinearVelocity( v + nv );
-				body2->setAngularVelocity( w + nw );
-				body2->setPosition( body2->getPosition() + normal*mf.depth * 0.5f );
-				//SWLog(  );
+				SWLog( "depth %.2f", mf.depth );
+				const float percent = 0.05f; // usually 20% to 80%
+				const float slop = 0.01f; // usually 0.01 to 0.1
+				float bias = mf.depth*percent / (invMass1+invMass2);
+				float dJn = (normal.dot(-relative)) / kmass;
+				dJn = SWMath.max(dJn,0.0f);
+				tvec2 Jn  = normal * (dJn);
+
+				if ( body1 )
+				{
+					tvec2 v = body1->getLinearVelocity();
+					float w = body1->getAngularVelocity();
+					tvec2 nv = Jn*invMass1;
+					nv += (bias*mf.normal)*invMass1;
+					float nw = r1.cross(Jn)*invI1;
+					body1->setLinearVelocity( v + nv );
+					body1->setAngularVelocity( w + nw );
+					//body1->setPosition( body1->getPosition() - normal*mf.depth );
+				}
+				if ( body2 )
+				{
+					tvec2 v = body2->getLinearVelocity();
+					float w = body2->getAngularVelocity();
+					tvec2 nv = Jn*invMass2;
+					nv += (bias*mf.normal)*invMass2;
+					float nw = r2.cross(Jn)*invI2;
+					body2->setLinearVelocity( v + nv );
+					body2->setAngularVelocity( w + nw );
+					//body2->setPosition( body2->getPosition() + normal*mf.depth );
+				}
 			}
 		}
 	} while (false);

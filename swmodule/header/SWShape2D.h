@@ -69,10 +69,12 @@ private:
 
 class SWManifold : public SWMemory
 {
+	enum {MaxPointCount = 2};
 public:
 	tvec2 normal;
 	float depth;
-	tvec2 point;
+	tuint count;
+	tvec2 points[MaxPointCount];
 };
 
 class SWMassData : public SWMemory

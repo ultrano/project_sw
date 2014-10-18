@@ -25,15 +25,16 @@ bool SWContact2D::evaluate()
 
 		tmat33 mat;
 		SWCollider2D* collider1 = fixture1()->getCollide();
-		collider1->computeMatrix2D( mat );
-		const SWMassData& md1 = collider1->getMassData();
-		cm1 = md1.center * mat;
+		cm1 = collider1->getCenterOfMass();
 
 		SWCollider2D* collider2 = fixture2()->getCollide();
-		collider2->computeMatrix2D( mat );
-		const SWMassData& md2 = collider2->getMassData();
-		cm2 = md2.center * mat;
+		cm2 = collider2->getCenterOfMass();
 
+		/*for ( tuint i=0;i<mf.count;++i )
+		{
+			SWLog( "r%d %f, %f", i, mf.points[i].x, mf.points[i].y );
+		}
+		*/
 		//SWLog( "cm1 %f, %f", cm1.x, cm1.y );
 		//SWLog( "cm2 %f, %f", cm2.x, cm2.y );
 	}

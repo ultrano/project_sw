@@ -9,35 +9,18 @@
 #include "SWObjectStream.h"
 #include "SWRefNode.h"
 
-SWRigidBody2D::SWRigidBody2D()
-	: m_position( tvec2::zero )
-	, m_rotate( 0 )
-	, m_linearVel( tvec2::zero )
-	, m_angularVel( 0 )
-	, m_elastic( 0 )
-	, m_mass( 1 )
-	, m_inertia( 10 )
-	, m_linearDrag( 0.1f )
-	, m_angularDrag( 0.1f )
-	, m_gravityScale( -tvec2::axisY )
-	, m_fixedAngle( false )
-	, m_fixedPosition( false )
-{
-}
-
 SWRigidBody2D::SWRigidBody2D( factory_constructor )
 	: m_position( tvec2::zero )
 	, m_rotate( 0 )
 	, m_linearVel( tvec2::zero )
 	, m_angularVel( 0 )
-	, m_elastic( 0 )
-	, m_mass( 1 )
-	, m_inertia( 10 )
+	, m_mass( 100 )
+	, m_inertia( 100 )
 	, m_linearDrag( 0.1f )
 	, m_angularDrag( 0.1f )
 	, m_gravityScale( -tvec2::axisY )
-	, m_fixedAngle( false )
-	, m_fixedPosition( false )
+	, m_force(tvec2::zero)
+	, m_torque(0)
 {
 
 }
@@ -81,23 +64,32 @@ void SWRigidBody2D::onFixedRateUpdate()
 {
 	SWTransform* transform = getComponent<SWTransform>();
 	
-	float depth = transform->getPosition().z;
 	float gravityForce = SWPhysics2D.getGravityForce();
 
-	if ( !isFixedPosition() )
+	if ( !isPositionFixed() || !isAngleFixed() )
 	{
-		transform->setPosition( tvec3( m_position, depth ) );
-		m_position += m_linearVel;
-		addAccel( m_gravityScale * gravityForce );
-		addAccel( -m_linearVel * m_linearDrag );
+		if ( !isPositionFixed() )
+		{
+			float depth = transform->getPosition().z;
+			transform->setPosition( tvec3( m_position, depth ) );
+			m_position += m_linearVel;
+			m_linearVel += m_force/m_mass;
+			m_linearVel -= m_linearVel * m_linearDrag;
+			m_force = tvec2::zero;
+
+			m_linearVel += m_gravityScale * gravityForce;
+		}
+
+		if ( !isAngleFixed() )
+		{
+			transform->setRotate( tquat().rotate( 0, 0, m_rotate ) );
+			m_rotate += m_angularVel;
+			m_angularVel += m_torque/m_inertia;
+			m_angularVel -= m_angularVel * m_angularDrag;
+			m_torque = 0;
+		}
 	}
-	
-	if ( !isFixedAngle() )
-	{
-		transform->setRotate( tquat().rotate( 0, 0, m_rotate ) );
-		m_rotate += m_angularVel;
-		m_angularVel -= m_angularVel * m_angularDrag;
-	}
+
 	float vellen = m_linearVel.length();
 	bool sleep = ( vellen < 0.5f );
 	m_flags.set(eSleeping, sleep );
@@ -105,19 +97,12 @@ void SWRigidBody2D::onFixedRateUpdate()
 
 void SWRigidBody2D::addForce( const tvec2& force )
 {
-	if ( m_mass == 0 ) return;
-
-	addAccel( force/m_mass );
+	m_force += force;
 }
 
-void SWRigidBody2D::addForce( const tvec2& force, const tvec2& pos )
+void SWRigidBody2D::addTorque( float torque )
 {
-	if ( m_mass == 0 ) return;
-	tvec2 radius = (pos - m_position);
-	float torque = radius.cross( force );
-
-	addAccel( force/m_mass );
-	m_angularVel   += torque/m_inertia;
+	m_torque += torque;
 }
 
 void SWRigidBody2D::addAccel( const tvec2& accel )
@@ -165,15 +150,15 @@ void SWRigidBody2D::setGravityScale( const tvec2& scale )
 	m_gravityScale = scale;
 }
 
-void SWRigidBody2D::setElastic( float elastic )
-{
-	m_elastic = elastic;
-}
-
-void SWRigidBody2D::setMass( tfloat mass )
+void SWRigidBody2D::setMass( float mass )
 {
 	if ( mass > 0 ) m_mass = mass;
 	else m_mass = FLT_EPSILON;
+}
+
+float SWRigidBody2D::getMass() const
+{
+	return m_mass;
 }
 
 void SWRigidBody2D::setInertia( tfloat inertia )
@@ -182,14 +167,19 @@ void SWRigidBody2D::setInertia( tfloat inertia )
 	else m_inertia = FLT_EPSILON;
 }
 
+float SWRigidBody2D::getInertia() const
+{
+	return m_inertia;
+}
+
 void SWRigidBody2D::setFixedAngle( bool isFixed )
 {
-	m_fixedAngle = isFixed;
+	m_flags.set( eFixedAngle, isFixed );
 }
 
 void SWRigidBody2D::setFixedPosition( bool isFixed )
 {
-	m_fixedPosition = isFixed;
+	m_flags.set( eFixedPosition, isFixed );
 }
 
 void SWRigidBody2D::setSleeping( bool awake )
@@ -207,14 +197,14 @@ float SWRigidBody2D::getAngularVelocity() const
 	return m_angularVel;
 }
 
-bool SWRigidBody2D::isFixedAngle() const
+bool SWRigidBody2D::isAngleFixed() const
 {
-	return m_fixedAngle;
+	return m_flags.get(eFixedAngle);
 }
 
-bool SWRigidBody2D::isFixedPosition() const
+bool SWRigidBody2D::isPositionFixed() const
 {
-	return m_fixedPosition;
+	return m_flags.get(eFixedPosition);
 }
 
 float SWRigidBody2D::getLinearDrag() const
@@ -241,7 +231,6 @@ void SWRigidBody2D::serialize( SWObjectWriter* writer )
 	writer->writeFloat( m_angularVel );
 	writer->writeFloat( m_mass );
 	writer->writeFloat( m_inertia );
-	writer->writeFloat( m_elastic );
 	writer->writeFloat( m_linearDrag );
 	writer->writeFloat( m_angularDrag );
 }
@@ -255,7 +244,6 @@ void SWRigidBody2D::deserialize( SWObjectReader* reader )
 	m_angularVel  = reader->readFloat();
 	m_mass    = reader->readFloat();
 	m_inertia = reader->readFloat();
-	m_elastic = reader->readFloat();
 	m_linearDrag  = reader->readFloat();
 	m_angularDrag = reader->readFloat();
 }

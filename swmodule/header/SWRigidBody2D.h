@@ -10,34 +10,46 @@ class SWRigidBody2D : public SWComponent
 	friend class SWWorld2D;
 public:
 	
-	SWRigidBody2D();
 	SWRigidBody2D( factory_constructor );
 	~SWRigidBody2D();
 
-	void setPosition( const tvec2& center );
-	void setRotate( float rotate );
 	void addForce( const tvec2& force );
-	void addForce( const tvec2& force, const tvec2& pos );
+	void addTorque( float torque );
 	void addAccel( const tvec2& accel );
+
+	void setPosition( const tvec2& center );
+	const tvec2& getPosition() const;
+
+	void setRotate( float rotate );
+	float getRotate() const;
+
 	void setLinearVelocity( const tvec2& vel );
+	const tvec2& getLinearVelocity() const;
+
 	void setAngularVelocity( float torque );
+	float getAngularVelocity() const;
+
 	void setLinearDrag( float drag );
+	float getLinearDrag() const;
+
+	float getAngularDrag() const;
+
 	void setGravityScale( const tvec2& scale );
 	void setElastic( float elastic );
-	void setMass( tfloat mass );
-	void setInertia( tfloat inertia );
-	void setFixedAngle( bool isFixed );
-	void setFixedPosition( bool isFixed );
-	void setSleeping( bool awake );
 
-	const tvec2& getPosition() const;
-	float getRotate() const;
-	const tvec2& getLinearVelocity() const;
-	float getAngularVelocity() const;
-	bool  isFixedAngle() const;
-	bool  isFixedPosition() const;
-	float getLinearDrag() const;
-	float getAngularDrag() const;
+	void setMass( float mass );
+	float getMass() const;
+
+	void setInertia( float inertia );
+	float getInertia() const;
+
+	void setFixedAngle( bool isFixed );
+	bool isAngleFixed() const;
+
+	void setFixedPosition( bool isFixed );
+	bool isPositionFixed() const;
+
+	void setSleeping( bool awake );
 	bool isSleeping() const;
 
 protected:
@@ -61,23 +73,22 @@ private:
 	tvec2  m_linearVel;
 	tfloat m_angularVel;
 
+	tvec2 m_force;
+	float m_torque;
+
 	tfloat m_mass;
 	tfloat m_inertia;
 
 	tfloat m_linearDrag;
 	tfloat m_angularDrag;
 
-	tfloat m_elastic;
 	tvec2  m_gravityScale;
 
-	bool   m_fixedAngle;
-	bool   m_fixedPosition;
-
+	enum { eSleeping, eFixedAngle, eFixedPosition };
+	tflag8 m_flags;
+	
 	SWWeakRef<SWRefNode> m_node;
 	SWWeakRef<SWWorld2D> m_world;
-
-	enum { eSleeping };
-	tflag8 m_flags;
 };
 
 #endif // SWRigidBody2D_h__

@@ -491,11 +491,7 @@ bool testShape2D
 				tuint count = 0;
 				struct {tvec2 v1,v2;} ref, inc;
 				shape2->getCrossest( inc.v1, inc.v2, -manifold.normal, mat2);
-				if ( (inc.v1-inc.v2).length() < SW_Epsilon )
-				{
-					count += 1;
-					manifold.point = (inc.v1+inc.v2)*0.5f;
-				}
+				if ( (inc.v1-inc.v2).length() < SW_Epsilon ) manifold.points[count++] = (inc.v1+inc.v2)*0.5f;
 
 				if ( count == 0 )
 				{
@@ -507,10 +503,18 @@ bool testShape2D
 					float d1, d2;
 					d1 = edgeNormal.dot( inc.v1 - ref.v1 );
 					d2 = edgeNormal.dot( inc.v2 - ref.v1 );
-					if ( d1 <= 0 ) {count += 1; manifold.point = inc.v1;}
-					if ( d2 <= 0 ) {count += 1; manifold.point = inc.v2;}
-					if ( count == 2 ) manifold.point = (inc.v2+inc.v1)*0.5f;
+					if ( d1 <= 0 ) {manifold.points[count++] = inc.v1;}
+					if ( d2 <= 0 ) {manifold.points[count++] = inc.v2;}
+					if ( count == 2 )
+					{
+						if ( (inc.v1-inc.v2).length() < SW_Epsilon )
+						{
+							manifold.points[0] = (inc.v1+inc.v2)*0.5f;
+							count = 1;
+						}
+					}
 				}
+				manifold.count = count;
 			}
 			return true;
 		}

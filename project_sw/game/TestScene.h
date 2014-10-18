@@ -21,7 +21,7 @@ public:
 
 		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "test.png" );
 		SWSprite* sprite = NULL;
-		bool isBox = 0;
+		bool isBox = 1;
 		if ( isBox ) sprite = atlas()->find( "box" );
 		else sprite = atlas()->find( "circle" );
 		tvec2 logoSize = sprite->getSize();
@@ -69,32 +69,32 @@ public:
 		SWGameObject* go = gameObject();
 		if ( !go ) return;
 
-		float speed = 5;
+		float force = 500;
 		SWRigidBody2D* body = go->getComponent<SWRigidBody2D>();
 		SWTransform* trans = go->getComponent<SWTransform>();
 		if ( SWInput.getKey('d') )
 		{
-			body->addForce(  (tvec2::axisX*speed) );
+			body->addForce(  (tvec2::axisX*force) );
 		} 
 		if ( SWInput.getKey('a') )
 		{
-			body->addForce( -(tvec2::axisX*speed) );
+			body->addForce( -(tvec2::axisX*force) );
 		}
 		if ( SWInput.getKey('w') )
 		{
-			body->addForce( (tvec2::axisY*speed) );
+			body->addForce( (tvec2::axisY*force) );
 		}
 		if ( SWInput.getKey('s') )
 		{
-			body->addForce( -(tvec2::axisY*speed) );
+			body->addForce( -(tvec2::axisY*force) );
 		}
 		if ( SWInput.getKey('z') )
 		{
-			body->setAngularVelocity( -SWMath.pi/20.0f );
+			body->setAngularVelocity( -SWMath.pi/100.0f );
 		}
 		if ( SWInput.getKey('c') )
 		{
-			body->setAngularVelocity( SWMath.pi/20.0f );
+			body->setAngularVelocity( SWMath.pi/100.0f );
 		}
 		if ( SWInput.getKey(' ') && m_canJump )
 		{
@@ -135,7 +135,7 @@ public:
 			SWCamera* cam = go->addComponent<SWCamera>();
 			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
-			cam->setClearColor( tcolor( 0,0,0,1 ) );
+			cam->setClearColor( tcolor( 0,0,1,1 ) );
 			cam->setClearFlags( SW_Clear_Color );
 		}
 
@@ -144,7 +144,6 @@ public:
 		//! ground
 		do
 		{
-			break;
 			SWSprite* sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
 			SWGameObject* go = new SWGameObject;
@@ -164,7 +163,7 @@ public:
 		{
 			SWSprite* sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 4;
+			tuint count = 0;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -192,7 +191,7 @@ public:
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 50;
+			tuint count = 0;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -200,6 +199,7 @@ public:
 				renderer->setSprite( sprite );
 
 				SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
+				//body->setGravityScale(tvec2::zero);
 
 				SWCollider2D* collider = go->addComponent<SWCollider2D>();
 				if ( isBox ) collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
