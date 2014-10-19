@@ -327,16 +327,12 @@ void SWWorld2D::solveContacts()
 
 			tvec2 relative = tvec2::zero;
 			float kmass = 0;
-			if ( body1 )
 			{
-				relative -= v1 + r1.cross(-w1);
 				float t0 = r1.dot(normal);
 				float t = r1.dot(r1) - t0*t0;
 				kmass += (invMass1) + (t*invI1);
 			}
-			if ( body2 )
 			{
-				relative += v2 + r2.cross(-w2);
 				float t0 = r2.dot(normal);
 				float t = r2.dot(r2) - t0*t0;
 				kmass += (invMass2) + (t*invI2);
@@ -346,29 +342,38 @@ void SWWorld2D::solveContacts()
 			const float slop = 0.01f; // usually 0.01 to 0.1
 			float bias = SWMath.max( mf.depth - slop,0.0f )*percent/SWPhysics2D.getFixedInterval();
 			bias /= kmass;
+			float dJn(0), dJt(0);
 
-			float e = contact->bounciness;
-			float dJn = (normal.dot(-1.0f*relative)) / kmass;
-			if ( dJn >= 0.0f ) dJn = SWMath.max(dJn,bias);
-			dJn = SWMath.max(dJn,0.0f) * (1+e);
-			tvec2 Jn = normal * dJn;
+			//! normal impulse
+			{
+				relative = (v2 + r2.cross(-w2)) - (v1 + r1.cross(-w1));
+				float e = contact->bounciness;
+				dJn = (normal.dot(-1.0f*relative)) / kmass;
+				if ( dJn >= 0.0f ) dJn = SWMath.max(dJn,bias);
+				dJn = SWMath.max(dJn,0.0f) * (1+e);
+				tvec2 Jn = normal * dJn;
 
-			v1 -= Jn*invMass1;
-			w1 -= r1.cross(Jn)*invI1;
+				v1 -= Jn*invMass1;
+				w1 -= r1.cross(Jn)*invI1;
 
-			v2 += Jn*invMass2;
-			w2 += r2.cross(Jn)*invI2;
+				v2 += Jn*invMass2;
+				w2 += r2.cross(Jn)*invI2;
+			}
 
-			float f = contact->friction;
-			float dJt = (tangent.dot(-1.0f*relative)) / kmass;
-			dJt = SWMath.clamp( dJt, -dJn*f, dJn*f );
-			tvec2 Jt = tangent * (dJt);
+			//! tangent impulse
+			{
+				relative = (v2 + r2.cross(-w2)) - (v1 + r1.cross(-w1));
+				float f = contact->friction;
+				dJt = (tangent.dot(-1.0f*relative)) / kmass;
+				dJt = SWMath.clamp( dJt, -dJn*f, dJn*f );
+				tvec2 Jt = tangent * (dJt);
 
-			v1 -= Jt*invMass1;
-			w1 -= r1.cross(Jt)*invI1;
+				v1 -= Jt*invMass1;
+				w1 -= r1.cross(Jt)*invI1;
 
-			v2 += Jt*invMass2;
-			w2 += r2.cross(Jt)*invI2;
+				v2 += Jt*invMass2;
+				w2 += r2.cross(Jt)*invI2;
+			}
 
 		}
 

@@ -21,7 +21,7 @@ public:
 
 		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "test.png" );
 		SWSprite* sprite = NULL;
-		bool isBox = 0;
+		bool isBox = 1;
 		if ( isBox ) sprite = atlas()->find( "box" );
 		else sprite = atlas()->find( "circle" );
 		tvec2 logoSize = sprite->getSize();
