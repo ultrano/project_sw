@@ -345,11 +345,13 @@ void SWWorld2D::solveContacts()
 			const float percent = 0.5f; // usually 20% to 80%
 			const float slop = 0.01f; // usually 0.01 to 0.1
 			float bias = SWMath.max( mf.depth - slop,0.0f )*percent/SWPhysics2D.getFixedInterval();
+			bias /= kmass;
 
 			float e = contact->bounciness;
 			float dJn = (normal.dot(-1.0f*relative)) / kmass;
+			if ( dJn >= 0.0f ) dJn = SWMath.max(dJn,bias);
 			dJn = SWMath.max(dJn,0.0f) * (1+e);
-			tvec2 Jn  = normal * (dJn+bias/kmass);
+			tvec2 Jn = normal * dJn;
 
 			v1 -= Jn*invMass1;
 			w1 -= r1.cross(Jn)*invI1;

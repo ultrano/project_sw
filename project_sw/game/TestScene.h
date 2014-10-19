@@ -21,7 +21,7 @@ public:
 
 		SWHardRef<SWSpriteAtlas> atlas = SWAssets.loadSpriteAtlas( "test.png" );
 		SWSprite* sprite = NULL;
-		bool isBox = 1;
+		bool isBox = 0;
 		if ( isBox ) sprite = atlas()->find( "box" );
 		else sprite = atlas()->find( "circle" );
 		tvec2 logoSize = sprite->getSize();
@@ -164,7 +164,7 @@ public:
 		{
 			SWSprite* sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 0;
+			tuint count = 4;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -192,7 +192,7 @@ public:
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 1;
+			tuint count = 50;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
