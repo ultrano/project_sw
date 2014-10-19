@@ -33,6 +33,7 @@ public:
 		//body->setGravityScale( tvec2::axisY* -3 );
 		//body->setRotate( SWMath.angleToRadian(45) );
 		body->setRotate( SWMath.angleToRadian(45) );
+		//body->setMass(1);
 
 		SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 		renderer->setSprite( sprite );
@@ -46,7 +47,7 @@ public:
 		else collider->addCircle( tvec2::zero, logoSize.x/2 );
 
 		SWTransform* trans = go->getComponent<SWTransform>();
-		trans->setLocalScale( tvec3::one*2 );
+		trans->setLocalScale( tvec3::one*0.1f );
 	}
 	override void onCollisionEnter()
 	{
@@ -103,12 +104,12 @@ public:
 		if ( SWInput.getKey('r') )
 		{
 			tvec3 scale = trans->getLocalScale();
-			trans->setLocalScale( scale + tvec3::one );
+			trans->setLocalScale( scale + tvec3::one*0.01f );
 		}
 		if ( SWInput.getKey('f') )
 		{
 			tvec3 scale = trans->getLocalScale();
-			trans->setLocalScale( scale - tvec3::one );
+			trans->setLocalScale( scale - tvec3::one*0.01f );
 		}
 	}
 };
@@ -125,7 +126,7 @@ public:
 	{
 		SW_GC.registerFactory<TestBehavior>();
 		tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-		screenSize *= 3;
+		screenSize *= 0.2f;
 
 		//! set default camera
 		{
@@ -133,7 +134,7 @@ public:
 			go->setName( "Camera" );
 
 			SWCamera* cam = go->addComponent<SWCamera>();
-			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
+			cam->orthoMode( screenSize.x/2, screenSize.y/2, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setClearColor( tcolor( 0,0,1,1 ) );
 			cam->setClearFlags( SW_Clear_Color );
@@ -155,15 +156,15 @@ public:
 			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3(0,-300,0) );
-			trans->setLocalScale( tvec3( 100, 10, 1 ) );
+			trans->setPosition( tvec3(0,-40,0) );
+			trans->setLocalScale( tvec3( 100, 1, 1 ) );
 		} while(false);
 
 		//! boxes
 		{
 			SWSprite* sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 0;
+			tuint count = 4;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -176,22 +177,22 @@ public:
 				float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 				float randomX = (SWMath.randomFloat()-0.5f);
 				float randomY = (SWMath.randomFloat()-0.5f);
-				float x = SWMath.cos(radian) * 400;
-				float y = SWMath.sin(radian) * 400;
+				float x = SWMath.cos(radian) * 15;
+				float y = SWMath.sin(radian) * 15;
 
 				SWTransform* trans = go->getComponent<SWTransform>();
 				trans->setPosition( tvec3(x,y,0) );
-				trans->setLocalScale( tvec3::one*2 + tvec3(y,x,0).normal()*40 );
+				trans->setLocalScale( tvec3::one*0.1f + tvec3(y,x,0).normal()*4 );
 			}
 		}
 
 		//! 
 		{
-			bool isBox = false;
+			bool isBox = 1;
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 0;
+			tuint count = 50;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -208,12 +209,12 @@ public:
 				float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 				float randomX = (SWMath.randomFloat()-0.5f);
 				float randomY = (SWMath.randomFloat()-0.5f);
-				float x = randomX * 400;
-				float y = randomY * 400;
+				float x = randomX * screenSize.x/3;
+				float y = randomY * screenSize.y/3;
 
 				SWTransform* trans = go->getComponent<SWTransform>();
 				trans->setPosition( tvec3(x,y,0) );
-				trans->setLocalScale( tvec3::one*2 );
+				trans->setLocalScale( tvec3::one*0.1f );
 				trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(45) );
 				//trans->setLocalScale( tvec3::one*2 + tvec3(y,x,0).normal()*20 );
 			}

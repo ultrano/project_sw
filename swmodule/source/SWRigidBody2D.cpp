@@ -14,8 +14,10 @@ SWRigidBody2D::SWRigidBody2D( factory_constructor )
 	, m_rotate( 0 )
 	, m_linearVel( tvec2::zero )
 	, m_angularVel( 0 )
-	, m_mass( 100 )
-	, m_inertia( 100 )
+	, m_mass( 5 )
+	, m_invMass( 1/m_mass )
+	, m_inertia( 20 )
+	, m_invInertia( 1/m_inertia )
 	, m_linearDrag( 0.1f )
 	, m_angularDrag( 0.1f )
 	, m_gravityScale( -tvec2::axisY )
@@ -62,37 +64,20 @@ void SWRigidBody2D::onLayerChanged()
 
 void SWRigidBody2D::onFixedRateUpdate()
 {
-	SWTransform* transform = getComponent<SWTransform>();
-	
-	float gravityForce = SWPhysics2D.getGravityForce();
-
 	if ( !isPositionFixed() || !isAngleFixed() )
 	{
+		SWTransform* transform = getComponent<SWTransform>();
 		if ( !isPositionFixed() )
 		{
 			float depth = transform->getPosition().z;
 			transform->setPosition( tvec3( m_position, depth ) );
-			m_position += m_linearVel;
-			m_linearVel += m_force/m_mass;
-			m_linearVel -= m_linearVel * m_linearDrag;
-			m_force = tvec2::zero;
-
-			m_linearVel += m_gravityScale * gravityForce;
 		}
 
 		if ( !isAngleFixed() )
 		{
 			transform->setRotate( tquat().rotate( 0, 0, m_rotate ) );
-			m_rotate += m_angularVel;
-			m_angularVel += m_torque/m_inertia;
-			m_angularVel -= m_angularVel * m_angularDrag;
-			m_torque = 0;
 		}
 	}
-
-	float vellen = m_linearVel.length();
-	bool sleep = ( vellen < 0.5f );
-	m_flags.set(eSleeping, sleep );
 }
 
 void SWRigidBody2D::addForce( const tvec2& force )
@@ -100,9 +85,29 @@ void SWRigidBody2D::addForce( const tvec2& force )
 	m_force += force;
 }
 
+void SWRigidBody2D::setForce( const tvec2& force )
+{
+	m_force = force;
+}
+
+const tvec2& SWRigidBody2D::getForce() const
+{
+	return m_force;
+}
+
 void SWRigidBody2D::addTorque( float torque )
 {
 	m_torque += torque;
+}
+
+void SWRigidBody2D::setTorque( float torque )
+{
+	m_torque = torque;
+}
+
+float SWRigidBody2D::getTorque() const
+{
+	return m_torque;
 }
 
 void SWRigidBody2D::addAccel( const tvec2& accel )
@@ -150,10 +155,23 @@ void SWRigidBody2D::setGravityScale( const tvec2& scale )
 	m_gravityScale = scale;
 }
 
+const tvec2& SWRigidBody2D::getGravityScale() const
+{
+	return m_gravityScale;
+}
+
 void SWRigidBody2D::setMass( float mass )
 {
-	if ( mass > 0 ) m_mass = mass;
-	else m_mass = FLT_EPSILON;
+	if ( mass > 0 )
+	{
+		m_mass    = mass;
+		m_invMass = 1/mass;
+	}
+	else
+	{
+		m_mass    = 0;
+		m_invMass = 0;
+	}
 }
 
 float SWRigidBody2D::getMass() const
@@ -161,15 +179,33 @@ float SWRigidBody2D::getMass() const
 	return m_mass;
 }
 
+float SWRigidBody2D::getInvMass() const
+{
+	return m_invMass;
+}
+
 void SWRigidBody2D::setInertia( tfloat inertia )
 {
-	if ( inertia > 0 ) m_inertia = inertia;
-	else m_inertia = FLT_EPSILON;
+	if ( inertia > 0 )
+	{
+		m_inertia    = inertia;
+		m_invInertia = 1/inertia;
+	}
+	else
+	{
+		m_inertia    = 0;
+		m_invInertia = 0;
+	}
 }
 
 float SWRigidBody2D::getInertia() const
 {
 	return m_inertia;
+}
+
+float SWRigidBody2D::getInvInertia() const
+{
+	return m_invInertia;
 }
 
 void SWRigidBody2D::setFixedAngle( bool isFixed )

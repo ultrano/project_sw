@@ -10,7 +10,7 @@ __SWPhysics2D& __SWPhysics2D::instance()
 
 
 __SWPhysics2D::__SWPhysics2D()
-	: m_gravityForce( 0.985f )
+	: m_gravityForce( 9.85f )
 	, m_world( new SWWorld2D )
 {
 }
@@ -33,7 +33,7 @@ void __SWPhysics2D::simulate()
 
 float __SWPhysics2D::getFixedInterval()
 {
-	static const float interval = 1.0f/30.0f;
+	static const float interval = 1.0f/50.0f;
 	return interval;
 }
 

@@ -28,6 +28,7 @@ private:
 	bool existContact( const SWCollider2D* collider, const SWFixture2D* fixture1, const SWFixture2D* fixture2 );
 	void findNewContacts();
 	void updateContacts();
+	void solveContacts();
 private:
 	SWHardRef<SWBroadPhase2D> m_broadPhase;
 	SWHardRef<SWRefNode> m_contactList;

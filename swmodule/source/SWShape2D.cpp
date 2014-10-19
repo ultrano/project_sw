@@ -1,7 +1,7 @@
 #include "SWShape2D.h"
 #include "SWMath.h"
 #include "SWLog.h"
-#define SW_Epsilon (0.05f)
+#define SW_Epsilon (0.01f)
 
 SWCircleShape2D::SWCircleShape2D()
 {

@@ -7,6 +7,8 @@
 #include "SWGameObject.h"
 #include "SWRigidBody2D.h"
 #include "SWBroadPhase2D.h"
+#include "SWPhysics2D.h"
+#include "SWTime.h"
 #include "SWLog.h"
 
 SWWorld2D::SWWorld2D()
@@ -174,92 +176,55 @@ void SWWorld2D::updateContacts()
 		}
 	}
 
-	//! prototype solving
-	do
+	//! bodies update
 	{
-		SWRefNode* node = m_contactList();
+		float delta = SWPhysics2D.getFixedInterval();
+		float gravity = SWPhysics2D.getGravityForce();
+		SWRefNode* node = m_bodyList();
 		while ( node )
 		{
-			SWContact2D* contact = (SWContact2D*)node->ref();
+			SWRigidBody2D* body = (SWRigidBody2D*)node->ref();
 			node = node->next();
-			if ( !contact ) continue;
-			if ( !contact->state.get( SWContact2D::eTouching ) ) continue;
+			if ( !body ) continue;
+			const tvec2& gScale = body->getGravityScale();
+			const tvec2& force = body->getForce();
+			float torque = body->getTorque();
+			float invM = body->getInvMass();
+			float invI = body->getInvInertia();
+			tvec2 v = body->getLinearVelocity();
+			float w = body->getAngularVelocity();
 
-			SWCollider2D* collider1 = contact->fixture1()->getCollide();
-			SWCollider2D* collider2 = contact->fixture2()->getCollide();
-			SWRigidBody2D* body1 = collider1->getComponent<SWRigidBody2D>();
-			SWRigidBody2D* body2 = collider2->getComponent<SWRigidBody2D>();
-
-			float invMass1(0), invMass2(0), invI1(0), invI2(0);
-			if ( body1 )
-			{
-				invMass1 = 1.0f/body1->getMass();
-				invI1 = 1.0f/body1->getInertia();
-			}
-			if ( body2 )
-			{
-				invMass2 = 1.0f/body2->getMass();
-				invI2 = 1.0f/body2->getInertia();
-			}
-			const SWManifold& mf = contact->manifold;
-			tvec2 normal = mf.normal;
-			tvec2 tangent = normal.cross(1);
-
-			for ( tuint i = 0 ; i < mf.count ; ++i )
-			{
-				tvec2 r1 = mf.points[i] - contact->cm1;
-				tvec2 r2 = mf.points[i] - contact->cm2;
-
-				tvec2 relative = tvec2::zero;
-				float kmass = 0;
-				if ( body1 )
-				{
-					relative -= body1->getLinearVelocity() + r1.cross(-body1->getAngularVelocity());
-					float t0 = r1.dot(normal);
-					float t = r1.dot(r1) - t0*t0;
-					kmass += (invMass1) + (t*invI1);
-				}
-				if ( body2 )
-				{
-					relative += body2->getLinearVelocity() + r2.cross(-body2->getAngularVelocity());
-					float t0 = r2.dot(normal);
-					float t = r2.dot(r2) - t0*t0;
-					kmass += (invMass2) + (t*invI2);
-				}
-
-				SWLog( "depth %.2f", mf.depth );
-				const float percent = 0.05f; // usually 20% to 80%
-				const float slop = 0.01f; // usually 0.01 to 0.1
-				float bias = mf.depth*percent / (invMass1+invMass2);
-				float dJn = (normal.dot(-relative)) / kmass;
-				dJn = SWMath.max(dJn,0.0f);
-				tvec2 Jn  = normal * (dJn);
-
-				if ( body1 )
-				{
-					tvec2 v = body1->getLinearVelocity();
-					float w = body1->getAngularVelocity();
-					tvec2 nv = Jn*invMass1;
-					nv += (bias*mf.normal)*invMass1;
-					float nw = r1.cross(Jn)*invI1;
-					body1->setLinearVelocity( v + nv );
-					body1->setAngularVelocity( w + nw );
-					//body1->setPosition( body1->getPosition() - normal*mf.depth );
-				}
-				if ( body2 )
-				{
-					tvec2 v = body2->getLinearVelocity();
-					float w = body2->getAngularVelocity();
-					tvec2 nv = Jn*invMass2;
-					nv += (bias*mf.normal)*invMass2;
-					float nw = r2.cross(Jn)*invI2;
-					body2->setLinearVelocity( v + nv );
-					body2->setAngularVelocity( w + nw );
-					//body2->setPosition( body2->getPosition() + normal*mf.depth );
-				}
-			}
+			v += delta * ((force*invM) + gravity*gScale);
+			w += delta * (torque*invI);
+			
+			body->setLinearVelocity( v );
+			body->setAngularVelocity( w );
 		}
-	} while (false);
+
+		solveContacts();
+
+		node = m_bodyList();
+		while ( node )
+		{
+			SWRigidBody2D* body = (SWRigidBody2D*)node->ref();
+			node = node->next();
+			if ( !body ) continue;
+
+			tvec2 v = body->getLinearVelocity();
+			float w = body->getAngularVelocity();
+			tvec2 p = body->getPosition();
+			float r = body->getRotate();
+
+			p += delta * v;
+			r += delta * w;
+
+			body->setPosition( p );
+			body->setRotate( r );
+
+			body->setForce( tvec2::zero );
+			body->setTorque( 0 );
+		}
+	}
 
 	//! send message
 	{
@@ -307,6 +272,91 @@ void SWWorld2D::updateContacts()
 			if ( !m_broadPhase()->testOverlap( proxyID1, proxyID2 ) )
 			{
 				removeContact( contact );
+			}
+		}
+	}
+}
+
+void SWWorld2D::solveContacts()
+{
+	SWRefNode* node = m_contactList();
+	while ( node )
+	{
+		SWContact2D* contact = (SWContact2D*)node->ref();
+		node = node->next();
+		if ( !contact ) continue;
+		if ( !contact->state.get( SWContact2D::eTouching ) ) continue;
+
+		SWCollider2D* collider1 = contact->fixture1()->getCollide();
+		SWCollider2D* collider2 = contact->fixture2()->getCollide();
+		SWRigidBody2D* body1 = collider1->getComponent<SWRigidBody2D>();
+		SWRigidBody2D* body2 = collider2->getComponent<SWRigidBody2D>();
+
+		float invMass1(0), invMass2(0), invI1(0), invI2(0);
+		if ( body1 )
+		{
+			invMass1 = 1.0f/body1->getMass();
+			invI1 = 1.0f/body1->getInertia();
+		}
+		if ( body2 )
+		{
+			invMass2 = 1.0f/body2->getMass();
+			invI2 = 1.0f/body2->getInertia();
+		}
+		const SWManifold& mf = contact->manifold;
+		tvec2 normal = mf.normal;
+		tvec2 tangent = normal.cross(1);
+
+		for ( tuint i = 0 ; i < mf.count ; ++i )
+		{
+			tvec2 r1 = mf.points[i] - contact->cm1;
+			tvec2 r2 = mf.points[i] - contact->cm2;
+
+			tvec2 relative = tvec2::zero;
+			float kmass = 0;
+			if ( body1 )
+			{
+				relative -= body1->getLinearVelocity() + r1.cross(-body1->getAngularVelocity());
+				float t0 = r1.dot(normal);
+				float t = r1.dot(r1) - t0*t0;
+				kmass += (invMass1) + (t*invI1);
+			}
+			if ( body2 )
+			{
+				relative += body2->getLinearVelocity() + r2.cross(-body2->getAngularVelocity());
+				float t0 = r2.dot(normal);
+				float t = r2.dot(r2) - t0*t0;
+				kmass += (invMass2) + (t*invI2);
+			}
+
+			SWLog( "depth %.2f", mf.depth );
+			const float percent = 0.2f; // usually 20% to 80%
+			const float slop = 0.01f; // usually 0.01 to 0.1
+			float bias = SWMath.max( mf.depth - slop,0.0f )*percent/SWPhysics2D.getFixedInterval();
+
+			float dJn = (normal.dot(-1.0f*relative)) / kmass;
+			dJn = SWMath.max(dJn,0.0f);
+			tvec2 Jn  = normal * (dJn+bias/kmass);
+
+			if ( body1 )
+			{
+				tvec2 v = body1->getLinearVelocity();
+				float w = body1->getAngularVelocity();
+				tvec2 nv = Jn*invMass1;
+				float nw = r1.cross(Jn)*invI1;
+				body1->setLinearVelocity( v - nv );
+				body1->setAngularVelocity( w - nw );
+				//body1->setPosition( body1->getPosition() - normal*bias*invMass1 );
+			}
+			if ( body2 )
+			{
+				tvec2 v = body2->getLinearVelocity();
+				float w = body2->getAngularVelocity();
+				tvec2 nv = Jn*invMass2;
+				float nw = r2.cross(Jn)*invI2;
+				body2->setLinearVelocity( v + nv );
+				body2->setAngularVelocity( w + nw );
+				//body2->setPosition( body2->getPosition() + normal*bias*invMass2 );
 			}
 		}
 	}

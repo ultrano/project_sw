@@ -14,7 +14,13 @@ public:
 	~SWRigidBody2D();
 
 	void addForce( const tvec2& force );
+	void setForce( const tvec2& force );
+	const tvec2& getForce() const;
+
 	void addTorque( float torque );
+	void setTorque( float torque );
+	float getTorque() const;
+
 	void addAccel( const tvec2& accel );
 
 	void setPosition( const tvec2& center );
@@ -35,13 +41,17 @@ public:
 	float getAngularDrag() const;
 
 	void setGravityScale( const tvec2& scale );
+	const tvec2& getGravityScale() const;
+
 	void setElastic( float elastic );
 
 	void setMass( float mass );
 	float getMass() const;
+	float getInvMass() const;
 
 	void setInertia( float inertia );
 	float getInertia() const;
+	float getInvInertia() const;
 
 	void setFixedAngle( bool isFixed );
 	bool isAngleFixed() const;
@@ -76,8 +86,8 @@ private:
 	tvec2 m_force;
 	float m_torque;
 
-	tfloat m_mass;
-	tfloat m_inertia;
+	tfloat m_mass, m_invMass;
+	tfloat m_inertia, m_invInertia;
 
 	tfloat m_linearDrag;
 	tfloat m_angularDrag;
