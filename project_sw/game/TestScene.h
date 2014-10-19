@@ -91,11 +91,11 @@ public:
 		}
 		if ( SWInput.getKey('z') )
 		{
-			body->setAngularVelocity( -SWMath.pi/100.0f );
+			body->addTorque( -111);
 		}
 		if ( SWInput.getKey('c') )
 		{
-			body->setAngularVelocity( SWMath.pi/100.0f );
+			body->addTorque( 111 );
 		}
 		if ( SWInput.getKey(' ') && m_canJump )
 		{
@@ -156,7 +156,7 @@ public:
 			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 
 			SWTransform* trans = go->getComponent<SWTransform>();
-			trans->setPosition( tvec3(0,-40,0) );
+			trans->setPosition( tvec3(0,-25,0) );
 			trans->setLocalScale( tvec3( 100, 1, 1 ) );
 		} while(false);
 
@@ -164,7 +164,7 @@ public:
 		{
 			SWSprite* sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 4;
+			tuint count = 0;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -192,7 +192,7 @@ public:
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 50;
+			tuint count = 1;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;

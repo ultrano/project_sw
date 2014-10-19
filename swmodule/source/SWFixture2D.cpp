@@ -3,8 +3,8 @@
 #include "SWCollider2D.h"
 
 SWFixture2D::SWFixture2D( SWCollider2D* collide )
-	: m_friction(0)
-	, m_bounciness(1)
+	: m_friction(0.2f)
+	, m_bounciness(0)
 	, m_collide( collide )
 {
 
