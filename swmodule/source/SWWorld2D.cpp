@@ -292,33 +292,31 @@ void SWWorld2D::solveContacts()
 		SWRigidBody2D* body1 = collider1->getComponent<SWRigidBody2D>();
 		SWRigidBody2D* body2 = collider2->getComponent<SWRigidBody2D>();
 
-		float invMass1(0), invMass2(0), invI1(0), invI2(0);
-		if ( body1 )
-		{
-			invMass1 = 1.0f/body1->getMass();
-			invI1 = 1.0f/body1->getInertia();
-		}
-		if ( body2 )
-		{
-			invMass2 = 1.0f/body2->getMass();
-			invI2 = 1.0f/body2->getInertia();
-		}
-		const SWManifold& mf = contact->manifold;
-		tvec2 normal = mf.normal;
-		tvec2 tangent = normal.cross(1);
-
 		tvec2 v1(tvec2::zero), v2(tvec2::zero);
 		float w1(0), w2(0);
+		float invMass1(0), invMass2(0), invI1(0), invI2(0);
+
 		if ( body1 )
 		{
+			invMass1 = body1->getInvMass();
+			invI1 = body1->getInvInertia();
 			v1 = body1->getLinearVelocity();
 			w1 = body1->getAngularVelocity();
 		}
 		if ( body2 )
 		{
+			invMass2 = body2->getInvMass();
+			invI2 = body2->getInvInertia();
 			v2 = body2->getLinearVelocity();
 			w2 = body2->getAngularVelocity();
 		}
+
+		const SWManifold& mf = contact->manifold;
+		tvec2 normal = mf.normal;
+		tvec2 tangent = normal.cross(1);
+		const float percent = 0.2f; // usually 20% to 80%
+		const float slop = 0.01f; // usually 0.01 to 0.1
+		float bias = SWMath.max( mf.depth - slop,0.0f )*percent/SWPhysics2D.getFixedInterval();
 
 		for ( tuint i = 0 ; i < mf.count ; ++i )
 		{
@@ -338,10 +336,7 @@ void SWWorld2D::solveContacts()
 				kmass += (invMass2) + (t*invI2);
 			}
 
-			const float percent = 0.5f; // usually 20% to 80%
-			const float slop = 0.01f; // usually 0.01 to 0.1
-			float bias = SWMath.max( mf.depth - slop,0.0f )*percent/SWPhysics2D.getFixedInterval();
-			bias /= kmass;
+			float pushing = bias/kmass;
 			float dJn(0), dJt(0);
 
 			//! normal impulse
@@ -349,9 +344,10 @@ void SWWorld2D::solveContacts()
 				relative = (v2 + r2.cross(-w2)) - (v1 + r1.cross(-w1));
 				float e = contact->bounciness;
 				dJn = (normal.dot(-1.0f*relative)) / kmass;
-				if ( dJn >= 0.0f ) dJn = SWMath.max(dJn,bias);
-				dJn = SWMath.max(dJn,0.0f) * (1+e);
-				tvec2 Jn = normal * dJn;
+				if ( dJn >= 0.0f ) dJn = SWMath.max(dJn,pushing);
+				dJn = (SWMath.max(dJn,0.0f));
+				//dJn = dJn + pushing;
+				tvec2 Jn = normal * (dJn * (1+e));
 
 				v1 -= Jn*invMass1;
 				w1 -= r1.cross(Jn)*invI1;
@@ -381,12 +377,14 @@ void SWWorld2D::solveContacts()
 		{
 			body1->setLinearVelocity( v1 );
 			body1->setAngularVelocity( w1 );
+			body1->setPosition( body1->getPosition() - normal*mf.depth*percent );
 		}
 
 		if ( body2 )
 		{
 			body2->setLinearVelocity( v2 );
 			body2->setAngularVelocity( w2 );
+			body2->setPosition( body2->getPosition() + normal*mf.depth*percent );
 		}
 	}
 }

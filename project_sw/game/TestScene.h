@@ -4,6 +4,7 @@
 #include "SWHeaders.h"
 #include "SWShape2D.h"
 #include "SWBroadPhase2D.h"
+#include "SWFixture2D.h"
 
 class TestBehavior : public SWBehavior
 {
@@ -39,12 +40,13 @@ public:
 		renderer->setSprite( sprite );
 
 		SWCollider2D* collider = go->addComponent<SWCollider2D>();
+		SWFixture2D* fixtur = NULL;
 		if ( isBox )
 		{
-			collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-			//collider->addBox( tvec2::zero, 0.5f, 0.5f );
+			fixtur = collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 		}
-		else collider->addCircle( tvec2::zero, logoSize.x/2 );
+		else fixtur = collider->addCircle( tvec2::zero, logoSize.x/2 );
+		fixtur->setFriction(0.5f);
 
 		SWTransform* trans = go->getComponent<SWTransform>();
 		trans->setLocalScale( tvec3::one*0.1f );
@@ -91,15 +93,15 @@ public:
 		}
 		if ( SWInput.getKey('z') )
 		{
-			body->addTorque( -111);
+			body->addTorque( -1110);
 		}
 		if ( SWInput.getKey('c') )
 		{
-			body->addTorque( 111 );
+			body->addTorque( 1110 );
 		}
 		if ( SWInput.getKey(' ') && m_canJump )
 		{
-			body->addForce( (tvec2::axisY*20) );
+			body->addForce( (tvec2::axisY*force*5) );
 		}
 		if ( SWInput.getKey('r') )
 		{
@@ -126,7 +128,7 @@ public:
 	{
 		SW_GC.registerFactory<TestBehavior>();
 		tvec3 screenSize( SW_GC.getScreenWidth(), SW_GC.getScreenHeight(), 0 );
-		screenSize *= 0.2f;
+		screenSize *= 1;
 
 		//! set default camera
 		{
@@ -134,7 +136,7 @@ public:
 			go->setName( "Camera" );
 
 			SWCamera* cam = go->addComponent<SWCamera>();
-			cam->orthoMode( screenSize.x/2, screenSize.y/2, 1, 1000 );
+			cam->orthoMode( screenSize.x, screenSize.y, 1, 1000 );
 			cam->getComponent<SWTransform>()->setLocalPosition( tvec3( 0, 0, -500 ) );
 			cam->setClearColor( tcolor( 0,0,1,1 ) );
 			cam->setClearFlags( SW_Clear_Color );
@@ -177,12 +179,12 @@ public:
 				float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 				float randomX = (SWMath.randomFloat()-0.5f);
 				float randomY = (SWMath.randomFloat()-0.5f);
-				float x = SWMath.cos(radian) * 15;
-				float y = SWMath.sin(radian) * 15;
+				float x = SWMath.cos(radian) * 150;
+				float y = SWMath.sin(radian) * 150;
 
 				SWTransform* trans = go->getComponent<SWTransform>();
 				trans->setPosition( tvec3(x,y,0) );
-				trans->setLocalScale( tvec3::one*0.1f + tvec3(y,x,0).normal()*4 );
+				trans->setLocalScale( tvec3::one + tvec3(y,x,0).normal()*40 );
 			}
 		}
 
@@ -192,7 +194,7 @@ public:
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 50;
+			tuint count = 30;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -202,9 +204,11 @@ public:
 				SWRigidBody2D* body = go->addComponent<SWRigidBody2D>();
 				//body->setGravityScale(tvec2::zero);
 
+				SWFixture2D* fixture = NULL;
 				SWCollider2D* collider = go->addComponent<SWCollider2D>();
-				if ( isBox ) collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
-				else collider->addCircle( tvec2::zero, logoSize.x/2 );
+				if ( isBox ) fixture = collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
+				else fixture = collider->addCircle( tvec2::zero, logoSize.x/2 );
+				fixture->setFriction( 0.5f );
 
 				float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 				float randomX = (SWMath.randomFloat()-0.5f);
@@ -214,7 +218,7 @@ public:
 
 				SWTransform* trans = go->getComponent<SWTransform>();
 				trans->setPosition( tvec3(x,y,0) );
-				trans->setLocalScale( tvec3::one*0.1f );
+				trans->setLocalScale( tvec3::one );
 				trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(45) );
 				//trans->setLocalScale( tvec3::one*2 + tvec3(y,x,0).normal()*20 );
 			}
