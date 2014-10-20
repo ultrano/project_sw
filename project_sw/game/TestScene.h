@@ -33,8 +33,8 @@ public:
 		//body->setGravityScale(tvec2::zero);
 		//body->setGravityScale( tvec2::axisY* -3 );
 		//body->setRotate( SWMath.angleToRadian(45) );
-		body->setRotate( SWMath.angleToRadian(45) );
 		//body->setMass(1);
+		//body->setMass(500);
 
 		SWSpriteRenderer* renderer = go->addComponent<SWSpriteRenderer>();
 		renderer->setSprite( sprite );
@@ -46,7 +46,7 @@ public:
 			fixtur = collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 		}
 		else fixtur = collider->addCircle( tvec2::zero, logoSize.x/2 );
-		fixtur->setFriction(0.5f);
+		//fixtur->setFriction(0.5f);
 
 		SWTransform* trans = go->getComponent<SWTransform>();
 		trans->setLocalScale( tvec3::one*0.1f );
@@ -93,11 +93,11 @@ public:
 		}
 		if ( SWInput.getKey('z') )
 		{
-			body->addTorque( -1110);
+			body->addTorque( -11100);
 		}
 		if ( SWInput.getKey('c') )
 		{
-			body->addTorque( 1110 );
+			body->addTorque( 11100 );
 		}
 		if ( SWInput.getKey(' ') && m_canJump )
 		{
@@ -106,12 +106,12 @@ public:
 		if ( SWInput.getKey('r') )
 		{
 			tvec3 scale = trans->getLocalScale();
-			trans->setLocalScale( scale + tvec3::one*0.01f );
+			trans->setLocalScale( scale + tvec3::one*0.5f );
 		}
 		if ( SWInput.getKey('f') )
 		{
 			tvec3 scale = trans->getLocalScale();
-			trans->setLocalScale( scale - tvec3::one*0.01f );
+			trans->setLocalScale( scale - tvec3::one*0.1f );
 		}
 	}
 };
@@ -194,7 +194,7 @@ public:
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 30;
+			tuint count = 100;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
@@ -208,8 +208,8 @@ public:
 				SWCollider2D* collider = go->addComponent<SWCollider2D>();
 				if ( isBox ) fixture = collider->addBox( tvec2::zero, logoSize.x, logoSize.y );
 				else fixture = collider->addCircle( tvec2::zero, logoSize.x/2 );
-				fixture->setFriction( 0.5f );
-
+				//fixture->setFriction( 0.5f );
+				 
 				float radian = SWMath.angleToRadian( ((float)i/(float)count) * 360.0f );
 				float randomX = (SWMath.randomFloat()-0.5f);
 				float randomY = (SWMath.randomFloat()-0.5f);
@@ -218,7 +218,7 @@ public:
 
 				SWTransform* trans = go->getComponent<SWTransform>();
 				trans->setPosition( tvec3(x,y,0) );
-				trans->setLocalScale( tvec3::one );
+				trans->setLocalScale( tvec3::one*1.1f );
 				trans->setLocalRotate( tvec3::axisZ * SWMath.angleToRadian(45) );
 				//trans->setLocalScale( tvec3::one*2 + tvec3(y,x,0).normal()*20 );
 			}
