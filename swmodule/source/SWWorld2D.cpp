@@ -314,7 +314,7 @@ void SWWorld2D::solveContacts()
 		const SWManifold& mf = contact->manifold;
 		tvec2 normal = mf.normal;
 		tvec2 tangent = normal.cross(1);
-		const float percent = 0.2f; // usually 20% to 80%
+		const float percent = 0.5f; // usually 20% to 80%
 		const float slop = 0.01f; // usually 0.01 to 0.1
 		float bias = SWMath.max( mf.depth - slop,0.0f )*percent/SWPhysics2D.getFixedInterval();
 
@@ -336,6 +336,7 @@ void SWWorld2D::solveContacts()
 				kmass += (invMass2) + (t*invI2);
 			}
 
+			kmass *= mf.count;
 			float pushing = bias/kmass;
 			float dJn(0), dJt(0);
 
@@ -377,14 +378,14 @@ void SWWorld2D::solveContacts()
 		{
 			body1->setLinearVelocity( v1 );
 			body1->setAngularVelocity( w1 );
-			body1->setPosition( body1->getPosition() - normal*mf.depth*percent );
+			body1->setPosition( body1->getPosition() - normal*mf.depth*(1-percent) );
 		}
 
 		if ( body2 )
 		{
 			body2->setLinearVelocity( v2 );
 			body2->setAngularVelocity( w2 );
-			body2->setPosition( body2->getPosition() + normal*mf.depth*percent );
+			body2->setPosition( body2->getPosition() + normal*mf.depth*(1-percent) );
 		}
 	}
 }
