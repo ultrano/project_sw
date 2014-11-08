@@ -328,6 +328,12 @@
     <Filter Include="SW\SWWorld2D">
       <UniqueIdentifier>{75e727fe-9d1d-4155-948a-5914dfcb10d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SW\SWType\TObjectID">
+      <UniqueIdentifier>{454652cc-9cc8-4d86-880f-ac428e1dea23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SW\SWDictionary">
+      <UniqueIdentifier>{708065cf-81e0-4258-8fb9-2090ffa373d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -690,6 +696,12 @@
     <ClInclude Include="header\SWWorld2D.h">
       <Filter>SW\SWWorld2D</Filter>
     </ClInclude>
+    <ClInclude Include="header\TObjectID.h">
+      <Filter>SW\SWType\TObjectID</Filter>
+    </ClInclude>
+    <ClInclude Include="header\SWDictionary.h">
+      <Filter>SW\SWDictionary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SWAct.cpp">
@@ -988,6 +1000,12 @@
     </ClCompile>
     <ClCompile Include="source\SWWorld2D.cpp">
       <Filter>SW\SWWorld2D</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TObjectID.cpp">
+      <Filter>SW\SWType\TObjectID</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SWDictionary.cpp">
+      <Filter>SW\SWDictionary</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

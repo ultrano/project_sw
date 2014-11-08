@@ -42,7 +42,7 @@ public:
 
 	SWObject();
 	~SWObject();
-	tuint getID() const { return m_id; };
+	tuint getID() const { return m_id.getID(); };
 	SWDelegator* getDelegator( const SWHandler& handler );
 	virtual tstring toString() const;
 	virtual void destroy();
@@ -63,7 +63,7 @@ protected:
 	virtual void deserialize( SWObjectReader* reader ) {};
 
 private:
-	tuint m_id;        //< 객체의 유일성을 위한 ID
+	tobjectid m_id;        //< 객체의 유일성을 위한 ID
 	SWObject::List m_delegates;
 };
 

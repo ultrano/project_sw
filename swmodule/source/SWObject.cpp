@@ -18,14 +18,7 @@ int& getObjectCount()
     return count;
 }
 
-unsigned& uniqueObjectID()
-{
-	static unsigned unique_id = 0;
-	return unique_id;
-}
-
 SWObject::SWObject()
-	: m_id( ++uniqueObjectID() )
 {
     ++getObjectCount();
 }

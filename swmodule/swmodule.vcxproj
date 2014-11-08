@@ -109,6 +109,7 @@
     <ClInclude Include="header\SWAudioClip.h" />
     <ClInclude Include="header\SWBroadPhase2D.h" />
     <ClInclude Include="header\SWContact2D.h" />
+    <ClInclude Include="header\SWDictionary.h" />
     <ClInclude Include="header\SWDynamicTree2D.h" />
     <ClInclude Include="header\SWDynamicTree3D.h" />
     <ClInclude Include="header\SWFixture2D.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="header\TFlag.h" />
     <ClInclude Include="header\TMatrix3x3.h" />
     <ClInclude Include="header\TOBB.h" />
+    <ClInclude Include="header\TObjectID.h" />
     <ClInclude Include="header\TRay.h" />
     <ClInclude Include="header\TRect.h" />
     <ClInclude Include="header\TTriangle.h" />
@@ -232,6 +234,7 @@
     <ClCompile Include="source\SWComponent.cpp" />
     <ClCompile Include="source\SWContact2D.cpp" />
     <ClCompile Include="source\SWCriticalSection.cpp" />
+    <ClCompile Include="source\SWDictionary.cpp" />
     <ClCompile Include="source\SWDynamicTree2D.cpp" />
     <ClCompile Include="source\SWDynamicTree3D.cpp" />
     <ClCompile Include="source\SWFileStream.cpp" />
@@ -278,6 +281,7 @@
     <ClCompile Include="source\SWObject.cpp" />
     <ClCompile Include="source\SWParam.cpp" />
     <ClCompile Include="source\SWProfiler.cpp" />
+    <ClCompile Include="source\TObjectID.cpp" />
     <ClCompile Include="source\TQuaternion.cpp" />
     <ClCompile Include="source\SWRect.cpp" />
     <ClCompile Include="source\SWRefCounter.cpp" />

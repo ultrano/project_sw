@@ -23,6 +23,7 @@
 #include "TColorRGBA.h"
 #include "TAABB.h"
 #include "TOBB.h"
+#include "TObjectID.h"
 #include "TFlag.h"
 
 typedef TVector2f   tvec2;
@@ -39,6 +40,7 @@ typedef TColorRGBA  tcolor;
 typedef TAABB2D     taabb2d;
 typedef TAABB3D     taabb3d;
 typedef TOBB2D      tobb2d;
+typedef TObjectID   tobjectid;
 typedef TFlag8      tflag8;
 typedef TFlag16     tflag16;
 typedef TFlag32     tflag32;
