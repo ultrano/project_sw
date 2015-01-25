@@ -20,6 +20,7 @@
 #include "SWBehavior.h"
 #include "SWCamera.h"
 #include "SWRenderer.h"
+#include "SWMesh.h"
 #include "SWGameLayer.h"
 
 #include <algorithm>
@@ -165,13 +166,22 @@ void SWGameScene::update()
 
 void SWGameScene::draw()
 {
-	m_cameras.sort( CameraSorter() );
+	static tarray<tuint> proxyIDs;
 
-	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i)
+	for ( SWObject::Array::iterator itor = m_renderers.begin()
+		; itor != m_renderers.end()
+		; ++itor)
 	{
-		SWGameLayer* layer = m_layerTable[i]();
-		if ( layer ) layer->update();
+		taabb3d aabb;
+		SWRenderer* renderer = (SWRenderer*)((*itor)());
+		renderer->computeAABB(aabb);
+		m_rendererTree.updateProxy(renderer->getProxyID(), aabb);
 	}
+
+	/*
+
+	*/
+	m_cameras.sort( CameraSorter() );
 
 	SWObject::List::iterator itor = m_cameras.begin();
 	for ( ; itor != m_cameras.end() ; ++itor )
@@ -194,11 +204,16 @@ void SWGameScene::draw()
 			glClear( clearMask );
 		}
 
-		for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i)
+		taabb3d frustrumAABB;
+		camera->computeFrustrumAABB(frustrumAABB);
+		m_rendererTree.query(proxyIDs, frustrumAABB);
+
+		for (int i = 0 ; i <proxyIDs.size() ; ++i)
 		{
-			if ( !cullingMask.get(i) ) continue;
-			SWGameLayer* layer = m_layerTable[i]();
-			if ( layer ) layer->draw( camera );
+			tuint proxyID = proxyIDs[i];
+			SWRenderer* renderer = (SWRenderer*)m_rendererTree.getUserData(proxyID);
+			tuint layerMask = renderer->gameObject()->getLayer();
+			if (cullingMask.get(layerMask)) renderer->render(camera);
 		}
 	}
 
@@ -211,78 +226,32 @@ void SWGameScene::handleEvent()
     onHandleTouch();
 }
 
-tuint SWGameScene::addRenderer( tuint layer, SWRenderer* renderer )
+tuint SWGameScene::addRenderer( SWRenderer* renderer )
 {
-	if ( layer >= SW_MaxLayerCount ) return SWDynamicTree3D::nullID;
+	m_renderers.push_back(renderer);
+	
+	taabb3d aabb;
+	SWMesh* mesh = renderer->getMesh();
+	if (mesh != NULL) aabb = mesh->getAABB();
 
-	SWGameLayer* gameLayer = getLayer(layer);
-	return gameLayer->addRenderer( renderer );
+	return m_rendererTree.createProxy(aabb, renderer);
 }
 
-void SWGameScene::removeRenderer( tuint layer, SWRenderer* renderer )
+void SWGameScene::removeRenderer( SWRenderer* renderer )
 {
-	if ( layer >= SW_MaxLayerCount ) return;
-
-	SWGameLayer* gameLayer = getLayer(layer);
-	gameLayer->removeRenderer( renderer );
+	m_rendererTree.destroyProxy(renderer->getProxyID());
+	SWObject::Array::iterator last = std::remove( m_renderers.begin(), m_renderers.end(), renderer );
+	m_renderers.erase( last, m_renderers.end() );
 }
 
-void SWGameScene::addCamera( tflag32 layerMask, SWCamera* camera )
+void SWGameScene::addCamera( SWCamera* camera )
 {
 	if ( camera == NULL ) return ;
-	if ( layerMask.flags == 0 ) return ;
-
-	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i )
-	{
-		if ( !layerMask.get(i) ) continue;
-		SWGameLayer* layer =  getLayer(i);
-		layer->addCamera( camera );
-	}
 	m_cameras.push_back( camera );
 }
 
-void SWGameScene::removeCamera( tflag32 layerMask, SWCamera* camera )
+void SWGameScene::removeCamera( SWCamera* camera )
 {
 	if ( camera == NULL ) return ;
-	if ( layerMask.flags == 0 ) return ;
-
-	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i )
-	{
-		if ( !layerMask.get(i) ) continue;
-		SWGameLayer* layer =  getLayer(i);
-		layer->removeCamera( camera );
-	}
 	m_cameras.remove( camera );
-}
-
-void SWGameScene::moveCamera( tflag32 oldMask, tflag32 newMask, SWCamera* camera )
-{
-	tuint32 oldLayers = oldMask.flags;
-	tuint32 newLayers = newMask.flags;
-	tuint32 common  = oldLayers & newLayers;
-	tuint32 removedMask = newLayers ^ common;
-	tuint32 addedMask   = oldLayers ^ common;
-
-	for ( tuint i = 0 ; i < SW_MaxLayerCount ; ++i )
-	{
-		bool added   = (addedMask & 0x1);
-		bool removed = (removedMask & 0x1);
-		addedMask   = addedMask >> 1;
-		removedMask = removedMask >> 1;
-
-		SWGameLayer* layer =  getLayer(i);
-		if ( added ) layer->addCamera( camera );
-		if ( removed ) layer->removeCamera( camera );
-	}
-}
-
-SWGameLayer* SWGameScene::getLayer( tuint layer )
-{
-	SWGameLayer* gameLayer = m_layerTable[layer]();
-	if ( gameLayer == NULL )
-	{
-		gameLayer = new SWGameLayer;
-		m_layerTable[layer] = gameLayer;
-	}
-	return gameLayer;
 }

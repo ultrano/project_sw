@@ -10,6 +10,7 @@
 SWRenderer::SWRenderer()
 	: m_mesh( new SWMesh() )
 	, m_material( new SWMaterial() )
+	, m_renderOrder(0)
 {
 
 }
@@ -17,6 +18,7 @@ SWRenderer::SWRenderer()
 SWRenderer::SWRenderer( factory_constructor )
 	: m_mesh( new SWMesh() )
 	, m_material( new SWMaterial() )
+	, m_renderOrder(0)
 {
 
 }
@@ -29,8 +31,7 @@ SWRenderer::~SWRenderer()
 void SWRenderer::onAwake()
 {
 	SWGameScene* scene = SW_GC.getScene();
-	m_layer = gameObject()->getLayer();
-	m_proxyID = scene->addRenderer( m_layer, this );
+	m_proxyID = scene->addRenderer( this );
 	
 	gameObject()->addLayerDelegator( GetDelegator( onLayerChanged ) );
 }
@@ -40,15 +41,13 @@ void SWRenderer::onRemove()
 	gameObject()->removeLayerDelegator( GetDelegator( onLayerChanged ) );
 
 	SWGameScene* scene = SW_GC.getScene();
-	scene->removeRenderer( m_layer, this );
+	scene->removeRenderer( this );
 }
 
 void SWRenderer::onLayerChanged()
 {
 	SWGameScene* scene = SW_GC.getScene();
-	scene->removeRenderer( m_layer, this );
-	m_layer = gameObject()->getLayer();
-	m_proxyID = scene->addRenderer( m_layer, this );
+	m_proxyID = scene->addRenderer( this );
 }
 
 void SWRenderer::setMaterial( const SWMaterial* material )

@@ -39,12 +39,12 @@ void SWCamera::onAwake()
 
 	m_cullingMask.clear(false);
 	m_cullingMask.set(SW_DefaultLayer,true);
-	SW_GC.getScene()->addCamera( m_cullingMask, this );
+	SW_GC.getScene()->addCamera( this );
 }
 
 void SWCamera::onRemove()
 {
-	SW_GC.getScene()->removeCamera( m_cullingMask, this );
+	SW_GC.getScene()->removeCamera( this );
 	gameObject()->removeUpdateDelegator( GetDelegator( onUpdate ) );
 	__super::onRemove();
 }
@@ -190,7 +190,6 @@ void SWCamera::setCullingMask( tflag32 mask )
 	if ( mask.flags == 0 ) return;
 	if ( m_cullingMask == mask ) return;
 
-	SW_GC.getScene()->moveCamera( m_cullingMask, mask, this );
 	m_cullingMask = mask;
 }
 

@@ -63,14 +63,11 @@ private:
 
 private:
 
-	tuint addRenderer( tuint layer, SWRenderer* renderer );
-	void removeRenderer( tuint layer, SWRenderer* renderer );
+	tuint addRenderer(SWRenderer* renderer );
+	void removeRenderer(SWRenderer* renderer );
 
-	void addCamera( tflag32 layerMask, SWCamera* camera );
-	void removeCamera( tflag32 layerMask, SWCamera* camera );
-	void moveCamera( tflag32 oldMask, tflag32 newMask, SWCamera* camera );
-
-	SWGameLayer* getLayer( tuint layer );
+	void addCamera( SWCamera* camera );
+	void removeCamera( SWCamera* camera );
 private:
 
 	friend class SWTransform;
@@ -105,8 +102,9 @@ private:
 	SWObject::List m_cameras;
 	SWDynamicTree3D m_cameraTree;
 
-	//! scene layers
-	SWHardRef<SWGameLayer> m_layerTable[SW_MaxLayerCount];
+	//! renderers
+	SWObject::Array m_renderers;
+	SWDynamicTree3D m_rendererTree;
 };
 
 #endif
