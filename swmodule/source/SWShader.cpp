@@ -14,7 +14,7 @@ SWShader::~SWShader()
 	glDeleteProgram( m_shaderID );
 }
 
-int SWShader::getUniformLocation( const tstring& name ) const
+int SWShader::getUniformLocation( const thashstr& name ) const
 {
 	UniformTable::const_iterator itor = m_uniformTable.find( name );
 	if ( itor != m_uniformTable.end() ) return itor->second;
@@ -28,7 +28,8 @@ bool SWShader::getUniformName( int index, tstring& name )
 	{
 		if ( itor->second == index )
 		{
-			name = itor->first;
+			const thashstr& hashName = itor->first;
+			name = hashName.str();
 			return true;
 		}
 	}
@@ -86,7 +87,8 @@ SWHardRef<SWShader> SWShader::compileShader( const tstring& source )
 			GLint len = 0;
 			glGetActiveUniform( shaderID, i, bufSize, &len, &sz, &type, &name[0] );
 			int index = glGetUniformLocation( shaderID, name.c_str() );
-			shader()->m_uniformTable.insert( std::make_pair( name.substr(0,len), index ) );
+			thashstr hashName = name.substr(0,len);
+			shader()->m_uniformTable.insert( std::make_pair( hashName, index ) );
 		}
 	}
 

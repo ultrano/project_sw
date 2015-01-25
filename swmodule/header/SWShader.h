@@ -13,7 +13,7 @@ public:
 
 public:
 
-	int  getUniformLocation( const tstring& name ) const;
+	int  getUniformLocation( const thashstr& name ) const;
 	bool getUniformName( int index, tstring& name );
 	tuint getUniformCount() const;
 
@@ -29,7 +29,7 @@ private:
 private:
 	friend class SWGameContext;
 
-	typedef ttable<tstring,int> UniformTable;
+	typedef ttable<thashstr,int> UniformTable;
 	typedef tarray<tuint> AttribArray;
 
 	tuint m_shaderID;
