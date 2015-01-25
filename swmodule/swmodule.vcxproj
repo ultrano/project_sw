@@ -115,7 +115,6 @@
     <ClInclude Include="header\SWFixture2D.h" />
     <ClInclude Include="header\SWFontInfo.h" />
     <ClInclude Include="header\SWFontRenderer.h" />
-    <ClInclude Include="header\SWGameLayer.h" />
     <ClInclude Include="header\SWHeaders.h" />
     <ClInclude Include="header\SWOpenAL.h" />
     <ClInclude Include="header\SWPlatform.h" />
@@ -242,7 +241,6 @@
     <ClCompile Include="source\SWFontInfo.cpp" />
     <ClCompile Include="source\SWFontRenderer.cpp" />
     <ClCompile Include="source\SWGameContext.cpp" />
-    <ClCompile Include="source\SWGameLayer.cpp" />
     <ClCompile Include="source\SWGameObject.cpp" />
     <ClCompile Include="source\SWGameScene.cpp" />
     <ClCompile Include="source\SWIOStream.cpp" />

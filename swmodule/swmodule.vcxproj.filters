@@ -301,9 +301,6 @@
     <Filter Include="SW\SWDynamicTree">
       <UniqueIdentifier>{74576666-e16a-4222-a58f-4e78a960d2d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SW\SWGameLayer">
-      <UniqueIdentifier>{020bcbd7-871f-4d18-842c-3b62104cdf34}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SW\SWType\TOBB">
       <UniqueIdentifier>{909f6062-a45d-4ff6-8247-b91d04e78d79}</UniqueIdentifier>
     </Filter>
@@ -669,9 +666,6 @@
     <ClInclude Include="header\SWDynamicTree3D.h">
       <Filter>SW\SWDynamicTree</Filter>
     </ClInclude>
-    <ClInclude Include="header\SWGameLayer.h">
-      <Filter>SW\SWGameLayer</Filter>
-    </ClInclude>
     <ClInclude Include="header\TOBB.h">
       <Filter>SW\SWType\TOBB</Filter>
     </ClInclude>
@@ -979,9 +973,6 @@
     </ClCompile>
     <ClCompile Include="source\SWDynamicTree3D.cpp">
       <Filter>SW\SWDynamicTree</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SWGameLayer.cpp">
-      <Filter>SW\SWGameLayer</Filter>
     </ClCompile>
     <ClCompile Include="source\TMatrix3x3.cpp">
       <Filter>SW\SWType\TMatrix3x3</Filter>

@@ -16,7 +16,6 @@ class SWGameObject;
 class SWComponent;
 class SWRenderer;
 class SWCamera;
-class SWGameLayer;
 class SWRefNode;
 
 /**
@@ -84,8 +83,6 @@ private:
 	void handleEvent();
 
 private:
-
-	typedef tarray<SWHardRef<SWGameLayer>> LayerArray;
 
 	//! root game objects
 	SWHardRef<SWRefNode> m_rootNode;

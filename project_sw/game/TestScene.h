@@ -194,7 +194,7 @@ public:
 			SWSprite* sprite = atlas()->find( "circle" );
 			if ( isBox ) sprite = atlas()->find( "box" );
 			tvec2 logoSize = sprite->getSize();
-			tuint count = 100;
+			tuint count = 10;
 			for ( tuint i = 0 ; i < count ; ++i )
 			{
 				SWGameObject* go = new SWGameObject;
