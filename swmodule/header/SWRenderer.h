@@ -29,12 +29,14 @@ public:
 
 	tuint getProxyID() const;
 	bool computeAABB( taabb3d& aabb ) const;
+	tuint getRenderOrder() const;
 
 protected:
 
 	override void onAwake();
 	override void onRemove();
 
+	void setRenderOrder(tuint order);
 	void onLayerChanged();
 
 	void serialize( SWObjectWriter* writer );
@@ -46,6 +48,7 @@ private:
 	SWHardRef<SWMaterial> m_material;
 	tuint m_layer;
 	tuint m_proxyID;
+	tuint m_renderOrder;
 };
 
 #endif // SWRenderer

@@ -110,3 +110,13 @@ bool SWRenderer::computeAABB( taabb3d& aabb ) const
 
 	return true;
 }
+
+void SWRenderer::setRenderOrder( tuint order )
+{
+	m_renderOrder = order;
+}
+
+tuint SWRenderer::getRenderOrder() const
+{
+	return m_renderOrder;
+}
