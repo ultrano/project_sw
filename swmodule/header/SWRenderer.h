@@ -29,14 +29,15 @@ public:
 
 	tuint getProxyID() const;
 	bool computeAABB( taabb3d& aabb ) const;
+
 	tuint getRenderOrder() const;
+	void setRenderOrder(tuint order);
 
 protected:
 
 	override void onAwake();
 	override void onRemove();
 
-	void setRenderOrder(tuint order);
 	void onLayerChanged();
 
 	void serialize( SWObjectWriter* writer );
